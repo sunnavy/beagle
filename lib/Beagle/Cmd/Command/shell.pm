@@ -78,6 +78,7 @@ sub execute {
         last if $cmd =~ /^(q|quit|exit)$/i;
 
         if ( $cmd =~ s/^!// ) {
+            shift @ARGV;
             system( $cmd, @ARGV );
         }
         elsif ( $cmd eq 'which' ) {
