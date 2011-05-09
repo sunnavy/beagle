@@ -1,6 +1,7 @@
 package Beagle::Model::Info;
 use Any::Moose;
 extends 'Beagle::Model::Entry';
+use Beagle::Util;
 
 has 'path' => (
     isa     => 'Str',
@@ -93,13 +94,27 @@ has 'location' => (
 has 'avatar' => (
     isa     => 'Str',
     is      => 'rw',
-    default => '/beagle.png',
+    default => '/system/beagle.png',
+    trigger => sub {
+        my $self = shift;
+        my $value = shift;
+        return unless $value && $value =~ m{^[^/]};
+        $value = join '/', '/static', split_id($self->id), $value;
+        $self->{avatar} = $value;
+    }
 );
 
 has 'public_key' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
+    trigger => sub {
+        my $self = shift;
+        my $value = shift;
+        return unless $value && $value =~ m{^[^/]};
+        $value = join '/', 'static', split_id($self->id), $value;
+        $self->{public_key} = $value;
+    }
 );
 
 sub parse_sites {
