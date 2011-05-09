@@ -1,0 +1,80 @@
+package Beagle::Cmd::Command::rewrite;
+use Beagle::Util;
+
+use Any::Moose;
+extends qw/Beagle::Cmd::Command/;
+
+has 'message' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'message to commit',
+    cmd_aliases   => "m",
+    traits        => ['Getopt'],
+);
+
+no Any::Moose;
+__PACKAGE__->meta->make_immutable;
+
+sub execute {
+    my ( $self, $opt, $args ) = @_;
+
+    my @bh;
+    local $ENV{BEAGLE_CACHE};    # no cache
+
+    my $root = beagle_root('not die');
+    require Beagle::Handler;
+    if ($root) {
+        push @bh, Beagle::Handler->new( root => $root );
+    }
+    else {
+        my $all = beagle_roots();
+        push @bh,
+          map { Beagle::Handler->new( root => $all->{$_}{local} ) } keys %$all;
+    }
+
+    require Email::Address;
+    for my $bh (@bh) {
+        my $default_address =
+          Email::Address->new( $bh->info->name, $bh->info->email )->format;
+        for my $id ( keys %{ $bh->map } ) {
+            my $entry = $bh->map->{$id};
+
+            my $new_path = $entry->path;
+            $new_path =~ s!\s!_!g;
+            $new_path =~ s!\.wiki$!!;    # back compat fix
+            $new_path .= '.article'
+              if $entry->type eq 'article' && $new_path !~ /\.article$/;
+            $entry->path($new_path) if $new_path ne $entry->path;
+            $entry->author($default_address) unless $entry->author;
+            $bh->update_entry( $entry, commit => 0 )
+              or die "failed to update entry " . $entry->id;
+        }
+        $bh->backend->commit( message => $self->message
+              || 'rewrote the whole beagle' );
+    }
+    puts "rewrote.";
+}
+
+sub usage_desc { "rewrite all entries" }
+
+1;
+
+__END__
+
+=head1 NAME
+
+Beagle::Cmd::Command::rewrite - rewrite all entries
+
+
+=head1 AUTHOR
+
+    sunnavy  C<< sunnavy@gmail.com >>
+
+
+=head1 LICENCE AND COPYRIGHT
+
+    Copyright 2011 sunnavy@gmail.com
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

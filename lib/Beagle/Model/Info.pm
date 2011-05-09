@@ -1,0 +1,174 @@
+package Beagle::Model::Info;
+use Any::Moose;
+extends 'Beagle::Model::Entry';
+
+has 'path' => (
+    isa     => 'Str',
+    default => 'info',
+    is      => 'ro',
+);
+
+has 'url' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => 'localhost'
+);
+
+has 'title' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => 'beagle'
+);
+
+has 'copyright' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => ''
+);
+
+has 'style' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => ''
+);
+
+has 'sites' => (
+    isa     => 'ArrayRef',
+    is      => 'rw',
+    default => sub { [] },
+);
+
+has 'name' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => 'beagle user',
+    trigger => sub {
+        my $self  = shift;
+        my $value = shift;
+        require Beagle::Backend;
+        my $backend = Beagle::Backend->new( root => $self->root );
+        if ( $backend->isa('Beagle::Backend::Git') ) {
+            my $old_name = $backend->git->config( '--get', 'user.name' ) || '';
+            chomp $old_name;
+            if ( $old_name ne $value ) {
+                $backend->git->config( '--replace-all', 'user.name', $value );
+            }
+        }
+    },
+);
+
+has 'email' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+    trigger => sub {
+        my $self  = shift;
+        my $value = shift;
+        require Beagle::Backend;
+        my $backend = Beagle::Backend->new( root => $self->root );
+
+        if ( $backend->isa('Beagle::Backend::Git') ) {
+            my $old_email = $backend->git->config( '--get', 'user.email' )
+              || '';
+            chomp $old_email;
+            if ( $old_email ne $value ) {
+                $backend->git->config( '--replace-all', 'user.email', $value );
+            }
+        }
+    }
+);
+
+has 'career' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+);
+
+has 'location' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+);
+
+has 'avatar' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '/beagle.png',
+);
+
+has 'public_key' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+);
+
+sub parse_sites {
+    my $self = shift;
+    my $str  = shift;
+    return [] unless $str;
+
+    # , is valid in url, so let's force spaces after it.
+    my @sites = split /\s*,\s+/, $str;
+
+    my $value = [];
+    for my $site (@sites) {
+        my ( $name, $url ) = split /=/, $site, 2;
+        if ( defined $name && $url ) {
+            push @$value, { name => $name, url => $url };
+        }
+        else {
+            warn "invalid site format: $site";
+        }
+    }
+    return $value;
+}
+
+around 'serialize_meta' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my %opt  = @_;
+    $opt{author} = undef;
+    my $str = $self->$orig(%opt);
+
+    for (
+        qw/title url copyright timezone style name email career location
+        avatar public_key sites/
+      )
+    {
+        $str .= $self->_serialize_meta( $_ );
+    }
+
+    return $str;
+};
+
+sub serialize_sites {
+    my $self = shift;
+    my $str = join ', ',
+      map { join '=', $_->{name}, $_->{url} } @{ $self->sites };
+    return $str;
+}
+
+sub summary {
+    my $self = shift;
+    return $self->title . ' ' . $self->url;
+}
+
+no Any::Moose;
+__PACKAGE__->meta->make_immutable;
+
+1;
+__END__
+
+
+=head1 AUTHOR
+
+    sunnavy  C<< sunnavy@gmail.com >>
+
+
+=head1 LICENCE AND COPYRIGHT
+
+    Copyright 2011 sunnavy@gmail.com
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

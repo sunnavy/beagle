@@ -1,0 +1,290 @@
+package Beagle::Model::Entry;
+use Any::Moose;
+use Data::UUID;
+use Beagle::Util;
+use Date::Format;
+
+has 'root' => (
+    isa     => 'Str',
+    is      => 'rw',
+    lazy    => 1,
+    default => sub { beagle_root() },
+);
+
+has 'path' => (
+    isa     => 'Str',
+    is      => 'rw',
+    builder => '_gen_path',
+    lazy    => 1,
+);
+
+has 'original_path' => (
+    isa     => 'Str',
+    is      => 'rw',
+    lazy    => 1,
+    default => sub {
+        my $self = shift;
+        return $self->path;
+    }
+);
+
+with 'Beagle::Role::Body', 'Beagle::Role::File', 'Beagle::Role::Date';
+
+has 'id' => (
+    isa     => 'Str',
+    is      => 'rw',
+    builder => '_gen_id',
+    lazy    => 1,
+);
+
+has 'draft' => (
+    isa     => 'Bool',
+    is      => 'rw',
+    default => 0,
+    lazy    => 1,
+);
+
+use Email::Address;
+
+has 'author' => (
+    isa => 'Str',
+    is  => 'rw',
+);
+
+sub new_from_string {
+    my $class  = shift;
+    my $string = shift;
+    die "missing string" unless defined $string;
+    my %args = @_;
+    my $self = $class->new(%args);
+    if ( $string =~ /\r?\n\r?\n/m ) {
+        my @wiki = split /\n/, $string;
+        while ( my $line = shift @wiki ) {
+            chomp $line;
+            last if $line =~ /^\r?\n$/m;
+            if ( $line =~ /^(\w+):\s*(.*?)\s*$/ ) {
+                my $key   = lc $1;
+                my $value = $2;
+                if ( $key eq 'created' || $key eq 'updated' ) {
+                    if ( $value =~ /^(\d{10})/ ) {
+                        $value = $1;
+                    }
+                    else {
+                        warn "couldn't find epoch.";
+                    }
+                }
+
+                if ( $self->can($key) ) {
+                    $self->$key( $self->parse_field( $key, $value ) );
+                }
+                elsif ( $key eq 'plain' ) {
+
+                    # back compat
+                    if ($value) {
+                        $self->format('plain');
+                    }
+                    else {
+                        $self->format('wiki');
+                    }
+                }
+                else {
+                    warn "unknown key: $key\n";
+                }
+            }
+        }
+        $self->body( join "\n", @wiki );
+    }
+    else {
+        $self->body($string);
+    }
+
+    for my $type (qw/id created/) {
+        if ( !$self->$type ) {
+            warn "no mandatory $type defined, skipping";
+        }
+    }
+
+    return $self;
+}
+
+sub serialize_meta {
+    my $self = shift;
+    my %args = (
+        id      => 1,
+        author  => 1,
+        created => 1,
+        updated => 1,
+        format  => 1,
+        draft   => 1,
+        path    => undef,
+        @_
+    );
+    my $str = '';
+
+    for my $type (qw/path id format author draft/) {
+        $str .= $self->_serialize_meta($type) if $args{$type};
+    }
+
+    if ( $args{created} ) {
+        $str .=
+            'created: '
+          . $self->created . ' ('
+          . $self->created_rfc2822 . ')' . "\n";
+    }
+
+    if ( $args{updated} ) {
+        $str .=
+            'updated: '
+          . $self->updated . ' ('
+          . $self->updated_rfc2822 . ')' . "\n";
+    }
+
+    return $str;
+}
+
+sub _serialize_meta {
+    my $self      = shift;
+    my $type      = shift;
+    my $serialize = $self->can("serialize_$type");
+    my $value     = $serialize ? $self->$serialize : $self->$type;
+
+    if ( defined $value && length $value ) {
+        return "$type: " . $value . "\n";
+    }
+    else {
+        return "$type:\n";
+    }
+}
+
+sub serialize_body {
+    my $self = shift;
+    my $str  = '';
+    $str .= $self->body if defined $self->body;
+    $str .= "\n" unless $str =~ /\n$/;
+    return $str;
+}
+
+sub serialize {
+    my $self = shift;
+    my $str  = $self->serialize_meta(@_);
+    $str .= "\n" if length $str;
+    $str .= $self->serialize_body(@_);
+    return $str;
+}
+
+sub _gen_id {
+    my $self = shift;
+    my $ug   = Data::UUID->new;
+    my $id   = $ug->create_hex;
+    $id =~ s!^0x!!;
+    return lc $id;
+}
+
+sub _gen_path {
+    my $self = shift;
+
+    require Lingua::EN::Inflect;
+
+    my $summary = $self->summary(10);
+    $summary =~ s!\s+!_!g;
+    return catfile( Lingua::EN::Inflect::PL( $self->type ),
+        join '.', $summary, $self->id, $self->type );
+}
+
+sub type {
+    my $self = shift;
+    my $class = ref $self || $self;
+    $class =~ /::(\w+)$/ or die "$class is invalid";
+    return lc $1;
+}
+
+sub summary {
+    my $self = shift;
+    $self->_summary( $self->body, @_ );
+}
+
+sub _summary {
+    my $self   = shift;
+    my $body   = shift;
+    my $length = shift;
+    return '' unless $body;
+
+    $body =~ s/^\s+//;
+    $body =~ s/\s+$//;
+    $body =~ s/\s+/ /g;
+
+    if ($length) {
+        return length $body > $length
+          ? substr( $body, 0, $length - 3 ) . "..."
+          : $body;
+    }
+    else {
+        return $body;
+    }
+
+}
+
+sub parse_field {
+
+    my $self  = shift;
+    my $field = shift;
+    return '' unless $field && $self->can($field);
+
+    die "no value fed for $field" unless @_;
+    my $value = shift;
+    my $parse = "parse_$field";
+    if ( $self->can($parse) ) {
+        return $self->$parse($value);
+    }
+    else {
+        return $value;
+    }
+}
+
+sub serialize_field {
+    my $self  = shift;
+    my $field = shift;
+    return '' unless $field && $self->can($field);
+
+    my $serialize = "serialize_$field";
+    my $value;
+    if ( $self->can($serialize) ) {
+        $value = $self->$serialize;
+    }
+    else {
+        $value = $self->$field;
+    }
+
+    return defined $value ? $value : '';
+}
+
+sub parse_tags {
+    my $self = shift;
+    my $str  = shift;
+    return to_array($str);
+}
+
+sub serialize_tags {
+    my $self = shift;
+    return from_array( $self->tags );
+}
+
+no Any::Moose;
+__PACKAGE__->meta->make_immutable;
+
+1;
+__END__
+
+
+=head1 AUTHOR
+
+    sunnavy  C<< sunnavy@gmail.com >>
+
+
+=head1 LICENCE AND COPYRIGHT
+
+    Copyright 2011 sunnavy@gmail.com
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
