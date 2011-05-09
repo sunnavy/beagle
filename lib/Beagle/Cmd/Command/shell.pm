@@ -146,8 +146,8 @@ sub execute {
                     set_beagle_root($root);
                 }
             }
+            $self->write_history($term);
         }
-        $self->write_history($term);
     }
 }
 
