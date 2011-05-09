@@ -1,0 +1,61 @@
+#compdef beagle
+#autoload
+
+local -a _1st_arguments
+_1st_arguments=(
+"commands:list the application's commands"
+"help:display a command's help screen"
+"alias:show command alias(es)"
+"article:create a new article"
+"att:manage attachments"
+"bark:create a new bark"
+"cache:cache"
+"cmds:show names of all the commands/aliases"
+"comment:create a new comment"
+"comments:list comments"
+"config:config beagle"
+"create:create a new beagle"
+"follow:follow another beagle"
+"fsck:check integrity of beagles"
+"git:bridge to git"
+"info:manage info"
+"log:show log"
+"ls:list/search entries"
+"map:manage entry map"
+"mv:move entries to another beagle"
+"rename:rename a beagle"
+"review:create a review"
+"rewrite:rewrite all entries"
+"rm:delete entries"
+"root:show root"
+"shell:interactive shell"
+"show:show entries"
+"spread:spread an entry"
+"status:show status"
+"task:create a new task"
+"unfollow:unfollow beagle(s)"
+"update:update an entry"
+"version:show beagle version"
+"web:start web server"
+)
+
+_arguments \
+  '*:: :->subcmds' && return 0
+
+if (( CURRENT == 1 )); then
+  _describe -t commands "beagle subcommand" _1st_arguments
+  return
+fi
+
+local names;
+
+_beagle_names() {
+  names=(`beagle root --names`)
+}
+
+case "$words[1]" in
+  use|switch|root|rename|unfollow)
+    _beagle_names
+    _wanted names expl 'all names' compadd -a names ;;
+esac
+

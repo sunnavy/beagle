@@ -1,0 +1,2 @@
+simple copy zsh/beagle to oh-my-zsh/plugins/, then add beagle to plugins in  your .zshrc
+
