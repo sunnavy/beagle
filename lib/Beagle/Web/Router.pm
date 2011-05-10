@@ -9,17 +9,6 @@ use Router::Simple;
 use Beagle::Web::Request;
 use JSON;
 
-use MIME::Types;
-my $mime_types = MIME::Types->new;
-
-sub mime_type {
-    my $file = shift;
-    if ( $file && $file =~ /.*\.(\S+)\s*$/i ) {
-        $type = $mime_types->mimeTypeOf($1);
-    }
-    return $type ? "$type" : 'application/octet-stream';
-}
-
 my $router = Router::Simple->new();
 my $admin = $router->submapper(
     '/admin',

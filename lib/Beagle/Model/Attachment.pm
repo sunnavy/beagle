@@ -49,21 +49,11 @@ has 'mime_type' => (
     isa     => 'Str',
     is      => 'rw',
     lazy    => 1,
-    builder => '_set_mime_type',
+    default => sub {
+        my $self = shift;
+        mime_type( $self->name );
+    },
 );
-
-use MIME::Types;
-my $mime_types = MIME::Types->new;
-
-sub _set_mime_type {
-    my $self = shift;
-    my $name = $self->name;
-    my $type;
-    if ( $name && $name =~ /.*\.(\S+)\s*$/i ) {
-        $type = $mime_types->mimeTypeOf($1);
-    }
-    return $type ? "$type" : 'application/octet-stream';
-}
 
 sub serialize {
     my $self = shift;

@@ -24,7 +24,7 @@ our @EXPORT = qw/
   dclone nstore retrieve format_number format_bytes stdout stderr
   newline is_windows puts  
   user_home file_size parent_dir to_array from_array edit_text max_length
-  term_size term_width term_height 
+  term_size term_width term_height  mime_type
   pretty_datetime parse_datetime confess encode decode/;
 
 require IO::Handle;
@@ -187,6 +187,18 @@ sub edit_text {
 
     require Proc::InvokeEditor;
     return scalar Proc::InvokeEditor->edit($text);
+}
+
+use MIME::Types;
+my $mime_types = MIME::Types->new;
+
+sub mime_type {
+    my $file = shift;
+    my $type;
+    if ( $file && $file =~ /.*\.(\S+)\s*$/i ) {
+        $type = $mime_types->mimeTypeOf($1);
+    }
+    return $type ? "$type" : 'application/octet-stream';
 }
 
 1;
