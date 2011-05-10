@@ -1,7 +1,7 @@
 @import "style.css";
 
 html, body, h4, h5, h6 {
-    background-color: black;
+    background-color: #111;
     color: white !important;
 }
 
