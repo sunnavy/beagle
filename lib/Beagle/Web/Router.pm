@@ -160,7 +160,7 @@ sub any ($$;$) {
             (
                 $pattern,
                 { code => $code },
-                +{ method => [ map { uc $_ } @$methods ] }
+                { method => [ map { uc $_ } @$methods ] }
             );
         }
         else {
