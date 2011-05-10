@@ -18,19 +18,19 @@ has 'url' => (
 has 'title' => (
     isa     => 'Str',
     is      => 'rw',
-    default => 'beagle'
+    default => 'beagle',
 );
 
 has 'copyright' => (
     isa     => 'Str',
     is      => 'rw',
-    default => ''
+    default => '',
 );
 
 has 'style' => (
     isa     => 'Str',
     is      => 'rw',
-    default => ''
+    default => '',
 );
 
 has 'sites' => (
@@ -76,7 +76,7 @@ has 'email' => (
                 $backend->git->config( '--replace-all', 'user.email', $value );
             }
         }
-    }
+    },
 );
 
 has 'career' => (
@@ -101,7 +101,7 @@ has 'avatar' => (
         return unless $value && $value =~ m{^[^/]};
         $value = join '/', '/static', split_id($self->id), $value;
         $self->{avatar} = $value;
-    }
+    },
 );
 
 has 'public_key' => (
@@ -114,7 +114,7 @@ has 'public_key' => (
         return unless $value && $value =~ m{^[^/]};
         $value = join '/', 'static', split_id($self->id), $value;
         $self->{public_key} = $value;
-    }
+    },
 );
 
 sub parse_sites {
