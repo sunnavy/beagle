@@ -30,7 +30,7 @@ has 'copyright' => (
 has 'style' => (
     isa     => 'Str',
     is      => 'rw',
-    default => '',
+    default => 'default',
 );
 
 has 'sites' => (

@@ -194,8 +194,13 @@ sub field_list {
     }
     elsif ( $type eq 'info' ) {
         unshift @list,
+          style => {
+            type => 'Select',
+            options =>
+              [ map { { label => $_, value => $_ } } qw/default blue dark/ ],
+          },
           map { $_ => { type => 'Text' } }
-          qw/title url copyright timezone style sites
+          qw/title url copyright timezone sites
           name email career location avatar public_key/;
     }
 

@@ -5,7 +5,7 @@
 <link href="<: $info.avatar || '/favicon.ico' :>" rel="icon" />
 
 <link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="/feed" />
-<link rel="stylesheet" type="text/css" href="/system/css/style<: $info.style ? ('_' ~ $info.style) : '' :>.css" />
+<link rel="stylesheet" type="text/css" href="/system/css/style<: $info.style && $info.style != 'normal' ? ('_' ~ $info.style) : '' :>.css" />
 
 <script type="text/javascript" src="/system/js/prettify.js"></script>
 <link rel="stylesheet" type="text/css" href="/system/css/prettify.css" />
