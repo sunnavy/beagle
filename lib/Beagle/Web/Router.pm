@@ -153,21 +153,15 @@ sub render {
     return $xslate->render( "$template.tx", \%vars );
 }
 
-sub any ($$;$) {
-    my ( $pattern, $dest, $opt ) = do {
-        if ( @_ == 3 ) {
-            my ( $methods, $pattern, $code ) = @_;
-            (
-                $pattern,
-                { code => $code },
-                { method => [ map { uc $_ } @$methods ] }
-            );
-        }
-        else {
-            my ( $pattern, $code ) = @_;
-            ( $pattern, { code => $code }, +{} );
-        }
-    };
+sub any {
+    my $methods;
+    $methods = shift if @_ == 3;
+
+    my $pattern = shift;
+    my $code = shift;
+    my $dest = { code => $code };
+    my $opt = { $methods ? ( method => $methods ) : () };
+
     if ( $pattern =~ s{^/admin(?=/)}{} ) {
         $admin->connect( $pattern, $dest, $opt );
     }
