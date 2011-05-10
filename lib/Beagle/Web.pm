@@ -6,7 +6,7 @@ our $VERSION = '0.01';
 
 sub share_root {
     my @root =
-      splitdir( rel2abs( parent_dir( parent_dir( $INC{'Beagle/Web.pm'} ) ) ) );
+      splitdir( rel2abs( parent_dir( $INC{'Beagle.pm'} ) ) );
 
     if (   $root[-2] ne 'blib'
         && $root[-1] eq 'lib'
@@ -17,7 +17,7 @@ sub share_root {
         $root[-1] = 'share';
     }
     else {
-        push @root, qw/auto share dist Beagle-Web/;
+        push @root, qw/auto share dist Beagle/;
     }
 
     return catdir(@root);
