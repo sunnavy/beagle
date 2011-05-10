@@ -198,7 +198,8 @@ sub field_list {
             type => 'Select',
             options =>
               [ map { { label => $_, value => $_ } } qw/default blue dark/ ],
-          },
+          };
+        unshift @list,
           map { $_ => { type => 'Text' } }
           qw/title url copyright timezone sites
           name email career location avatar public_key/;
