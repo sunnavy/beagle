@@ -62,7 +62,7 @@ sub _set_mime_type {
     if ( $name && $name =~ /.*\.(\S+)\s*$/i ) {
         $type = $mime_types->mimeTypeOf($1);
     }
-    return "$type" || 'application/octet-stream';
+    return $type ? "$type" : 'application/octet-stream';
 }
 
 sub serialize {
