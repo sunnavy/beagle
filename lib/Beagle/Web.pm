@@ -1,4 +1,5 @@
 package Beagle::Web;
+use Beagle;
 use Beagle::Util;
 use Encode;
 
