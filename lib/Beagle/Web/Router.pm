@@ -19,6 +19,31 @@ my $admin = $router->submapper(
         },
     }
 );
+sub any {
+    my $methods;
+    $methods = shift if @_ == 3;
+
+    my $pattern = shift;
+    my $code = shift;
+    my $dest = { code => $code };
+    my $opt = { $methods ? ( method => $methods ) : () };
+
+    if ( $pattern =~ s{^/admin(?=/)}{} ) {
+        $admin->connect( $pattern, $dest, $opt );
+    }
+    else {
+        $router->connect( $pattern, $dest, $opt, );
+    }
+}
+
+sub get {
+    any( [qw/GET HEAD/], $_[0], $_[1] );
+}
+
+sub post {
+    any( [qw/POST/], $_[0], $_[1] );
+}
+
 
 use Text::Xslate;
 my $xslate = Text::Xslate->new(
@@ -99,6 +124,12 @@ my $xslate = Text::Xslate->new(
     },
 );
 
+sub render {
+    my $template = shift;
+    my %vars = ( default_options(), @_ );
+    return $xslate->render( "$template.tx", \%vars );
+}
+
 my ( $bh, %updated, %bh, $all, $name );
 my $root = beagle_root('not die');
 my $req;
@@ -132,6 +163,7 @@ else {
     $name = $bh->name;
 }
 
+
 sub redirect {
     my $location = shift;
     my $code     = shift;
@@ -145,37 +177,6 @@ sub change_handler {
     $bh                        = $bh{$n};
     $name                      = $n;
     redirect '/';
-}
-
-sub render {
-    my $template = shift;
-    my %vars = ( default_options(), @_ );
-    return $xslate->render( "$template.tx", \%vars );
-}
-
-sub any {
-    my $methods;
-    $methods = shift if @_ == 3;
-
-    my $pattern = shift;
-    my $code = shift;
-    my $dest = { code => $code };
-    my $opt = { $methods ? ( method => $methods ) : () };
-
-    if ( $pattern =~ s{^/admin(?=/)}{} ) {
-        $admin->connect( $pattern, $dest, $opt );
-    }
-    else {
-        $router->connect( $pattern, $dest, $opt, );
-    }
-}
-
-sub get {
-    any( [qw/GET HEAD/], $_[0], $_[1] );
-}
-
-sub post {
-    any( [qw/POST/], $_[0], $_[1] );
 }
 
 get '/' => sub {
@@ -439,71 +440,6 @@ post '/admin/entry/{id:\w{32}}' => sub {
     }
 };
 
-sub process_fields {
-    my ( $entry, $params ) = @_;
-
-    require HTML::FormHandler;
-    my $form =
-      HTML::FormHandler->new(
-        field_list => scalar Beagle::Web->field_list($entry) );
-    $form->process( posted => 1, params => $params );
-
-    if ( $form->is_valid ) {
-        my $values = $form->fif;
-        for my $f ( keys %$values ) {
-            next unless $entry->can($f);
-            my $new = $values->{$f};
-            if ( $f eq 'body' ) {
-
-                #TODO it's not actually parse, but canonicalize
-                $new = $entry->parse_body($new);
-            }
-
-            my $old = $entry->serialize_field($f);
-
-            if ( "$new" ne "$old" ) {
-                $entry->$f( $entry->parse_field( $f, $new ) );
-            }
-        }
-        return 1;
-    }
-    return;
-}
-
-sub delete_attachments {
-    my ( $entry, @names ) = @_;
-    for my $name (@names) {
-        next unless defined $name;
-        my $att = Beagle::Model::Attachment->new(
-            name      => $name,
-            parent_id => $entry->id,
-        );
-        $bh->delete_attachment($att);
-    }
-}
-
-sub add_attachments {
-    my ( $entry, @attachments ) = @_;
-    for my $upload (@attachments) {
-        next unless $upload;
-
-        my $basename = decode_utf8 $upload->filename;
-        $basename =~ s!\\!/!g;
-        $basename =~ s!.*/!!;
-
-        my $att = Beagle::Model::Attachment->new(
-            name         => $basename,
-            content_file => $upload->tempname,
-            parent_id    => $entry->id,
-        );
-        $bh->create_attachment( $att,
-                message => 'added attachment '
-              . $basename
-              . ' for entry '
-              . $entry->id );
-    }
-}
-
 post '/admin/entry/delete' => sub {
     my $id = $req->param(id);
 
@@ -574,7 +510,87 @@ post '/utility/markitup' => sub {
     render 'markitup', content => $content;
 };
 
+
+sub process_fields {
+    my ( $entry, $params ) = @_;
+
+    require HTML::FormHandler;
+    my $form =
+      HTML::FormHandler->new(
+        field_list => scalar Beagle::Web->field_list($entry) );
+    $form->process( posted => 1, params => $params );
+
+    if ( $form->is_valid ) {
+        my $values = $form->fif;
+        for my $f ( keys %$values ) {
+            next unless $entry->can($f);
+            my $new = $values->{$f};
+            if ( $f eq 'body' ) {
+
+                #TODO it's not actually parse, but canonicalize
+                $new = $entry->parse_body($new);
+            }
+
+            my $old = $entry->serialize_field($f);
+
+            if ( "$new" ne "$old" ) {
+                $entry->$f( $entry->parse_field( $f, $new ) );
+            }
+        }
+        return 1;
+    }
+    return;
+}
+
+sub delete_attachments {
+    my ( $entry, @names ) = @_;
+    for my $name (@names) {
+        next unless defined $name;
+        my $att = Beagle::Model::Attachment->new(
+            name      => $name,
+            parent_id => $entry->id,
+        );
+        $bh->delete_attachment($att);
+    }
+}
+
+sub add_attachments {
+    my ( $entry, @attachments ) = @_;
+    for my $upload (@attachments) {
+        next unless $upload;
+
+        my $basename = decode_utf8 $upload->filename;
+        $basename =~ s!\\!/!g;
+        $basename =~ s!.*/!!;
+
+        my $att = Beagle::Model::Attachment->new(
+            name         => $basename,
+            content_file => $upload->tempname,
+            parent_id    => $entry->id,
+        );
+        $bh->create_attachment( $att,
+                message => 'added attachment '
+              . $basename
+              . ' for entry '
+              . $entry->id );
+    }
+}
+
 sub current_handler { $bh }
+
+sub default_options {
+    return (
+        $bh->list,
+        name          => $name,
+        enabled_admin => Beagle::Web->enabled_admin(),
+        feed          => Beagle::Web->feed($bh),
+        years         => Beagle::Web->years($bh),
+        tags          => Beagle::Web->tags($bh),
+        ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
+        ? ()
+        : ( roots => $all ),
+    );
+}
 
 sub handle_request {
     my $env = shift;
@@ -621,20 +637,6 @@ sub handle_request {
     $res ||= $req->new_response(405);
 
     $res->finalize;
-}
-
-sub default_options {
-    return (
-        $bh->list,
-        name          => $name,
-        enabled_admin => Beagle::Web->enabled_admin(),
-        feed          => Beagle::Web->feed($bh),
-        years         => Beagle::Web->years($bh),
-        tags          => Beagle::Web->tags($bh),
-        ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
-        ? ()
-        : ( roots => $all ),
-    );
 }
 
 1;
