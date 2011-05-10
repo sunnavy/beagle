@@ -1,0 +1,20 @@
+  </div>
+  <div id="push"></div>
+</div>
+
+<div id="footer">
+<div class="magical-number">
+<span class="number"><: $total_size :></span>
+</div>
+: for $info.sites -> $site {
+<a href="/<: $site.name :>"><: $site.name :></a>
+&nbsp;
+: }
+<div class="updated">
+<span class="datetime"><: $updated :></span>
+</div>
+</div>
+
+</body>
+</html>
+

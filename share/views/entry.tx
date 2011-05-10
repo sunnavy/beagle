@@ -1,0 +1,39 @@
+: if $entry.type == 'bark' {
+:     include "bark.tx" { entry => $entry };
+: }
+: elsif $entry.type == 'article' {
+:     include "article.tx" { entry => $entry };
+: }
+: elsif $entry.type == 'review' {
+:     include "review.tx" { entry => $entry };
+: }
+: elsif $entry.type == 'comment' {
+:     include "comment.tx" { entry => $entry };
+: }
+: else {
+<div id="id_<: $entry.id :>" class="entry <: $entry.type :>">
+
+<h3 class="title"><a href="/entry/<: $entry.id :>"><: $entry.summary :></a></h3>
+<div class="meta">
+  <div class="date" title="created date <: $entry.created :>" >
+    <: $entry.created_rfc2822 :>
+  </div>
+  <div class="tags" title="tags">
+    <a href="/tag/<: $entry.type :>"><: $entry.type :></a>
+  </div>
+
+: include 'utility.tx' { entry => $entry };
+
+</div>
+
+<div class="content">
+<div class="body">
+: include 'body.tx' { entry => $entry };
+</div>
+
+: include "comments.tx" { entry => $entry };
+</div>
+
+
+</div>
+: }

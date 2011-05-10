@@ -1,0 +1,23 @@
+: if $enabled_admin || $comments_map[$entry.id] {
+<div class="comments">
+
+<h5><a class="title-toggle-hide" href="">Comments</a></h5>
+
+<div class="content">
+: if $comments_map[$entry.id] {
+
+: my $comments = $comments_map[$entry.id];
+: for $comments.keys().sort( -> $x, $y { $comments[$x].created <=> $comments[$y].created } ) -> $id {
+: include 'comment.tx' { entry => $comments[$id] };
+: }
+
+: }
+</div>
+
+: if $enabled_admin {
+: include "create_comment.tx" { parent => $entry };
+: }
+
+</div>
+: }
+

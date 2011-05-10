@@ -1,0 +1,73 @@
+: include "/layouts/header.tx";
+
+<div class="admin <: $entry.type :>">
+
+: if $entry.id != 'new' {
+<div class="admin-links">
+: if $entry.type != 'info' {
+<a href="/entry/<: $entry.id :>">view</a>
+<div class="delete">
+<form class="delete" method="post" action="/admin/entry/<: $entry.id :>/delete" >
+<a href="" class="delete">delete</a>
+</form>
+</div>
+: }
+</div>
+: }
+
+<form method="post" enctype="multipart/form-data">
+<input type="hidden" value="<: $entry.id :>" name="id" />
+
+: for $form.sorted_fields -> $field {
+: if $field.name != 'body' {
+<div class="wrapper">
+<: $field.render |raw :>
+</div>
+: } }
+
+: if $entry.isa('Beagle::Model::Article') {
+
+: if $entry.id != 'new' and $attachments_map[$entry.id] {
+<div class="wrapper">
+<label>attached:</label>
+: for $attachments_map[$entry.id].keys().sort() -> $name {
+
+: if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
+<a class="image" href="/static/<: split_id($entry.id) :>/<: $name :>">
+<img title="<:$name:>" src="/static/<: split_id($entry.id) :>/<: $name :>" />
+</a>
+
+: }
+: else {
+<a href="/static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+: }
+<input title="check to delete" type="checkbox" value="<: $name :>" name="delete-attachments" />
+
+: }
+</div>
+: }
+
+
+: for [ 1,2,3 ] -> $item {
+<div class="wrapper">
+<label>Attach:</label>
+<input type="file" name="attachments" />
+</div>
+: }
+
+: }
+
+<div class="textarea">
+<textarea class="markitup <: $entry.format :>" name="body"><: $entry.body :></textarea>
+</div>
+
+<div class="wrapper">
+<label>message:</label>
+<input type="text" name="message" />
+<input type="submit" value="Save" />
+</div>
+
+</form>
+</div>
+: include "/layouts/footer.tx";
+

@@ -1,0 +1,28 @@
+@import "style.css";
+
+html, body, h4, h5, h6 {
+    background-color: black;
+    color: white !important;
+}
+
+a, h3 {
+    color: #ace !important;
+}
+
+h3.title {
+    background-color: #222 !important;
+}
+
+h3.menu {
+    background-color: #111 !important;
+}
+
+div.even, a.even, li.even {
+    background-color: #111;
+}
+
+select, input, textarea {
+    background-color: #222;
+    color: #fff;
+}
+

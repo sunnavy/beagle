@@ -1,0 +1,14 @@
+@import "style.css";
+
+html, body {
+    background-color: #F0F3FF;
+}
+
+h3.title { 
+    background-color: #D2DFF1;
+}
+
+h3.menu {
+    background-color: #E2DFF1;
+}
+

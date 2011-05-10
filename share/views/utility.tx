@@ -1,0 +1,16 @@
+  <div class="utility">
+: if not $no_hide {
+  <a class="toggle-hide" href="">hide</a>
+: }
+
+: if $enabled_admin {
+  <a href="/admin/entry/<: $entry.id :>">edit</a>
+<div class="delete">
+<form class="delete">
+<input type="hidden" name="id" value="<: $entry.id :>" />
+<a href="" class="delete">delete</a>
+<input class="hidden" type="submit" />
+</form>
+  </div>
+: }
+  </div>

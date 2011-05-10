@@ -1,0 +1,495 @@
+html, body {
+    background-color: #FFF3F0;
+}
+
+a {
+    text-decoration: none;
+    color: #456789;
+}
+
+a.toggle-hide {
+    margin-left: .5em;
+    float: right;
+}
+
+.hidden {
+    display: none;
+}
+
+
+#menu {
+    float: right;
+    left: 0.5%;
+    top: 0.5%;
+    width: 24%;
+}
+
+#menu .head {
+    text-align: center;
+}
+
+#menu div.profile {
+    min-height: 80px;
+}
+
+#menu img {
+    float: left;
+    margin: 1%;
+    margin-right: 3%;
+}
+
+#menu .toggle-expand {
+    float: left;
+    margin-right: 2%;
+}
+
+#menu ul {
+    list-style-type: none;
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    padding: 0;
+}
+
+#menu ul li a {
+    display: block;
+    color: #2b3856;
+}
+
+#menu ul li {
+    margin-bottom: 1%;
+    word-wrap: break-word;
+}
+
+#menu ul ul {
+    margin-bottom: 0;
+    margin-left: 1%;
+}
+
+#menu ul ul li {
+    margin-bottom: 2%;
+}
+
+#menu div {
+    color: #222;
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 2%;
+}
+
+span.datetime, span.number {
+    color: #bbb;
+}
+
+#container {
+    height: auto !important;
+    margin: 0 auto -1%;
+}
+
+#content {
+/*    color: #000; */
+    margin-top: 0.5%;
+    margin-left: 1%;
+    margin-right: 26%;
+    padding-left: 1%;
+    padding-top: 0.5%;
+    padding-bottom: 1%;
+}
+
+h3.title { 
+    margin-top: 2%;
+    background-color: #EFD595;
+    color: navy;
+    padding: 3px;
+    padding-left: 10px;
+}
+
+h5 { 
+    padding-left: 20px;
+    color: #234;
+}
+
+#content p, #content ul {
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+code, pre { 
+    margin-left: 2%;
+    margin-right: 3%;
+}
+
+div.meta {
+    margin-top: -1.0%;
+    font-size: smaller;
+}
+
+div.meta div.date {
+    margin-right: 1%;
+    display: inline;
+}
+
+div.meta div.author {
+    margin-right: 1%;
+    display: inline;
+}
+
+div.meta div.tags {
+    display: inline;
+    margin-right: 1%;
+}
+
+div.meta div.tags a {
+    color: #4E387E;
+}
+
+
+div.meta div.info {
+    display: block;
+}
+
+div.entry div.utility {
+    display: inline;
+    text-align: right;
+}
+
+div.entry div.utility a {
+    float: right;
+    margin-left: 1%;
+}
+
+div.body div.cover {
+    float: right;
+    margin-top: 1em;
+    margin-left: .5em;
+    width: 8em;
+}
+
+div.body {
+    display: block;
+}
+
+div.review div.body {
+    min-height: 10em;
+}
+
+div.review div.cover img {
+    height: 8em;
+    width: auto;
+}
+
+div.bark.single div.body:first-child {
+    font-size: 200%;
+}
+
+div.wrapper {
+    width: 100%;
+    float: left;
+    margin-top: 1%;
+    height: 2em;
+}
+
+div.message-wrapper {
+    height: 2%;
+}
+
+div.message {
+    text-align: center;
+    color: green;
+    border: #080 1px solid;
+    float: right;
+    width: 100%;
+}
+
+div.warnings {
+    margin-top: 2%;
+    text-align: center;
+    color: red;
+    border: #800 1px solid;
+    font-size: 200%;
+}
+
+h3.menu {
+    margin-top: 25px;
+    margin-bottom: 5px;
+    padding-left: 30px;
+    background-color: #F0E0C0;
+}
+
+.annotation {
+    color: blue;
+}
+
+
+div.admin, div.admin-list {
+    margin-top: 3%;
+}
+
+div.admin label {
+    float: left;
+    width: 32%;
+    margin-left: 1%;
+    margin-top: 1%;
+    text-align: right;
+}
+
+div.admin input, div.admin select {
+    margin-left: 1%;
+    margin-top: 1%;
+    float: left;
+    min-width: 30%;
+}
+
+div.admin div.textarea {
+    float: left;
+    width: 80%;
+    margin-left: 22%;
+}
+
+div.admin div.textarea textarea {
+    margin-left: 1%;
+    padding: .2em;
+}
+
+div.admin div.textarea > textarea {
+    border: #3C769D 3px solid;
+    margin-top: 1%;
+    width: 70%;
+	height: 375px;
+}
+
+div.admin div.yes, div.admin div.no {
+    float: left;
+    margin-right: 3%;
+    text-align: left;
+    margin-left: 2%;
+}
+
+div.admin input[type=checkbox] {
+    width: 5%;
+    min-width: 5%;
+    float: left;
+}
+
+div.admin input[type=submit] {
+    width: 10%;
+    min-width: 10%;
+    margin-right: 5%;
+    margin-left: 3%;
+}
+
+div.admin-links {
+    text-align: right;
+    margin-right: 2%;
+}
+
+div.admin-links a {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+div.odd, a.odd, li.odd {
+/*    background-color: #fff; */
+}
+
+div.even, a.even, li.even {
+    background-color: #eee;
+}
+
+div.admin-list div.contrast {
+    margin: 2%;
+    padding: 0;
+}
+
+div.admin-list ul {
+    list-style-type: none;
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    padding: 0;
+    display: block;
+}
+
+div.admin-list li {
+    margin-top: 0.5%;
+    margin-right: 1%;
+}
+
+div.admin-list div.path {
+    float: left;
+    width: 35%;
+    margin-left: 1%;
+    text-align: left;
+}
+
+div.admin-list div.summary {
+    margin-left: 1%;
+    float: left;
+    width: 30%;
+}
+
+
+div.admin-list div.view {
+    margin-left: 2%;
+    float: left;
+}
+
+div.admin-list div.edit {
+    margin-left: 2%;
+    float: left;
+}
+
+div.admin-list div.delete {
+    margin-left: 2%;
+    float: left;
+}
+
+div.admin form {
+    margin-bottom: 2%;
+}
+
+a.image img {
+    width: 10%;
+}
+
+div.admin a.image {
+    width: 10%;
+}
+
+div.admin a.image img {
+    float: left;
+    width: 3%;
+    margin-left: 2%;
+}
+
+div.utility div.delete{
+    float: right;
+    margin-left: .5%;
+}
+
+div.admin-links div.delete {
+    float: right;
+    margin-left: 1%;
+}
+
+div.attachments {
+    display: block;
+    margin-bottom: 3%;
+    margin-left: 5%;
+}
+
+img {
+    float: none;
+}
+
+hr.attachments {
+    color: #eee;
+    background-color: #eee;
+    width: 80%
+}
+
+#footer {
+    float: left;
+    width: 75%;
+    text-align: center;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    margin-right: 25%;
+    bottom: 0;
+}
+
+#footer .updated {
+    float: right;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+#footer .magical-number {
+    float: left;
+    margin-left: 3%;
+}
+
+pre.shell {
+    border: 1px solid #000;
+    background-color: #333;
+    color: #eee;
+    padding: 0.6%;
+    -moz-opacity: 0.7;
+    margin-right: 3%;
+}
+
+div.comment {
+    margin-left: 4%;
+    min-height: 2em;
+    margin-bottom: 1%;
+    padding-bottom: 1%;
+}
+
+div.comment p {
+    padding-left: 3%;
+    margin-top: 2px;
+    margin-bottom: 3px;
+}
+
+div.create-comment textarea {
+    margin-left: 5%;
+    width: 75%;
+    height: 150px;
+}
+
+div.create-comment input[type=submit] {
+    margin-right: 1%;
+    float: right;
+    margin-top: 14%;
+    width: 16%;
+}
+
+div.nav-roots {
+    text-align: right;
+    margin-right: 2%;
+}
+
+div.nav-roots a {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+div.nav-roots a.current {
+    color: #2d4;
+}
+
+div.body {
+    word-wrap: break-word;
+}
+
+div.more {
+    text-align: right;
+}
+
+div.search input[name=query] {
+    width: 70%;
+    height: 2em;
+    margin-left: 10%;
+    margin-top: 3%;
+    font-size: large;
+}
+
+#menu div.search input[name=query] {
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: -3%;
+    height: 1.2em;
+    width: 80%;
+}
+
+div.results {
+    margin-left: 5%;
+    margin-right: 10%;
+    margin-top: 3%;
+    font-size: large;
+}
+
+textarea {
+    font-size: 120% !important;
+}
+

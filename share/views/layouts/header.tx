@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title><: $info.title :><: $title ? ( ': ' ~ $title ) : '' :></title>
+<link href="<: $info.avatar || '/favicon.ico' :>" rel="apple-touch-icon" />
+<link href="<: $info.avatar || '/favicon.ico' :>" rel="icon" />
+
+<link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="/feed" />
+<link rel="stylesheet" type="text/css" href="/system/css/style<: $info.style ? ('_' ~ $info.style) : '' :>.css" />
+
+<script type="text/javascript" src="/system/js/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="/system/css/prettify.css" />
+
+<script type="text/javascript" src="/system/js/jquery.js"></script>
+<script type="text/javascript" src="/system/js/jquery.form.js"></script>
+
+: if $enabled_admin {
+<link rel="stylesheet" type="text/css" href="/system/css/markitup_set.css" />
+<link rel="stylesheet" type="text/css" href="/system/css/markitup_skin.css" />
+<script type="text/javascript" src="/system/js/jquery.markitup.js"></script>
+<script type="text/javascript" src="/system/js/jquery.markitup.set.js"></script>
+: }
+
+<script type="text/javascript" src="/system/js/beagle.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript">
+$( function() {
+
+: if $enabled_admin {
+    beagleInit( { admin: 1 } );
+: } else {
+    beagleInit( { } );
+: }
+
+});
+</script>
+
+</head>
+<body>
+
+: include 'menu.tx';
+
+<div id="container">
+
+  <div id="content">
+
+: if $roots {
+<div class="nav-roots">
+: for $roots.keys().sort() -> $x {
+: if $x == $name {
+  <a class="current" href="/<: $x :>"><: $x :></a>
+: } else {
+  <a href="/<: $x :>"><: $x :></a>
+: }
+: }
+</div>
+: }
+
+: if $enabled_admin {
+<div class="admin-links">
+  <a href="/admin/info">info</a>
+  <a href="/admin/entries">all entries</a>
+: for $entry_info.keys().sort() -> $x {
+  <a href="/admin/entry/<: $entry_info[$x].type :>/new">new <: $entry_info[$x].type :></a>
+: }
+</div>
+: }
+
+<div class="message-wrapper">
+: if $message {
+<div class="message">
+<: $message :>
+</div>
+: }
+</div>

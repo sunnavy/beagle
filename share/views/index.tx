@@ -1,0 +1,3 @@
+: include "/layouts/header.tx";
+: include "/loop.tx";
+: include "/layouts/footer.tx";

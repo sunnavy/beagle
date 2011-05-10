@@ -1,0 +1,23 @@
+: include "/layouts/header.tx";
+
+<div class="search">
+
+<form name="search" method="post">
+<input type="text" name="query" value="<: $query :>" />
+</form>
+
+</div>
+
+<div class="results">
+<ul>
+: for $results -> $entry {
+<li>
+    <a href="/entry/<: $entry.id :>"><: $entry.summary :></a>
+</li>
+: }
+</ul>
+
+</div>
+
+: include "/layouts/footer.tx";
+

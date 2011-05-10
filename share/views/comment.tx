@@ -1,0 +1,15 @@
+<div id="id_<: $entry.id :>" class="comment contrast">
+
+<div class="meta">
+  <div title="<: $entry.author :>" class="author"><: $entry.author :></div>
+  <div class="date" title="created date <: $entry.created :>" >
+    <: $entry.created_rfc2822 :>
+  </div>
+: include 'utility.tx' { entry => $entry, no_hide => 1 };
+</div>
+
+<div class="body" title="<: $entry.id :>" >
+<: $entry.body_html |raw :>
+</div>
+
+</div>

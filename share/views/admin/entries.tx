@@ -1,0 +1,41 @@
+: include "/layouts/header.tx";
+<div class="admin-list">
+
+<ul>
+: for $entries -> $entry {
+<li class="contrast">
+<div class="path">
+    <a 
+: if length($entry.path) > 24 {
+    title="<: $entry.path :>" 
+: }
+    href="/admin/entry/<: $entry.id :>"><: substr($entry.path,24) :></a>
+</div>
+<div class="summary">
+    <a
+: if length($entry.summary) > 20 {
+    title="<: $entry.summary :>" 
+: }
+    href="/admin/entry/<: $entry.id :>"><: substr($entry.summary,20) :></a>
+</div>
+
+<div class="view">
+    <a href="/entry/<: $entry.id :>">view</a>
+</div>
+
+<div class="edit">
+    <a href="/admin/entry/<: $entry.id :>">edit</a>
+</div>
+
+<div class="delete">
+<form class="delete" method="post" action="/admin/entry/<: $entry.id :>/delete" >
+<a href="" class="delete">delete</a>
+</form>
+</div>
+
+<div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</li>
+: }
+</ul>
+</div>
+: include "/layouts/footer.tx";
