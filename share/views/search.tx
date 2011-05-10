@@ -1,4 +1,4 @@
-: include "/layouts/header.tx";
+: include "/header.tx";
 
 <div class="search">
 
@@ -19,5 +19,5 @@
 
 </div>
 
-: include "/layouts/footer.tx";
+: include "/footer.tx";
 

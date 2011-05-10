@@ -1,4 +1,4 @@
-: include "/layouts/header.tx";
+: include "/header.tx";
 <div class="admin-list">
 
 <ul>
@@ -38,4 +38,4 @@
 : }
 </ul>
 </div>
-: include "/layouts/footer.tx";
+: include "/footer.tx";

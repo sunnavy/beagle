@@ -1,4 +1,4 @@
-: include "/layouts/header.tx";
+: include "/header.tx";
 
 <div class="admin <: $entry.type :>">
 
@@ -69,5 +69,5 @@
 
 </form>
 </div>
-: include "/layouts/footer.tx";
+: include "/footer.tx";
 

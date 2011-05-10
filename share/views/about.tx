@@ -1,7 +1,7 @@
-: include "/layouts/header.tx";
+: include "/header.tx";
 
 <div class="description">
 <: $info.body_html |raw :>
 </div>
 
-: include "/layouts/footer.tx";
+: include "/footer.tx";
