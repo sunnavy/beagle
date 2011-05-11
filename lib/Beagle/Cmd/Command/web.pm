@@ -16,7 +16,7 @@ has admin => (
 has all => (
     isa           => "Bool",
     is            => "rw",
-    documentation => "enable all following beagles",
+    documentation => "enable all beagles",
     traits        => ['Getopt'],
     default       => 0,
     cmd_aliases   => 'a',
@@ -54,6 +54,7 @@ sub execute {
 
     require Beagle::Web;
     my $share_root = $self->share_root || Beagle::Web->share_root();
+    local $ENV{BEAGLE_SHARE_ROOT} = $share_root;
 
     my $app = catfile( $share_root, 'app.psgi' );
     local $ENV{BEAGLE_WEB_ADMIN} =

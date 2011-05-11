@@ -11,7 +11,10 @@ use Any::Moose 'Util::TypeConstraints';
 
 subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 
-our ( $BEAGLE_ROOT, $BEAGLE_HOME, $BEAGLE_CACHE, $BEAGLE_DEVEL );
+our (
+    $BEAGLE_ROOT,  $BEAGLE_HOME, $BEAGLE_CACHE,
+    $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,
+);
 
 BEGIN {
     *CORE::GLOBAL::die = sub {
@@ -37,7 +40,7 @@ our @EXPORT = (
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
-      cache_name
+      cache_name beagle_share_root
       /
 );
 
@@ -695,6 +698,33 @@ sub cache_name {
     $name =~ s!\W!_!g;
     return $name;
 }
+
+sub beagle_share_root {
+    return $BEAGLE_SHARE_ROOT if $BEAGLE_SHARE_ROOT;
+
+    if ( $ENV{BEAGLE_SHARE_ROOT} ) {
+        $BEAGLE_SHARE_ROOT =
+          rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
+    }
+    else {
+        my @root = splitdir( rel2abs( parent_dir( $INC{'Beagle.pm'} ) ) );
+
+        if (   $root[-2] ne 'blib'
+            && $root[-1] eq 'lib'
+            && ( $^O !~ /MSWin/ || $root[-2] ne 'site' ) )
+        {
+
+            # so it's -Ilib in the Beagle's source dir
+            $root[-1] = 'share';
+        }
+        else {
+            push @root, qw/auto share dist Beagle/;
+        }
+        $BEAGLE_SHARE_ROOT = catdir( @root );
+    }
+    return $BEAGLE_SHARE_ROOT;
+}
+
 
 1;
 __END__

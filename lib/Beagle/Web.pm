@@ -5,25 +5,6 @@ use Encode;
 
 our $VERSION = '0.01';
 
-sub share_root {
-    my @root =
-      splitdir( rel2abs( parent_dir( $INC{'Beagle.pm'} ) ) );
-
-    if (   $root[-2] ne 'blib'
-        && $root[-1] eq 'lib'
-        && ( $^O !~ /MSWin/ || $root[-2] ne 'site' ) )
-    {
-
-        # so it's -Ilib in the Beagle's source dir
-        $root[-1] = 'share';
-    }
-    else {
-        push @root, qw/auto share dist Beagle/;
-    }
-
-    return catdir(@root);
-}
-
 sub enabled_admin {
 
     return

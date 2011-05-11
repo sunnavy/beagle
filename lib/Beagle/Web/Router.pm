@@ -47,7 +47,7 @@ sub post {
 
 use Text::Xslate;
 my $xslate = Text::Xslate->new(
-    path        => [ catdir( Beagle::Web->share_root(), 'views' ) ],
+    path        => [ catdir( beagle_share_root(), 'views' ) ],
     cache_dir   => File::Spec->tmpdir,
     cache       => 1,
     input_layer => ':utf8',
