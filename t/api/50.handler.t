@@ -2,8 +2,9 @@ use Test::More;
 use Beagle::Handler;
 use Beagle::Test;
 
-my $root = create_tmp_beagle();
-my $bh = Beagle::Handler->new( root => $root, type => 'fs' );
+my ($root) = Beagle::Test->init;
+
+my $bh = Beagle::Handler->new();
 is( $bh->root, $root, 'root' );
 is( $bh->name, $root, 'name' );
 is( $bh->type, 'fs',  'type' );

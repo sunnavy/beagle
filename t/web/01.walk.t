@@ -6,10 +6,10 @@ use Beagle::Test;
 use Test::WWW::Mechanize;
 use Beagle::Handler;
 
-my ( $url, $root ) = start_server('--admin');
+Beagle::Test->init;
+my $url = Beagle::Test->start_server('--admin');
 
-my $bh = Beagle::Handler->new( root => $root );
-
+my $bh = Beagle::Handler->new();
 my $article = Beagle::Model::Article->new(
     title => 'title foo',
     body  => 'body foo',
