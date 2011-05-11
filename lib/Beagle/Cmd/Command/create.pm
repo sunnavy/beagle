@@ -48,9 +48,9 @@ has type => (
 has name => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "beagle name",
+    cmd_aliases   => 'n',
+    documentation => 'beagle name, will create it in $BEAGLE_HOME/roots directly',
     traits        => ['Getopt'],
-    default       => 'git',
 );
 
 no Any::Moose;
