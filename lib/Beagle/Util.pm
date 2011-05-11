@@ -623,7 +623,7 @@ sub parse_markdown {
         if ($block_name) {
             my $gard =
               $block_name eq 'shell' ? '$' : $block_name eq 'prettyprint' ? ':' : '#';
-            if (/^\s+\Q$gard\E\s+(.+)/m) {
+            if (/^\s+\Q$gard\E\s+(.*)/m) {
                 $code .= $1 . "\n";
             }
             else {
@@ -633,7 +633,7 @@ sub parse_markdown {
             }
         }
         else {
-            if (/^\s+([\$:#])\s+(.+)/m) {
+            if (/^\s+([\$:#])\s+(.*)/m) {
                 $block_name =
                     $1 eq '$' ? 'shell'
                   : $1 eq ':' ? 'prettyprint'
