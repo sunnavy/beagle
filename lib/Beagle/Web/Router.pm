@@ -211,6 +211,7 @@ get '/tag/:tag' => sub {
 };
 
 get '/date/{year:[0-9]+}' => sub {
+    my %vars = @_;
     my $year = $vars{year};
     return redirect '/'
       unless $year && Beagle::Web->years($bh)->{$year};
@@ -224,6 +225,7 @@ get '/date/{year:[0-9]+}' => sub {
 };
 
 get '/date/{year:[0-9]}/{month:[0-9]{2}}' => sub {
+    my %vars = @_;
     my $year  = $vars{year};
     my $month = $vars{month};
     return redirect '/' unless Beagle::Web->years($bh)->{$year}{$month};
@@ -234,6 +236,7 @@ get '/date/{year:[0-9]}/{month:[0-9]{2}}' => sub {
 };
 
 get '/entry/:id' => sub {
+    my %vars = @_;
     my $i = $vars{id};
     my @ret = resolve_id( $i, handler => $bh );
     return redirect "/" unless @ret == 1;
@@ -263,7 +266,7 @@ get '/search' => sub {
 };
 
 post '/search' => sub {
-    my $query = $vars{'query'};
+    my $query = $req->param('query');
     my @found;
     for my $entry ( @{ $bh->entries } ) {
         push @found, $entry if $entry->serialize =~ /\Q$query/i;
