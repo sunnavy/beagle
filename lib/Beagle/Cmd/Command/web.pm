@@ -53,7 +53,7 @@ sub execute {
     local $ENV{BEAGLE_ROOT} = $root;
 
     require Beagle::Web;
-    my $share_root = $self->share_root || Beagle::Web->share_root();
+    my $share_root = $self->share_root || beagle_share_root();
     local $ENV{BEAGLE_SHARE_ROOT} = $share_root;
 
     my $app = catfile( $share_root, 'app.psgi' );
