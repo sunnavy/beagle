@@ -1,6 +1,6 @@
 package Beagle::Model::Attachment;
 use Any::Moose;
-use Beagle::Util;
+use Beagle::Util ();
 
 has 'root' => (
     isa     => 'Str',
@@ -51,7 +51,7 @@ has 'mime_type' => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        mime_type( $self->name );
+        Beagle::Util::mime_type( $self->name );
     },
 );
 
