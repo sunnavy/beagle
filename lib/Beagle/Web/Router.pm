@@ -191,7 +191,7 @@ get '/fragment/menu' => sub {
 
 get '/fragment/entry/:id' => sub {
     my %vars = @_;
-    my $i    = $var{id} or return;
+    my $i    = $vars{id} or return;
     my @ret  = resolve_id( $i, handler => $bh );
     return unless @ret == 1;
 
@@ -274,7 +274,7 @@ post '/search' => sub {
 
     @found = sort { $b->updated <=> $a->updated } @found;
 
-    if ( $req->content_type =~ /json/ ) {
+    if ( $req->header('Accept') =~ /json/ ) {
         return to_json(
             {
                 results =>
@@ -353,7 +353,7 @@ post '/admin/entry/:type/new' => sub {
 
                 if ($created) {
                     add_attachments( $entry, $req->upload('attachments') );
-                    if ( $req->content_type =~ /json/ ) {
+                    if ( $req->header('Accept') =~ /json/ ) {
                         my $ret = {
                             status    => 'created',
                             parent_id => $entry->parent_id,
@@ -375,7 +375,7 @@ post '/admin/entry/:type/new' => sub {
                     }
                 }
                 else {
-                    if ( $req->content_type =~ /json/ ) {
+                    if ( $req->header('Accept') =~ /json/ ) {
                         my $ret = {
                             status  => 'error',
                             message => 'failed to create',
@@ -395,7 +395,7 @@ post '/admin/entry/:type/new' => sub {
         }
     }
 
-    if ( $req->content_type =~ /json/ ) {
+    if ( $req->header('Accept') =~ /json/ ) {
         my $ret = {
             status  => 'error',
             content => "invalid type: $type",
@@ -448,7 +448,7 @@ post '/admin/entry/delete' => sub {
 
     if ( my $entry = $bh->map->{$id} ) {
         $bh->delete_entry($entry);
-        if ( $req->content_type =~ /json/ ) {
+        if ( $req->header('Accept') =~ /json/ ) {
             my $ret = { status => 'deleted' };
             $ret->{redraw_menu} = 1 unless $entry->type eq 'comment';
             return to_json($ret);
