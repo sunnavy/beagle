@@ -5,19 +5,24 @@ use base 'Exporter';
 use Beagle::Util;
 use File::Temp 'tempdir';
 use Test::More;
-our @EXPORT = qw/create_tmp_beagle start_server/;
 
-sub create_tmp_beagle {
+sub init {
+    my $class = shift;
+
+    my %args = @_;
     my $root = tempdir( CLEANUP => 1 );
+    my $home = tempdir( CLEANUP => 1 );
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    ok( create_beagle( type => 'fs', root => $root, @_ ), "created beagle $root" );
-    return $root;
+    ok( Beagle::Util::create_beagle( type => 'fs', root => $root, @_ ),
+        "created beagle $root" );
+    $ENV{BEAGLE_ROOT} = $root;
+    $ENV{BEAGLE_HOME} = $home;
+    return wantarray ? ( $root, $home ) : $root;
 }
 
 my @pids;
-
 sub start_server {
-    local $ENV{BEAGLE_ROOT} = create_tmp_beagle( type => 'git' );
+    my $class = shift;
 
     my $pid = fork();
     die "failed to fork" unless defined $pid;
@@ -26,8 +31,8 @@ sub start_server {
 
     if ($pid) {
         push @pids, $pid;
-        sleep 1;
-        return ("http://localhost:$port", $ENV{BEAGLE_ROOT});
+        sleep 2;
+        return "http://localhost:$port";
     }
     else {
         exec qw/beagle web -E deployment --port/, $port, @_;
