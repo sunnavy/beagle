@@ -342,7 +342,9 @@ sub root_type {
             last;
         }
     }
-    $root_type{$root} ||= 'git';
+
+    $root_type{$root} ||=
+      -e catdir( encode( locale_fs => $root ), '.git' ) ? 'git' : 'fs';
     return $root_type{$root};
 }
 
