@@ -1,10 +1,10 @@
 package Beagle::Test;
 use strict;
 use warnings;
-use base 'Exporter';
 use Beagle::Util;
 use File::Temp 'tempdir';
 use Test::More;
+use File::Which 'which';
 
 sub init {
     my $class = shift;
@@ -35,9 +35,14 @@ sub start_server {
         return "http://localhost:$port";
     }
     else {
-        exec qw/beagle web -E deployment --port/, $port, @_;
+        exec beagle_command(), qw/web -E deployment --port/, $port, @_;
         exit;
     }
+}
+
+sub beagle_command {
+    my $class = shift;
+    return which('beagle') || catfile( 'bin', 'beagle' );
 }
 
 END {

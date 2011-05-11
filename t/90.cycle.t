@@ -6,8 +6,8 @@ if ($@) {
     exit;
 }
 
-require Beagle::Handler;
-my $root = create_tmp_beagle();
-my $bh = Beagle::Handler->new( root => $root, type => 'fs' );
-Test::Memory::Cycle::memory_cycle_ok($object);
+use Beagle::Handler;
+Beagle::Test->init;
+my $bh = Beagle::Handler->new();
+Test::Memory::Cycle::memory_cycle_ok($object, 'no memory cycle');
 done_testing();

@@ -4,9 +4,11 @@ use warnings;
 use Test::More;
 use Beagle::Test;
 use Test::Script::Run ':all';
+my $beagle_cmd = Beagle::Test->beagle_command;
 
 Beagle::Test->init;
-run_ok( 'beagle', ['help'], 'help' );
+run_ok( $beagle_cmd, ['help'], 'help' );
+
 my $help_output = <<EOF;
 Available commands:
 
@@ -48,7 +50,7 @@ Available commands:
 EOF
 
 is( last_script_stdout(), $help_output, 'help output' );
-run_ok( 'beagle', ['commands'], 'commands' );
+run_ok( $beagle_cmd, ['commands'], 'commands' );
 is(
     last_script_stdout(),
     "beagle <command>\n\n$help_output",
