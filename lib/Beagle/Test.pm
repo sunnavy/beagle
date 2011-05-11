@@ -17,8 +17,7 @@ sub create_tmp_beagle {
 my @pids;
 
 sub start_server {
-    my %args = @_;
-    local $ENV{BEAGLE_ROOT} = create_tmp_beagle( type => 'git', @_ );
+    local $ENV{BEAGLE_ROOT} = create_tmp_beagle( type => 'git' );
 
     my $pid = fork();
     die "failed to fork" unless defined $pid;
