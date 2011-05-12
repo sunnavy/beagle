@@ -58,7 +58,7 @@ sub execute {
             $core->{"user_$key"} = $val;
         }
 
-        $core->{"command"} = 'shell';
+        $core->{"default_command"} = 'shell';
 
         set_core_config($core);
 
