@@ -23,6 +23,7 @@ sub execute {
 
     my $name = pop @{$args};
     my $to_root = name_root($name) or die "no such beagle with name: $name";
+    require Beagle::Handler;
     my $to = Beagle::Handler->new( root => $to_root );
 
     for my $i (@$args) {
