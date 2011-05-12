@@ -1,7 +1,6 @@
 package Beagle::Cmd::Command::att;
 use Encode;
 use Beagle::Util;
-use File::Path 'remove_tree';
 use Any::Moose;
 use File::Basename;
 

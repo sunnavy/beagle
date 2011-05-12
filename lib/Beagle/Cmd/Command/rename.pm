@@ -1,5 +1,4 @@
 package Beagle::Cmd::Command::rename;
-use File::Path 'make_path',          'remove_tree';
 use Beagle::Util;
 use Encode;
 

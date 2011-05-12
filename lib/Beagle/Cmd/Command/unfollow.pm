@@ -17,12 +17,12 @@ sub execute {
     for my $name (@$args) {
         my $f_root = catdir( beagle_home_roots(), split /\//, $name );
         if ( -e $f_root ) {
-            File::Path::remove_tree($f_root);
+            remove_tree($f_root);
         }
 
         for my $t ( '', '.drafts' ) {
             my $cache = catfile( beagle_home_cache(), cache_name($name), $t );
-            File::Path::remove_tree($cache) if -e $cache;
+            remove_tree($cache) if -e $cache;
         }
         my $map = entry_map;
         for my $id ( keys %$map ) {

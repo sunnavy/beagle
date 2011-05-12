@@ -1,5 +1,4 @@
 package Beagle::Cmd::Command::fsck;
-use File::Path 'make_path', 'remove_tree';
 use Beagle::Util;
 use File::Copy 'move';
 use Encode;

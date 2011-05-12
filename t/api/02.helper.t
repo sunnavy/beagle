@@ -8,7 +8,7 @@ my @subs = qw/
   newline is_windows  mime_type
   puts  user_home file_size parent_dir
   to_array from_array edit_text max_length
-  term_size term_width term_height
+  term_size term_width term_height make_path remove_tree
   pretty_datetime parse_datetime confess encode decode/;
 
 for (@subs) {

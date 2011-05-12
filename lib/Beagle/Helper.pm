@@ -11,6 +11,7 @@ use Date::Format;
 use base 'Exporter';
 use List::MoreUtils 'uniq';
 use Storable 'dclone', 'nstore', 'retrieve';
+use File::Path 'make_path', 'remove_tree';
 
 our ( $NEWLINE, $IS_WINDOWS, $OUTSIDE_ENCODING, );
 
