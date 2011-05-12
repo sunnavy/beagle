@@ -138,7 +138,7 @@ sub execute {
 
                 # backup settings
                 my ( $devel, $cache, $root ) =
-                  ( enabled_devel(), enabled_cache(), beagle_root() );
+                  ( enabled_devel(), enabled_cache(), beagle_root('not die') );
 
                 my $start = Time::HiRes::time();
                 eval { Beagle::Cmd->run };
@@ -148,7 +148,7 @@ sub execute {
                 # restore settings
                 $devel ? enable_devel() : disable_devel();
                 $cache ? enable_cache() : disable_cache();
-                set_beagle_root($root);
+                set_beagle_root($root) if $root;
             }
         }
         $self->write_history($term);
