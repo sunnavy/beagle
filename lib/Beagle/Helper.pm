@@ -25,7 +25,7 @@ our @EXPORT = qw/
   dclone nstore retrieve format_number format_bytes stdout stderr
   newline is_windows puts  
   user_home file_size parent_dir to_array from_array edit_text max_length
-  term_size term_width term_height  mime_type
+  term_size term_width term_height  mime_type make_path remove_tree
   pretty_datetime parse_datetime confess encode decode/;
 
 require IO::Handle;
