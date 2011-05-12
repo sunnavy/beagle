@@ -6,7 +6,7 @@ use Beagle::Test;
 use Test::Script::Run ':all';
 my $beagle_cmd = Beagle::Test->beagle_command;
 
-Beagle::Test->init;
+Beagle::Test->init_home;
 run_ok( $beagle_cmd, ['help'], 'help' );
 
 my $help_output = <<EOF;
