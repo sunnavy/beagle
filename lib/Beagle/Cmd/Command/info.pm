@@ -5,11 +5,17 @@ use Any::Moose;
 use Beagle::Util;
 extends qw/Beagle::Cmd::Command/;
 
-has 'update' => (
-    isa           => 'Bool',
+has 'set' => (
+    isa           => 'ArrayRef[Str]',
     is            => 'rw',
-    documentation => 'show',
-    cmd_aliases   => "u",
+    documentation => 'set',
+    traits        => ['Getopt'],
+);
+
+has 'edit' => (
+    isa           => "Bool",
+    is            => "rw",
+    documentation => "edit with editor?",
     traits        => ['Getopt'],
 );
 
@@ -59,18 +65,49 @@ sub execute {
         )
     );
 
-    if ( $self->update ) {
-        my $updated = edit_text($template);
+    if ( $self->edit || $self->set ) {
 
-        if ( !$self->force && $template eq $updated ) {
-            puts "aborted.";
-            return;
+        if ( $self->set ) {
+            for my $item ( @{ $self->set } ) {
+                my ( $key, $value ) = split /=/, $item, 2;
+                if ( $info->can($key) ) {
+                    $info->$key($value);
+                }
+                else {
+                    warn "unknown key: $key\n";
+                }
+            }
+
+            $template = encode_utf8 $info->serialize(
+                $self->verbose
+                ? (
+                    created => 1,
+                    updated => 1,
+                    id      => 1,
+                  )
+                : (
+                    created => undef,
+                    updated => undef,
+                    id      => undef,
+                )
+            );
         }
 
-        my $updated_entry = $info->new_from_string( decode_utf8 $updated);
+        if ( $self->edit ) {
+
+            my $updated = edit_text($template);
+
+            if ( !$self->force && $template eq $updated ) {
+                puts "aborted.";
+                return;
+            }
+
+            $info = $info->new_from_string( decode_utf8 $updated);
+        }
+
         if (
             $bh->update_info(
-                $updated_entry, message => $self->message || "updated info"
+                $info, message => $self->message || "updated info"
             )
           )
         {
