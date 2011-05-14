@@ -11,14 +11,14 @@ my $beagle_cmd = Beagle::Test->beagle_command;
 Beagle::Test->init_home;
 
 {
-    run_ok( $beagle_cmd, [qw/create --name foo/], 'created foo' );
+    run_ok( $beagle_cmd, [qw/create --name foo/], 'create foo' );
     my $out = 'created.';
     is( last_script_stdout(), $out . newline(), 'create output' );
 }
 
 {
     my $dir = catdir( tempdir( CLEANUP => 1 ), 'foo' );
-    run_ok( $beagle_cmd, [ qw/create/, $dir ], 'created foo' );
+    run_ok( $beagle_cmd, [ qw/create/, $dir ], 'create foo' );
     my $out = "created, please run `beagle follow $dir --type git` to continue.";
     is( last_script_stdout(), $out . newline(), 'create output' );
 }
