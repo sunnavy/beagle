@@ -65,7 +65,7 @@ for my $type (qw/article review task bark/) {
     is( last_script_stdout(), "deleted $id." . newline(), "delete $id" );
 
     run_ok( $beagle_cmd, ['ls'], "list entries", );
-    is( last_script_stdout(), '', '$id is indeed deleted' );
+    is( last_script_stdout(), '', "$id is indeed deleted" );
 }
 
 done_testing();
