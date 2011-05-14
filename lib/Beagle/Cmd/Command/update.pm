@@ -59,7 +59,7 @@ sub execute {
                 $entry->$key($value);
             }
             else {
-                die "entry $id doesn't support $key.";
+                warn "unknown key: $key\n";
             }
         }
     }
