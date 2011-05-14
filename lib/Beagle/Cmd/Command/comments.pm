@@ -22,7 +22,7 @@ override 'filter' => sub {
     my @found = super;
     my $pid   = $self->parent;
     return @found unless defined $pid;
-    return grep { $_->parent =~ /^$pid/ } @found;
+    return grep { $_->parent_id =~ /^$pid/ } @found;
 };
 
 sub usage_desc { "list comments" }

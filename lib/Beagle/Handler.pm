@@ -412,7 +412,7 @@ sub delete_entry {
     my $self   = shift;
     my $entry  = shift;
     my $type   = $entry->type;
-    my $method = "create_$type";
+    my $method = "delete_$type";
     if ( $self->can($method) ) {
         return $self->$method( $entry, @_ );
     }
