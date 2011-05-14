@@ -13,6 +13,20 @@ has 'force' => (
     traits        => ['Getopt'],
 );
 
+has 'set' => (
+    isa           => 'ArrayRef[Str]',
+    is            => 'rw',
+    documentation => 'set',
+    traits        => ['Getopt'],
+);
+
+has 'edit' => (
+    isa           => "Bool",
+    is            => "rw",
+    documentation => "edit with editor?",
+    traits        => ['Getopt'],
+);
+
 has 'message' => (
     isa           => 'Str',
     is            => 'rw',
@@ -38,52 +52,63 @@ sub execute {
     my $bh    = $ret[0]->{handler};
     my $entry = $ret[0]->{entry};
 
-    my $template = encode_utf8 $entry->serialize(
-        $self->verbose
-        ? (
-            path      => 1,
-            created   => 1,
-            updated   => 1,
-            id        => 1,
-            parent_id => 1,
-          )
-        : (
-            path      => undef,
-            created   => undef,
-            updated   => undef,
-            id        => undef,
-            parent_id => undef,
-        )
-    );
-
-    my $updated = edit_text($template);
-
-    if ( !$self->force && $template eq $updated ) {
-        puts "aborted.";
-        return;
+    if ( $self->set ) {
+        for my $item ( @{ $self->set } ) {
+            my ( $key, $value ) = split /=/, $item, 2;
+            if ( $entry->can($key) ) {
+                $entry->$key($value);
+            }
+            else {
+                die "entry $id doesn't support $key.";
+            }
+        }
     }
 
-    my $updated_entry =
-      $entry->new_from_string( decode_utf8($updated),
-        $self->verbose ? () : ( id => $entry->id ) );
-    $updated_entry->original_path( $entry->original_path );
+    if ( $self->edit || !$self->set ) {
+        my $template = encode_utf8 $entry->serialize(
+            $self->verbose
+            ? (
+                path      => 1,
+                created   => 1,
+                updated   => 1,
+                id        => 1,
+                parent_id => 1,
+              )
+            : (
+                path      => undef,
+                created   => undef,
+                updated   => undef,
+                id        => undef,
+                parent_id => undef,
+            )
+        );
 
-    unless ( $self->verbose ) {
-        if ( $entry->can('parent_id') ) {
-            $updated_entry->parent_id( $entry->parent_id );
+        my $updated = edit_text($template);
+
+        if ( !$self->force && $template eq $updated ) {
+            puts "aborted.";
+            return;
+        }
+        my $updated_entry =
+          $entry->new_from_string( decode_utf8($updated),
+            $self->verbose ? () : ( id => $entry->id ) );
+        $updated_entry->original_path( $entry->original_path );
+
+        unless ( $self->verbose ) {
+            if ( $entry->can('parent_id') ) {
+                $updated_entry->parent_id( $entry->parent_id );
+            }
+
+            $updated_entry->created( $entry->created );
+            $updated_entry->updated(time);
         }
 
-        $updated_entry->created( $entry->created );
-        $updated_entry->updated(time);
+        $updated_entry->timezone( $bh->info->timezone )
+          if $bh->info->timezone;
+        $entry = $updated_entry;
     }
 
-    $updated_entry->timezone( $bh->info->timezone )
-      if $bh->info->timezone;
-    if (
-        $bh->update_entry(
-            $updated_entry,
-            message => $self->message || "updated $id"
-        )
+    if ( $bh->update_entry( $entry, message => $self->message || "updated $id" )
       )
     {
         puts 'updated ', $entry->id, ".";
