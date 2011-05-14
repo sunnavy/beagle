@@ -3,10 +3,12 @@ use warnings;
 
 use Test::More;
 use Beagle::Test;
+use Beagle::Util;
 use Test::Script::Run ':all';
 my $beagle_cmd = Beagle::Test->beagle_command;
 
-Beagle::Test->init_home;
+my $root = Beagle::Test->init( name => 'foo', email => 'foobar@baz.com' );
+
 run_ok( $beagle_cmd, ['help'], 'help' );
 
 my $help_output = <<EOF;
@@ -55,6 +57,29 @@ is(
     last_script_stdout(),
     "beagle <command>\n\n$help_output",
     'commands output'
+);
+
+run_ok( $beagle_cmd, ['info'], 'info' );
+my $out = last_script_stdout();
+like( $out, qr/name: foo$/m, 'get name' );
+like( $out, qr/email: foobar\@baz\.com$/m, 'get email' );
+
+run_ok( $beagle_cmd, ['info'], 'info' );
+$out = last_script_stdout();
+like( $out, qr/name: foo$/m, 'get name' );
+like( $out, qr/email: foobar\@baz\.com$/m, 'get email' );
+
+run_ok(
+    $beagle_cmd,
+    [ 'info', '--set', 'name=foobar' ],
+    'update name'
+);
+is( last_script_stdout(), 'updated info.' . newline(), 'update output' );
+
+run_ok( $beagle_cmd, ['info'], 'info' );
+like( last_script_stdout(),
+    qr/name: foobar$/m,
+    'name in indeed updated'
 );
 
 done_testing();
