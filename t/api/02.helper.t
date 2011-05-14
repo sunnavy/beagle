@@ -3,7 +3,7 @@ use Beagle::Helper;
 
 my @subs = qw/
   catfile catdir rel2abs splitdir read_file write_file append_file uniq
-  dclone nstore retrieve
+  dclone nstore retrieve splitpath
   format_number format_bytes stdout stderr
   newline is_windows  mime_type
   puts  user_home file_size parent_dir

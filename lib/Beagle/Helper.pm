@@ -2,7 +2,7 @@ package Beagle::Helper;
 
 use warnings;
 use strict;
-use File::Spec::Functions qw/catdir splitdir rel2abs catfile/;
+use File::Spec::Functions qw/catdir splitdir rel2abs catfile splitpath/;
 use Encode;
 use Encode::Locale;
 use Carp;
@@ -21,8 +21,8 @@ BEGIN {
 }
 
 our @EXPORT = qw/
-  catfile catdir rel2abs splitdir read_file write_file append_file uniq
-  dclone nstore retrieve format_number format_bytes stdout stderr
+  catfile catdir rel2abs splitpath splitdir read_file write_file append_file
+  uniq dclone nstore retrieve format_number format_bytes stdout stderr
   newline is_windows puts  
   user_home file_size parent_dir to_array from_array edit_text max_length
   term_size term_width term_height  mime_type make_path remove_tree
