@@ -387,8 +387,8 @@ sub create_beagle {
     my $root = $opt{root} or die "need root";
     my $type = $opt{type} || 'git';
 
-    $opt{'user_name'}  ||= core_config()->{user_name};
-    $opt{'user_email'} ||= core_config()->{user_email};
+    $opt{'name'}  ||= core_config()->{user_name};
+    $opt{'email'} ||= core_config()->{user_email};
 
     my $sub = '_create_beagle_' . lc $type;
     {
@@ -401,8 +401,8 @@ sub _create_beagle_fs {
     my %opt  = @_;
     my $root = $opt{root};
 
-    my $name  = $opt{'user_name'};
-    my $email = $opt{'user_email'};
+    my $name  = $opt{'name'};
+    my $email = $opt{'email'};
 
     require Beagle::Model::Info;
     my $info = Beagle::Model::Info->new(
