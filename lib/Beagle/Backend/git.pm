@@ -120,7 +120,7 @@ sub _save {
         return $ret;
     }
     else {
-        return;
+        return 1;
     }
 }
 
