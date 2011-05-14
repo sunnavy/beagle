@@ -103,6 +103,8 @@ sub updated {
     return $updated;
 }
 
+sub commit { 1 }
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
