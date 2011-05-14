@@ -5,7 +5,7 @@ use Test::More;
 use Beagle::Test;
 use Test::Script::Run ':all';
 use Beagle::Util;
-use File::Temp 'tempdir', 'tempfile';
+use File::Temp 'tempfile';
 
 my $beagle_cmd = Beagle::Test->beagle_command;
 
