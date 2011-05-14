@@ -3,6 +3,7 @@ use Any::Moose;
 use Data::UUID;
 use Beagle::Util;
 use Date::Format;
+use Storable 'dclone';
 
 has 'root' => (
     isa     => 'Str',
@@ -56,7 +57,22 @@ sub new_from_string {
     my $string = shift;
     die "missing string" unless defined $string;
     my %args = @_;
-    my $self = $class->new(%args);
+    my $self;
+    if ( ref $class ) {
+        $self = dclone $class;
+        for my $key ( keys %args ) {
+            if ( $self->can( $key ) ) {
+                $self->$key( $args{$key} );
+            }
+            else {
+                warn "unknown key: $key\n";
+            }
+        }
+    }
+    else {
+        $self = $class->new( %args);
+    }
+
     if ( $string =~ /\r?\n\r?\n/m ) {
         my @wiki = split /\n/, $string;
         while ( my $line = shift @wiki ) {
@@ -76,16 +92,6 @@ sub new_from_string {
 
                 if ( $self->can($key) ) {
                     $self->$key( $self->parse_field( $key, $value ) );
-                }
-                elsif ( $key eq 'plain' ) {
-
-                    # back compat
-                    if ($value) {
-                        $self->format('plain');
-                    }
-                    else {
-                        $self->format('wiki');
-                    }
                 }
                 else {
                     warn "unknown key: $key\n";
