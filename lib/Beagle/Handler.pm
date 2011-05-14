@@ -425,7 +425,7 @@ sub delete_entry {
               for values %$att;
         }
         if ( my $comment = $self->comments_map->{ $entry->id } ) {
-            $self->delete_comment($_)
+            $self->delete_entry($_)
               or warn "failed to delete comment " . $_->id
               for values %$comment;
         }
