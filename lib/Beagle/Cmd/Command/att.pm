@@ -107,7 +107,7 @@ sub execute {
                   . join( ', ', @added )
                   . " to entry $pid";
                 $bh->backend->commit( message => $msg );
-                puts 'added ', join( ', ', @added );
+                puts 'added ', join( ', ', @added ), '.';
             }
             return;
         }
@@ -165,7 +165,7 @@ sub execute {
             my $att = $att[ $i - 1 ];
             my $handler = $bh || $handler_map{ $att->root };
             if ( $handler->delete_attachment( $att, commit => 0 ) ) {
-                push @deleted, $att->name;
+                push @deleted, { handler => $handler, name => $att->name };
             }
             else {
                 die "failed to delete attachment $i: " . $att->name . ".";
@@ -173,8 +173,15 @@ sub execute {
         }
 
         if (@deleted) {
-            my $msg = 'deleted ' . join( ', ', @deleted );
-            $bh->backend->commit( message => $self->message || $msg );
+            my @handlers = uniq map { $_->{handler} } @deleted;
+            for my $bh (@handlers) {
+                my $msg = 'deleted '
+                  . join( ', ',
+                    map { $_->{name} }
+                    grep { $_->{handler}->root eq $bh->root } @deleted );
+                $bh->backend->commit( message => $self->message || $msg );
+            }
+            my $msg = 'deleted ' . join( ', ', map { $_->{name} } @deleted );
             puts $msg . '.';
         }
         return;

@@ -40,11 +40,16 @@ sub execute {
     }
 
     if (@deleted) {
-        my $msg = 'deleted ' . join( ', ', map { $_->{id} } @deleted );
         my @handlers = uniq map { $_->{handler} } @deleted;
         for my $bh (@handlers) {
+            my $msg = 'deleted '
+              . join( ', ',
+                map { $_->{id} }
+                grep { $_->{handeler}->root eq $bh->root } @deleted );
             $bh->backend->commit( message => $self->message || $msg );
         }
+
+        my $msg = 'deleted ' . join( ', ', map { $_->{id} } @deleted );
         puts $msg . '.';
     }
 }

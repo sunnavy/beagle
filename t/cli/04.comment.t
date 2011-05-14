@@ -25,7 +25,7 @@ run_ok(
     [ 'comment', '-p', $pid, 'comment_baz' ],
     "create comment_baz",
 );
-ok( last_script_stdout() =~ /^created (\w{32}).\s+$/, 'create article output' );
+ok( last_script_stdout() =~ /^created (\w{32}).\s+$/, 'create comment output' );
 
 my $id = $1;
 
@@ -36,7 +36,7 @@ run_ok(
     [ 'comments', '-p', $pid ],
     "list comments with --parent",
 );
-is( last_script_stdout(), "$id comment_baz" . newline(), 'still has comment' );
+is( last_script_stdout(), "$id comment_baz" . newline(), 'same output' );
 
 run_ok( $beagle_cmd, [ 'show', '-v', $id ], "show $id", );
 my $show_out = last_script_stdout();
