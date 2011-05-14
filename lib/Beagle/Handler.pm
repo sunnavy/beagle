@@ -324,8 +324,6 @@ sub list {
 sub update_info {
     my $self = shift;
     my $info = shift;
-
-    my $old_info = $self->info;
     return unless $self->backend->update( $info, @_ );
     $self->info($info);
     return 1;
