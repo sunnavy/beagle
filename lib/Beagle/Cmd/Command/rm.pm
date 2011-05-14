@@ -45,7 +45,7 @@ sub execute {
             my $msg = 'deleted '
               . join( ', ',
                 map { $_->{id} }
-                grep { $_->{handeler}->root eq $bh->root } @deleted );
+                grep { $_->{handler}->root eq $bh->root } @deleted );
             $bh->backend->commit( message => $self->message || $msg );
         }
 
