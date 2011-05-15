@@ -16,11 +16,11 @@
 
 : if $enabled_admin {
 <script type="text/javascript" src="/system/js/jquery.form.js"></script>
-<script type="text/javascript" src="/system/js/beagle-admin.js"></script>
 <link rel="stylesheet" type="text/css" href="/system/css/markitup_set.css" />
 <link rel="stylesheet" type="text/css" href="/system/css/markitup_skin.css" />
 <script type="text/javascript" src="/system/js/jquery.markitup.js"></script>
 <script type="text/javascript" src="/system/js/jquery.markitup.set.js"></script>
+<script type="text/javascript" src="/system/js/beagle-admin.js"></script>
 : }
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
