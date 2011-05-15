@@ -21,6 +21,7 @@ sub init {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     ok( Beagle::Util::create_beagle( type => 'fs', root => $root, @_ ),
         "created beagle $root" );
+    $ENV{BEAGLE_CACHE} = 0;
     delete $ENV{BEAGLE_NAME};
     $ENV{BEAGLE_ROOT} = $root;
     return wantarray ? ( $root, $home ) : $root;
