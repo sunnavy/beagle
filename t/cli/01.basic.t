@@ -122,5 +122,9 @@ like( last_script_stdout(),
     'name in indeed updated'
 );
 
+run_ok( $beagle_cmd, ['rewrite'], 'rewrite' );
+is( last_script_stdout(), 'rewrote.', 'rewrite output' );
+die last_script_stderr;
+
 done_testing();
 

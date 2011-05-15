@@ -39,12 +39,6 @@ sub execute {
         for my $id ( keys %{ $bh->map } ) {
             my $entry = $bh->map->{$id};
 
-            my $new_path = $entry->path;
-            $new_path =~ s!\s!_!g;
-            $new_path =~ s!\.wiki$!!;    # back compat fix
-            $new_path .= '.article'
-              if $entry->type eq 'article' && $new_path !~ /\.article$/;
-            $entry->path($new_path) if $new_path ne $entry->path;
             $entry->author($default_address) unless $entry->author;
             $bh->update_entry( $entry, commit => 0 )
               or die "failed to update entry " . $entry->id;
