@@ -36,7 +36,7 @@ sub start_server {
     my $pid = fork();
     die "failed to fork" unless defined $pid;
 
-    my $port = 5000 + int rand 10_000;
+    my $port = $class->find_port();
 
     if ($pid) {
         push @pids, $pid;
@@ -46,6 +46,27 @@ sub start_server {
     else {
         exec beagle_command(), qw/web -E deployment --port/, $port, @_;
         exit;
+    }
+}
+
+use Socket;
+
+sub find_port {
+    my $class = shift;
+    my $port = shift || 5000 + int rand 10_000;
+
+    my $socket;
+    socket( $socket, PF_INET, SOCK_STREAM, getprotobyname('tcp') ) or die $!;
+
+    my $addr = sockaddr_in( $port, INADDR_LOOPBACK );
+
+    if ( connect( $socket, $addr ) ) {
+        close $socket;
+        return find_port( $port + 1 );
+    }
+    else {
+        close $socket;
+        return $port;
     }
 }
 
