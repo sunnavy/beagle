@@ -18,7 +18,7 @@
 </ul>
 </div>
 
-<div class="search">
+<div id="search">
 <h3 class="menu">Search</h3>
 <form class="search" method="post" action="/search">
 <input type="text" name="query" value="<: $query :>" />
