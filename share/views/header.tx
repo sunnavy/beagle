@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="/system/css/markitup_skin.css" />
 <script type="text/javascript" src="/system/js/jquery.markitup.js"></script>
 <script type="text/javascript" src="/system/js/jquery.markitup.set.js"></script>
+<link rel="stylesheet" type="text/css" href="/system/css/beagle-admin.css" />
 <script type="text/javascript" src="/system/js/beagle-admin.js"></script>
 : }
 
