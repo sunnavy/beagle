@@ -90,8 +90,12 @@ sub beagle_command {
     return which('beagle') || catfile( 'bin', 'beagle' );
 }
 
+sub stop_server {
+    kill 'TERM', @pids if @pids;
+}
+
 END {
-    kill 'TERM', @pids;
+    stop_server();
 }
 
 1;
