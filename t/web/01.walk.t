@@ -7,7 +7,7 @@ use Test::WWW::Mechanize;
 use Beagle::Handler;
 
 Beagle::Test->init;
-my $url = Beagle::Test->start_server('--admin');
+my $url = Beagle::Test->start_server( admin => 1 );
 
 my $bh = Beagle::Handler->new();
 my $article = Beagle::Model::Article->new(

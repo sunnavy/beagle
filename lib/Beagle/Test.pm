@@ -6,7 +6,7 @@ use File::Temp 'tempdir';
 use Test::More;
 use File::Which 'which';
 $ENV{BEAGLE_CACHE} = 0;
-$ENV{BEAGLE_ALL} = 0;
+$ENV{BEAGLE_ALL}   = 0;
 delete $ENV{BEAGLE_NAME};
 delete $ENV{BEAGLE_ROOT};
 
@@ -30,8 +30,10 @@ sub init {
 }
 
 my @pids;
+
 sub start_server {
     my $class = shift;
+    my %args  = @_;
 
     my $port = $class->find_port();
 
@@ -58,7 +60,11 @@ sub start_server {
     }
     else {
         require Beagle::Web;
-        local $ENV{BEAGLE_WEB_ADMIN} = 1;
+        local $ENV{BEAGLE_WEB_ADMIN} = $ENV{BEAGLE_WEB_ADMIN};
+        if ( exists $args{admin} ) {
+            $ENV{BEAGLE_WEB_ADMIN} = $args{admin};
+        }
+
         $server->run( Beagle::Web->app );
         exit;
     }
