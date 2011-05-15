@@ -38,7 +38,7 @@ sub execute {
       Text::Table->new( 'name', 'type', 'size' );
     for my $root (@roots) {
         my $bh = Beagle::Handler->new( root => $root );
-        for my $attr ( keys %{ $bh->entry_info } ) {
+        for my $attr ( sort keys %{ $bh->entry_info } ) {
             $tb->add( $bh->name, $attr, size_info( $bh->$attr ) || 0 );
         }
         $tb->add( $bh->name, 'total size', format_bytes( $bh->total_size ) );
