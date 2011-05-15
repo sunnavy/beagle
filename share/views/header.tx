@@ -67,6 +67,7 @@ beagleInit( { admin: 1 } );
 </div>
 : }
 
+: if $enabled_admin {
 <div class="message-wrapper">
 : if $message {
 <div class="message">
@@ -74,3 +75,4 @@ beagleInit( { admin: 1 } );
 </div>
 : }
 </div>
+: }
