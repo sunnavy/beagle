@@ -45,7 +45,7 @@ function beagleAjaxDelete () {
     } );
 }
 
-function beagleAjaxComment ( admin ) {
+function beagleAjaxComment ( ) {
     $('div.create-comment form').ajaxForm(
             {
                 beforeSubmit: function (arr,form) {
@@ -76,18 +76,9 @@ function beagleAjaxComment ( admin ) {
                         if ( json.status == 'created' ) {
                             var str = json.content;
                             form.find('textarea').val('');
-                            if ( admin ) {
-                                var parent = form.closest('div.comments').children('div.content');
-                                parent.append(str);
-                                beagleContrast(parent);
-                            }
-                            else {
-                                $('<div></div>').html('Thanks for your comment!').dialog({
-                                    autoOpen: true,
-                                    title: 'Sent!',
-                                    show: 'slide',
-                                });
-                            }
+                            var parent = form.closest('div.comments').children('div.content');
+                            parent.append(str);
+                            beagleContrast(parent);
                             return true;
                         }
                         else {
@@ -133,7 +124,7 @@ function beagleAdminInit ( ) {
         return false;
     } );
 
-    beagleAjaxComment( 1 );
+    beagleAjaxComment();
     beagleAjaxDelete();
     beagleBindKeys();
 
