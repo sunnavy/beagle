@@ -203,6 +203,19 @@ sub _fill_values {
     return @filled;
 }
 
+use Plack::Builder;
+use Beagle::Web::Router;
+sub app {
+
+    builder {
+        enable 'Plack::Middleware::Static',
+          path => sub                          { s!^/system/!! },
+          root => catdir( beagle_share_root(), 'public' );
+
+        \&Beagle::Web::Router::handle_request;
+    }
+}
+
 1;
 
 __END__
