@@ -33,18 +33,33 @@ my @pids;
 sub start_server {
     my $class = shift;
 
-    my $pid = fork();
-    die "failed to fork" unless defined $pid;
-
     my $port = $class->find_port();
+
+    my $started;
+    local $SIG{USR1} = sub { $started = 1 };
+
+    require Plack::Loader;
+    my $server = Plack::Loader->load(
+        'Standalone',
+        port         => $port,
+        server_ready => sub {
+            kill 'USR1' => getppid();
+        },
+    );
+
+    my $pid = fork();
+
+    die "failed to fork" unless defined $pid;
 
     if ($pid) {
         push @pids, $pid;
-        sleep 2;
+        sleep 5 unless $started;
         return "http://localhost:$port";
     }
     else {
-        exec beagle_command(), qw/web -E deployment --port/, $port, @_;
+        require Beagle::Web;
+        local $ENV{BEAGLE_WEB_ADMIN} = 1;
+        $server->run( Beagle::Web->app );
         exit;
     }
 }
