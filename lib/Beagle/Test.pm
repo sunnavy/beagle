@@ -6,6 +6,7 @@ use File::Temp 'tempdir';
 use Test::More;
 use File::Which 'which';
 $ENV{BEAGLE_CACHE} = 0;
+$ENV{BEAGLE_ALL} = 0;
 delete $ENV{BEAGLE_NAME};
 delete $ENV{BEAGLE_ROOT};
 
