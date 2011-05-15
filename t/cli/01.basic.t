@@ -8,6 +8,7 @@ use Test::Script::Run ':all';
 my $beagle_cmd = Beagle::Test->beagle_command;
 
 my $root = Beagle::Test->init( name => 'foo', email => 'foobar@baz.com' );
+my ( $out, $expect );
 
 run_ok( $beagle_cmd, ['help'], 'help' );
 
@@ -60,7 +61,7 @@ is(
 );
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
-my $expect =
+$expect =
 'alias article att cache cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web';
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
@@ -71,8 +72,32 @@ run_ok( $beagle_cmd, ['roots'], 'roots' );
 is( last_script_stdout(), join( ' ', '@', 'external', 'fs', $root ) . newline(),
     'roots output' );
 
+run_ok( $beagle_cmd, ['status'], 'status' );
+$expect = <<"EOF";
+name    type       size
+$root articles   0   
+$root tasks      0   
+$root barks      0   
+$root reviews    0   
+$root comments   0   
+$root total size
+EOF
+
+$out = last_script_stdout();
+like( $out, qr/^name\s+type\s+size\s*$/m, 'status output' );
+like( $out, qr/\Q$root\E\s+articles\s+0\s*$/m, 'status output articles part' );
+like( $out, qr/\Q$root\E\s+barks\s+0\s*$/m, 'status output barks part' );
+like( $out, qr/\Q$root\E\s+reviews\s+0\s*$/m, 'status output reviews part' );
+like( $out, qr/\Q$root\E\s+tasks\s+0\s*$/m, 'status output tasks part' );
+like( $out, qr/\Q$root\E\s+comments\s+0\s*$/m, 'status output comments part' );
+like(
+    $out,
+    qr/\Q$root\E\s+total size\s+[\d.]+K\s*\Z/m,
+    'status output total size part'
+);
+
 run_ok( $beagle_cmd, ['version'], 'version' );
-my $out = last_script_stdout();
+$out = last_script_stdout();
 require Beagle;
 is( $out, 'beagle version ' . $Beagle::VERSION . newline(), 'version output' );
 
