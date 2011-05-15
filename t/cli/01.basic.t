@@ -10,6 +10,11 @@ my $beagle_cmd = Beagle::Test->beagle_command;
 my $root = Beagle::Test->init( name => 'foo', email => 'foobar@baz.com' );
 my ( $out, $expect );
 
+run_ok( $beagle_cmd, ['version'], 'version' );
+$out = last_script_stdout();
+require Beagle;
+is( $out, 'beagle version ' . $Beagle::VERSION . newline(), 'version output' );
+
 run_ok( $beagle_cmd, ['help'], 'help' );
 
 my $help_output = <<EOF;
@@ -96,10 +101,8 @@ like(
     'status output total size part'
 );
 
-run_ok( $beagle_cmd, ['version'], 'version' );
-$out = last_script_stdout();
-require Beagle;
-is( $out, 'beagle version ' . $Beagle::VERSION . newline(), 'version output' );
+run_ok( $beagle_cmd, ['fsck'], 'fsck' );
+is( last_script_stdout(), '', 'fsck output: we are fine initially' );
 
 run_ok( $beagle_cmd, ['info'], 'info' );
 $out = last_script_stdout();
