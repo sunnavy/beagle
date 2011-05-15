@@ -103,7 +103,7 @@ sub execute {
 
         set_beagle_roots($all);
 
-        puts "followed $root";
+        puts "followed $root.";
     }
 }
 

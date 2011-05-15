@@ -38,7 +38,7 @@ sub execute {
         push @unfollowed, $name;
     }
 
-    puts "unfollowed ", join ', ', @unfollowed;
+    puts "unfollowed ", join( ', ', @unfollowed ), '.';
 }
 
 sub usage_desc { "unfollow beagle(s)" }
