@@ -123,8 +123,7 @@ like( last_script_stdout(),
 );
 
 run_ok( $beagle_cmd, ['rewrite'], 'rewrite' );
-is( last_script_stdout(), 'rewrote.', 'rewrite output' );
-die last_script_stderr;
+is( last_script_stdout(), 'rewrote.' . newline(), 'rewrite output' );
 
 done_testing();
 
