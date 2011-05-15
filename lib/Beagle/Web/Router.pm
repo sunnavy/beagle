@@ -156,7 +156,7 @@ if ( $ENV{BEAGLE_ALL} || !$root ) {
     }
 
     $bh   ||= ( values %bh )[0];
-    $name ||= $bh->name;
+    $name ||= $bh->name if $bh;
 }
 else {
     $bh = Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
@@ -469,10 +469,12 @@ any '/admin/info' => sub {
     redirect '/admin/entry/' . $entry->id;
 };
 
-for my $site ( @{ $bh->sites } ) {
-    get "/$site->{name}" => sub {
-        redirect $site->{url};
-    };
+if ($bh) {
+    for my $site ( @{ $bh->sites } ) {
+        get "/$site->{name}" => sub {
+            redirect $site->{url};
+        };
+    }
 }
 
 get '/favicon.ico' => sub {
