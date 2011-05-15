@@ -59,6 +59,11 @@ is(
     'commands output'
 );
 
+run_ok( $beagle_cmd, ['cmds'], 'cmds' );
+my $expect =
+'alias article att cache cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web';
+is( last_script_stdout(), $expect . newline(), 'cmds output' );
+
 run_ok( $beagle_cmd, ['version'], 'version' );
 my $out = last_script_stdout();
 require Beagle;
