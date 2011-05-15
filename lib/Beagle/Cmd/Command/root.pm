@@ -40,20 +40,30 @@ sub execute {
         my $name_length = max_length( keys %$all ) + 1;
         $name_length = 5 if $name_length < 5;
 
-        if ( keys %$all ) {
+        if ( keys %$all || $root ) {
             require Text::Table;
             my $tb = Text::Table->new();
 
+            my $included_current;
+
             for my $name ( sort keys %$all ) {
                 my $flag = '';
-                $flag = '@'
-                  if $root && $all->{$name}{local} eq $root;
+                if ( $root && $all->{$name}{local} eq $root ) {
+                    $flag = '@';
+                    $included_current = 1;
+                }
+
                 $tb->add(
                     $flag, $name,
                     $all->{$name}{type} || 'git',
                     $all->{$name}{remote},
                 );
             }
+
+            if ( $root && !$included_current ) {
+                $tb->add( '@', 'external', root_type($root), $root );
+            }
+
             puts $tb;
         }
     }
