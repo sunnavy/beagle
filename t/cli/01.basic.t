@@ -59,10 +59,10 @@ is(
     'commands output'
 );
 
-run_ok( $beagle_cmd, ['info'], 'info' );
+run_ok( $beagle_cmd, ['version'], 'version' );
 my $out = last_script_stdout();
-like( $out, qr/name: foo$/m, 'get name' );
-like( $out, qr/email: foobar\@baz\.com$/m, 'get email' );
+require Beagle;
+is( $out, 'beagle version ' . $Beagle::VERSION . newline(), 'version output' );
 
 run_ok( $beagle_cmd, ['info'], 'info' );
 $out = last_script_stdout();
