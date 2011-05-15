@@ -5,6 +5,9 @@ use Beagle::Util;
 use File::Temp 'tempdir';
 use Test::More;
 use File::Which 'which';
+$ENV{BEAGLE_CACHE} = 0;
+delete $ENV{BEAGLE_NAME};
+delete $ENV{BEAGLE_ROOT};
 
 sub init_home {
     my $class = shift;
@@ -21,8 +24,6 @@ sub init {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     ok( Beagle::Util::create_beagle( type => 'fs', root => $root, @_ ),
         "created beagle $root" );
-    $ENV{BEAGLE_CACHE} = 0;
-    delete $ENV{BEAGLE_NAME};
     $ENV{BEAGLE_ROOT} = $root;
     return wantarray ? ( $root, $home ) : $root;
 }
