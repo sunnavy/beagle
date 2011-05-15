@@ -12,8 +12,10 @@ Beagle::Test->init_home;
 
 {
     run_ok( $beagle_cmd, [qw/create --name foo/], 'create foo' );
-    my $expect = 'created.';
-    is( last_script_stdout(), $expect . newline(), 'create output' );
+    is( last_script_stdout(), 'created.' . newline(), 'create output' );
+
+    run_ok( $beagle_cmd, [qw/rename foo bar/], 'rename foo to bar' );
+    is( last_script_stdout(), 'renamed foo to bar.' . newline(), 'create output' );
 }
 
 {
