@@ -709,6 +709,7 @@ sub beagle_share_root {
           rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
     }
     else {
+        require Beagle;
         my @root = splitdir( rel2abs( parent_dir( $INC{'Beagle.pm'} ) ) );
 
         if (   $root[-2] ne 'blib'
