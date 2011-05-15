@@ -464,7 +464,7 @@ div.more {
     text-align: right;
 }
 
-div.search input[name=query] {
+#search input[name=query] {
     width: 70%;
     height: 2em;
     margin-left: 10%;
