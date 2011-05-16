@@ -118,7 +118,7 @@ sub filter {
         my @results;
         for my $entry (@found) {
             my $pass    = 1;
-            my $content = decode_utf8( $entry->content );
+            my $content = $entry->serialize;
             for my $regex (@$args) {
                 undef $pass unless $content =~ qr/$regex/mi;
             }
