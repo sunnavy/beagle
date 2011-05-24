@@ -33,12 +33,6 @@ override 'serialize_meta' => sub {
     return $str;
 };
 
-sub _gen_path {
-    my $self = shift;
-    return catfile( 'articles', join '.', grep { $_ } $self->title,
-        $self->id, 'article' );
-}
-
 sub summary {
     my $self = shift;
 

@@ -116,7 +116,7 @@ sub new_from_string {
 sub serialize_meta {
     my $self = shift;
     my %args = (
-        id      => 1,
+        id      => 0,
         author  => 1,
         created => 1,
         updated => 1,
@@ -194,7 +194,7 @@ sub _gen_path {
     my $summary = $self->summary(10);
     $summary =~ s!\s+!_!g;
     return catfile( Lingua::EN::Inflect::PL( $self->type ),
-        join '.', $summary, $self->id, $self->type );
+        split_id( $self->id ) );
 }
 
 sub type {

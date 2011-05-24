@@ -223,13 +223,14 @@ sub init_entry_attr {
     {
         my %all = $backend->read( type => $self->entry_info->{$attr}{type} );
         my @entries;
-        for my $path ( keys %all ) {
+        for my $id ( keys %all ) {
             my $class = $self->entry_info->{$attr}{class};
 
             my $entry = $class->new_from_string(
-                $all{$path},
+                $all{$id}{content},
+                id       => $id,
+                path     => $all{$id}{path},
                 root     => $self->root,
-                path     => $path,
                 timezone => $self->info->timezone || 'UTC',
             );
             next if $entry->draft && !$self->drafts;

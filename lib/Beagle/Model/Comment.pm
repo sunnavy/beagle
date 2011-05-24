@@ -13,8 +13,8 @@ sub _gen_path {
     my $summary = $self->summary(10);
     $summary =~ s!\s+!_!g;
 
-    return catfile( 'comments', split_id( $self->parent_id ), join '.', $summary,
-        $self->id );
+    return catfile( 'comments', split_id( $self->parent_id ),
+        split_id( $self->id ) );
 }
 
 override 'serialize_meta' => sub {

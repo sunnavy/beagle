@@ -63,12 +63,6 @@ override 'serialize_meta' => sub {
     return $str;
 };
 
-sub _gen_path {
-    my $self = shift;
-    return catfile( 'reviews', join '.', $self->title, $self->isbn, $self->id,
-        'review' );
-}
-
 sub cover {
     my $self     = shift;
     my @exts = qw/jpg png gif/;

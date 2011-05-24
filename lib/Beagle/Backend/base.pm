@@ -112,23 +112,28 @@ sub read {
     }
     else {
         require Lingua::EN::Inflect;
-        my $dir = catdir( $encoded_root, Lingua::EN::Inflect::PL($type) );
-        if ( -e $dir ) {
-            require File::Find;
-            File::Find::find(
-                sub {
-                    return unless -f $_;
-                    return if /(?:~|\.bak)$/;
-                    return unless /\.$type$/;
-                    local $/;
-                    open my $fh, '<', $_ or die $!;
-                    binmode $fh;
-                    my $path = $File::Find::name;
-                    $path =~ s!^\Q$encoded_root\E[/\\]?!!;
-                    $file{ decode( locale_fs => $path ) } = decode_utf8 <$fh>;
-                },
-                $dir,
-            );
+        my $root = catdir( $encoded_root, Lingua::EN::Inflect::PL($type) );
+        return unless -e $root;
+
+        opendir my $dh, $root or die $!;
+
+        while ( my $dir = readdir $dh ) {
+            next unless $dir =~ /^\w{2}$/;
+            opendir my $dh2, catdir( $root, $dir )
+              or die $!;
+            while ( my $left = readdir $dh2 ) {
+                next unless $left =~ /^\w{30}$/;
+                my $path = catfile( $root, $dir, $left );
+                next unless -f $path;
+                local $/;
+                open my $fh, '<', $path or die $!;
+                binmode $fh;
+                $path =~ s!^\Q$top_encoded_root\E[/\\]?!!;
+                $file{ $dir . $left } = {
+                    path    => decode( locale_fs => $path ),
+                    content => decode_utf8 <$fh>,
+                };
+            }
         }
     }
     return %file;

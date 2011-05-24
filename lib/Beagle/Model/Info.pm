@@ -146,7 +146,7 @@ around 'serialize_meta' => sub {
     my $str = $self->$orig(%opt);
 
     for (
-        qw/title url copyright timezone style name email career location
+        qw/id title url copyright timezone style name email career location
         avatar public_key sites/
       )
     {
