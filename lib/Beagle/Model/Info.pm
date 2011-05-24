@@ -143,10 +143,10 @@ around 'serialize_meta' => sub {
     my $self = shift;
     my %opt  = @_;
     $opt{author} = undef;
-    my $str = $self->$orig(%opt);
+    my $str = $self->_serialize_meta('id') . $self->$orig(%opt);
 
     for (
-        qw/id title url copyright timezone style name email career location
+        qw/title url copyright timezone style name email career location
         avatar public_key sites/
       )
     {
