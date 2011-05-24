@@ -270,40 +270,13 @@ sub init_attachments {
 }
 
 sub init_comments {
-    my $self    = shift;
-    my $backend = $self->backend;
-    my %map     = ();
-    my %all     = $backend->read( type => 'comment' );
-    my @comments;
-    for my $parent_id ( keys %all ) {
-        my $info = $all{$parent_id};
-        for my $path ( keys %$info ) {
-            my $class = "Beagle::Model::Comment";
-
-            my $comment = $class->new_from_string(
-                $info->{$path},
-                root      => $self->root,
-                parent_id => $parent_id,
-                path      => $path,
-                timezone  => $self->info->timezone || 'UTC',
-            );
-            next if $comment->draft && !$self->drafts;
-
-            $comment->author(
-                Email::Address->new( $self->info->name, $self->info->email )
-                  ->format )
-              unless $comment->author;
-
-            push @comments, $comment;
-            $self->map->{ $comment->id } = $comment;
-            $map{$parent_id}{ $comment->id } = $comment;
-        }
+    my $self = shift;
+    $self->init_entry_attr('comments');
+    my %comments_map;
+    for my $comment ( @{ $self->comments } ) {
+        $comments_map{ $comment->parent_id }{ $comment->id } = $comment;
     }
-    @comments =
-      sort { $b->created <=> $a->created } @comments;
-
-    $self->comments( \@comments );
-    $self->comments_map( \%map );
+    $self->comments_map( \%comments_map );
 }
 
 sub total_size {

@@ -52,40 +52,7 @@ sub read {
 
     my %file;
 
-    if ( $type eq 'comment' ) {
-        my $encoded_root = catdir( $encoded_root, 'comments' );
-        return unless -e $encoded_root;
-
-        opendir my $dh, $encoded_root or die $!;
-        while ( my $dir = readdir $dh ) {
-            next if $dir =~ /^\./ || !-d catdir( $encoded_root, $dir );
-            if ( $dir =~ /^\w{2}$/ ) {
-                opendir my $dh2, catdir( $encoded_root, $dir )
-                  or die $!;
-                while ( my $left = readdir $dh2 ) {
-                    if ( $left =~ /^\w{30}$/ ) {
-                        opendir my $dh3, catdir( $encoded_root, $dir, $left )
-                          or die $!;
-                        while ( my $file = readdir $dh3 ) {
-                            my $path =
-                              catfile( $encoded_root, $dir, $left, $file );
-                            next unless -f $path;
-                            local $/;
-                            open my $fh, '<', $path or die $!;
-                            binmode $fh;
-                            $path =~ s!^\Q$top_encoded_root\E[/\\]?!!;
-                            $file{ $dir . $left }
-                              { decode( locale_fs => $path ) } =
-                              decode_utf8 <$fh>;
-                        }
-                    }
-                }
-            }
-        }
-
-        return %file;
-    }
-    elsif ( $type eq 'attachment' ) {
+    if ( $type eq 'attachment' ) {
         my $encoded_root = catdir( $encoded_root, 'attachments' );
         return unless -e $encoded_root;
 

@@ -8,15 +8,6 @@ has 'parent_id' => (
     is  => 'rw',
 );
 
-sub _gen_path {
-    my $self    = shift;
-    my $summary = $self->summary(10);
-    $summary =~ s!\s+!_!g;
-
-    return catfile( 'comments', split_id( $self->parent_id ),
-        split_id( $self->id ) );
-}
-
 override 'serialize_meta' => sub {
     my $self = shift;
     my %opt  = @_;
