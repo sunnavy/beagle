@@ -28,7 +28,7 @@ has 'share-root' => (
     is            => "rw",
     accessor      => 'share_root',
     traits        => ['Getopt'],
-    documentation => "specifiy this to overwrite Beagle::Web->share_root",
+    documentation => "specifiy this to overwrite beagle_share_root",
 );
 
 has 'command' => (
@@ -52,11 +52,11 @@ sub execute {
     local $ENV{BEAGLE_NAME} = '';
     local $ENV{BEAGLE_ROOT} = $root;
 
-    require Beagle::Web;
     my $share_root = $self->share_root || beagle_share_root();
     local $ENV{BEAGLE_SHARE_ROOT} = $share_root;
 
     my $app = catfile( $share_root, 'app.psgi' );
+    require Beagle::Web;
     local $ENV{BEAGLE_WEB_ADMIN} =
       exists $self->{admin} ? $self->admin : Beagle::Web->enabled_admin();
     local $ENV{BEAGLE_ALL} =
