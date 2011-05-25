@@ -204,8 +204,8 @@ sub _fill_values {
 }
 
 use Plack::Builder;
-use Beagle::Web::Router;
 sub app {
+    require Beagle::Web::Router;
 
     builder {
         enable 'Plack::Middleware::Static',
