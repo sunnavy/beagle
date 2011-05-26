@@ -24,6 +24,11 @@ sub update {
         && $object->original_path
         && $object->original_path ne $object->path )
     {
+        my $full_path =
+          encode( locale_fs => catfile( $self->root, $object->path ) );
+        my $parent = parent_dir($full_path);
+        make_path($parent) unless -e $parent;
+
         rename(
             encode( locale_fs => $object->original_path ),
             encode( locale_fs => $object->path )
@@ -66,8 +71,7 @@ sub _save {
     my $full_path = encode( locale_fs => catfile( $self->root, $path ) );
 
     my $parent = parent_dir($full_path);
-    require File::Path;
-    File::Path::make_path($parent) unless -e $parent;
+    make_path($parent) unless -e $parent;
 
     if ( $object->can('content_file') && $object->content_file ) {
         require File::Copy;

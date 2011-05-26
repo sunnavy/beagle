@@ -51,6 +51,11 @@ sub update {
         && $object->original_path
         && $object->original_path ne $object->path )
     {
+        my $full_path =
+          encode( locale_fs => catfile( $self->root, $object->path ) );
+        my $parent = parent_dir($full_path);
+        make_path($parent) unless -e $parent;
+
         ($ret) = $self->git->mv( $object->original_path, $object->path );
         $object->original_path( $object->path );
     }
@@ -93,8 +98,7 @@ sub _save {
     my $full_path = encode( locale_fs => catfile( $self->root, $path ) );
 
     my $parent = parent_dir($full_path);
-    require File::Path;
-    File::Path::make_path($parent) unless -e $parent;
+    make_path($parent) unless -e $parent;
 
     if ( $object->can('content_file') && $object->content_file ) {
         require File::Copy;
