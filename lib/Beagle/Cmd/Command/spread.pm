@@ -86,7 +86,7 @@ sub execute {
     }
 }
 
-sub usage_desc { "spread an entry" }
+sub usage_desc { "spread entries" }
 
 1;
 
@@ -94,7 +94,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::spread - spread an entry
+Beagle::Cmd::Command::spread - spread entries
 
 
 =head1 AUTHOR
