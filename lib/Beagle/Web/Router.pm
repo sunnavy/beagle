@@ -413,7 +413,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
 
     if ( my $entry = $bh->map->{$id} ) {
 
-        if ( process_fields( $entry, scalar params ) ) {
+        if ( process_fields( $entry, $req->parameters->mixed ) ) {
 
             $bh->update_entry( $entry, message => $vars{message} );
 
