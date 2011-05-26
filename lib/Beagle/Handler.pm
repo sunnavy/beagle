@@ -17,7 +17,6 @@ BEGIN {
 
 use Beagle::Backend;
 use Beagle::Util;
-use File::Path 'make_path';
 
 has 'name' => (
     isa     => 'Str',
