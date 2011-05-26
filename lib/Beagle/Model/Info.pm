@@ -3,11 +3,7 @@ use Any::Moose;
 extends 'Beagle::Model::Entry';
 use Beagle::Util;
 
-has 'path' => (
-    isa     => 'Str',
-    default => 'info',
-    is      => 'ro',
-);
+sub path { 'info' }
 
 has 'url' => (
     isa     => 'Str',

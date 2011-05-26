@@ -12,12 +12,6 @@ has 'root' => (
     default => sub { beagle_root() },
 );
 
-has 'path' => (
-    isa     => 'Str',
-    is      => 'rw',
-    builder => '_gen_path',
-    lazy    => 1,
-);
 
 has 'original_path' => (
     isa     => 'Str',
@@ -122,12 +116,11 @@ sub serialize_meta {
         updated => 1,
         format  => 1,
         draft   => 1,
-        path    => undef,
         @_
     );
     my $str = '';
 
-    for my $type (qw/path id format author draft/) {
+    for my $type (qw/id format author draft/) {
         $str .= $self->_serialize_meta($type) if $args{$type};
     }
 
@@ -186,13 +179,10 @@ sub _gen_id {
     return lc $id;
 }
 
-sub _gen_path {
+sub path {
     my $self = shift;
 
     require Lingua::EN::Inflect;
-
-    my $summary = $self->summary(10);
-    $summary =~ s!\s+!_!g;
     return catfile( Lingua::EN::Inflect::PL( $self->type ),
         split_id( $self->id ) );
 }

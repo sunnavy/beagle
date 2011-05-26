@@ -9,16 +9,10 @@ has 'root' => (
     default => sub { beagle_root() },
 );
 
-has 'path' => (
-    isa     => 'Str',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub {
-        my $self = shift;
-        my @ids  = split_id( $self->parent_id );
-        return catdir( 'attachments', @ids, $self->name );
-    },
-);
+sub path {
+    my $self = shift;
+    return catdir( 'attachments', split_id( $self->parent_id ), $self->name );
+}
 
 with 'Beagle::Role::File';
 
