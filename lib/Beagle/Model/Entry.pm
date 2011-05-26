@@ -56,7 +56,10 @@ sub new_from_string {
         $self = dclone $class;
         for my $key ( keys %args ) {
             if ( $self->can( $key ) ) {
-                $self->$key( $args{$key} );
+                eval { $self->$key( $args{$key} ) };
+                if ($@) {
+                    warn "failed to set $key to $args{$key}: $@";
+                }
             }
             else {
                 warn "unknown key: $key\n";
@@ -85,7 +88,10 @@ sub new_from_string {
                 }
 
                 if ( $self->can($key) ) {
-                    $self->$key( $self->parse_field( $key, $value ) );
+                    eval { $self->$key( $self->parse_field( $key, $value ) ) };
+                    if ($@) {
+                        warn "failed to set $key to $args{$key}: $@";
+                    }
                 }
                 else {
                     warn "unknown key: $key\n";
