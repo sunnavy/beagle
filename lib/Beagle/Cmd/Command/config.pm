@@ -46,11 +46,6 @@ sub execute {
             die
               "default is initialized already, use --force|-f to overwrite.\n";
         }
-        for my $key (qw/cache devel/) {
-            print "enable $key(Y/n): ";
-            my $val = <STDIN>;
-            $core->{$key} = $val =~ /n/i ? 0 : 1;
-        }
 
         for my $key (qw/name email/) {
             print "user $key: ";
@@ -59,6 +54,9 @@ sub execute {
         }
 
         $core->{"default_command"} = 'shell';
+        $core->{'cache'} = 1;
+        $core->{'devel'} = 0;
+        $core->{'web_admin'} = 0;
 
         set_core_config($core);
 
