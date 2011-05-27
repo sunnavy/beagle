@@ -73,9 +73,9 @@ sub execute {
     if ($pid) {
         my @ret = resolve_id( $pid, handler => handler() || undef );
         unless (@ret) {
-            @ret = resolve_id($pid) or die_id_invalid($pid);
+            @ret = resolve_id($pid) or die_entry_not_found($pid);
         }
-        die_id_ambiguous( $pid, @ret ) unless @ret == 1;
+        die_entry_ambiguous( $pid, @ret ) unless @ret == 1;
         $pid = $ret[0]->{id};
         my $bh = $ret[0]->{handler};
 

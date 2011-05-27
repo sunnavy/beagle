@@ -22,9 +22,9 @@ sub execute {
         my $i = $self->id;
         my @ret = resolve_id( $i, handler => handler() || undef );
         unless (@ret) {
-            @ret = resolve_id($i) or die_id_invalid($i);
+            @ret = resolve_id($i) or die_entry_not_found($i);
         }
-        die_id_ambiguous( $i, @ret ) unless @ret == 1;
+        die_entry_ambiguous( $i, @ret ) unless @ret == 1;
         $id    = $ret[0]->{id};
         $bh    = $ret[0]->{handler};
         $entry = $ret[0]->{entry};
