@@ -43,10 +43,10 @@ sub execute {
     }
 
     $cmd =~ s!-!_!g;
-    require Beagle::Git::Wrapper;
+    require Beagle::Wrapper::git;
 
     for my $root (@roots) {
-        my $git = Beagle::Git::Wrapper->new(
+        my $git = Beagle::Wrapper::git->new(
             root    => $root,
             verbose => $self->verbose,
         );

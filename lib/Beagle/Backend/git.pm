@@ -1,6 +1,6 @@
 package Beagle::Backend::git;
 use Any::Moose;
-use Beagle::Git::Wrapper;
+use Beagle::Wrapper::git;
 use Beagle::Util;
 use Encode;
 use Email::Address;
@@ -8,7 +8,7 @@ use Email::Address;
 extends 'Beagle::Backend::base';
 
 has 'git' => (
-    isa     => 'Beagle::Git::Wrapper',
+    isa     => 'Beagle::Wrapper::git',
     is      => 'rw',
     lazy    => 1,
     builder => '_init_git',
@@ -154,7 +154,7 @@ sub _find_git_author {
 
 sub _init_git {
     my $self = shift;
-    my $git = Beagle::Git::Wrapper->new( root => $self->root );
+    my $git = Beagle::Wrapper::git->new( root => $self->root );
 
     # config user.name, user.email and branch
     return $git;

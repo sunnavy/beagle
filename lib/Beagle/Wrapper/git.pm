@@ -1,4 +1,4 @@
-package Beagle::Git::Wrapper;
+package Beagle::Wrapper::git;
 use Beagle::Util;
 use Any::Moose;
 use Encode;

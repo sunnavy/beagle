@@ -421,19 +421,19 @@ sub _create_beagle_git {
     my $root = $opt{root};
 
     my $git;
-    require Beagle::Git::Wrapper;
+    require Beagle::Wrapper::git;
     if ( $opt{bare} ) {
-        my $remote = Beagle::Git::Wrapper->new( root => $root );
+        my $remote = Beagle::Wrapper::git->new( root => $root );
         $remote->init('--bare');
 
         require File::Temp;
         my $tmp_root = File::Temp::tempdir( CLEANUP => 1 );
-        $git = Beagle::Git::Wrapper->new();
+        $git = Beagle::Wrapper::git->new();
         $git->clone( $root, catdir( $tmp_root, 'tmp' ) );
         $git->root( catdir( $tmp_root, 'tmp' ) );
     }
     else {
-        $git = Beagle::Git::Wrapper->new( root => $root );
+        $git = Beagle::Wrapper::git->new( root => $root );
         $git->init();
     }
 
@@ -668,9 +668,9 @@ sub detect_beagle_roots {
         {
 
             if ( -e catdir( $base, $dir, '.git' ) ) {
-                require Beagle::Git::Wrapper;
+                require Beagle::Wrapper::git;
                 my $git =
-                  Beagle::Git::Wrapper->new( root => catdir( $base, $dir ) );
+                  Beagle::Wrapper::git->new( root => catdir( $base, $dir ) );
                 my $url = $git->config( '--get', 'remote.origin.url' );
                 chomp $url;
                 $info->{ decode( locale_fs => $dir ) } = {

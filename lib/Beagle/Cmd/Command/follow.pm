@@ -71,8 +71,8 @@ sub execute {
         make_path($parent) or die "failed to create $parent" unless -d $parent;
 
         if ( $self->type eq 'git' ) {
-            require Beagle::Git::Wrapper;
-            my $git = Beagle::Git::Wrapper->new( verbose => $self->verbose );
+            require Beagle::Wrapper::git;
+            my $git = Beagle::Wrapper::git->new( verbose => $self->verbose );
 
             my $default    = core_config;
             my $user_name  = $default->{user_name};
