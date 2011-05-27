@@ -9,10 +9,7 @@ __END__
 
 Beagle - manage/version/spread articles, reviews, barks, etc.
 
-=head1 DESCRIPTION
-
-Beagle is your assistent to help you track your own or other people's
-articles, reviews, barks, tasks, etc.
+=head1 SYNOPSIS
 
     $ beagle config --init # give it your name and email
     $ beagle create --name foo
@@ -26,6 +23,15 @@ articles, reviews, barks, tasks, etc.
     $ beagle update id1 # update id1
     $ beagle rm id1 # delete id1
     $ beagle shell # beagle shell
+
+=head1 DESCRIPTION
+
+Beagle is your assistant to help you track your own or other people's
+articles, reviews, barks and tasks, etc.
+
+Technically, it's a thin wrapper of git(maybe more vcs in the future),
+which uses git as data source to create/show/update/delete/publish all
+kinds of entries( articles, review, etc ).
 
 =head1 AUTHOR
 
