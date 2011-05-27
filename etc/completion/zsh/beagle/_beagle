@@ -10,6 +10,7 @@ _1st_arguments=(
 "att:manage attachments"
 "bark:create a new bark"
 "cache:cache"
+"cast:cast entries to another type"
 "cmds:show names of all the commands/aliases"
 "comment:create a new comment"
 "comments:list comments"
