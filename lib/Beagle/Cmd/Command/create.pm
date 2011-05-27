@@ -109,7 +109,7 @@ Beagle::Cmd::Command::create - create a new beagle
 
 =head1 AUTHOR
 
-    sunnavy  <sunnavy@gmail.com>
+    sunnavy <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT

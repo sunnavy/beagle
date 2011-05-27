@@ -88,7 +88,7 @@ Beagle::Cmd::Command::mv - move entries to another beagle
 
 =head1 AUTHOR
 
-    sunnavy  <sunnavy@gmail.com>
+    sunnavy <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT

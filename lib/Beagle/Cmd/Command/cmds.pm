@@ -51,7 +51,7 @@ Beagle::Cmd::Command::cmds - show names of all the commands/aliases
 
 =head1 AUTHOR
 
-    sunnavy  <sunnavy@gmail.com>
+    sunnavy <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT

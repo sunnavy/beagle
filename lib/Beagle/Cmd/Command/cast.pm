@@ -57,7 +57,7 @@ Beagle::Cmd::Command::cast - cast entries to another type
 
 =head1 AUTHOR
 
-    sunnavy  <sunnavy@gmail.com>
+    sunnavy <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT

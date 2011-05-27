@@ -83,7 +83,7 @@ Beagle::Cmd::Command::alias - show command alias(es)
 
 =head1 AUTHOR
 
-    sunnavy  <sunnavy@gmail.com>
+    sunnavy <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT

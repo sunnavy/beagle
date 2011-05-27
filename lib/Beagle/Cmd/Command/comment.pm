@@ -123,7 +123,7 @@ Beagle::Cmd::Command::comment - create a new comment
 
 =head1 AUTHOR
 
-    sunnavy  <sunnavy@gmail.com>
+    sunnavy <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT
