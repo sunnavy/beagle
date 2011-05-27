@@ -34,7 +34,7 @@ sub execute {
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }
-        die_entry_ambiguous( $i, @ret ) unless @ret == 1 && !$self->force;
+        die_entry_ambiguous( $i, @ret ) unless @ret == 1 || $self->force;
 
         for my $ret (@ret) {
             my $id    = $ret->{id};
