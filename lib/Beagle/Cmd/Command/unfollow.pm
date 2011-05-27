@@ -53,7 +53,7 @@ Beagle::Cmd::Command::unfollow - unfollow beagle(s)
 
 =head1 AUTHOR
 
-    sunnavy  C<< sunnavy@gmail.com >>
+    sunnavy  <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT

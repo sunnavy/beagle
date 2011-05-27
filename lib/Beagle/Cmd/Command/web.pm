@@ -95,7 +95,7 @@ Beagle::Cmd::Command::web - start web server
 
 =head1 AUTHOR
 
-    sunnavy  C<< sunnavy@gmail.com >>
+    sunnavy  <sunnavy@gmail.com>
 
 
 =head1 LICENCE AND COPYRIGHT
