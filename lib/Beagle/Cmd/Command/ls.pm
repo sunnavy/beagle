@@ -118,7 +118,7 @@ sub filter {
         my @results;
         for my $entry (@found) {
             my $pass    = 1;
-            my $content = $entry->serialize;
+            my $content = $entry->serialize( id => 1 );
             for my $regex (@$args) {
                 undef $pass unless $content =~ qr/$regex/mi;
             }
