@@ -35,8 +35,8 @@ our @EXPORT = (
       beagle_static_root beagle_home user_alias beagle_roots set_beagle_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type
-      system_alias create_beagle alias aliases resolve_id die_id_invalid
-      die_id_ambiguous handler handlers
+      system_alias create_beagle alias aliases resolve_id die_entry_not_found
+      die_entry_ambiguous handler handlers resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
@@ -467,6 +467,42 @@ sub aliases {
     return keys %{ alias() };
 }
 
+sub resolve_entry {
+    my $str = shift or return;
+    return resolve_id( $str, @_ ) unless $str =~ /[^a-z1-9]/;
+
+    $str =~ s!^:!!; # : is to indicate that it's not an id
+
+    my %opt = ( handler => undef, @_ );
+
+    require Beagle::Handler;
+    my @bh;
+    if ($opt{handler}) {
+        push @bh, $opt{handler};
+    }
+    else {
+        my $all = beagle_roots;
+        @bh = map { Beagle::Handler->new( root => $all->{$_}{local} ) }
+          keys %{$all};
+    }
+
+    my @found;
+    for my $bh ( @bh ) {
+        for my $entry ( @{$bh->entries} ) {
+            if ( $entry->serialize( id => 1 ) =~ qr/$str/im ) {
+                push @found,
+                  { id => $entry->id, entry => $entry, handler => $bh };
+            }
+        }
+    }
+    return @found;
+}
+
+sub die_not_found {
+    my $str = shift;
+    die "no such entry match $str";
+}
+
 sub resolve_id {
     my $i = shift or return;
     my %opt = ( handler => undef, @_ );
@@ -491,15 +527,15 @@ sub resolve_id {
     }
 }
 
-sub die_id_invalid {
+sub die_entry_not_found {
     my $i = shift;
-    die "no such entry with id: $i";
+    die "no such entry matching $i";
 }
 
-sub die_id_ambiguous {
+sub die_entry_ambiguous {
     my $i     = shift;
     my @items = @_;
-    my @out   = "ambiguous id found: $i";
+    my @out   = "ambiguous entries found matching $i:";
     for my $item (@items) {
         push @out, join( ' ', $item->{id}, $item->{entry}->summary(10) );
     }
