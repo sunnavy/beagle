@@ -65,6 +65,9 @@ sub execute {
         set_beagle_roots($old);
 
         puts "initialized.";
+        puts "now add etc/bashrc to your .bashrc.";
+        puts "if you use bash's completion, add etc/completion/bash to your .bashrc.";
+        puts "if you use oh-my-zsh, copy etc/completion/zsh/beagle to oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
         return;
     }
 
