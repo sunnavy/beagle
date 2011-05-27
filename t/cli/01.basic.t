@@ -27,6 +27,7 @@ Available commands:
    article: create a new article
        att: manage attachments
      cache: cache
+      cast: cast entries to another type
       cmds: show names of all the commands/aliases
    comment: create a new comment
   comments: list comments
@@ -48,7 +49,7 @@ Available commands:
       root: show root
      shell: interactive shell
       show: show entries
-    spread: spread an entry
+    spread: spread entries
     status: show status
   unfollow: unfollow beagle(s)
     update: update an entry
@@ -67,7 +68,7 @@ is(
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect =
-'alias article att cache cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web';
+'alias article att cache cast cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web';
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
