@@ -11,6 +11,14 @@ has 'message' => (
     traits        => ['Getopt'],
 );
 
+has 'force' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => "delete even it's ambiguous",
+    cmd_aliases   => 'f',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -22,20 +30,23 @@ sub execute {
     my $entry_map;
 
     for my $i (@$args) {
-        my @ret = resolve_id( $i, handler => handler() || undef );
+        my @ret = resolve_entry( $i, handler => handler() || undef );
         unless (@ret) {
-            @ret = resolve_id($i) or die_id_invalid($i);
+            @ret = resolve_entry($i) or die_entry_not_found($i);
         }
-        die_id_ambiguous( $i, @ret ) unless @ret == 1;
-        my $id    = $ret[0]->{id};
-        my $bh    = $ret[0]->{handler};
-        my $entry = $ret[0]->{entry};
+        die_entry_ambiguous( $i, @ret ) unless @ret == 1 && !$self->force;
 
-        if ( $bh->delete_entry( $entry, commit => 0 ) ) {
-            push @deleted, { handler => $bh, id => $entry->id };
-        }
-        else {
-            die "failed to delete entry " . $entry->id;
+        for my $ret (@ret) {
+            my $id    = $ret->{id};
+            my $bh    = $ret->{handler};
+            my $entry = $ret->{entry};
+
+            if ( $bh->delete_entry( $entry, commit => 0 ) ) {
+                push @deleted, { handler => $bh, id => $entry->id };
+            }
+            else {
+                die "failed to delete entry " . $entry->id;
+            }
         }
     }
 
