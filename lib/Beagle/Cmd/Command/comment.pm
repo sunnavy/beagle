@@ -47,9 +47,9 @@ sub execute {
     my $pid = $self->parent;
     die "beagle comment --parent parent_id ..." unless $pid;
 
-    my @ret = resolve_id( $pid, handler => handler() || undef );
+    my @ret = resolve_entry( $pid, handler => handler() || undef );
     unless (@ret) {
-        @ret = resolve_id($pid) or die_entry_not_found($pid);
+        @ret = resolve_entry($pid) or die_entry_not_found($pid);
     }
     die_entry_ambiguous( $pid, @ret ) unless @ret == 1;
     $pid = $ret[0]->{id};

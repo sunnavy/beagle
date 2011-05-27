@@ -27,9 +27,9 @@ sub execute {
     my $to = Beagle::Handler->new( root => $to_root );
 
     for my $i (@$args) {
-        my @ret = resolve_id( $i, handler => handler() || undef );
+        my @ret = resolve_entry( $i, handler => handler() || undef );
         unless (@ret) {
-            @ret = resolve_id($i) or die_entry_not_found($i);
+            @ret = resolve_entry($i) or die_entry_not_found($i);
         }
         die_entry_ambiguous( $i, @ret ) unless @ret == 1;
         my $id    = $ret[0]->{id};
