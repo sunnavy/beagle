@@ -123,14 +123,5 @@ function beagleInit ( opts ) {
 
     $('div.message').delay(3000).fadeOut('slow');
 
-    $('form').submit(function() {
-        if (this.submitted) {
-            return false;
-        }
-        else {
-            this.submitted = true;
-        }
-    });
-
 }
 
