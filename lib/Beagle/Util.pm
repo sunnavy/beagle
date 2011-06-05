@@ -11,6 +11,9 @@ use Any::Moose 'Util::TypeConstraints';
 
 subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 
+# to handle checkbox input.
+coerce 'Bool' => from 'Ref' => via { 1 };
+
 our (
     $BEAGLE_ROOT,  $BEAGLE_HOME, $BEAGLE_CACHE,
     $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,

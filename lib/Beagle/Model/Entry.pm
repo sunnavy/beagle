@@ -37,6 +37,7 @@ has 'draft' => (
     is      => 'rw',
     default => 0,
     lazy    => 1,
+    coerce  => 1,
 );
 
 use Email::Address;

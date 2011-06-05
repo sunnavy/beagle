@@ -7,10 +7,11 @@ use Lingua::EN::Inflect 'A';
 use Class::Load ':all';
 use Router::Simple;
 use Beagle::Web::Request;
+use Beagle::Web::Form;
 use JSON;
 
 my $router = Router::Simple->new();
-my $admin = $router->submapper(
+my $admin  = $router->submapper(
     '/admin',
     {},
     {
@@ -19,14 +20,15 @@ my $admin = $router->submapper(
         },
     }
 );
+
 sub any {
     my $methods;
     $methods = shift if @_ == 3;
 
     my $pattern = shift;
-    my $code = shift;
-    my $dest = { code => $code };
-    my $opt = { $methods ? ( method => $methods ) : () };
+    my $code    = shift;
+    my $dest    = { code => $code };
+    my $opt     = { $methods ? ( method => $methods ) : () };
 
     if ( $pattern =~ s{^/admin(?=/)}{} ) {
         $admin->connect( $pattern, $dest, $opt );
@@ -43,7 +45,6 @@ sub get {
 sub post {
     any( [qw/POST/], $_[0], $_[1] );
 }
-
 
 use Text::Xslate;
 my $xslate = Text::Xslate->new(
@@ -155,14 +156,13 @@ if ( $ENV{BEAGLE_ALL} || !$root ) {
 
     }
 
-    $bh   ||= ( values %bh )[0];
+    $bh ||= ( values %bh )[0];
     $name ||= $bh->name if $bh;
 }
 else {
     $bh = Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
     $name = $bh->name;
 }
-
 
 sub redirect {
     my $location = shift;
@@ -225,7 +225,7 @@ get '/date/{year:[0-9]+}' => sub {
 };
 
 get '/date/{year:[0-9]}/{month:[0-9]{2}}' => sub {
-    my %vars = @_;
+    my %vars  = @_;
     my $year  = $vars{year};
     my $month = $vars{month};
     return redirect '/' unless Beagle::Web->years($bh)->{$year}{$month};
@@ -237,8 +237,8 @@ get '/date/{year:[0-9]}/{month:[0-9]{2}}' => sub {
 
 get '/entry/:id' => sub {
     my %vars = @_;
-    my $i = $vars{id};
-    my @ret = resolve_id( $i, handler => $bh );
+    my $i    = $vars{id};
+    my @ret  = resolve_id( $i, handler => $bh );
     return redirect "/" unless @ret == 1;
     my $id = $ret[0]->{id};
     return redirect "/entry/$id" unless $i eq $id;
@@ -308,11 +308,9 @@ get '/admin/entry/:type/new' => sub {
 
             my $entry = $class->new( id => 'new' );
 
-            require HTML::FormHandler;
-
             return render 'admin/entry',
               entry => $entry,
-              form  => HTML::FormHandler->new(
+              form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
               title => 'create ' . A($type);
         }
@@ -324,13 +322,11 @@ get '/admin/entry/{id:\w{32}}' => sub {
     my ($id) = $vars{id};
 
     return redirect '/admin/entries' unless $bh->map->{$id};
-
-    require HTML::FormHandler;
     render 'admin/entry',
       message => $vars{'message'},
       entry   => $bh->map->{$id},
-      form    => HTML::FormHandler->new(
-        field_list => scalar Beagle::Web->field_list($bh->map->{$id}) ),
+      form    => Beagle::Web::Form->new(
+        field_list => scalar Beagle::Web->field_list( $bh->map->{$id} ) ),
       title => "update $id";
 };
 
@@ -363,13 +359,15 @@ post '/admin/entry/:type/new' => sub {
                     }
 
                     if ( $type eq 'comment' ) {
-                        return redirect '/entry/'
+                        return
+                            redirect '/entry/'
                           . $entry->parent_id
                           . '?message=created' . '#'
                           . $entry->id;
                     }
                     else {
-                        return redirect '/admin/entry/'
+                        return
+                            redirect '/admin/entry/'
                           . $entry->id
                           . '?message=created';
                     }
@@ -385,10 +383,9 @@ post '/admin/entry/:type/new' => sub {
                 }
             }
             else {
-                require HTML::FormHandler;
                 return render "admin/entry/$type/new",
                   entry => $entry,
-                  form  => HTML::FormHandler->new(
+                  form  => Beagle::Web::Form->new(
                     field_list => scalar Beagle::Web->field_list($entry) ),
                   message => 'invalid';
             }
@@ -422,18 +419,16 @@ post '/admin/entry/{id:\w{32}}' => sub {
 
             add_attachments( $entry, $req->upload('attachments') );
 
-            require HTML::FormHandler;
             render 'admin/entry',
               entry => $entry,
-              form  => HTML::FormHandler->new(
+              form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
               message => 'updated';
         }
         else {
-            require HTML::FormHandler;
             render 'admin/entry',
               entry => $entry,
-              form  => HTML::FormHandler->new(
+              form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
               message => 'invalid';
         }
@@ -487,7 +482,7 @@ get '/favicon.ico' => sub {
 };
 
 get '/static/*' => sub {
-    my %vars  = @_;
+    my %vars = @_;
     my @parts = split '/', decode_utf8 $vars{splat}[0];
     my $file =
       encode( 'locale_fs', catfile( beagle_static_root($bh), @parts ) );
@@ -515,36 +510,24 @@ post '/utility/markitup' => sub {
     render 'markitup', content => $content;
 };
 
-
 sub process_fields {
     my ( $entry, $params ) = @_;
 
-    require HTML::FormHandler;
-    my $form =
-      HTML::FormHandler->new(
-        field_list => scalar Beagle::Web->field_list($entry) );
-    $form->process( posted => 1, params => $params );
-
-    if ( $form->is_valid ) {
-        my $values = $form->fif;
-        for my $f ( keys %$values ) {
-            next unless $entry->can($f);
-            my $new = $values->{$f};
-            if ( $f eq 'body' ) {
-
-                #TODO it's not actually parse, but canonicalize
-                $new = $entry->parse_body($new);
-            }
-
-            my $old = $entry->serialize_field($f);
-
-            if ( "$new" ne "$old" ) {
-                $entry->$f( $entry->parse_field( $f, $new ) );
-            }
+    my %fields = Beagle::Web->field_list( $entry );
+    for my $field ( keys %$params ) {
+        next unless $entry->can($field) && $fields{$field};
+        my $new = $params->{$field};
+        if ( $field eq 'body' ) {
+            $new = $entry->parse_body($new);
         }
-        return 1;
+
+        my $old = $entry->serialize_field($field);
+
+        if ( "$new" ne "$old" ) {
+            $entry->$field( $entry->parse_field( $field, $new ) );
+        }
     }
-    return;
+    return 1;
 }
 
 sub delete_attachments {
