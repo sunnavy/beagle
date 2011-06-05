@@ -135,53 +135,44 @@ sub field_list {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $entry = shift;
     my @list  = (
-        author => { type => 'Text', },
+        author => { type => 'text', },
         format => {
-            type => 'Select',
+            type => 'select',
             options =>
               [ map { { label => $_, value => $_ } } qw/plain wiki markdown/ ],
         },
-        draft => { type => 'Boolean', },
+        draft => { type => 'boolean', },
         body  => {
-            type  => 'TextArea',
-            apply => [
-                {
-                    check => sub {
-                        length $_[0]
-                          && $_[0] =~ /\S/
-                          && length $_[0] <= 1000;
-                    },
-                }
-            ],
+            type  => 'textarea',
         },
     );
 
     my $type = $entry->type;
     if ( $type eq 'article' ) {
         unshift @list,
-          title => { type => 'Text', },
-          tags  => { type => 'Text', };
+          title => { type => 'text', },
+          tags  => { type => 'text', };
     }
     elsif ( $type eq 'review' ) {
         unshift @list,
-          title => { type => 'Text', },
-          tags  => { type => 'Text', };
+          title => { type => 'text', },
+          tags  => { type => 'text', };
         push @list,
-          map { $_ => { type => 'Text' } }
+          map { $_ => { type => 'text' } }
           qw/isbn writer translator publisher published place/;
     }
     elsif ( $type eq 'comment' ) {
-        unshift @list, map { $_ => { type => 'Text' } } qw/author parent_id/;
+        unshift @list, map { $_ => { type => 'text' } } qw/author parent_id/;
     }
     elsif ( $type eq 'info' ) {
         unshift @list,
           style => {
-            type => 'Select',
+            type => 'select',
             options =>
               [ map { { label => $_, value => $_ } } qw/default blue dark/ ],
           };
         unshift @list,
-          map { $_ => { type => 'Text' } }
+          map { $_ => { type => 'text' } }
           qw/title url copyright timezone sites
           name email career location avatar public_key/;
     }
