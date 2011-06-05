@@ -367,7 +367,7 @@ post '/admin/entry/:type/new' => sub {
                     }
                     else {
                         return
-                            redirect '/admin/entry/'
+                            redirect '/entry/'
                           . $entry->id
                           . '?message=created';
                     }
