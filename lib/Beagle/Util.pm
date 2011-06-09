@@ -6,7 +6,7 @@ use Beagle::Helper;
 use base 'Exporter';
 use Config::INI::Reader;
 use Config::INI::Writer;
-
+use HTML::Entities;
 use Any::Moose 'Util::TypeConstraints';
 
 subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
@@ -43,7 +43,7 @@ our @EXPORT = (
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
-      cache_name beagle_share_root
+      cache_name beagle_share_root encode_entities decode_entities
       /
 );
 

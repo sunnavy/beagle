@@ -1,6 +1,7 @@
 package Beagle::Web::Form::textarea;
 
 use Any::Moose;
+use Beagle::Util;
 extends 'Beagle::Web::Form::base';
 
 sub render_input {
@@ -8,6 +9,7 @@ sub render_input {
     my $options = $self->options;
     my $name    = $self->name;
     my $default = defined $self->default ? $self->default : '';
+    $default = encode_entities( $default );
     return qq{<textarea>$default</textarea>};
 }
 

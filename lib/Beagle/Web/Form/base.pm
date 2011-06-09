@@ -2,6 +2,7 @@ package Beagle::Web::Form::base;
 
 use Any::Moose;
 use Class::Load;
+use Beagle::Util;
 
 has 'name' => (
     isa      => 'Str',
@@ -39,6 +40,8 @@ sub render_input {
     my $self    = shift;
     my $name    = $self->name;
     my $default = defined $self->default ? $self->default : '';
+    $default = encode_entities( $default );
+
     return <<EOF;
 <input name="$name" value="$default" type="text" />
 EOF

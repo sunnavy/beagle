@@ -1,6 +1,7 @@
 package Beagle::Web::Form::select;
 
 use Any::Moose;
+use Beagle::Util;
 extends 'Beagle::Web::Form::base';
 
 has 'options' => (
@@ -14,10 +15,10 @@ sub render_input {
     my $options = $self->options;
     my $name    = $self->name;
     my $out     = qq{<select name="$name">};
-    my $default = $self->default;
+    my $default = encode_entities( $self->default );
     for my $option (@$options) {
-        my $label = $option->{label};
-        my $value = $option->{value};
+        my $label = encode_entities( $option->{label} );
+        my $value = encode_entities( $option->{value} );
         if ( $value && $default && $value eq $default ) {
             $out .=
               qq{<option selected="selected" value="$value">$label</option>};
