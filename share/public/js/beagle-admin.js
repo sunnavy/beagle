@@ -20,10 +20,6 @@ function beagleAjaxDelete () {
         dataType: 'json',
         type: 'post',
         beforeSubmit: function (arr, form) {
-            var yes = confirm('really delete?');
-            if ( !yes ) {
-                return false;
-            }
             var id = form.find('input[name=id]').val();
             if ( !id ) {
                 return false;
