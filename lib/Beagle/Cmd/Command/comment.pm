@@ -63,7 +63,7 @@ sub execute {
     my $comment;
 
     unless ( $body =~ /\S/ ) {
-        my $temp = Beagle::Model::Comment->new();
+        my $temp = Beagle::Model::Comment->new( parent_id => $pid );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
         my $template =
           $self->verbose
