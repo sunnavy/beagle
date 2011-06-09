@@ -1,5 +1,5 @@
   <div class="utility">
-  <a class="toggle-hide show" href=""><: _('show') :></a>
+  <a class="toggle-hide show" style="display:none" href=""><: _('show') :></a>
   <a class="toggle-hide hide" href=""><: _('hide') :></a>
 
 : if $enabled_admin {

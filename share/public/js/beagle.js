@@ -97,7 +97,6 @@ function beagleArchive ( ) {
 
 function beagleInit ( opts ) {
     prettyPrint();
-    $('a.toggle-hide.show').hide();
 
     $('a.toggle-hide.hide').click(
         function() {

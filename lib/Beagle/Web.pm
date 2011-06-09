@@ -162,7 +162,7 @@ sub field_list {
           qw/isbn writer translator publisher published place/;
     }
     elsif ( $type eq 'comment' ) {
-        unshift @list, map { $_ => { type => 'text' } } qw/author parent_id/;
+        unshift @list, map { $_ => { type => 'text' } } qw/parent_id/;
     }
     elsif ( $type eq 'info' ) {
         unshift @list,
