@@ -1,4 +1,4 @@
-<div id="id_<: $entry.id :>" class="entry bark <: $bark ? 'single' : '' :> ">
+<div id="<: $entry.id :>" class="entry bark <: $bark ? 'single' : '' :> ">
 
 <h3 class="title"><a href="/entry/<: $entry.id :>"><: $entry.summary :></a></h3>
 <div class="meta">

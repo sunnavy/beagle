@@ -1,4 +1,4 @@
-<div id="id_<: $entry.id :>" class="comment contrast">
+<div id="<: $entry.id :>" class="comment contrast">
 
 <div class="meta">
   <div title="<: $entry.author :>" class="author"><: $entry.author :></div>

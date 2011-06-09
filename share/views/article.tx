@@ -1,4 +1,4 @@
-<div id="id_<: $entry.id :>" class="entry <: $entry.type :>">
+<div id="<: $entry.id :>" class="entry <: $entry.type :>">
 <h3 class="title"><a href="/entry/<: $entry.id :>"><: $entry.title :></a></h3>
 <div class="meta">
 
