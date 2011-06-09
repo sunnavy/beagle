@@ -41,7 +41,7 @@ has '_body_html' => (
 sub body_html {
     my $self = shift;
     if ( $self->format eq 'plain' ) {
-        return '<pre>' . $self->body . '</pre>';
+        return '<pre>' . encode_entities($self->body) . '</pre>';
     }
     else {
         return $self->_body_html;
