@@ -356,6 +356,12 @@ post '/admin/entry/:type/new' => sub {
                       ->format );
             }
 
+            if ( $type eq 'comment' && !$req->param('format') ) {
+
+                # make comment's format be plain by default if from web ui
+                $entry->format('plain');
+            }
+
             if ( process_fields( $entry, $req->parameters->mixed ) ) {
                 my ($created) =
                   $bh->create_entry( $entry, message => $vars{message}, );
