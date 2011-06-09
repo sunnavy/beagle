@@ -9,6 +9,9 @@ use Router::Simple;
 use Beagle::Web::Request;
 use Beagle::Web::Form;
 use JSON;
+use Beagle::I18N;
+use I18N::LangTags;
+use I18N::LangTags::Detect;
 
 my $router = Router::Simple->new();
 my $admin  = $router->submapper(
@@ -44,6 +47,39 @@ sub get {
 
 sub post {
     any( [qw/POST/], $_[0], $_[1] );
+}
+
+my ( $bh, %updated, %bh, $all, $name );
+my $root = beagle_root('not die');
+my $req;
+
+if ( $ENV{BEAGLE_ALL} || !$root ) {
+    $all = beagle_roots();
+    for my $n ( keys %$all ) {
+        local $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
+        $bh{$n} =
+          Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
+        if ( $root && $root eq $all->{$n}{local} ) {
+            $bh   = $bh{$n};
+            $name = $n;
+        }
+        $router->connect(
+            "/$n",
+            {
+                code => sub {
+                    change_handler( name => $n );
+                },
+            }
+        );
+
+    }
+
+    $bh ||= ( values %bh )[0];
+    $name ||= $bh->name if $bh;
+}
+else {
+    $bh = Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
+    $name = $bh->name;
 }
 
 use Text::Xslate;
@@ -122,6 +158,17 @@ my $xslate = Text::Xslate->new(
             return unless defined $value && defined $regex;
             return $value =~ qr/$regex/i;
         },
+        _ => sub {
+            my @lang = I18N::LangTags::implicate_supers(
+                I18N::LangTags::Detect->http_accept_langs(
+                    $req->header('Accept-Language')
+                )
+            );
+            my $handle =
+              Beagle::I18N->get_handle( @lang );
+
+            $handle->maketext( @_ );
+        },
     },
 );
 
@@ -130,40 +177,6 @@ sub render {
     my %vars = ( default_options(), @_ );
     return $xslate->render( "$template.tx", \%vars );
 }
-
-my ( $bh, %updated, %bh, $all, $name );
-my $root = beagle_root('not die');
-my $req;
-
-if ( $ENV{BEAGLE_ALL} || !$root ) {
-    $all = beagle_roots();
-    for my $n ( keys %$all ) {
-        local $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
-        $bh{$n} =
-          Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
-        if ( $root && $root eq $all->{$n}{local} ) {
-            $bh   = $bh{$n};
-            $name = $n;
-        }
-        $router->connect(
-            "/$n",
-            {
-                code => sub {
-                    change_handler( name => $n );
-                },
-            }
-        );
-
-    }
-
-    $bh ||= ( values %bh )[0];
-    $name ||= $bh->name if $bh;
-}
-else {
-    $bh = Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
-    $name = $bh->name;
-}
-
 sub redirect {
     my $location = shift;
     my $code     = shift;

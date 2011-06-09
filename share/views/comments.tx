@@ -1,7 +1,7 @@
 : if $enabled_admin || $comments_map[$entry.id] {
 <div class="comments">
 
-<h5><a class="title-toggle-hide" href="">Comments</a></h5>
+<h5><a class="title-toggle-hide" href=""><: _('Comments') :></a></h5>
 
 <div class="content">
 : if $comments_map[$entry.id] {

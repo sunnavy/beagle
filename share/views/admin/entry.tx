@@ -5,10 +5,10 @@
 : if $entry.id != 'new' {
 <div class="admin-links">
 : if $entry.type != 'info' {
-<a href="/entry/<: $entry.id :>">view</a>
+<a href="/entry/<: $entry.id :>"><: _('view') :></a>
 <div class="delete">
 <form class="delete" method="post" action="/admin/entry/<: $entry.id :>/delete" >
-<a href="" class="delete">delete</a>
+<a href="" class="delete"><: _('delete') :></a>
 </form>
 </div>
 : }
@@ -64,7 +64,7 @@
 <div class="wrapper">
 <label>message:</label>
 <input type="text" name="message" />
-<input type="submit" value="Save" />
+<input type="submit" value="<: _('Save') :>" />
 </div>
 
 </form>

@@ -6,7 +6,7 @@
     <: $entry.created_rfc2822 :>
   </div>
   <div class="tags" title="tags">
-    <a href="/tag/<: $entry.type :>"><: $entry.type :></a>
+    <a href="/tag/<: $entry.type :>"><: _($entry.type) :></a>
   </div>
 
 : include 'utility.tx' { entry => $entry };

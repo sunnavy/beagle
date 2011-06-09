@@ -97,14 +97,22 @@ function beagleArchive ( ) {
 
 function beagleInit ( opts ) {
     prettyPrint();
-    $('a.toggle-hide').toggle(
+    $('a.toggle-hide.show').hide();
+
+    $('a.toggle-hide.hide').click(
         function() {
             $(this).closest('div:has("div.content")').children('div.content').hide();
-            $(this).text('show');
-        },
+            $(this).hide();
+            $(this).siblings('a.toggle-hide.show').show();
+            return false;
+        }
+    );
+    $('a.toggle-hide.show').click(
         function() {
             $(this).closest('div:has("div.content")').children('div.content').show();
-            $(this).text('hide');
+            $(this).hide();
+            $(this).siblings('a.toggle-hide.hide').show();
+            return false;
         }
     );
 

@@ -1,14 +1,13 @@
   <div class="utility">
-: if not $no_hide {
-  <a class="toggle-hide" href="">hide</a>
-: }
+  <a class="toggle-hide show" href=""><: _('show') :></a>
+  <a class="toggle-hide hide" href=""><: _('hide') :></a>
 
 : if $enabled_admin {
-  <a href="/admin/entry/<: $entry.id :>">edit</a>
+  <a href="/admin/entry/<: $entry.id :>"><: _('edit') :></a>
 <div class="delete">
 <form class="delete">
 <input type="hidden" name="id" value="<: $entry.id :>" />
-<a href="" class="delete">delete</a>
+<a href="" class="delete"><: _('delete') :></a>
 <input class="hidden" type="submit" />
 </form>
   </div>

@@ -19,14 +19,14 @@
 </div>
 
 <div id="search">
-<h3 class="menu">Search</h3>
+<h3 class="menu"><: _('Search') :></h3>
 <form class="search" method="post" action="/search">
 <input type="text" name="query" value="<: $query :>" />
 </form>
 </div>
 
 <div id="archive" class="dates">
-<h3 class="menu">Archive</h3>
+<h3 class="menu"><: _('Archive') :></h3>
 <ul>
 : for $years.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
     <li>
@@ -45,11 +45,14 @@
 
 
 <div id="tags" class="tags">
-<h3 class="menu">Tags</h3>
+<h3 class="menu"><: _('Tags') :></h3>
 <ul>
 : for $tags.keys().sort() -> $tag {
+: if $tag ~~ $entry_types {
+    <li><a href="/tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a></li>
+: } else {
     <li><a href="/tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a></li>
-: }
+: } }
 </ul>
 </div>
 

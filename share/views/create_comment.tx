@@ -3,7 +3,7 @@
 <form>
 <input type="hidden" value="<: $parent.id :>" name="parent_id" />
 <textarea class="comment_markitup" name="body"></textarea>
-<input type="submit" value="Comment" />
+<input type="submit" value="<: _('Comment') :>" />
 </form>
 
 </div>

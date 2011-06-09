@@ -87,6 +87,10 @@ for my $model (@models) {
 
 sub entry_info { return { %entry_info } }
 
+sub entry_types {
+    return [ map { $entry_info{$_}->{type} } keys %entry_info ];
+}
+
 has 'entries' => (
     isa     => 'ArrayRef[Beagle::Model::Entry]',
     is      => 'rw',
@@ -291,6 +295,7 @@ sub list {
 
     return map { $_ => $self->$_ } qw/info total_size sites
       entries map attachments_map comments_map updated entry_info
+      entry_types
       /, keys %{ $self->entry_info };
 }
 

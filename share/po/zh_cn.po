@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Beagle 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-12 08:38+0800\n"
+"PO-Revision-Date: 2011-06-12 08:38+0800\n"
+"Last-Translator: sunnavy <sunnavy@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Archive"
+msgstr "存档"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Tags"
+msgstr "标签"
+
+
+msgid "Comments"
+msgstr "评论"
+
+msgid "Comment"
+msgstr "评论"
+
+msgid "delete"
+msgstr "删除"
+
+msgid "edit"
+msgstr "编辑"
+
+msgid "hide"
+msgstr "隐藏"
+
+msgid "show"
+msgstr "显示"
+
+msgid "view"
+msgstr "查看"
+
+msgid "info"
+msgstr "关于"
+
+msgid "new "
+msgstr "新"
+
+msgid "all entries"
+msgstr "所有条目"
+
+msgid "article"
+msgstr "文章"
+
+msgid "bark"
+msgstr "微言"
+
+msgid "comment"
+msgstr "评论"
+
+msgid "review"
+msgstr "书评"
+
+msgid "task"
+msgstr "任务"
+

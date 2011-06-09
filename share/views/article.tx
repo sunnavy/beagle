@@ -13,9 +13,9 @@
   </div>
 
   <div class="tags" title="tags">
-    <a href="/tag/<: $entry.type :>"><: $entry.type :></a>
+    <a href="/tag/<: $entry.type :>"><: _($entry.type) :></a>
 : for $entry.tags -> $tag {
-    <a href="/tag/<: $tag :>"><: $tag :></a>
+    <a href="/tag/<: $entry.type :>"><: $tag :></a>
 : }
   </div>
 
