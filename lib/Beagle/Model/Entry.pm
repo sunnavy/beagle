@@ -135,14 +135,14 @@ sub serialize_meta {
         $str .=
             'created: '
           . $self->created . ' ('
-          . $self->created_rfc2822 . ')' . "\n";
+          . $self->created_str . ')' . "\n";
     }
 
     if ( $args{updated} ) {
         $str .=
             'updated: '
           . $self->updated . ' ('
-          . $self->updated_rfc2822 . ')' . "\n";
+          . $self->updated_str . ')' . "\n";
     }
 
     return $str;
