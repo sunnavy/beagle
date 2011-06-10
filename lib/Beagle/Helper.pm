@@ -12,6 +12,7 @@ use base 'Exporter';
 use List::MoreUtils 'uniq';
 use Storable 'dclone', 'nstore', 'retrieve';
 use File::Path 'make_path', 'remove_tree';
+use HTML::Entities;
 
 our ( $NEWLINE, $IS_WINDOWS, $OUTSIDE_ENCODING, );
 
@@ -26,7 +27,9 @@ our @EXPORT = qw/
   newline is_windows puts  
   user_home file_size parent_dir to_array from_array edit_text max_length
   term_size term_width term_height  mime_type make_path remove_tree
-  pretty_datetime parse_datetime confess encode decode/;
+  pretty_datetime parse_datetime confess encode decode 
+  encode_entities decode_entities
+  /;
 
 require IO::Handle;
 my $stdout = IO::Handle->new;
