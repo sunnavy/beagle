@@ -115,12 +115,17 @@ function beagleInit ( opts ) {
         }
     );
 
-    $('a.title-toggle-hide').toggle(
+    $('a.title-toggle-hide').click(
         function() {
-            $(this).closest('div:has("div.content")').children('div.content').hide();
-        },
-        function() {
-            $(this).closest('div:has("div.content")').children('div.content').show();
+            var content =
+                $(this).closest('div:has("div.content")').children('div.content');
+            if ( content.is(':visible') ) {
+                content.hide();
+            }
+            else {
+                content.show();
+            }
+            return false;
         }
     );
 

@@ -65,6 +65,8 @@ function beagleAjaxComment ( ) {
                             var parent = form.closest('div.comments').children('div.content');
                             parent.append(str);
                             beagleContrast(parent);
+                            var content = form.closest('div:has("div.content")').children('div.content');
+                            content.show();
                             return true;
                         }
                         else {
