@@ -159,19 +159,21 @@ my $xslate = Text::Xslate->new(
             return $value =~ qr/$regex/i;
         },
         _ => sub {
-            my @lang = I18N::LangTags::implicate_supers(
-                I18N::LangTags::Detect->http_accept_langs(
-                    $req->header('Accept-Language')
-                )
-            );
-            push @lang, $bh->info->language;
-            my $handle =
-              Beagle::I18N->get_handle( @lang );
-
+            my $handle = i18n_handle();
             $handle->maketext( @_ );
         },
     },
 );
+
+sub i18n_handle {
+    my @lang = I18N::LangTags::implicate_supers(
+        I18N::LangTags::Detect->http_accept_langs(
+            $req->header('Accept-Language')
+        )
+    );
+    push @lang, $bh->info->language;
+    return Beagle::I18N->get_handle(@lang);
+}
 
 sub render {
     my $template = shift;
