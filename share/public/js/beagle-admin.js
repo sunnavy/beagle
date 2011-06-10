@@ -9,7 +9,6 @@ function beagleBindKeys () {
     $('textarea').keydown(function (e) {
         if ( e.keyCode == 13 && e.ctrlKey ) {
             $(this).closest('form').submit();
-            $(this).val('');
         }
     } );
 }
