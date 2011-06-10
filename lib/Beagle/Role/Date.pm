@@ -36,7 +36,7 @@ sub format_date {
 
 sub created_str {
     my $self = shift;
-    return $self->format_date( '%Y-%m-%d %T', $self->created );
+    return $self->format_date( '%Y-%m-%d %T %z', $self->created );
 }
 
 sub created_rfc2822 {
@@ -61,7 +61,7 @@ sub created_day {
 
 sub updated_str {
     my $self = shift;
-    return $self->format_date( '%Y-%m-%d %T', $self->updated );
+    return $self->format_date( '%Y-%m-%d %T %z', $self->updated );
 }
 
 sub updated_rfc2822 {
