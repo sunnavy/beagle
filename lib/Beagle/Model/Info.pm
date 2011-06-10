@@ -35,6 +35,12 @@ has 'sites' => (
     default => sub { [] },
 );
 
+has 'language' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => 'en',
+);
+
 has 'name' => (
     isa     => 'Str',
     is      => 'rw',
@@ -142,7 +148,7 @@ around 'serialize_meta' => sub {
     my $str = $self->_serialize_meta('id') . $self->$orig(%opt);
 
     for (
-        qw/title url copyright timezone style name email career location
+        qw/title url copyright language timezone style name email career location
         avatar public_key sites/
       )
     {

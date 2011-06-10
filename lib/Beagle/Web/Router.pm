@@ -164,6 +164,7 @@ my $xslate = Text::Xslate->new(
                     $req->header('Accept-Language')
                 )
             );
+            push @lang, $bh->info->language;
             my $handle =
               Beagle::I18N->get_handle( @lang );
 
