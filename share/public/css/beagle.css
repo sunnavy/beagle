@@ -284,17 +284,15 @@ div.comment p {
 
 div.create-comment textarea {
     margin-left: 5%;
-    width: 75%;
+    width: 90%;
     height: 150px;
 }
 
 div.create-comment input[type=submit] {
-    margin-right: 1%;
+    margin-right: 5%;
     float: right;
     margin-top: 2%;
-    width: 18%;
-    height: 3em;
-    font-size: x-large;
+    min-width: 10%;
 }
 
 div.nav-roots {
