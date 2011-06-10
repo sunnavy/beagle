@@ -3,7 +3,7 @@
 <div class="meta">
   <div title="<: $entry.author :>" class="author"><: $entry.author :></div>
   <div class="date" title="created date <: $entry.created :>" >
-    <: $entry.created_str :>
+    <: $entry.created_string :>
   </div>
 : include 'utility.tx' { entry => $entry };
 </div>

@@ -16,7 +16,7 @@
 <h3 class="title"><a href="/entry/<: $entry.id :>"><: $entry.summary :></a></h3>
 <div class="meta">
   <div class="date" title="created date <: $entry.created :>" >
-    <: $entry.created_str :>
+    <: $entry.created_string :>
   </div>
   <div class="tags" title="tags">
     <a href="/tag/<: $entry.type :>"><: _($entry.type) :></a>

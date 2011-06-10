@@ -15,8 +15,8 @@ for my $attr (
 for my $method (
     qw/new_from_string serialize serialize_meta serialize_body
     parse_field serialize_field type summary parse_body
-    format_date created_str created_rfc2822 created_year created_month
-    created_day updated_str updated_rfc2822 updated_year updated_month
+    format_date created_string created_year created_month
+    created_day updated_string updated_year updated_month
     updated_day body_html/
   )
 {

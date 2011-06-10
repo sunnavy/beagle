@@ -34,7 +34,7 @@ sub format_date {
     return strftime( $format, @lt );
 }
 
-sub created_str {
+sub created_string {
     my $self = shift;
     return $self->format_date( '%Y-%m-%d %T %z', $self->created );
 }
@@ -54,7 +54,7 @@ sub created_day {
     return $self->format_date( '%d', $self->created );
 }
 
-sub updated_str {
+sub updated_string {
     my $self = shift;
     return $self->format_date( '%Y-%m-%d %T %z', $self->updated );
 }
