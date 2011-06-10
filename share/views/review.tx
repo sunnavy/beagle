@@ -9,7 +9,7 @@
 : }
 
   <div class="date" title="created date <: $entry.created :>" >
-    <: $entry.created_rfc2822 :>
+    <: $entry.created_str :>
   </div>
 
   <div class="tags" title="tags">
