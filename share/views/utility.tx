@@ -1,6 +1,8 @@
   <div class="utility">
+: if ! $no_hide {
   <a class="toggle-hide show" style="display:none" href=""><: _('show') :></a>
   <a class="toggle-hide hide" href=""><: _('hide') :></a>
+: }
 
 : if $enabled_admin {
   <a href="/admin/entry/<: $entry.id :>"><: _('edit') :></a>

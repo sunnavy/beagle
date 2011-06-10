@@ -5,7 +5,7 @@
   <div class="date" title="created date <: $entry.created :>" >
     <: $entry.created_string :>
   </div>
-: include 'utility.tx' { entry => $entry };
+: include 'utility.tx' { entry => $entry, no_hide => 1 };
 </div>
 
 <div class="body" title="<: $entry.id :>" >
