@@ -98,32 +98,32 @@ function beagleArchive ( ) {
 function beagleInit ( opts ) {
     prettyPrint();
 
-    $('a.toggle-hide.hide').click(
+    $('a.toggle.hide').click(
         function() {
             $(this).closest('div:has("div.content")').children('div.content').hide();
             $(this).hide();
-            $(this).siblings('a.toggle-hide.show').show();
+            $(this).siblings('a.toggle.show').show();
             return false;
         }
     );
-    $('a.toggle-hide.show').click(
+    $('a.toggle.show').click(
         function() {
             $(this).closest('div:has("div.content")').children('div.content').show();
             $(this).hide();
-            $(this).siblings('a.toggle-hide.hide').show();
+            $(this).siblings('a.toggle.hide').show();
             return false;
         }
     );
 
-    $('a.title-toggle-hide').click(
+    $('a.comments-toggle').click(
         function() {
-            var content =
-                $(this).closest('div:has("div.content")').children('div.content');
-            if ( content.is(':visible') ) {
-                content.hide();
+            var comments =
+                $(this).closest('div.comments').children('div.content');
+            if ( comments.is(':visible') ) {
+                comments.hide();
             }
             else {
-                content.show();
+                comments.show();
             }
             return false;
         }

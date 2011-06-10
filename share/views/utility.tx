@@ -1,7 +1,7 @@
   <div class="utility">
 : if ! $no_hide {
-  <a class="toggle-hide show" style="display:none" href=""><: _('show') :></a>
-  <a class="toggle-hide hide" href=""><: _('hide') :></a>
+  <a class="toggle show" style="display:none" href=""><: _('show') :></a>
+  <a class="toggle hide" href=""><: _('hide') :></a>
 : }
 
 : if $enabled_admin {
