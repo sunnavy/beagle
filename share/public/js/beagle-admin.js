@@ -49,15 +49,6 @@ function beagleAjaxComment ( ) {
                     if ( beagleIsEmpty( e ) ) {
                         return false;
                     }
-                    else if ( !beagleIsInRange( e, 0, 1000 ) ) {
-                        $('<div></div>').html('Content is too large!').dialog({
-                            autoOpen: true,
-                            title: 'Error!',
-                            show: 'slide',
-                        });
-                        return false;
-                    }
-
                     else {
                         return true;
                     }
@@ -78,11 +69,7 @@ function beagleAjaxComment ( ) {
                             return true;
                         }
                         else {
-                            $('<div></div>').html(json.message).dialog({
-                                autoOpen: true,
-                                title: json.status,
-                                show: 'slide',
-                            });
+                            alert( json.status );
                         }
                     }
                 },
