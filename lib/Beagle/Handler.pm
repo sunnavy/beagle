@@ -50,7 +50,7 @@ has 'cache' => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        my $name = cache_name($self->name);
+        my $name = cache_name( $self->name );
         return catfile( beagle_home_cache,
             $name . ( $self->drafts ? '.drafts' : '' ) );
     },
@@ -78,14 +78,14 @@ for my $model (@models) {
         ? (
             trigger => sub {
                 my $self = shift;
-                $self->init_entries;
+                $self->_init_entries;
             }
           )
         : (),
     );
 }
 
-sub entry_info { return { %entry_info } }
+sub entry_info { return {%entry_info} }
 
 sub entry_types {
     return [ map { $entry_info{$_}->{type} } keys %entry_info ];
@@ -159,15 +159,7 @@ sub BUILD {
 
         $self->map( {} );
         $self->init_info;
-        for my $attr ( keys %{ $self->entry_info } ) {
-            my $method = "init_$attr";
-            if ( $self->can($method) ) {
-                $self->$method;
-            }
-            else {
-                $self->init_entry_attr($attr);
-            }
-        }
+        $self->init_entries;
 
         $self->init_attachments;
 
@@ -315,15 +307,7 @@ sub update {
     if ( $self->updated != $updated ) {
         $self->map( {} );
         $self->init_info;
-        for my $attr ( keys %{ $self->entry_info } ) {
-            my $method = "init_$attr";
-            if ( $self->can($method) ) {
-                $self->$method;
-            }
-            else {
-                $self->init_entry_attr($attr);
-            }
-        }
+        $self->init_entries;
 
         $self->init_attachments;
         $self->updated($updated);
@@ -431,12 +415,26 @@ sub delete_attachment {
     return 1;
 }
 
-sub init_entries {
+sub _init_entries {
     my $self = shift;
     my @entries =
       sort { $b->created <=> $a->created }
-      map  { @{ $self->$_ } } grep { $_ ne 'comments' }  keys %{ $self->entry_info };
+      map  { @{ $self->$_ } }
+      grep { $_ ne 'comments' } keys %{ $self->entry_info };
     $self->entries( \@entries );
+}
+
+sub init_entries {
+    my $self = shift;
+    for my $attr ( keys %{ $self->entry_info } ) {
+        my $method = "init_$attr";
+        if ( $self->can($method) ) {
+            $self->$method;
+        }
+        else {
+            $self->init_entry_attr($attr);
+        }
+    }
 }
 
 no Any::Moose;
