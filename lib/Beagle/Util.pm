@@ -664,10 +664,15 @@ sub parse_markdown {
             my $gard =
               $block_name eq 'shell' ? '$' : $block_name eq 'prettyprint' ? ':' : '#';
             if (/^\s+\Q$gard\E\s+(.*)/m) {
-                $code .= $1 . "\n";
+                $code .= $1 ? $1 : "\n";
             }
             else {
-                push @new, qq{<pre class="$block_name">$code</pre>};
+                if ( $block_name eq 'annotation' ) {
+                    push @new, qq{<div class="$block_name">$code</div>};
+                }
+                else {
+                    push @new, qq{<pre class="$block_name">$code</pre>};
+                }
                 undef $block_name;
                 $code = '';
             }
@@ -678,7 +683,7 @@ sub parse_markdown {
                     $1 eq '$' ? 'shell'
                   : $1 eq ':' ? 'prettyprint'
                   :             'annotation';
-                $code = $2 . "\n";
+                $code = $2;
             }
             else {
                 push @new, $_;
