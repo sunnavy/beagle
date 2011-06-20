@@ -240,7 +240,7 @@ get '/date/{year:[0-9]+}' => sub {
       title => "in $year";
 };
 
-get '/date/{year:[0-9]}/{month:[0-9]{2}}' => sub {
+get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my %vars  = @_;
     my $year  = $vars{year};
     my $month = $vars{month};
