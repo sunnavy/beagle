@@ -14,7 +14,10 @@ has 'format' => (
 
         $self->format( default_format() ) unless $value;
 
-        if ( $value ne 'plain' ) {
+        if ( $value eq 'plain' && $value !~ /\[BeagleAttachmentPath\]/ ) {
+            $self->_body_html('');
+        }
+        else {
             $self->_body_html( $self->_parse_body( $self->body ) );
         }
     },
@@ -28,7 +31,8 @@ has 'body' => (
         my $self  = shift;
         my $value = shift;
         $self->_body_html( $self->_parse_body($value) )
-          unless $self->format eq 'plain';
+          unless $self->format eq 'plain'
+              && $value !~ /\[BeagleAttachmentPath\]/;
     },
 );
 
@@ -40,8 +44,8 @@ has '_body_html' => (
 
 sub body_html {
     my $self = shift;
-    if ( $self->format eq 'plain' ) {
-        return '<pre>' . encode_entities($self->body) . '</pre>';
+    if ( $self->format eq 'plain' && $self->body !~ /\[BeagleAttachmentPath\]/) {
+        return '<pre>' . encode_entities( $self->body ) . '</pre>';
     }
     else {
         return $self->_body_html;
@@ -67,18 +71,19 @@ sub _parse_body {
     my $value = shift;
     return '' unless defined $value;
 
+    my $id =
+      $self->can('id')
+      ? join( '/', split_id( $self->id ) )
+      : undef;
+    my $path = '/static/';
+    $path .= "$id/" if $id;
+
+    $value =~ s!\[BeagleAttachmentPath\]!$path!gi;
+
     if ( $self->format eq 'plain' ) {
         return '<pre>' . $value . '</pre>';
     }
     else {
-        my $id =
-          $self->can('id')
-          ? join( '/', split_id( $self->id ) )
-          : undef;
-        my $path = '/static/';
-        $path .= "$id/" if $id;
-
-        $value =~ s!\[BeagleAttachmentPath\]!$path!gi;
         if ( $self->format eq 'wiki' ) {
             $value =~ s/\[\[Image:(.*?)\]\]/$self->_parse_image( $1 )/egi;
             return parse_wiki($value);
