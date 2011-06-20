@@ -3,8 +3,6 @@ use Beagle;
 use Beagle::Util;
 use Encode;
 
-our $VERSION = '0.01';
-
 sub enabled_admin {
 
     return
