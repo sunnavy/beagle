@@ -62,7 +62,8 @@ sub execute {
     }
     make_path($root) or die "failed to create $root";
 
-    create_beagle( %$opt, root => $root );
+    # $opt->{name} is not user name but beagle name
+    create_beagle( %$opt, root => $root, name => undef );
 
     if ( $self->name ) {
         my $all = beagle_roots();
