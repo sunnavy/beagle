@@ -24,7 +24,7 @@ has 'seprator' => (
     is            => 'rw',
     traits        => ['Getopt'],
     documentation => 'seprator between cmds or aliases',
-    default       => ' ',
+    default       => "\n",
 );
 
 no Any::Moose;
