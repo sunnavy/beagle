@@ -57,6 +57,12 @@ sub execute_command {
     $cmd->execute( $opt, \@args );
 }
 
+sub command_plugins {
+    my $self = shift;
+    return uniq grep { $_ ne 'App::Cmd::Command::help' } values %{ $self->_command };
+}
+
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
