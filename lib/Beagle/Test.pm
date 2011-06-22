@@ -19,7 +19,6 @@ sub init_home {
 sub init {
     my $class = shift;
 
-    my %args = @_;
     my $home = $class->init_home();
     my $root = tempdir( CLEANUP => 1 );
     local $Test::Builder::Level = $Test::Builder::Level + 1;
