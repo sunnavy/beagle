@@ -47,11 +47,11 @@ sub execute {
         );
     }
     my $seprator = $self->seprator;
-    $seprator =~ s{\\\\}{weird string which never matches}g;
+    $seprator =~ s{\\\\}{weird string which should never exist!!!}g;
     $seprator =~ s{\\r}{\r}g;
     $seprator =~ s{\\n}{\n}g;
     $seprator =~ s{\\t}{\t}g;
-    $seprator =~ s{weird string which never matches}{\\}g;
+    $seprator =~ s{weird string which should never exist!!!}{\\}g;
     Beagle::Util::puts( join $seprator, sort Beagle::Util::uniq @out );
 }
 
