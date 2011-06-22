@@ -20,8 +20,8 @@ run_ok( $beagle_cmd, ['help'], 'help' );
 my $help_output = <<EOF;
 Available commands:
 
-  commands: list the application's commands
-      help: display a command's help screen
+  commands: show beagle commands
+      help: show beagle help
 
      alias: show command alias(es)
    article: create a new article
@@ -67,8 +67,8 @@ is(
 );
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
-$expect =
-'alias article att cache cast cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web';
+$expect = join newline(), qw/
+  alias article att cache cast cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
