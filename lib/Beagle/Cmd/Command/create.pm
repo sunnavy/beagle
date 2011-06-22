@@ -20,22 +20,6 @@ has force => (
     traits        => ['Getopt'],
 );
 
-has 'user-name' => (
-    isa           => "Str",
-    is            => "rw",
-    accessor      => 'user_name',
-    documentation => "user name",
-    traits        => ['Getopt'],
-);
-
-has 'user-email' => (
-    isa           => "Str",
-    is            => "rw",
-    accessor      => 'user_email',
-    documentation => "user email",
-    traits        => ['Getopt'],
-);
-
 has type => (
     isa           => "BackendType",
     is            => "rw",
