@@ -1,5 +1,5 @@
 package Beagle::Cmd::Command::cmds;
-require Beagle::Util;
+use Beagle::Util;
 use Encode;
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
@@ -24,7 +24,7 @@ has 'seprator' => (
     is            => 'rw',
     traits        => ['Getopt'],
     documentation => 'seprator between cmds or aliases',
-    default       => "\n",
+    default       => newline(),
 );
 
 no Any::Moose;
