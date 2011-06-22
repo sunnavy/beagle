@@ -145,6 +145,7 @@ around 'serialize_meta' => sub {
     my $self = shift;
     my %opt  = @_;
     $opt{author} = undef;
+    $opt{draft} = undef;
     my $str = $self->_serialize_meta('id') . $self->$orig(%opt);
 
     for (
