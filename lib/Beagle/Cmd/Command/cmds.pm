@@ -32,6 +32,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
+    # can't use ->app->command_names directly as it contains alias such as -h 
     my @cmds = map { ( $_->command_names )[0] } $self->app->command_plugins;
     my @aliases = Beagle::Util::aliases;
 
