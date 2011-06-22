@@ -8,7 +8,7 @@ has 'alias' => (
     isa           => 'Bool',
     is            => 'rw',
     traits        => ['Getopt'],
-    documentation => 'include alias',
+    documentation => 'show aliases instead',
 );
 
 has 'all' => (
@@ -16,7 +16,15 @@ has 'all' => (
     is            => 'rw',
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
-    documentation => 'all cmds and aliases',
+    documentation => 'all the cmds and aliases',
+);
+
+has 'seprator' => (
+    isa           => 'Str',
+    is            => 'rw',
+    traits        => ['Getopt'],
+    documentation => 'seprator between cmds or aliases',
+    default       => ' ',
 );
 
 no Any::Moose;
@@ -38,7 +46,13 @@ sub execute {
             : @cmds
         );
     }
-    Beagle::Util::puts( join ' ', sort Beagle::Util::uniq @out );
+    my $seprator = $self->seprator;
+    $seprator =~ s{\\\\}{weird string which never matches}g;
+    $seprator =~ s{\\r}{\r}g;
+    $seprator =~ s{\\n}{\n}g;
+    $seprator =~ s{\\t}{\t}g;
+    $seprator =~ s{weird string which never matches}{\\}g;
+    Beagle::Util::puts( join $seprator, sort Beagle::Util::uniq @out );
 }
 
 1;
