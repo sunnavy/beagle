@@ -35,22 +35,6 @@ has unset => (
     default       => sub { [] },
 );
 
-has get => (
-    isa           => "ArrayRef[Str]",
-    is            => "rw",
-    documentation => "show the specified config items",
-    traits        => ['Getopt'],
-    default       => sub { [] },
-);
-
-has 'get-all' => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "show all the config items",
-    accessor      => "get_all",
-    traits        => ['Getopt'],
-);
-
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -105,21 +89,14 @@ sub execute {
 
     if ( $updated ) {
         set_core_config($core);
-        puts "updated.";
+        puts 'updated.';
     }
-
-    for my $name ( @{ $self->get } ) {
-        puts join ': ', $name, defined $core->{$name} ? $core->{$name} : '';
-    }
-
-    if ( $self->get_all ) {
-        for my $name ( sort keys %$core ) {
-            puts join ': ', $name, defined $core->{$name} ? $core->{$name} : '';
-        }
+    else {
+        puts 'no changes.';
     }
 }
 
-sub usage_desc { "config beagle" }
+sub usage_desc { "configure beagle" }
 
 1;
 
@@ -127,7 +104,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::config - config beagle
+Beagle::Cmd::Command::config - configure beagle
 
 =head1 AUTHOR
 
