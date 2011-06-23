@@ -84,6 +84,15 @@ has 'order' => (
     traits => ['Getopt'],
 );
 
+has 'marks' => (
+    isa         => 'Str',
+    is          => 'rw',
+    cmd_aliases => 'm',
+    documentation =>
+      "show show entries that has these masks seperated by comma",
+    traits => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -124,11 +133,29 @@ sub filter {
             }
             push @results, $entry if $pass;
         }
-        return @results;
+        @found = @results;
     }
-    else {
-        return @found;
+
+    if ( $self->marks ) {
+        my @marks       = split /\s*,\s*/, $self->marks;
+        my $marks       = entry_marks();
+
+        my $filter_mark = sub {
+            my $id    = shift;
+            return 1 unless @marks;
+            return unless $marks->{$id};
+            for my $mark (@marks) {
+                if ( !exists $marks->{$id}{$mark} ) {
+                    return;
+                }
+            }
+            return 1;
+        };
+
+        @found = grep { $filter_mark->( $_->id ) } @found;
     }
+
+    return @found;
 }
 
 sub _prepare {
