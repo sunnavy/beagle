@@ -1,5 +1,6 @@
 package Beagle::Cmd::Command::create;
 use Beagle::Util;
+use Encode;
 
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
@@ -36,6 +37,13 @@ has name => (
     traits        => ['Getopt'],
 );
 
+has 'edit' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => "edit with editor?",
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -43,7 +51,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
 
     die "can't specify --bare with --name" if $self->name && $self->bare;
-    die "can't specify root with --name"   if $self->name && @$args;
+    die "can't specify --root with --name"   if $self->name && @$args;
     die "need root" unless @$args || $self->name;
 
     my $root =
@@ -62,8 +70,16 @@ sub execute {
     }
     make_path($root) or die "failed to create $root";
 
+    my $info;
+    if ( $self->edit ) {
+        require Beagle::Model::Info;
+        my $template = Beagle::Model::Info->new()->serialize;
+        my $updated = edit_text($template);
+        $info = Beagle::Model::Info->new_from_string( decode_utf8 $updated);
+    }
+
     # $opt->{name} is not user name but beagle name
-    create_beagle( %$opt, root => $root, name => undef );
+    create_beagle( %$opt, root => $root, info => $info, name => undef );
 
     if ( $self->name ) {
         my $all = beagle_roots();

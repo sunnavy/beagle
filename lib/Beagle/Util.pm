@@ -407,7 +407,7 @@ sub _create_beagle_fs {
     my $email = $opt{'email'};
 
     require Beagle::Model::Info;
-    my $info = Beagle::Model::Info->new(
+    my $info = $opt{'info'} || Beagle::Model::Info->new(
         ( $name  ? ( name  => $name )  : () ),
         ( $email ? ( email => $email ) : () ),
         root => '',
