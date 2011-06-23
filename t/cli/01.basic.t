@@ -39,6 +39,7 @@ Available commands:
        git: bridge to git
       info: manage info
        log: show log
+      look: open the beagle root directory with SHELL
         ls: list/search entries
        map: manage entry map
         mv: move entries to another beagle
@@ -68,7 +69,9 @@ is(
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
-  alias article att cache cast cmds commands comment comments config create entry follow fsck git help info log ls map mv rename review rewrite rm root shell show spread status unfollow update version web/;
+  alias article att cache cast cmds commands comment comments config create
+  entry follow fsck git help info log look ls map mv rename review rewrite
+  rm root shell show spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
