@@ -20,16 +20,34 @@ has init => (
 );
 
 has set => (
-    isa           => "Bool",
+    isa           => "ArrayRef[Str]",
     is            => "rw",
     documentation => "set",
     traits        => ['Getopt'],
+    default       => sub { [] },
 );
 
 has unset => (
-    isa           => "Bool",
+    isa           => "ArrayRef[Str]",
     is            => "rw",
     documentation => "unset",
+    traits        => ['Getopt'],
+    default       => sub { [] },
+);
+
+has get => (
+    isa           => "ArrayRef[Str]",
+    is            => "rw",
+    documentation => "show the specified config items",
+    traits        => ['Getopt'],
+    default       => sub { [] },
+);
+
+has 'get-all' => (
+    isa           => "Bool",
+    is            => "rw",
+    documentation => "show all the config items",
+    accessor      => "get_all",
     traits        => ['Getopt'],
 );
 
@@ -54,9 +72,9 @@ sub execute {
         }
 
         $core->{"default_command"} = 'shell';
-        $core->{'cache'} = 1;
-        $core->{'devel'} = 0;
-        $core->{'web_admin'} = 0;
+        $core->{'cache'}           = 1;
+        $core->{'devel'}           = 0;
+        $core->{'web_admin'}       = 0;
 
         set_core_config($core);
 
@@ -66,39 +84,36 @@ sub execute {
 
         puts "initialized.";
         puts "now add etc/bashrc to your .bashrc.";
-        puts "if you use bash's completion, add etc/completion/bash to your .bashrc.";
-        puts "if you use oh-my-zsh, copy etc/completion/zsh/beagle to oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
+        puts
+"if you use bash's completion, add etc/completion/bash to your .bashrc.";
+        puts
+"if you use oh-my-zsh, copy etc/completion/zsh/beagle to oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
         return;
     }
 
-    if ( $self->set || $self->unset ) {
-
-        if ( $self->set ) {
-            for my $item (@$args) {
-                my ( $name, $value ) = split /=/, $item, 2;
-                $core->{$name} = $value;
-            }
-        }
-        elsif ( $self->unset ) {
-            for my $name (@$args) {
-                delete $core->{$name};
-            }
-        }
-        set_core_config($core);
-        puts "updated.";
+    my $updated;
+    for my $item ( @{ $self->set } ) {
+        my ( $name, $value ) = split /=/, $item, 2;
+        $core->{$name} = $value;
+        $updated = 1;
     }
-    else {
-        if (@$args) {
-            for my $name (@$args) {
-                puts join ': ', $name,
-                  defined $core->{$name} ? $core->{$name} : '';
-            }
-        }
-        else {
-            for my $name ( sort keys %$core ) {
-                puts join ': ', $name,
-                  defined $core->{$name} ? $core->{$name} : '';
-            }
+
+    for my $name ( @{ $self->unset } ) {
+        delete $core->{$name};
+        $updated = 1 unless $updated;
+    }
+
+    set_core_config($core);
+
+    puts "updated." if $updated;
+
+    for my $name ( @{ $self->get } ) {
+        puts join ': ', $name, defined $core->{$name} ? $core->{$name} : '';
+    }
+
+    if ( $self->get_all ) {
+        for my $name ( sort keys %$core ) {
+            puts join ': ', $name, defined $core->{$name} ? $core->{$name} : '';
         }
     }
 }
