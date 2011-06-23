@@ -15,14 +15,14 @@ has force => (
 has init => (
     isa           => "Bool",
     is            => "rw",
-    documentation => "initialize",
+    documentation => "initialize config items",
     traits        => ['Getopt'],
 );
 
 has set => (
     isa           => "ArrayRef[Str]",
     is            => "rw",
-    documentation => "set",
+    documentation => "set config items",
     traits        => ['Getopt'],
     default       => sub { [] },
 );
@@ -30,7 +30,7 @@ has set => (
 has unset => (
     isa           => "ArrayRef[Str]",
     is            => "rw",
-    documentation => "unset",
+    documentation => "delete config items",
     traits        => ['Getopt'],
     default       => sub { [] },
 );
