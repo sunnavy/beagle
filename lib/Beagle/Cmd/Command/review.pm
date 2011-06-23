@@ -15,10 +15,10 @@ has isbn => (
     traits        => ['Getopt'],
 );
 
-has 'place' => (
+has 'location' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "place",
+    documentation => "location",
     traits        => ['Getopt'],
 );
 

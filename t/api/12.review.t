@@ -7,7 +7,7 @@ isa_ok( $review, 'Beagle::Model::Review' );
 isa_ok( $review, 'Beagle::Model::Article' );
 isa_ok( $review, 'Beagle::Model::Entry' );
 
-for my $attr (qw/isbn published publisher writer translator link price place/) {
+for my $attr (qw/isbn published publisher writer translator link price location/) {
     can_ok( $review, $attr );
 }
 

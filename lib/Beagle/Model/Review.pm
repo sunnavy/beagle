@@ -45,7 +45,7 @@ has 'translator' => (
     default => '',
 );
 
-has 'place' => (
+has 'location' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
@@ -56,7 +56,7 @@ override 'serialize_meta' => sub {
     my $self = shift;
     my $str  = super;
     for (
-        qw/isbn writer translator publisher published price link place/ )
+        qw/isbn writer translator publisher published price link location/ )
     {
         $str .= $self->_serialize_meta( $_ );
     }
