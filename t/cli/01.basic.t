@@ -33,7 +33,8 @@ Available commands:
       cmds: show names of all the commands/aliases
    comment: create a new comment
   comments: list comments
-    config: config beagle
+    config: configure beagle
+   configs: show beagle configurations
     create: create a new beagle
      entry: create a new entry
     follow: follow a beagle
@@ -44,6 +45,8 @@ Available commands:
       look: open the beagle root directory with SHELL
         ls: list/search entries
        map: manage entry map
+      mark: manage entry marks
+     marks: show entry marks
         mv: move entries to another beagle
     rename: rename a beagle
     review: create a review
@@ -71,8 +74,8 @@ is(
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
-  alias article att cache cast cmds commands comment comments config create
-  entry follow fsck git help info log look ls map mv rename review rewrite
+  alias article att cache cast cmds commands comment comments config configs create
+  entry follow fsck git help info log look ls map mark marks mv rename review rewrite
   rm root shell show spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
