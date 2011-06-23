@@ -21,17 +21,15 @@ before 'run' => sub {
     # default cmd is today
     $cmd = 'today' unless defined $cmd;
 
-    if ( $cmd eq '--version' ) {
-        shift @ARGV;
-        unshift @ARGV, 'version';
+    if ( $cmd =~ /--?v(?:ersion)?/ ) {
+        $ARGV[0] = 'version';
     }
-    elsif ( $cmd eq 'help' || $cmd =~ /^--?h(help)?/ ) {
-        shift @ARGV;
-        if ( grep { /^[^-]/ } @ARGV ) {
-            unshift @ARGV, 'help';
+    elsif ( $cmd eq 'help' || $cmd =~ /^--?h(?:help)?/ ) {
+        if ( grep { /^[^-]/ } @ARGV[1..$#ARGV] ) {
+            $ARGV[0] = 'help';
         }
         else {
-            unshift @ARGV, 'commands';
+            $ARGV[0] = 'commands';
         }
     }
     elsif ( $cmd eq '.' || $cmd =~ /^-/ ) {
