@@ -41,7 +41,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die "beagle follow repopath" unless @$args;
+    die "beagle follow repo_uri1 [...]" unless @$args;
     die "can't follow multiple beagles with --name"
       if @$args > 1 && $self->name;
 

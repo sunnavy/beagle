@@ -10,7 +10,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die "beagle unfollow name [name]" unless @$args;
+    die "beagle unfollow name [...]" unless @$args;
     require File::Path;
 
     my @unfollowed;
