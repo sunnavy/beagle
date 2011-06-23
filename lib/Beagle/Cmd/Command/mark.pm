@@ -48,6 +48,7 @@ sub execute {
         for my $mark ( @{ $self->unset } ) {
             if ( $marks->{$id} && exists $marks->{$id}{$mark} ) {
                 delete $marks->{$id}{$mark};
+                delete $marks->{$id} unless %{$marks->{$id}};
                 $updated = 1 unless $updated;
             }
         }

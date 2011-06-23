@@ -27,6 +27,7 @@ sub execute {
     my $updated;
     my $marks = entry_marks;
 
+    my @ids;
     for my $i (@$args) {
         my @ret = resolve_entry( $i, handler => handler() || undef );
         unless (@ret) {
@@ -34,12 +35,17 @@ sub execute {
         }
         die_entry_ambiguous( $i, @ret ) unless @ret == 1;
         my $id = $ret[0]->{id};
-        my @marks;
-        if ( $marks->{$id} ) {
-            @marks = sort keys %{$marks->{$id}};
-        }
+        push @ids, $id;
+    }
 
-        puts $id, ': ', join ', ', @marks;
+    @ids = keys %$marks;
+
+    if (@ids) {
+        require Text::Table;
+        my $tb = Text::Table->new();
+        $tb->load( map { [ $_, join ', ', sort keys %{ $marks->{$_} } ] }
+              @ids );
+        puts $tb;
     }
 }
 
