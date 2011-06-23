@@ -18,6 +18,8 @@ is( $out, 'beagle version ' . $Beagle::VERSION . newline(), 'version output' );
 run_ok( $beagle_cmd, ['help'], 'help' );
 
 my $help_output = <<EOF;
+beagle <command>
+
 Available commands:
 
   commands: show beagle commands
@@ -63,7 +65,7 @@ is( last_script_stdout(), $help_output, 'help output' );
 run_ok( $beagle_cmd, ['commands'], 'commands' );
 is(
     last_script_stdout(),
-    "beagle <command>\n\n$help_output",
+    $help_output,
     'commands output'
 );
 
