@@ -95,7 +95,7 @@ sub execute {
     for my $item ( @{ $self->set } ) {
         my ( $name, $value ) = split /=/, $item, 2;
         $core->{$name} = $value;
-        $updated = 1;
+        $updated = 1 unless $updated;
     }
 
     for my $name ( @{ $self->unset } ) {
@@ -103,9 +103,10 @@ sub execute {
         $updated = 1 unless $updated;
     }
 
-    set_core_config($core);
-
-    puts "updated." if $updated;
+    if ( $updated ) {
+        set_core_config($core);
+        puts "updated.";
+    }
 
     for my $name ( @{ $self->get } ) {
         puts join ': ', $name, defined $core->{$name} ? $core->{$name} : '';
