@@ -25,9 +25,19 @@ before 'run' => sub {
         shift @ARGV;
         unshift @ARGV, 'version';
     }
-    elsif ( $cmd eq '.' || $cmd =~ /^-/ && $cmd !~ /^--?h(elp)?$/ ) {
+    elsif ( $cmd eq 'help' || $cmd =~ /^--?h(help)?/ ) {
+        shift @ARGV;
+        if ( grep { /^[^-]/ } @ARGV ) {
+            unshift @ARGV, 'help';
+        }
+        else {
+            unshift @ARGV, 'commands';
+        }
+    }
+    elsif ( $cmd eq '.' || $cmd =~ /^-/ ) {
         unshift @ARGV, core_config->{default_command};
     }
+
 
     if ( alias()->{$cmd} ) {
         require Text::ParseWords;

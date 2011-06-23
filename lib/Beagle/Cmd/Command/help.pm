@@ -9,7 +9,19 @@ no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
 sub execute {
-    App::Cmd::Command::help::execute(@_);
+    my ( $self, $opts, $args ) = @_;
+
+    ( my $cmd, $opts, $args ) = $self->app->prepare_command(@$args);
+
+    my $desc = $cmd->description;
+    $desc = "\n$desc" if length $desc;
+
+    $cmd->usage->{options} = [
+        sort { $a->{desc} cmp $b->{desc} }
+        grep { $_->{name} ne 'help' } @{ $cmd->usage->{options} }
+    ];
+    puts join newline(), $cmd->usage->leader_text, $desc,
+      $cmd->usage->option_text;
 }
 
 sub usage_desc { "show beagle help" }
