@@ -6,7 +6,7 @@ extends qw/Beagle::Cmd::GlobalCommand/;
 has 'update' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => 'show',
+    documentation => 'update',
     cmd_aliases   => "u",
     traits        => ['Getopt'],
 );
