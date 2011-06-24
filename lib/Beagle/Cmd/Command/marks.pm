@@ -28,23 +28,28 @@ sub execute {
     my $marks = entry_marks;
 
     my @ids;
-    for my $i (@$args) {
-        my @ret = resolve_entry( $i, handler => handler() || undef );
-        unless (@ret) {
-            @ret = resolve_entry($i) or die_entry_not_found($i);
+    if (@$args) {
+        for my $i (@$args) {
+            my @ret = resolve_entry( $i, handler => handler() || undef );
+            unless (@ret) {
+                @ret = resolve_entry($i) or die_entry_not_found($i);
+            }
+            die_entry_ambiguous( $i, @ret ) unless @ret == 1;
+            my $id = $ret[0]->{id};
+            push @ids, $id;
         }
-        die_entry_ambiguous( $i, @ret ) unless @ret == 1;
-        my $id = $ret[0]->{id};
-        push @ids, $id;
+    }
+    else {
+        @ids = keys %$marks;
     }
 
-    @ids = keys %$marks;
+    @ids = grep { %{ $marks->{$_} } } @ids;
 
     if (@ids) {
         require Text::Table;
         my $tb = Text::Table->new();
-        $tb->load( map { [ $_, join ', ', sort keys %{ $marks->{$_} } ] 
-                } grep { %{$marks->{$_}} } @ids );
+        $tb->load( map { [ $_, join ', ', sort keys %{ $marks->{$_} } ] }
+              @ids );
         puts $tb;
     }
 }
