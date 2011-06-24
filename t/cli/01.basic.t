@@ -25,11 +25,12 @@ Available commands:
   commands: show beagle commands
       help: show beagle help
 
-     alias: show command alias(es)
+     alias: manage aliases
    article: create a new article
        att: manage attachments
      cache: cache
       cast: cast entries to another type
+       cat: show entries
       cmds: show names of all the commands/aliases
    comment: create a new comment
   comments: list comments
@@ -54,7 +55,6 @@ Available commands:
         rm: delete entries
       root: show root
      shell: interactive shell
-      show: show entries
     spread: spread entries
     status: show status
   unfollow: unfollow beagle(s)
@@ -74,9 +74,9 @@ is(
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
-  alias article att cache cast cmds commands comment comments config configs create
+  alias article att cache cast cat cmds commands comment comments config configs create
   entry follow fsck git help info log look ls map mark marks mv rename review rewrite
-  rm root shell show spread status unfollow update version web/;
+  rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
