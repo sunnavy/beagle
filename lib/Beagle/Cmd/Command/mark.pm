@@ -46,7 +46,7 @@ sub execute {
         }
 
         for my $mark ( @{ $self->unset } ) {
-i           last unless $marks->{$id};
+            last unless $marks->{$id};
             if ( exists $marks->{$id}{$mark} ) {
                 delete $marks->{$id}{$mark};
                 $updated = 1 unless $updated;
