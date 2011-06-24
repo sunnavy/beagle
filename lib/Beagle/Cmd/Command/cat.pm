@@ -1,4 +1,4 @@
-package Beagle::Cmd::Command::show;
+package Beagle::Cmd::Command::cat;
 use Any::Moose;
 use Beagle::Util;
 use Encode;
@@ -16,7 +16,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die "beagle show id [...]" unless @$args;
+    die "beagle cat id [...]" unless @$args;
 
     my $first = 1;
     my $entry_map;
@@ -91,7 +91,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::show - show entries
+Beagle::Cmd::Command::cat - show entries
 
 
 =head1 AUTHOR
