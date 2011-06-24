@@ -14,22 +14,6 @@ has 'parent' => (
     traits        => ['Getopt'],
 );
 
-has delete => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "delete",
-    cmd_aliases   => 'd',
-    traits        => ['Getopt'],
-);
-
-has add => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "add",
-    cmd_aliases   => 'a',
-    traits        => ['Getopt'],
-);
-
 has prune => (
     isa           => "Bool",
     is            => "rw",
@@ -59,59 +43,65 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
     require Beagle::Handler;
     my $pid = $self->parent;
-    my @att;
 
-    die "need --parent with --add" if $self->add && !$pid;
-    die "beagle --parent foo --add /path/to/a.txt /path/to/b.jpg"
-      if $self->add && !@$args;
-    die "beagle --delete 1 2" if $self->delete && !@$args;
+    my $subcmd;
+    if ( @$args && $args->[0] =~ /^(?:cat|show|ls|list|add|rm|delete)$/ ) {
+        $subcmd = shift @$args;
+    }
+    else {
+        $subcmd = @$args ? 'cat' : 'ls';
+    }
 
     require Beagle::Handler;
     my $bh;
 
-    my %handler_map;
-    if ($pid) {
+    if ( $pid ) {
         my @ret = resolve_entry( $pid, handler => handler() || undef );
         unless (@ret) {
             @ret = resolve_entry($pid) or die_entry_not_found($pid);
         }
         die_entry_ambiguous( $pid, @ret ) unless @ret == 1;
         $pid = $ret[0]->{id};
-        my $bh = $ret[0]->{handler};
+        $bh = $ret[0]->{handler};
+    }
 
-        if ( $self->add ) {
-            my @added;
-            for my $file (@$args) {
-                if ( -f $file ) {
-                    my $basename = decode_utf8 basename $file;
-                    my $att      = Beagle::Model::Attachment->new(
-                        name         => $basename,
-                        content_file => $file,
-                        parent_id    => $pid,
-                    );
-                    if ( $bh->create_attachment( $att, commit => 0, ) ) {
-                        push @added, $basename;
-                    }
-                    else {
-                        die "failed to create attachment $file.";
-                    }
+    if ( $subcmd eq 'add' ) {
+        die "beagle att add --parent foo /path/to/a.txt [...]" unless $pid;
+        my @added;
+        for my $file (@$args) {
+            if ( -f $file ) {
+                my $basename = decode_utf8 basename $file;
+                my $att      = Beagle::Model::Attachment->new(
+                    name         => $basename,
+                    content_file => $file,
+                    parent_id    => $pid,
+                );
+                if ( $bh->create_attachment( $att, commit => 0, ) ) {
+                    push @added, $basename;
                 }
                 else {
-                    die "$file is not a file or doesn't exist";
+                    die "failed to create attachment $file.";
                 }
             }
-
-            if (@added) {
-                my $msg = $self->message
-                  || 'added attachments '
-                  . join( ', ', @added )
-                  . " to entry $pid";
-                $bh->backend->commit( message => $msg );
-                puts 'added ', join( ', ', @added ), '.';
+            else {
+                die "$file is not a file or doesn't exist";
             }
-            return;
         }
 
+        if (@added) {
+            my $msg = $self->message
+              || 'added attachments ' . join( ', ', @added ) . " to entry $pid";
+            $bh->backend->commit( message => $msg );
+            puts 'added ', join( ', ', @added ), '.';
+        }
+        return;
+    }
+
+    my %handler_map;
+
+
+    my @att;
+    if ($pid) {
         my $map = $bh->attachments_map->{$pid};
         @att = sort values %$map;
     }
@@ -130,7 +120,9 @@ sub execute {
                         }
                     }
                     else {
-                        warn "article $_ doesn't exist" unless $bh->map->{$_};
+                        warn
+"article $_ doesn't exist, run 'att --prune' can clean it out"
+                          unless $bh->map->{$_};
                     }
                 }
 
@@ -152,7 +144,8 @@ sub execute {
         }
     }
 
-    if ( $self->delete ) {
+    if ( $subcmd =~ /^(?:delete|rm)$/ ) {
+        die "beagle att rm 3 [...]" unless @$args;
         my @deleted;
 
         # before deleting anything, let's make sure no invliad index
@@ -187,7 +180,8 @@ sub execute {
         return;
     }
 
-    if (@$args) {
+    if ( $subcmd =~ /^(?:show|cat)$/ ) {
+        die "beagle att cat 3 [...]" unless @$args;
 
         my $first = 1;
 
@@ -206,6 +200,8 @@ sub execute {
     }
     else {
         return unless @att;
+
+        die "beagle att ls [--parent foo]" if @$args;
 
         my $name_length = max_length( map { $_->name } @att ) + 1;
         $name_length = 10 if $name_length < 10;
