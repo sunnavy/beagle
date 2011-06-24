@@ -22,6 +22,8 @@ has 'force' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/rm delete/ };
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die "beagle rm id [...]" unless @$args;

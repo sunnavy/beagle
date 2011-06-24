@@ -14,6 +14,8 @@ has 'raw' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/cat show/ };
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die "beagle cat id [...]" unless @$args;
