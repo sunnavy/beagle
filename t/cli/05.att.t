@@ -28,7 +28,7 @@ my $name = ( splitpath($filename) )[2];
 
 run_ok(
     $beagle_cmd,
-    [ 'att', '-p', $pid, '-a', $filename ],
+    [ 'att', '-p', $pid, 'add', $filename ],
     "create att $name",
 );
 is( last_script_stdout(), "added $name." . newline(), 'added x.pl' );
@@ -45,7 +45,7 @@ is(
     'get att content'
 );
 
-run_ok( $beagle_cmd, [ 'att', '-d', 1 ], "delete att 1", );
+run_ok( $beagle_cmd, [ 'att', 'rm', 1 ], "delete att 1", );
 is(
     last_script_stdout(),
     "deleted $name." . newline(),
