@@ -49,16 +49,26 @@ sub execute {
               "default is initialized already, use --force|-f to overwrite.\n";
         }
 
-        for my $key (qw/name email/) {
-            print "user $key: ";
-            chomp( my $val = <STDIN> );
-            $core->{"user_$key"} = $val;
-        }
-
         $core->{"default_command"} = 'shell';
         $core->{'cache'}           = 1;
         $core->{'devel'}           = 0;
         $core->{'web_admin'}       = 0;
+
+        for my $item ( @{ $self->set } ) {
+            my ( $name, $value ) = split /=/, $item, 2;
+            $core->{$name} = $value;
+        }
+
+        for my $key ( @{ $self->unset } ) {
+            delete $core->{$key};
+        }
+
+        for my $key (qw/name email/) {
+            next if $core->{"user_$key"};
+            print "user $key: ";
+            chomp( my $val = <STDIN> );
+            $core->{"user_$key"} = $val;
+        }
 
         set_core_config($core);
 
@@ -82,8 +92,8 @@ sub execute {
         $updated = 1 unless $updated;
     }
 
-    for my $name ( @{ $self->unset } ) {
-        delete $core->{$name};
+    for my $key ( @{ $self->unset } ) {
+        delete $core->{$key};
         $updated = 1 unless $updated;
     }
 
