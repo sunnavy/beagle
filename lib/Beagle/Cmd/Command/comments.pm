@@ -25,6 +25,8 @@ override 'filter' => sub {
     return grep { $_->parent_id =~ /^$pid/ } @found;
 };
 
+sub command_names { 'comments' };
+
 sub usage_desc { "list comments" }
 
 no Any::Moose;

@@ -21,6 +21,8 @@ has unset => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/alias aliases/ };
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
@@ -73,13 +75,15 @@ sub execute {
     }
 }
 
+sub usage_desc { "manage aliases" }
+
 1;
 
 __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::alias - show command alias(es)
+Beagle::Cmd::Command::alias - manage aliases
 
 =head1 AUTHOR
 
