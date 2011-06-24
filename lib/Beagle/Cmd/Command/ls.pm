@@ -96,6 +96,8 @@ has 'marks' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/ls list/ };
+
 sub filter {
     my $self = shift;
     my ( $bh, $opt, $args ) = @_;
