@@ -14,6 +14,7 @@ has 'spawn' => (
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
+sub command_names { qw/shell sh/ };
 
 use Term::ReadLine;
 use Text::ParseWords 'shellwords';

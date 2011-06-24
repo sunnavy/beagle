@@ -39,6 +39,8 @@ has 'message' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/att attachment attachments/ };
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
     require Beagle::Handler;

@@ -38,6 +38,8 @@ has 'message' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/update edit/ };
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die "beagle update id [...]" unless @$args;
