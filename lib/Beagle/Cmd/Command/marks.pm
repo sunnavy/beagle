@@ -43,8 +43,8 @@ sub execute {
     if (@ids) {
         require Text::Table;
         my $tb = Text::Table->new();
-        $tb->load( map { [ $_, join ', ', sort keys %{ $marks->{$_} } ] }
-              @ids );
+        $tb->load( map { [ $_, join ', ', sort keys %{ $marks->{$_} } ] 
+                } grep { %{$marks->{$_}} } @ids );
         puts $tb;
     }
 }
