@@ -6,6 +6,7 @@ extends qw/Beagle::Cmd::GlobalCommand/;
 has add => (
     isa           => 'ArrayRef[Str]',
     is            => 'rw',
+    cmd_aliases   => 'a',
     documentation => 'add marks',
     traits        => ['Getopt'],
 );
@@ -20,6 +21,7 @@ has set => (
 has delete => (
     isa           => 'ArrayRef[Str]',
     is            => 'rw',
+    cmd_aliases   => 'd',
     documentation => 'delete marks',
     traits        => ['Getopt'],
 );
