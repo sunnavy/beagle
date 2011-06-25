@@ -41,7 +41,7 @@ sub execute {
     puts "unfollowed ", join( ', ', @unfollowed ), '.';
 }
 
-sub usage_desc { "unfollow beagle(s)" }
+sub usage_desc { "unfollow beagles" }
 
 1;
 
@@ -49,7 +49,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::unfollow - unfollow beagle(s)
+Beagle::Cmd::Command::unfollow - unfollow beagles
 
 =head1 AUTHOR
 

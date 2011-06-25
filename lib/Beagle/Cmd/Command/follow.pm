@@ -107,7 +107,7 @@ sub execute {
     }
 }
 
-sub usage_desc { "follow a beagle" }
+sub usage_desc { "follow beagles" }
 
 1;
 
@@ -115,7 +115,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::follow - follow a beagle
+Beagle::Cmd::Command::follow - follow beagles
 
 =head1 AUTHOR
 

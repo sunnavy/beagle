@@ -116,7 +116,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::cache - cache
+Beagle::Cmd::Command::cache - manage cache
 
 
 =head1 AUTHOR
