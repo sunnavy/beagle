@@ -47,7 +47,7 @@ Available commands:
         ls: list/search entries
        map: manage entry map
       mark: manage entry marks
-     marks: show entry marks
+     marks: show/export/import entry marks
         mv: move entries to another beagle
     rename: rename a beagle
     review: create a review
