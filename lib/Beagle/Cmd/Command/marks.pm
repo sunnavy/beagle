@@ -9,8 +9,6 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $marks = entry_marks;
-
     my $subcmd;
     if ( @$args && $args->[0] =~ /^(?:export|import)$/ ) {
         $subcmd = shift @$args;
@@ -19,6 +17,7 @@ sub execute {
     if ($subcmd) {
         require JSON;
         if ( $subcmd eq 'export' ) {
+            my $marks = entry_marks;
             my $path = shift @$args;
             my $converted = {};
             for my $id ( keys %$marks ) {
@@ -48,7 +47,7 @@ sub execute {
                 $in = decode( locale => <STDIN> );
             }
             my $converted = JSON::from_json( $in );
-            $marks = {};
+            my $marks = {};
             for my $id ( keys %$converted ) {
                 next unless $converted->{$id} && @{ $converted->{$id} };
                 $marks->{$id} = { map { $_ => 1 } @{ $converted->{$id} } };
@@ -58,6 +57,7 @@ sub execute {
         }
     }
     else {
+        my $marks = entry_marks;
 
         my @ids;
         if (@$args) {
