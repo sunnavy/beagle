@@ -28,7 +28,7 @@ Available commands:
      alias: manage aliases
    article: create a new article
        att: manage attachments
-     cache: cache
+     cache: manage cache
       cast: cast entries to another type
        cat: show entries
       cmds: show names of all the commands/aliases
@@ -38,7 +38,7 @@ Available commands:
    configs: show beagle configurations
     create: create a new beagle
      entry: create a new entry
-    follow: follow a beagle
+    follow: follow beagles
       fsck: check integrity of beagles
        git: bridge to git
       info: manage info
@@ -57,7 +57,7 @@ Available commands:
      shell: interactive shell
     spread: spread entries
     status: show status
-  unfollow: unfollow beagle(s)
+  unfollow: unfollow beagles
     update: update entries
    version: show beagle version
        web: start web server
