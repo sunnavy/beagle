@@ -124,7 +124,7 @@ sub execute {
     }
 }
 
-sub usage_desc { "update an entry" }
+sub usage_desc { "update entries" }
 
 1;
 
@@ -132,7 +132,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::update - update an entry
+Beagle::Cmd::Command::update - update entries
 
 
 =head1 AUTHOR

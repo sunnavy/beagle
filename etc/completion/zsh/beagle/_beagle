@@ -39,7 +39,7 @@ _1st_arguments=(
 "status:show status"
 "task:create a new task"
 "unfollow:unfollow beagle(s)"
-"update:update an entry"
+"update:update entries"
 "version:show beagle version"
 "web:start web server"
 )

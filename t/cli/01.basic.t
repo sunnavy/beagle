@@ -58,7 +58,7 @@ Available commands:
     spread: spread entries
     status: show status
   unfollow: unfollow beagle(s)
-    update: update an entry
+    update: update entries
    version: show beagle version
        web: start web server
 
