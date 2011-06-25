@@ -49,8 +49,23 @@ sub execute {
             my $converted = JSON::from_json( $in );
             my $marks = {};
             for my $id ( keys %$converted ) {
-                next unless $converted->{$id} && @{ $converted->{$id} };
-                $marks->{$id} = { map { $_ => 1 } @{ $converted->{$id} } };
+                if ( defined $converted->{$id} ) {
+                    if ( ref $converted->{$id} ) {
+                        if ( ref $converted->{$id} eq 'ARRAY' ) {
+                            next unless @{ $converted->{$id} };
+                            $marks->{$id} =
+                              { map { $_ => 1 } @{ $converted->{$id} } };
+                        }
+                        elsif ( ref $converted->{$id} eq 'HASH' ) {
+                            next unless %{ $converted->{$id} };
+                            $marks->{$id} =
+                              { map { $_ => 1 } keys %{ $converted->{$id} } };
+                        }
+                    }
+                    else {
+                        $marks->{$id} = { $converted->{$id} => 1 };
+                    }
+                }
             }
             set_entry_marks($marks);
             puts 'imported.';
