@@ -3,22 +3,6 @@ use Beagle::Util;
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
-has set => (
-    isa           => 'ArrayRef[Str]',
-    is            => 'rw',
-    documentation => 'set marks',
-    traits        => ['Getopt'],
-    default       => sub { [] },
-);
-
-has unset => (
-    isa           => 'ArrayRef[Str]',
-    is            => 'rw',
-    documentation => 'unset marks',
-    traits        => ['Getopt'],
-    default       => sub { [] },
-);
-
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 

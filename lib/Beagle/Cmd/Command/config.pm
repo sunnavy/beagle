@@ -24,7 +24,6 @@ has set => (
     is            => "rw",
     documentation => "set config items",
     traits        => ['Getopt'],
-    default       => sub { [] },
 );
 
 has unset => (
@@ -32,7 +31,6 @@ has unset => (
     is            => "rw",
     documentation => "delete config items",
     traits        => ['Getopt'],
-    default       => sub { [] },
 );
 
 no Any::Moose;
@@ -54,13 +52,17 @@ sub execute {
         $core->{'devel'}           = 0;
         $core->{'web_admin'}       = 0;
 
-        for my $item ( @{ $self->set } ) {
-            my ( $name, $value ) = split /=/, $item, 2;
-            $core->{$name} = $value;
+        if ( $self->set ) {
+            for my $item ( @{ $self->set } ) {
+                my ( $name, $value ) = split /=/, $item, 2;
+                $core->{$name} = $value;
+            }
         }
 
-        for my $key ( @{ $self->unset } ) {
-            delete $core->{$key};
+        if ( $self->unset ) {
+            for my $key ( @{ $self->unset } ) {
+                delete $core->{$key};
+            }
         }
 
         for my $key (qw/name email/) {

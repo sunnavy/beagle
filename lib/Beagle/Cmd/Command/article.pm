@@ -38,7 +38,6 @@ has attachments => (
     cmd_aliases   => "a",
     documentation => "attachments",
     traits        => ['Getopt'],
-    default       => sub { [] },
 );
 
 has 'message' => (
@@ -124,6 +123,7 @@ sub execute {
 sub handle_attachments {
     my $self   = shift;
     my $parent = shift;
+    return unless $self->attachments;
     for my $file ( @{ $self->attachments } ) {
         $file = decode( locale_fs => $file );
         if ( -f $file ) {
