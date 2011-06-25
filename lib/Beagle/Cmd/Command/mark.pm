@@ -37,7 +37,6 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-
     my $updated;
     my $marks = entry_marks;
 
@@ -58,7 +57,7 @@ sub execute {
         }
 
         if ( $self->set ) {
-            $marks->{$id}{$mark} = {};
+            $marks->{$id} = {};
             for my $mark ( @{ $self->set } ) {
                 $marks->{$id}{$mark} = 1;
                 $updated = 1 unless $updated;
