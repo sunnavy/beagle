@@ -48,7 +48,7 @@ sub execute {
                 $in = decode( locale => <STDIN> );
             }
             my $converted = JSON::from_json( $in );
-            for my $id ( keys %$marks ) {
+            for my $id ( keys %$converted ) {
                 next unless $converted->{$id} && @{ $converted->{$id} };
                 $marks->{$id} = { map { $_ => 1 } @{ $converted->{$id} } };
             }
