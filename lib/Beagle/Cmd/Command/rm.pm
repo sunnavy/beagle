@@ -32,7 +32,7 @@ sub execute {
     my $entry_map;
 
     for my $i (@$args) {
-        my @ret = resolve_entry( $i, handler => handler() || undef );
+        my @ret = resolve_entry( $i, handle => handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }
@@ -40,11 +40,11 @@ sub execute {
 
         for my $ret (@ret) {
             my $id    = $ret->{id};
-            my $bh    = $ret->{handler};
+            my $bh    = $ret->{handle};
             my $entry = $ret->{entry};
 
             if ( $bh->delete_entry( $entry, commit => 0 ) ) {
-                push @deleted, { handler => $bh, id => $entry->id };
+                push @deleted, { handle => $bh, id => $entry->id };
             }
             else {
                 die "failed to delete entry " . $entry->id;
@@ -53,12 +53,12 @@ sub execute {
     }
 
     if (@deleted) {
-        my @handlers = uniq map { $_->{handler} } @deleted;
-        for my $bh (@handlers) {
+        my @handles = uniq map { $_->{handle} } @deleted;
+        for my $bh (@handles) {
             my $msg = 'deleted '
               . join( ', ',
                 map { $_->{id} }
-                grep { $_->{handler}->root eq $bh->root } @deleted );
+                grep { $_->{handle}->root eq $bh->root } @deleted );
             $bh->backend->commit( message => $self->message || $msg );
         }
 

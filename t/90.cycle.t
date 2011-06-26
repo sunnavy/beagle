@@ -6,8 +6,8 @@ if ($@) {
     exit;
 }
 
-use Beagle::Handler;
+use Beagle::Handle;
 Beagle::Test->init;
-my $bh = Beagle::Handler->new();
+my $bh = Beagle::Handle->new();
 Test::Memory::Cycle::memory_cycle_ok($object, 'no memory cycle');
 done_testing();

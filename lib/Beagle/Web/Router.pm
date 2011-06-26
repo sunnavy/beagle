@@ -1,6 +1,6 @@
 package Beagle::Web::Router;
 use Beagle::Web;
-use Beagle::Handler;
+use Beagle::Handle;
 use Beagle::Util;
 use Encode;
 use Lingua::EN::Inflect 'A';
@@ -58,7 +58,7 @@ if ( $ENV{BEAGLE_ALL} || !$root ) {
     for my $n ( keys %$all ) {
         local $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
         $bh{$n} =
-          Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
+          Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
         if ( $root && $root eq $all->{$n}{local} ) {
             $bh   = $bh{$n};
             $name = $n;
@@ -67,7 +67,7 @@ if ( $ENV{BEAGLE_ALL} || !$root ) {
             "/$n",
             {
                 code => sub {
-                    change_handler( name => $n );
+                    change_handle( name => $n );
                 },
             }
         );
@@ -78,7 +78,7 @@ if ( $ENV{BEAGLE_ALL} || !$root ) {
     $name ||= $bh->name if $bh;
 }
 else {
-    $bh = Beagle::Handler->new( drafts => Beagle::Web->enabled_admin() );
+    $bh = Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
     $name = $bh->name;
 }
 
@@ -186,7 +186,7 @@ sub redirect {
     $req->new_response( $code || 302, [ Location => $location || '/' ] );
 }
 
-sub change_handler {
+sub change_handle {
     my %vars = @_;
     my $n    = $vars{name};
     $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
@@ -208,7 +208,7 @@ get '/fragment/menu' => sub {
 get '/fragment/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id} or return;
-    my @ret  = resolve_id( $i, handler => $bh );
+    my @ret  = resolve_id( $i, handle => $bh );
     return unless @ret == 1;
 
     render 'entry', entry => $ret[0]->{entry};
@@ -254,7 +254,7 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
 get '/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id};
-    my @ret  = resolve_id( $i, handler => $bh );
+    my @ret  = resolve_id( $i, handle => $bh );
     return redirect "/" unless @ret == 1;
     my $id = $ret[0]->{id};
     return redirect "/entry/$id" unless $i eq $id;
@@ -586,7 +586,7 @@ sub add_attachments {
     }
 }
 
-sub current_handler { $bh }
+sub current_handle { $bh }
 
 sub default_options {
     return (

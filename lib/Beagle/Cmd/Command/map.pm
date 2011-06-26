@@ -19,11 +19,11 @@ sub execute {
 
     if ( $self->update ) {
         my $roots = beagle_roots();
-        require Beagle::Handler;
+        require Beagle::Handle;
         my $map = {};
 
         for my $name ( keys %$roots ) {
-            my $bh = Beagle::Handler->new( root => $roots->{$name}{local} );
+            my $bh = Beagle::Handle->new( root => $roots->{$name}{local} );
             for my $entry ( @{ $bh->comments }, @{ $bh->entries } ) {
                 $map->{ $entry->id } = $name;
             }

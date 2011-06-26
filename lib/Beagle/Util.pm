@@ -38,7 +38,7 @@ our @EXPORT = (
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
       system_alias create_beagle alias aliases resolve_id die_entry_not_found
-      die_entry_ambiguous handler handlers resolve_entry
+      die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
@@ -159,8 +159,8 @@ sub check_beagle_root {
 }
 
 sub beagle_static_root {
-    my $handler = shift;
-    return catdir( ( $handler ? $handler->root : beagle_root() ),
+    my $handle = shift;
+    return catdir( ( $handle ? $handle->root : beagle_root() ),
         'attachments' );
 }
 
@@ -490,16 +490,16 @@ sub resolve_entry {
 
     $str =~ s!^:!!; # : is to indicate that it's not an id
 
-    my %opt = ( handler => undef, @_ );
+    my %opt = ( handle => undef, @_ );
 
-    require Beagle::Handler;
+    require Beagle::Handle;
     my @bh;
-    if ($opt{handler}) {
-        push @bh, $opt{handler};
+    if ($opt{handle}) {
+        push @bh, $opt{handle};
     }
     else {
         my $all = beagle_roots;
-        @bh = map { Beagle::Handler->new( root => $all->{$_}{local} ) }
+        @bh = map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %{$all};
     }
 
@@ -508,7 +508,7 @@ sub resolve_entry {
         for my $entry ( @{$bh->entries} ) {
             if ( $entry->serialize( id => 1 ) =~ qr/$str/im ) {
                 push @found,
-                  { id => $entry->id, entry => $entry, handler => $bh };
+                  { id => $entry->id, entry => $entry, handle => $bh };
             }
         }
     }
@@ -522,14 +522,14 @@ sub die_not_found {
 
 sub resolve_id {
     my $i = shift or return;
-    my %opt = ( handler => undef, @_ );
-    my $bh = $opt{'handler'};
+    my %opt = ( handle => undef, @_ );
+    my $bh = $opt{'handle'};
 
-    require Beagle::Handler;
+    require Beagle::Handle;
     if ($bh) {
         my @ids = grep { /^$i/ } keys %{ $bh->map };
         return
-          map { { id => $_, entry => $bh->map->{$_}, handler => $bh } } @ids;
+          map { { id => $_, entry => $bh->map->{$_}, handle => $bh } } @ids;
     }
     else {
         my $entry_map = entry_map;
@@ -537,8 +537,8 @@ sub resolve_id {
         my @ret;
         for my $i (@ids) {
             my $root = name_root( $entry_map->{$i} );
-            my $bh = Beagle::Handler->new( root => $root );
-            push @ret, { id => $i, entry => $bh->map->{$i}, handler => $bh };
+            my $bh = Beagle::Handle->new( root => $root );
+            push @ret, { id => $i, entry => $bh->map->{$i}, handle => $bh };
         }
         return @ret;
     }
@@ -559,20 +559,20 @@ sub die_entry_ambiguous {
     die join newline(), @out;
 }
 
-sub handler {
+sub handle {
     my $root = beagle_root('not die');
-    require Beagle::Handler;
+    require Beagle::Handle;
 
     if ($root) {
-        return Beagle::Handler->new( root => $root );
+        return Beagle::Handle->new( root => $root );
     }
     return;
 }
 
-sub handlers {
+sub handles {
     my $all = beagle_roots();
-    require Beagle::Handler;
-    return map { Beagle::Handler->new( root => $all->{$_}{local} ) } keys %$all;
+    require Beagle::Handle;
+    return map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
 }
 
 sub is_in_range {

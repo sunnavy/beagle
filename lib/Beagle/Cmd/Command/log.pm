@@ -20,17 +20,17 @@ sub execute {
     my ( $id, $entry, $bh );
     if ( $self->id ) {
         my $i = $self->id;
-        my @ret = resolve_entry( $i, handler => handler() || undef );
+        my @ret = resolve_entry( $i, handle => handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }
         die_entry_ambiguous( $i, @ret ) unless @ret == 1;
         $id    = $ret[0]->{id};
-        $bh    = $ret[0]->{handler};
+        $bh    = $ret[0]->{handle};
         $entry = $ret[0]->{entry};
     }
-    require Beagle::Handler;
-    $bh ||= Beagle::Handler->new( root => beagle_root() );
+    require Beagle::Handle;
+    $bh ||= Beagle::Handle->new( root => beagle_root() );
 
     my ( $ret, $out ) =
       $bh->backend->log( @$args, $entry ? ( '--follow', $entry->path ) : () );

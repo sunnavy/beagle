@@ -166,15 +166,15 @@ sub _prepare {
     $self->type($type);
 
     my $root = beagle_root('not die');
-    require Beagle::Handler;
+    require Beagle::Handle;
 
     if ( !$self->all && $root ) {
-        return Beagle::Handler->new( root => $root );
+        return Beagle::Handle->new( root => $root );
     }
     else {
         my $all = beagle_roots();
         $self->all(1);
-        return map { Beagle::Handler->new( root => $all->{$_}{local} ) }
+        return map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %$all;
     }
 }

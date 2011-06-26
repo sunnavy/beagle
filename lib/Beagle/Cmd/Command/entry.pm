@@ -89,8 +89,8 @@ sub execute {
         CORE::die "please specify beagle by --name or --root\n";
     }
 
-    require Beagle::Handler;
-    my $bh = Beagle::Handler->new( root => $root );
+    require Beagle::Handle;
+    my $bh = Beagle::Handle->new( root => $root );
 
     if ( $self->body_file && !defined $opt->{body} ) {
         $opt->{body} = decode(

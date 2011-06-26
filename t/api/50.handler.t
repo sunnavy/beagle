@@ -1,10 +1,10 @@
 use Test::More;
-use Beagle::Handler;
+use Beagle::Handle;
 use Beagle::Test;
 
 my ($root) = Beagle::Test->init;
 
-my $bh = Beagle::Handler->new();
+my $bh = Beagle::Handle->new();
 is( $bh->root, $root, 'root' );
 is( $bh->name, $root, 'name' );
 is( $bh->type, 'fs',  'type' );

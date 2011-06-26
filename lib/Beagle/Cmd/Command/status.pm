@@ -31,13 +31,13 @@ sub execute {
 
     return unless @roots;
 
-    require Beagle::Handler;
+    require Beagle::Handle;
 
     require Text::Table;
     my $tb =
       Text::Table->new( 'name', 'type', 'size' );
     for my $root (@roots) {
-        my $bh = Beagle::Handler->new( root => $root );
+        my $bh = Beagle::Handle->new( root => $root );
         for my $attr ( sort keys %{ $bh->entry_info } ) {
             $tb->add( $bh->name, $attr, size_info( $bh->$attr ) || 0 );
         }

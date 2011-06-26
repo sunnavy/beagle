@@ -43,13 +43,13 @@ sub execute {
 
     my $cmd = $self->cmd;
     for my $i (@$args) {
-        my @ret = resolve_entry( $i, handler => handler() || undef );
+        my @ret = resolve_entry( $i, handle => handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }
         die_entry_ambiguous( $i, @ret ) unless @ret == 1;
         my $id    = $ret[0]->{id};
-        my $bh    = $ret[0]->{handler};
+        my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
 
         my $msg;

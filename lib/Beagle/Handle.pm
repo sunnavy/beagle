@@ -1,4 +1,4 @@
-package Beagle::Handler;
+package Beagle::Handle;
 use Any::Moose;
 use Lingua::EN::Inflect 'PL';
 

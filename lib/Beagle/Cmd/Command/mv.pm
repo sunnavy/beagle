@@ -23,17 +23,17 @@ sub execute {
 
     my $name = pop @{$args};
     my $to_root = name_root($name) or die "no such beagle with name: $name";
-    require Beagle::Handler;
-    my $to = Beagle::Handler->new( root => $to_root );
+    require Beagle::Handle;
+    my $to = Beagle::Handle->new( root => $to_root );
 
     for my $i (@$args) {
-        my @ret = resolve_entry( $i, handler => handler() || undef );
+        my @ret = resolve_entry( $i, handle => handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }
         die_entry_ambiguous( $i, @ret ) unless @ret == 1;
         my $id    = $ret[0]->{id};
-        my $bh    = $ret[0]->{handler};
+        my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
 
         if ( $to->create_entry( $entry, commit => 0 ) ) {
@@ -66,8 +66,8 @@ sub execute {
           'to', $to->name;
         $to->backend->commit( message => $self->message || $msg );
 
-        my @handlers = uniq map { $_->{from} } @created;
-        for my $bh (@handlers) {
+        my @handles = uniq map { $_->{from} } @created;
+        for my $bh (@handles) {
             $bh->backend->commit( message => $self->message || $msg );
         }
 

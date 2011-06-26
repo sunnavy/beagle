@@ -43,7 +43,7 @@ sub command_names { qw/att attachment attachments/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    require Beagle::Handler;
+    require Beagle::Handle;
     my $pid = $self->parent;
 
     my $subcmd;
@@ -54,17 +54,17 @@ sub execute {
         $subcmd = @$args ? 'cat' : 'ls';
     }
 
-    require Beagle::Handler;
+    require Beagle::Handle;
     my $bh;
 
     if ( $pid ) {
-        my @ret = resolve_entry( $pid, handler => handler() || undef );
+        my @ret = resolve_entry( $pid, handle => handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($pid) or die_entry_not_found($pid);
         }
         die_entry_ambiguous( $pid, @ret ) unless @ret == 1;
         $pid = $ret[0]->{id};
-        $bh = $ret[0]->{handler};
+        $bh = $ret[0]->{handle};
     }
 
     if ( $subcmd eq 'add' ) {
@@ -99,7 +99,7 @@ sub execute {
         return;
     }
 
-    my %handler_map;
+    my %handle_map;
 
 
     my @att;
@@ -108,10 +108,10 @@ sub execute {
         @att = sort values %$map;
     }
     else {
-        my @bh = $self->all ? handlers() : ( handler || handlers );
+        my @bh = $self->all ? handles() : ( handle || handles );
 
         for my $bh (@bh) {
-            $handler_map{ $bh->root } = $bh;
+            $handle_map{ $bh->root } = $bh;
             for ( keys %{ $bh->attachments_map } ) {
                 unless ( $bh->map->{$_} ) {
                     if ( $self->prune ) {
@@ -158,9 +158,9 @@ sub execute {
 
         for my $i (@$args) {
             my $att = $att[ $i - 1 ];
-            my $handler = $bh || $handler_map{ $att->root };
-            if ( $handler->delete_attachment( $att, commit => 0 ) ) {
-                push @deleted, { handler => $handler, name => $att->name };
+            my $handle = $bh || $handle_map{ $att->root };
+            if ( $handle->delete_attachment( $att, commit => 0 ) ) {
+                push @deleted, { handle => $handle, name => $att->name };
             }
             else {
                 die "failed to delete attachment $i: " . $att->name . ".";
@@ -168,12 +168,12 @@ sub execute {
         }
 
         if (@deleted) {
-            my @handlers = uniq map { $_->{handler} } @deleted;
-            for my $bh (@handlers) {
+            my @handles = uniq map { $_->{handle} } @deleted;
+            for my $bh (@handles) {
                 my $msg = 'deleted '
                   . join( ', ',
                     map { $_->{name} }
-                    grep { $_->{handler}->root eq $bh->root } @deleted );
+                    grep { $_->{handle}->root eq $bh->root } @deleted );
                 $bh->backend->commit( message => $self->message || $msg );
             }
             my $msg = 'deleted ' . join( ', ', map { $_->{name} } @deleted );

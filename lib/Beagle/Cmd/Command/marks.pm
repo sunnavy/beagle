@@ -77,7 +77,7 @@ sub execute {
         my @ids;
         if (@$args) {
             for my $i (@$args) {
-                my @ret = resolve_entry( $i, handler => handler() || undef );
+                my @ret = resolve_entry( $i, handle => handle() || undef );
                 unless (@ret) {
                     @ret = resolve_entry($i) or die_entry_not_found($i);
                 }

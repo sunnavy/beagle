@@ -47,7 +47,7 @@ sub execute {
 
     if ( $self->update ) {
         for my $root (@roots) {
-            require Beagle::Handler;
+            require Beagle::Handle;
 
             if ( $self->force ) {
                 my $name = root_name($root);
@@ -56,8 +56,8 @@ sub execute {
                 unlink catfile( beagle_home_cache(), $name );
             }
 
-            Beagle::Handler->new( root => $root, drafts => 0 );
-            Beagle::Handler->new( root => $root, drafts => 1 );
+            Beagle::Handle->new( root => $root, drafts => 0 );
+            Beagle::Handle->new( root => $root, drafts => 1 );
         }
         puts 'updated cache.';
     }
@@ -72,9 +72,9 @@ sub execute {
 
         for my $root (@roots) {
 
-            # Beagle::Handler->new will update cache for us
+            # Beagle::Handle->new will update cache for us
             require Storable;
-            require Beagle::Handler;
+            require Beagle::Handle;
 
             my %info;
             require Beagle::Backend;

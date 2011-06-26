@@ -22,14 +22,14 @@ sub execute {
     local $ENV{BEAGLE_CACHE};    # no cache
 
     my $root = beagle_root('not die');
-    require Beagle::Handler;
+    require Beagle::Handle;
     if ($root) {
-        push @bh, Beagle::Handler->new( root => $root );
+        push @bh, Beagle::Handle->new( root => $root );
     }
     else {
         my $all = beagle_roots();
         push @bh,
-          map { Beagle::Handler->new( root => $all->{$_}{local} ) } keys %$all;
+          map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
     }
 
     require Email::Address;

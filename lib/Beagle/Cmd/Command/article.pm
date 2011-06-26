@@ -53,7 +53,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my $bh = handler() || undef
+    my $bh = handle() || undef
       or die "please specify beagle by --name or --root\n";
 
     $opt->{tags} = to_array( delete $opt->{tags} );
@@ -136,7 +136,7 @@ sub handle_attachments {
                 parent_id    => $parent->id,
             );
 
-            handler->create_attachment( $att, commit => 0 );
+            handle->create_attachment( $att, commit => 0 );
         }
         else {
             die "$file is not a file or doesn't exist.";
