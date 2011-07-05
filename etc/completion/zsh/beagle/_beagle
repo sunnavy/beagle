@@ -35,7 +35,7 @@ _1st_arguments=(
 "rm:delete entries"
 "root:show root"
 "shell:interactive shell"
-"spread:spread an entry"
+"spread:spread entries"
 "status:show status"
 "task:create a new task"
 "unfollow:unfollow beagles"
