@@ -74,7 +74,7 @@ sub execute {
         );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
         $temp->author( $self->author
-              || Email::Address->new( $bh->name, $bh->info->email )->format );
+              || Email::Address->new( $bh->info->name, $bh->info->email )->format );
         my $template = encode_utf8 $temp->serialize(
             $self->verbose
             ? (
@@ -106,7 +106,7 @@ sub execute {
 
     $article->timezone( $bh->info->timezone ) if $bh->info->timezone;
     $article->author( $self->author
-          || Email::Address->new( $bh->name, $bh->info->email )->format )
+          || Email::Address->new( $bh->info->name, $bh->info->email )->format )
       unless $article->author;
     if ( $bh->create_entry( $article, commit => 0, ) ) {
         $self->handle_attachments($article);

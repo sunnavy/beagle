@@ -145,7 +145,7 @@ sub execute {
       if $bh->info->timezone
           && !$entry->timezone;
     $entry->author( $self->author
-          || Email::Address->new( $bh->name, $bh->info->email )->format )
+          || Email::Address->new( $bh->info->name, $bh->info->email )->format )
       unless $entry->author;
 
     if (
