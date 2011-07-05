@@ -79,11 +79,11 @@ sub execute {
         set_beagle_roots($old);
 
         puts "initialized.";
-        puts "now add etc/bashrc to your .bashrc.";
+        puts "now add etc/bashrc in beagle source to your .bashrc.";
         puts
-"if you use bash's completion, add etc/completion/bash to your .bashrc.";
+"if you use bash's completion, add etc/completion/bash in beagle source to your .bashrc.";
         puts
-"if you use oh-my-zsh, copy etc/completion/zsh/beagle to oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
+"if you use oh-my-zsh, copy etc/completion/zsh/beagle in beagle source to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
         return;
     }
 
