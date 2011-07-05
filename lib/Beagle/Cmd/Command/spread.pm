@@ -19,13 +19,6 @@ has 'dry-run' => (
     accessor      => 'dry_run',
 );
 
-has 'shorten' => (
-    isa           => 'Bool',
-    is            => 'rw',
-    documentation => 'shorten url',
-    traits        => ['Getopt'],
-);
-
 has 'quiet' => (
     isa           => 'Bool',
     is            => 'rw',
@@ -52,27 +45,17 @@ sub execute {
         my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
 
-        my $msg;
-        if ( $entry->type eq 'bark' ) {
-            $msg = $entry->summary(70);
-        }
-        else {
-            my $url = $bh->info->url . '/entry/' . $entry->id;
-            if ( $self->shorten ) {
-                my $s = `shorten $url`;
-                chomp $s;
-                die "shorten failed" unless $s && $s =~ /\S/;
-                $url = $s;
-            }
-            $msg = join ' ', $entry->title, $url;
-        }
+        my $msg = join "\n",
+          ( 'url: ' . $bh->info->url . '/entry/' . $entry->id ),
+          $entry->serialize( id => 1 );
+
         if ( $self->dry_run ) {
-            puts "going to call `$cmd $msg`";
+            puts "going to call `$cmd` with input:", newline(), $msg;
         }
         else {
             my $update = 1;
             if ( !$self->quiet ) {
-                puts "going to call `$cmd $msg`";
+                puts "going to call `$cmd` with input:", newline(), $msg;
                 print "spread? (Y/n): ";
                 my $val = <STDIN>;
                 undef $update if $val =~ /n/i;
@@ -80,7 +63,18 @@ sub execute {
 
             if ($update) {
                 my @cmd = Text::ParseWords::shellwords($cmd);
-                system( @cmd, $msg ) == 0 or die $!;
+                require IPC::Run3;
+                my ( $out, $err );
+                IPC::Run3::run3( [@cmd], \$msg, \$out, \$err,
+                    { binmode_stdin => ':utf8' } );
+                if ($?) {
+                    die "failed to run $cmd: exit code is "
+                      . ( $? >> 8 )
+                      . ", out is $out, err is $err\n";
+                }
+                else {
+                    print $out;
+                }
             }
         }
     }
