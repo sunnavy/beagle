@@ -45,9 +45,30 @@ sub execute {
         my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
 
-        my $msg = join "\n",
-          ( 'url: ' . $bh->info->url . '/entry/' . $entry->id ),
-          $entry->serialize( id => 1 );
+        my $msg = join "\n", $entry->serialize( id => 1 );
+        require MIME::Entity;
+        my $mime = MIME::Entity->build(
+            From =>
+              Email::Address->new( $bh->info->name, $bh->info->email )->format,
+            Subject              => $entry->summary(70),
+            'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
+            'X-Beagle-Copyright' => $bh->info->copyright,
+            Data                 => [$msg],
+            Charset              => 'utf8',
+        );
+
+        my $atts = $bh->attachments_map->{$id};
+        if ($atts) {
+            $mime->make_multipart;
+            for my $name ( keys %$atts ) {
+                $mime->attach(
+                    Filename => $name,
+                    Data     => $atts->{$name}->content,
+                    Type     => $atts->{$name}->mime_type,
+                );
+            }
+        }
+        die $mime->stringify;
 
         if ( $self->dry_run ) {
             puts "going to call `$cmd` with input:", newline(), $msg;
