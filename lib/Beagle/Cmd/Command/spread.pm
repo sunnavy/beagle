@@ -84,7 +84,8 @@ sub execute {
         else {
             my $update = 1;
             if ( !$self->quiet ) {
-                puts "going to call `$cmd` with input:", newline(), $msg;
+                puts "going to call `$cmd` with input:", newline(),
+                  $mime->stringify;
                 print "spread? (Y/n): ";
                 my $val = <STDIN>;
                 undef $update if $val =~ /n/i;
@@ -94,8 +95,7 @@ sub execute {
                 my @cmd = Text::ParseWords::shellwords($cmd);
                 require IPC::Run3;
                 my ( $out, $err );
-                IPC::Run3::run3( [@cmd], \$msg, \$out, \$err,
-                    { binmode_stdin => ':utf8' } );
+                IPC::Run3::run3( [@cmd], \($mime->stringify), \$out, \$err, ) ;
                 if ($?) {
                     die "failed to run $cmd: exit code is "
                       . ( $? >> 8 )
