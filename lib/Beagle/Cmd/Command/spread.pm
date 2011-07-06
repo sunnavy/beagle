@@ -77,7 +77,6 @@ sub execute {
                 );
             }
         }
-        die $mime->stringify;
 
         if ( $self->dry_run ) {
             puts "going to call `$cmd` with input:", newline(), $msg;
