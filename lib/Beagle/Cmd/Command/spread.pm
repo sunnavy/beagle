@@ -45,16 +45,25 @@ sub execute {
         my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
 
-        my $msg = join "\n", $entry->serialize( id => 1 );
         require MIME::Entity;
+        my %head = (
+            'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
+            'X-Beagle-Copyright' => $bh->info->copyright,
+        );
+
+        for my $line ( split /\n/, $entry->serialize_meta( id => 1 ) ) {
+            my ( $key, $value ) = split /:\s+/, $line, 2;
+            $head{"X-Beagle-$key"} = $value;
+        }
+
+
         my $mime = MIME::Entity->build(
             From =>
               Email::Address->new( $bh->info->name, $bh->info->email )->format,
             Subject              => $entry->summary(70),
-            'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
-            'X-Beagle-Copyright' => $bh->info->copyright,
-            Data                 => [$msg],
+            Data                 => $entry->body,
             Charset              => 'utf-8',
+            %head,
         );
 
         if ( $entry->format ne 'plain' ) {
@@ -79,7 +88,7 @@ sub execute {
         }
 
         if ( $self->dry_run ) {
-            puts "going to call `$cmd` with input:", newline(), $msg;
+            puts "going to call `$cmd` with input:", newline(), $entry->body;
         }
         else {
             my $update = 1;
