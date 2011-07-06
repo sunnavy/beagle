@@ -54,8 +54,16 @@ sub execute {
             'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
             'X-Beagle-Copyright' => $bh->info->copyright,
             Data                 => [$msg],
-            Charset              => 'utf8',
+            Charset              => 'utf-8',
         );
+
+        if ( $entry->format ne 'plain' ) {
+            $mime->make_multipart;
+            $mime->attach(
+                Data           => $entry->body_html,
+                'Content-Type' => 'text/html; charset=utf-8',
+            );
+        }
 
         my $atts = $bh->attachments_map->{$id};
         if ($atts) {
@@ -65,6 +73,7 @@ sub execute {
                     Filename => $name,
                     Data     => $atts->{$name}->content,
                     Type     => $atts->{$name}->mime_type,
+                    'Content-Disposition' => "attachment; filename=$name",
                 );
             }
         }
