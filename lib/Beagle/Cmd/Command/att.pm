@@ -211,7 +211,7 @@ sub execute {
         require Text::Table;
         my $tb =
           $self->verbose
-          ? Text::Table->new( qw/index size name parent/, )
+          ? Text::Table->new( qw/index parent size name/, )
           : Text::Table->new();
 
         for ( my $i = 1 ; $i <= @att ; $i++ ) {
