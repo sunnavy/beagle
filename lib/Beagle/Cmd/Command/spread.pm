@@ -93,8 +93,7 @@ sub execute {
         else {
             my $update = 1;
             if ( !$self->quiet ) {
-                puts "going to call `$cmd` with input:", newline(),
-                  $mime->stringify;
+                puts "going to call `$cmd` for " . $entry->id;
                 print "spread? (Y/n): ";
                 my $val = <STDIN>;
                 undef $update if $val =~ /n/i;
