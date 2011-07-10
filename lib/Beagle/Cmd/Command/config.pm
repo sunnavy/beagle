@@ -88,15 +88,19 @@ sub execute {
     }
 
     my $updated;
-    for my $item ( @{ $self->set } ) {
-        my ( $name, $value ) = split /=/, $item, 2;
-        $core->{$name} = $value;
-        $updated = 1 unless $updated;
+    if ( $self->set ) {
+        for my $item ( @{ $self->set } ) {
+            my ( $name, $value ) = split /=/, $item, 2;
+            $core->{$name} = $value;
+            $updated = 1 unless $updated;
+        }
     }
 
-    for my $key ( @{ $self->unset } ) {
-        delete $core->{$key};
-        $updated = 1 unless $updated;
+    if ( $self->unset ) {
+        for my $key ( @{ $self->unset } ) {
+            delete $core->{$key};
+            $updated = 1 unless $updated;
+        }
     }
 
     if ( $updated ) {
