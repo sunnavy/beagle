@@ -19,9 +19,10 @@ Beagle - manage/version/spread articles, reviews, barks, etc.
 
     $ beagle help
     $ beagle ls # show/search entries
-    $ beagle show id1 # show id1
-    $ beagle update id1 # update id1
-    $ beagle rm id1 # delete id1
+    $ beagle article --title foo --body bar # create an article
+    $ beagle show uuid1 # show uuid1
+    $ beagle update uuid1 # update uuid1
+    $ beagle rm uuid1 # delete uuid1
     $ beagle shell # beagle shell
 
 =head1 DESCRIPTION
