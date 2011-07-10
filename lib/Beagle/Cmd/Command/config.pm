@@ -41,6 +41,9 @@ sub execute {
 
     my $core = core_config();
 
+    die "beagle config --init | --set ... | --unset ..."
+      unless $self->init || $self->set || $self->unset;
+
     if ( $self->init ) {
         if ( keys %$core && !$self->force ) {
             die
