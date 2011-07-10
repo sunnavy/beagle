@@ -5,6 +5,12 @@ use Beagle::Util;
 use Date::Format;
 use Storable 'dclone';
 
+has 'tags' => (
+    isa     => 'ArrayRef[Str]',
+    is      => 'rw',
+    default => sub { [] },
+);
+
 has 'root' => (
     isa     => 'Str',
     is      => 'rw',
@@ -123,11 +129,12 @@ sub serialize_meta {
         updated => 1,
         format  => 1,
         draft   => 1,
+        tags    => 1,
         @_
     );
     my $str = '';
 
-    for my $type (qw/id format author draft/) {
+    for my $type (qw/id format author tags draft/) {
         $str .= $self->_serialize_meta($type) if $args{$type};
     }
 

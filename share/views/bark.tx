@@ -13,12 +13,6 @@
 
 </div>
 
-<div class="content">
-<div class="body">
-: include 'body.tx' { entry => $entry };
-</div>
-: include "comments.tx" { entry => $entry };
-</div>
-
+: include "content.tx" { entry => $entry };
 
 </div>

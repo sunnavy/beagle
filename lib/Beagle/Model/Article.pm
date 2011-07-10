@@ -3,12 +3,6 @@ use Any::Moose;
 use Beagle::Util;
 extends 'Beagle::Model::Entry';
 
-has 'tags' => (
-    isa     => 'ArrayRef[Str]',
-    is      => 'rw',
-    default => sub { [] },
-);
-
 has 'title' => (
     isa     => 'Str',
     is      => 'rw',
@@ -23,7 +17,7 @@ has 'update' => (
 override 'serialize_meta' => sub {
     my $self = shift;
     my $str  = '';
-    $str .= $self->_serialize_meta( $_ ) for qw/title tags/;
+    $str .= $self->_serialize_meta( $_ ) for qw/title/;
     $str .= super;
 
     if ( $self->update ) {

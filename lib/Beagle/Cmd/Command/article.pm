@@ -25,28 +25,6 @@ has tags => (
     traits        => ['Getopt'],
 );
 
-has format => (
-    isa           => 'Str',
-    is            => 'rw',
-    documentation => 'format',
-    traits        => ['Getopt'],
-);
-
-has attachments => (
-    isa           => "ArrayRef[Str]",
-    is            => "rw",
-    cmd_aliases   => "a",
-    documentation => "attachments",
-    traits        => ['Getopt'],
-);
-
-has 'message' => (
-    isa           => 'Str',
-    is            => 'rw',
-    documentation => 'message to commit',
-    cmd_aliases   => "m",
-    traits        => ['Getopt'],
-);
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
@@ -118,30 +96,6 @@ sub execute {
         die "failed to create the article.";
     }
 
-}
-
-sub handle_attachments {
-    my $self   = shift;
-    my $parent = shift;
-    return unless $self->attachments;
-    for my $file ( @{ $self->attachments } ) {
-        $file = decode( locale_fs => $file );
-        if ( -f $file ) {
-
-            require File::Basename;
-            my $basename = File::Basename::basename($file);
-            my $att      = Beagle::Model::Attachment->new(
-                name         => $basename,
-                content_file => $file,
-                parent_id    => $parent->id,
-            );
-
-            handle->create_attachment( $att, commit => 0 );
-        }
-        else {
-            die "$file is not a file or doesn't exist.";
-        }
-    }
 }
 
 sub usage_desc { "create a new article" }

@@ -73,6 +73,21 @@ has 'message' => (
     traits        => ['Getopt'],
 );
 
+has attachments => (
+    isa           => "ArrayRef[Str]",
+    is            => "rw",
+    cmd_aliases   => "a",
+    documentation => "attachments",
+    traits        => ['Getopt'],
+);
+
+has format => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'format',
+    traits        => ['Getopt'],
+);
+
 sub class {
     my $self = shift;
     return 'Beagle::Model::' . ucfirst lc $self->type;
@@ -148,18 +163,41 @@ sub execute {
           || Email::Address->new( $bh->info->name, $bh->info->email )->format )
       unless $entry->author;
 
-    if (
-        $bh->create_entry(
-            $entry, message => $self->message || 'created ' . $entry->id
-        )
-      )
-    {
+    if ( $bh->create_entry( $entry, commit => 0, ) ) {
+        $self->handle_attachments($entry);
+        $bh->backend->commit( message => $self->message
+              || 'created ' . $entry->id );
         puts "created " . $entry->id . ".";
     }
     else {
         die "failed to create the entry.";
     }
 }
+
+sub handle_attachments {
+    my $self   = shift;
+    my $parent = shift;
+    return unless $self->attachments;
+    for my $file ( @{ $self->attachments } ) {
+        $file = decode( locale_fs => $file );
+        if ( -f $file ) {
+
+            require File::Basename;
+            my $basename = File::Basename::basename($file);
+            my $att      = Beagle::Model::Attachment->new(
+                name         => $basename,
+                content_file => $file,
+                parent_id    => $parent->id,
+            );
+
+            handle->create_attachment( $att, commit => 0 );
+        }
+        else {
+            die "$file is not a file or doesn't exist.";
+        }
+    }
+}
+
 
 sub usage_desc { "create a new entry" }
 
