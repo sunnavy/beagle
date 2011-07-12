@@ -49,6 +49,7 @@ sub execute {
         my %head = (
             'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
             'X-Beagle-Copyright' => $bh->info->copyright,
+            'X-Beagle-Class'     => ref $entry,
         );
 
         my $mime = MIME::Entity->build(
