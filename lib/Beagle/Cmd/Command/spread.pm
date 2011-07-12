@@ -51,17 +51,11 @@ sub execute {
             'X-Beagle-Copyright' => $bh->info->copyright,
         );
 
-        for my $line ( split /\n/, $entry->serialize_meta( id => 1 ) ) {
-            my ( $key, $value ) = split /:\s+/, $line, 2;
-            $head{"X-Beagle-$key"} = $value;
-        }
-
-
         my $mime = MIME::Entity->build(
             From =>
               Email::Address->new( $bh->info->name, $bh->info->email )->format,
             Subject              => $entry->summary(70),
-            Data                 => $entry->body,
+            Data                 => $entry->serialize(id => 1),
             Charset              => 'utf-8',
             %head,
         );
