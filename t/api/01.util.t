@@ -10,7 +10,12 @@ my @subs = qw/
   system_alias create_beagle alias aliases resolve_id die_entry_not_found
   die_entry_ambiguous handle handles beagle_share_root resolve_entry
   is_in_range parse_wiki  parse_markdown entry_marks set_entry_marks
-  whitelist set_whitelist detect_beagle_roots /;
+  whitelist set_whitelist detect_beagle_roots
+  detect_beagle_roots beagle_home_roots beagle_home_cache
+  cache_name beagle_share_root entry_marks set_entry_marks
+  beagle_spread_template_roots beagle_web_template_roots
+  entry_type_info entry_types
+  /;
 
 for (@subs) {
     can_ok( main, $_ );

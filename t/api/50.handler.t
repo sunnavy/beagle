@@ -13,7 +13,6 @@ isa_ok( $bh->backend, 'Beagle::Backend::fs' );
 for $method (
     qw/cache info comments map comments_map entries
     attachments_map updated sites list articles barks reviews tasks
-    entry_info
     /
   )
 {
