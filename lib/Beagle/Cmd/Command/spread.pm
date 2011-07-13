@@ -68,7 +68,25 @@ sub execute {
         my $template;
 
         if ( defined $self->template_file ) {
-            $template = read_file( $self->template_file );
+            my $file;
+            if ( -f $self->template_file ) {
+                $file = $self->template_file;
+            }
+            elsif (
+                -f catfile( beagle_share_root, 'spread_templates',
+                    $self->template_file
+                )
+              )
+            {
+                $file =
+                  catfile( beagle_share_root(), 'spread_templates',
+                    $self->template_file );
+            }
+            else {
+                die "template file doesn't exist";
+            }
+
+            $template = read_file( $file );
         }
         elsif ( defined $self->template ) {
             $template = $self->template;
