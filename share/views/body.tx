@@ -1,8 +1,1 @@
-: if size($entries) > 1 and length($entry.body_html) > 1000 {
-<: substr( $entry.body_html, 1000 ) | raw :>
-<div class="more">
-<a href="/entry/<: $entry.id :>">More...</a>
-</div>
-: } else {
 <: $entry.body_html | raw :>
-: }
