@@ -92,7 +92,7 @@ sub execute {
 
         if (@added) {
             my $msg = $self->message
-              || 'added attachment' . ( @add == 1 ? ' ' : 's ' ) . join( ',
+              || 'added attachment' . ( @added == 1 ? ' ' : 's ' ) . join( ',
               ', @added ) . " to entry $pid";
             $bh->backend->commit( message => $msg );
             puts 'added ', join( ', ', @added ), '.';
