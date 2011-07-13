@@ -68,27 +68,22 @@ sub execute {
         my $template;
 
         if ( defined $self->template_file ) {
+            my $name = $self->template_file;
+            $name .= '.tx' unless $name =~ /\.tx$/;
+
             my $file;
-            if ( -f $self->template_file ) {
-                $file = $self->template_file;
+            if ( -f $name ) {
+                $file = $name;
             }
-            elsif (
-                    beagle_spread_template_root() &&
-                -f catfile( beagle_spread_template_root(),
-                    $self->template_file ) )
+            elsif ( beagle_spread_template_root()
+                && -f catfile( beagle_spread_template_root(), $name ) )
             {
-                $file = catfile( beagle_spread_template_root(),
-                    $self->template_file );
+                $file = catfile( beagle_spread_template_root(), $name );
             }
-            elsif (
-                -f catfile( beagle_share_root, 'spread_templates',
-                    $self->template_file
-                )
-              )
+            elsif ( -f catfile( beagle_share_root, 'spread_templates', $name ) )
             {
                 $file =
-                  catfile( beagle_share_root(), 'spread_templates',
-                    $self->template_file );
+                  catfile( beagle_share_root(), 'spread_templates', $name );
             }
             else {
                 die "template file doesn't exist";
@@ -161,6 +156,8 @@ sub execute {
             }
             $msg = $mime->stringify;
         }
+
+        $msg =~ s!\s+$!newline()!e;
 
         puts "going to call `$cmd` with input:", newline(), decode_utf8($msg)
           unless $self->quiet && !$self->dry_run;
