@@ -1,0 +1,6 @@
+url: <: $url |raw :>
+: if $entry.can('title') {
+title: <: $entry.title :>
+: }
+
+<: $entry.body_html |raw :>

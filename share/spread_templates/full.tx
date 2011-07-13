@@ -1,0 +1,4 @@
+url: <: $url |raw:>
+<: $entry.serialize_meta |raw :>
+<: $entry.body_html |raw :>
+
