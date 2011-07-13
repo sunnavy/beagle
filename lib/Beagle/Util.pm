@@ -16,6 +16,7 @@ coerce 'Bool' => from 'Ref' => via { 1 };
 our (
     $BEAGLE_ROOT,  $BEAGLE_HOME, $BEAGLE_CACHE,
     $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,
+    $BEAGLE_SPREAD_TEMPLATE_ROOT,
 );
 
 BEGIN {
@@ -43,6 +44,7 @@ our @EXPORT = (
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
       cache_name beagle_share_root entry_marks set_entry_marks
+      beagle_spread_template_root
       /
 );
 
@@ -80,6 +82,13 @@ sub enable_cache {
 sub disable_cache {
     undef $BEAGLE_CACHE;
     return 1;
+}
+
+$BEAGLE_SPREAD_TEMPLATE_ROOT = $ENV{BEAGLE_SPREAD_TEMPLATE_ROOT}
+  || core_config()->{spread_template_root};
+
+sub beagle_spread_template_root {
+    return $BEAGLE_SPREAD_TEMPLATE_ROOT;
 }
 
 sub set_beagle_root {

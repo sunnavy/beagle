@@ -73,6 +73,14 @@ sub execute {
                 $file = $self->template_file;
             }
             elsif (
+                    beagle_spread_template_root() &&
+                -f catfile( beagle_spread_template_root(),
+                    $self->template_file ) )
+            {
+                $file = catfile( beagle_spread_template_root(),
+                    $self->template_file );
+            }
+            elsif (
                 -f catfile( beagle_share_root, 'spread_templates',
                     $self->template_file
                 )
@@ -86,7 +94,7 @@ sub execute {
                 die "template file doesn't exist";
             }
 
-            $template = read_file( $file );
+            $template = read_file($file);
         }
         elsif ( defined $self->template ) {
             $template = $self->template;
@@ -169,7 +177,7 @@ sub execute {
                 my @cmd = Text::ParseWords::shellwords($cmd);
                 require IPC::Run3;
                 my ( $out, $err );
-                IPC::Run3::run3( [@cmd], \$msg, \$out, \$err, ) ;
+                IPC::Run3::run3( [@cmd], \$msg, \$out, \$err, );
                 if ($?) {
                     die "failed to run $cmd: exit code is "
                       . ( $? >> 8 )
