@@ -604,7 +604,6 @@ sub default_options {
 
 sub handle_request {
     my $env = shift;
-    use File::Slurp;
     $req = Beagle::Web::Request->new($env);
     my $n = $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name');
     if ( $n && $bh{$n} ) {
