@@ -29,7 +29,15 @@ has 'quiet' => (
 has 'template' => (
     isa           => 'Str',
     is            => 'rw',
+    documentation => 'xslate template string',
+    traits        => ['Getopt'],
+);
+
+has 'template-file' => (
+    isa           => 'Str',
+    is            => 'rw',
     documentation => 'xslate template file path',
+    accessor      => 'template_file',
     traits        => ['Getopt'],
 );
 
@@ -40,6 +48,9 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
     die "beagle spread --cmd spread-cmd id1 id2 [...]"
       unless @$args && $self->cmd;
+
+    die "can't use both --template and --template-file"
+      if defined $self->template && defined $self->template_file;
 
     my $cmd = $self->cmd;
     for my $i (@$args) {
@@ -54,9 +65,16 @@ sub execute {
 
         my $msg;
 
-        if ( $self->template ) {
-            my $template = read_file( $self->template );
+        my $template;
 
+        if ( defined $self->template_file ) {
+            $template = read_file( $self->template_file );
+        }
+        elsif ( defined $self->template ) {
+            $template = $self->template;
+        }
+
+        if ( defined $template ) {
             require Text::Xslate;
             my $tx = Text::Xslate->new(
                 function => {
