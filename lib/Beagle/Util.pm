@@ -411,12 +411,6 @@ my $system_alias = {
     search    => q{ls},
     list      => q{ls},
     move      => q{mv},
-    articles  => q{ls --type article},
-    reviews   => q{ls --type review},
-    bark      => q{entry --type bark},
-    task      => q{entry --type task},
-    barks     => q{ls --type bark},
-    tasks     => q{ls --type task},
     today     => q{ls --updated-after today},
     yesterday => q{ls --updated-after 'yesterday'},
     week      => q{ls --updated-after 'this week'},
@@ -434,6 +428,22 @@ my $system_alias = {
     push      => q{git push},
     pull      => q{git pull},
 };
+
+
+use Lingua::EN::Inflect 'PL';
+require Beagle::Handle;
+my $types = Beagle::Handle->entry_types;
+use Class::Load 'try_load_class';
+for my $type (@$types) {
+    unless ( try_load_class("Beagle::Cmd::Command::$type") ) {
+        $system_alias->{$type} = "entry --type $type";
+    }
+
+    my $pl = PL($type);
+    unless ( try_load_class("Beagle::Cmd::Command::$pl") ) {
+        $system_alias->{$pl} = "ls --type $type";
+    }
+}
 
 sub system_alias {
     return dclone($system_alias);
