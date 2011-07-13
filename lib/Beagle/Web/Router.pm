@@ -632,7 +632,11 @@ sub handle_request {
             }
             else {
                 if ( defined $ret ) {
-                    $res = $req->new_response( 200, [], [ encode_utf8 $ret] );
+                    $res = $req->new_response(
+                        200,
+                        [ 'Content-Type' => 'text/html' ],
+                        [ encode_utf8 $ret]
+                    );
                 }
                 else {
                     $res = $req->new_response( 403, [], [] );
