@@ -612,17 +612,15 @@ sub handle_request {
         $name = $n;
     }
 
-    if ( Beagle::Web->enabled_admin() ) {
+    if (   Beagle::Web->enabled_admin()
+        || !$updated{$name}
+        || time - $updated{$name} >= 60 )
+    {
         $bh->update;
         Beagle::Web->update_years($bh);
         Beagle::Web->update_tags($bh);
         Beagle::Web->update_feed($bh);
-    }
-    else {
-        if ( !$updated{$name} || time - $updated{$name} >= 10 ) {
-            $bh->update;
-            $updated{$name} = time;
-        }
+        $updated{$name} = time;
     }
 
     my $res;

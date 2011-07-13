@@ -126,7 +126,8 @@ sub execute {
         }
         else {
             local $Beagle::Util::BEAGLE_ROOT = $Beagle::Util::BEAGLE_ROOT;
-            if ( $self->spawn
+            if (   $self->spawn
+                || $ARGV[0] eq 'web'
                 || grep { $_ eq '--page' || $_ eq '--spawn' } @ARGV )
             {
                 local $ENV{BEAGLE_ROOT} = $Beagle::Util::BEAGLE_ROOT;
