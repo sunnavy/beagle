@@ -109,9 +109,10 @@ sub filter {
     my %condition;
     %condition = %{ $opt->{condition} } if $opt->{condition};
 
-    for my $attr (keys %{$bh->entry_info}) {
-        if (   $type eq $bh->entry_info->{$attr}{type}
-            || $type eq 'all' )
+    my $type_info = entry_type_info();
+    for my $t (keys %$type_info) {
+        my $attr = $type_info->{$t}{plural};
+        if ( $type eq $t || $type eq 'all' )
         {
             for my $entry ( @{ $bh->$attr } ) {
                 next
@@ -122,7 +123,6 @@ sub filter {
                 push @found, $entry;
             }
         }
-
     }
 
     if (@$args) {

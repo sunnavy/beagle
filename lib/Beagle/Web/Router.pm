@@ -601,6 +601,7 @@ sub default_options {
         feed          => Beagle::Web->feed($bh),
         years         => Beagle::Web->years($bh),
         tags          => Beagle::Web->tags($bh),
+        entry_types   => entry_types(),
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( roots => $all ),

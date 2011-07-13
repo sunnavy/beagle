@@ -61,9 +61,9 @@ beagleInit( { admin: 1 } );
 <div class="admin-links">
   <a href="/admin/info"><: _('info') :></a>
   <a href="/admin/entries"><: _('all entries') :></a>
-: for $entry_info.keys().sort() -> $x {
-: next if $x == 'comments';
-  <a href="/admin/entry/<: $entry_info[$x].type :>/new"><: _( 'new ' ) ~ _( $entry_info[$x].type ) :></a>
+: for $entry_types.sort() -> $x {
+: next if $x == 'comment';
+  <a href="/admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $$x ) :></a>
 : }
 </div>
 : }

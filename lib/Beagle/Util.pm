@@ -7,6 +7,8 @@ use base 'Exporter';
 use Config::INI::Reader;
 use Config::INI::Writer;
 use Any::Moose 'Util::TypeConstraints';
+use Lingua::EN::Inflect 'PL';
+use Class::Load qw/load_class try_load_class/;
 
 subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 
@@ -45,8 +47,8 @@ our @EXPORT = (
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
       cache_name beagle_share_root entry_marks set_entry_marks
-      beagle_spread_template_roots
-      beagle_web_template_roots
+      beagle_spread_template_roots beagle_web_template_roots
+      entry_type_info entry_types
       /
 );
 
@@ -405,47 +407,68 @@ sub root_type {
     return $root_type{$root};
 }
 
-my $system_alias = {
-    delete    => q{rm},
-    edit      => q{update},
-    search    => q{ls},
-    list      => q{ls},
-    move      => q{mv},
-    today     => q{ls --updated-after today},
-    yesterday => q{ls --updated-after 'yesterday'},
-    week      => q{ls --updated-after 'this week'},
-    thisweek  => q{ls --updated-after 'this week'},
-    month     => q{ls --updated-after 'this month'},
-    thismonth => q{ls --updated-after 'this month'},
-    year      => q{ls --updated-after 'this year'},
-    thisyear  => q{ls --updated-after 'this year'},
-    lastweek  => q{ls --updated-after 'last week'},
-    lastmonth => q{ls --updated-after 'last month'},
-    lastyear  => q{ls --updated-after 'last year'},
-    finals    => q{ls --final},
-    drafts    => q{ls --draft},
-    roots     => q{root --all},
-    push      => q{git push},
-    pull      => q{git pull},
-};
+my $entry_type_info;
+sub entry_type_info {
+    return dclone($entry_type_info) if $entry_type_info;
 
-
-use Lingua::EN::Inflect 'PL';
-require Beagle::Handle;
-my $types = Beagle::Handle->entry_types;
-use Class::Load 'try_load_class';
-for my $type (@$types) {
-    unless ( try_load_class("Beagle::Cmd::Command::$type") ) {
-        $system_alias->{$type} = "entry --type $type";
+    require Class::Load;
+    require Module::Pluggable::Object;
+    my $models =
+      Module::Pluggable::Object->new( search_path => 'Beagle::Model', );
+    my @models = $models->plugins;
+    for my $m (@models) {
+        Class::Load::load_class($m);
+        next if $m =~ /^Beagle::Model::(?:Info|Attachment|Entry)$/;
+        next unless $m =~ /^Beagle::Model::(\w+)$/;
+        my $type = lc $1;
+        $entry_type_info->{$type} = { plural => PL($type), class => $m };
     }
-
-    my $pl = PL($type);
-    unless ( try_load_class("Beagle::Cmd::Command::$pl") ) {
-        $system_alias->{$pl} = "ls --type $type";
-    }
+    return $entry_type_info;
 }
 
+sub entry_types {
+    return [ keys %{entry_type_info()} ];
+}
+
+my $system_alias;
 sub system_alias {
+    return dclone($system_alias) if $system_alias;
+    $system_alias = {
+        delete    => q{rm},
+        edit      => q{update},
+        search    => q{ls},
+        list      => q{ls},
+        move      => q{mv},
+        today     => q{ls --updated-after today},
+        yesterday => q{ls --updated-after 'yesterday'},
+        week      => q{ls --updated-after 'this week'},
+        thisweek  => q{ls --updated-after 'this week'},
+        month     => q{ls --updated-after 'this month'},
+        thismonth => q{ls --updated-after 'this month'},
+        year      => q{ls --updated-after 'this year'},
+        thisyear  => q{ls --updated-after 'this year'},
+        lastweek  => q{ls --updated-after 'last week'},
+        lastmonth => q{ls --updated-after 'last month'},
+        lastyear  => q{ls --updated-after 'last year'},
+        finals    => q{ls --final},
+        drafts    => q{ls --draft},
+        roots     => q{root --all},
+        push      => q{git push},
+        pull      => q{git pull},
+    };
+
+
+    my $type_info = entry_type_info();
+    for my $type ( keys %$type_info ) {
+        unless ( try_load_class("Beagle::Cmd::Command::$type") ) {
+            $system_alias->{$type} = "entry --type $type";
+        }
+
+        my $pl = $type_info->{$type}{plural};
+        unless ( try_load_class("Beagle::Cmd::Command::$pl") ) {
+            $system_alias->{$pl} = "ls --type $type";
+        }
+    }
     return dclone($system_alias);
 }
 

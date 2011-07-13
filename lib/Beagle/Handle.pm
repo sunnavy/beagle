@@ -2,19 +2,6 @@ package Beagle::Handle;
 use Any::Moose;
 use Lingua::EN::Inflect 'PL';
 
-my @models;
-
-BEGIN {
-    require Class::Load;
-    require Module::Pluggable::Object;
-    my $models =
-      Module::Pluggable::Object->new( search_path => 'Beagle::Model', );
-    @models = $models->plugins;
-    for my $m (@models) {
-        Class::Load::load_class($m);
-    }
-}
-
 use Beagle::Backend;
 use Beagle::Util;
 
@@ -62,16 +49,12 @@ has 'info' => (
     handles => ['sites'],
 );
 
-my %entry_info;
-for my $model (@models) {
-    next if $model =~ /^Beagle::Model::(?:Info|Attachment|Entry)$/;
-    next unless $model =~ /^Beagle::Model::(\w+)$/;
-    my $type = lc $1;
-    my $pl   = PL($type);
-    $entry_info{$pl} = { class => $model, type => $type };
-
+my $type_info = entry_type_info();
+for my $type ( keys %$type_info ) {
+    my $pl    = $type_info->{$type}{plural};
+    my $class = $type_info->{$type}{class};
     has $pl => (
-        isa     => "ArrayRef[$model]",
+        isa     => "ArrayRef[$class]",
         is      => 'rw',
         default => sub { [] },
         $type ne 'comment'
@@ -83,12 +66,6 @@ for my $model (@models) {
           )
         : (),
     );
-}
-
-sub entry_info { return {%entry_info} }
-
-sub entry_types {
-    return [ map { $entry_info{$_}->{type} } keys %entry_info ];
 }
 
 has 'entries' => (
@@ -211,15 +188,16 @@ sub init_info {
     $self->map->{ $info->id } = $info;
 }
 
-sub init_entry_attr {
+sub init_entry_type {
     my $self    = shift;
-    my $attr    = shift;
+    my $type    = shift;
+    my $attr = $type_info->{$type}{plural};
     my $backend = $self->backend;
     {
-        my %all = $backend->read( type => $self->entry_info->{$attr}{type} );
+        my %all = $backend->read( type => $type );
         my @entries;
         for my $id ( keys %all ) {
-            my $class = $self->entry_info->{$attr}{class};
+            my $class = $type_info->{$type}{class};
 
             my $entry = $class->new_from_string(
                 $all{$id}{content},
@@ -266,7 +244,7 @@ sub init_attachments {
 
 sub init_comments {
     my $self = shift;
-    $self->init_entry_attr('comments');
+    $self->init_entry_type('comment');
     my %comments_map;
     for my $comment ( @{ $self->comments } ) {
         $comments_map{ $comment->parent_id }{ $comment->id } = $comment;
@@ -286,9 +264,9 @@ sub list {
     my %ret;
 
     return map { $_ => $self->$_ } qw/info total_size sites
-      entries map attachments_map comments_map updated entry_info
+      entries map attachments_map comments_map updated
       entry_types
-      /, keys %{ $self->entry_info };
+      /, map { $type_info->{$_}{plural} } keys %$type_info;
 }
 
 sub update_info {
@@ -420,19 +398,22 @@ sub _init_entries {
     my @entries =
       sort { $b->created <=> $a->created }
       map  { @{ $self->$_ } }
-      grep { $_ ne 'comments' } keys %{ $self->entry_info };
+      grep { $_ ne 'comments' }
+      map { $type_info->{$_}{plural} } keys %{$type_info};
+
     $self->entries( \@entries );
 }
 
 sub init_entries {
     my $self = shift;
-    for my $attr ( keys %{ $self->entry_info } ) {
-        my $method = "init_$attr";
+    for my $type ( keys %{$type_info} ) {
+        my $pl = $type_info->{$type}{plural};
+        my $method = "init_$pl";
         if ( $self->can($method) ) {
             $self->$method;
         }
         else {
-            $self->init_entry_attr($attr);
+            $self->init_entry_type($type);
         }
     }
 }
