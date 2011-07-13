@@ -26,6 +26,13 @@ has 'quiet' => (
     traits        => ['Getopt'],
 );
 
+has 'template' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'xslate template file path',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -45,60 +52,79 @@ sub execute {
         my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
 
-        require MIME::Entity;
-        my %head = (
-            'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
-            'X-Beagle-Copyright' => $bh->info->copyright,
-            'X-Beagle-Class'     => ref $entry,
-        );
+        my $msg;
 
-        my $mime = MIME::Entity->build(
-            From =>
-              Email::Address->new( $bh->info->name, $bh->info->email )->format,
-            Subject              => $entry->summary(70),
-            Data                 => $entry->serialize(id => 1),
-            Charset              => 'utf-8',
-            %head,
-        );
+        if ( $self->template ) {
+            my $template = read_file( $self->template );
 
-        if ( $entry->format ne 'plain' ) {
-            $mime->make_multipart;
-            $mime->attach(
-                Data           => $entry->body_html,
-                'Content-Type' => 'text/html; charset=utf-8',
+            require Text::Xslate;
+            my $tx = Text::Xslate->new;
+
+            $msg = $tx->render_string(
+                $template,
+                {
+                    handle => $bh,
+                    entry  => $entry,
+                    id     => $id,
+                }
             );
         }
+        else {
+            require MIME::Entity;
+            my %head = (
+                'X-Beagle-URL'       => $bh->info->url . '/entry/' . $entry->id,
+                'X-Beagle-Copyright' => $bh->info->copyright,
+                'X-Beagle-Class'     => ref $entry,
+            );
 
-        my $atts = $bh->attachments_map->{$id};
-        if ($atts) {
-            $mime->make_multipart;
-            for my $name ( keys %$atts ) {
+            my $mime = MIME::Entity->build(
+                From => Email::Address->new( $bh->info->name, $bh->info->email )
+                  ->format,
+                Subject => $entry->summary(70),
+                Data    => $entry->serialize( id => 1 ),
+                Charset => 'utf-8',
+                %head,
+            );
+
+            if ( $entry->format ne 'plain' ) {
+                $mime->make_multipart;
                 $mime->attach(
-                    Filename => $name,
-                    Data     => $atts->{$name}->content,
-                    Type     => $atts->{$name}->mime_type,
-                    'Content-Disposition' => "attachment; filename=$name",
+                    Data           => $entry->body_html,
+                    'Content-Type' => 'text/html; charset=utf-8',
                 );
             }
+
+            my $atts = $bh->attachments_map->{$id};
+            if ($atts) {
+                $mime->make_multipart;
+                for my $name ( keys %$atts ) {
+                    $mime->attach(
+                        Filename              => $name,
+                        Data                  => $atts->{$name}->content,
+                        Type                  => $atts->{$name}->mime_type,
+                        'Content-Disposition' => "attachment; filename=$name",
+                    );
+                }
+            }
+            $msg = $mime->stringify;
         }
 
-        if ( $self->dry_run ) {
-            puts "going to call `$cmd` with input:", newline(), $entry->body;
-        }
-        else {
-            my $update = 1;
+        puts "going to call `$cmd` with input:", newline(), decode_utf8($msg)
+          unless $self->quiet && !$self->dry_run;
+
+        if ( !$self->dry_run ) {
+            my $doit = 1;
             if ( !$self->quiet ) {
-                puts "going to call `$cmd` for " . $entry->id;
                 print "spread? (Y/n): ";
                 my $val = <STDIN>;
-                undef $update if $val =~ /n/i;
+                undef $doit if $val =~ /n/i;
             }
 
-            if ($update) {
+            if ($doit) {
                 my @cmd = Text::ParseWords::shellwords($cmd);
                 require IPC::Run3;
                 my ( $out, $err );
-                IPC::Run3::run3( [@cmd], \($mime->stringify), \$out, \$err, ) ;
+                IPC::Run3::run3( [@cmd], \$msg, \$out, \$err, ) ;
                 if ($?) {
                     die "failed to run $cmd: exit code is "
                       . ( $? >> 8 )
