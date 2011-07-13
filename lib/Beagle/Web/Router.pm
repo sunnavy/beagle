@@ -84,7 +84,8 @@ else {
 
 use Text::Xslate;
 my $xslate = Text::Xslate->new(
-    path        => [ catdir( beagle_share_root(), 'views' ) ],
+    path =>
+      [ beagle_web_template_root(), catdir( beagle_share_root(), 'views' ) ],
     cache_dir   => File::Spec->tmpdir,
     cache       => 1,
     input_layer => ':utf8',
@@ -160,7 +161,7 @@ my $xslate = Text::Xslate->new(
         },
         _ => sub {
             my $handle = i18n_handle();
-            $handle->maketext( @_ );
+            $handle->maketext(@_);
         },
         template_exists => sub {
             my $name = shift;

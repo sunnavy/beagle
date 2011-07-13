@@ -17,6 +17,7 @@ our (
     $BEAGLE_ROOT,  $BEAGLE_HOME, $BEAGLE_CACHE,
     $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,
     $BEAGLE_SPREAD_TEMPLATE_ROOT,
+    $BEAGLE_WEB_TEMPLATE_ROOT,
 );
 
 BEGIN {
@@ -45,6 +46,7 @@ our @EXPORT = (
       detect_beagle_roots beagle_home_roots beagle_home_cache
       cache_name beagle_share_root entry_marks set_entry_marks
       beagle_spread_template_root
+      beagle_web_template_root
       /
 );
 
@@ -89,6 +91,13 @@ $BEAGLE_SPREAD_TEMPLATE_ROOT = $ENV{BEAGLE_SPREAD_TEMPLATE_ROOT}
 
 sub beagle_spread_template_root {
     return $BEAGLE_SPREAD_TEMPLATE_ROOT;
+}
+
+$BEAGLE_WEB_TEMPLATE_ROOT = $ENV{BEAGLE_WEB_TEMPLATE_ROOT}
+  || core_config()->{web_template_root};
+
+sub beagle_web_template_root {
+    return $BEAGLE_WEB_TEMPLATE_ROOT;
 }
 
 sub set_beagle_root {
