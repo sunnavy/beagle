@@ -197,7 +197,7 @@ sub app {
     require Beagle::Web::Router;
 
     builder {
-        enable 'Plack::Middleware::Static',
+        enable 'Static',
           path => sub                          { s!^/system/!! },
           root => catdir( beagle_share_root(), 'public' );
 
