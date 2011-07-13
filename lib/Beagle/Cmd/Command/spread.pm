@@ -58,7 +58,15 @@ sub execute {
             my $template = read_file( $self->template );
 
             require Text::Xslate;
-            my $tx = Text::Xslate->new;
+            my $tx = Text::Xslate->new(
+                function => {
+                    shorten => sub {
+                        my $url = shift;
+                        return $url unless defined $url;
+                        return `shorten $url`;
+                    },
+                }
+            );
 
             $msg = $tx->render_string(
                 $template,
@@ -66,6 +74,7 @@ sub execute {
                     handle => $bh,
                     entry  => $entry,
                     id     => $id,
+                    url    => $bh->info->url . '/entry/' . $id,
                 }
             );
         }
