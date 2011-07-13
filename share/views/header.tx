@@ -63,7 +63,7 @@ beagleInit( { admin: 1 } );
   <a href="/admin/entries"><: _('all entries') :></a>
 : for $entry_types.sort() -> $x {
 : next if $x == 'comment';
-  <a href="/admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $$x ) :></a>
+  <a href="/admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $x ) :></a>
 : }
 </div>
 : }
