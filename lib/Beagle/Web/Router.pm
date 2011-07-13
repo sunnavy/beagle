@@ -162,6 +162,11 @@ my $xslate = Text::Xslate->new(
             my $handle = i18n_handle();
             $handle->maketext( @_ );
         },
+        template_exists => sub {
+            my $name = shift;
+            return unless defined $name;
+            return -e catfile( beagle_share_root(), 'views', $name );
+        },
     },
 );
 

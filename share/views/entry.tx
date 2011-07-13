@@ -1,14 +1,5 @@
-: if $entry.type == 'bark' {
-:     include "bark.tx" { entry => $entry };
-: }
-: elsif $entry.type == 'article' {
-:     include "article.tx" { entry => $entry };
-: }
-: elsif $entry.type == 'review' {
-:     include "review.tx" { entry => $entry };
-: }
-: elsif $entry.type == 'comment' {
-:     include "comment.tx" { entry => $entry };
+: if template_exists( $entry.type ~ '.tx' ) {
+:     include $entry.type ~ '.tx' { entry => $entry };
 : }
 : else {
 <div id="<: $entry.id :>" class="entry <: $entry.type :>">
