@@ -16,8 +16,8 @@ coerce 'Bool' => from 'Ref' => via { 1 };
 our (
     $BEAGLE_ROOT,  $BEAGLE_HOME, $BEAGLE_CACHE,
     $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,
-    $BEAGLE_SPREAD_TEMPLATE_ROOT,
-    $BEAGLE_WEB_TEMPLATE_ROOT,
+    @BEAGLE_SPREAD_TEMPLATE_ROOTS,
+    @BEAGLE_WEB_TEMPLATE_ROOTS,
 );
 
 BEGIN {
@@ -45,8 +45,8 @@ our @EXPORT = (
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
       cache_name beagle_share_root entry_marks set_entry_marks
-      beagle_spread_template_root
-      beagle_web_template_root
+      beagle_spread_template_roots
+      beagle_web_template_roots
       /
 );
 
@@ -86,18 +86,40 @@ sub disable_cache {
     return 1;
 }
 
-$BEAGLE_SPREAD_TEMPLATE_ROOT = $ENV{BEAGLE_SPREAD_TEMPLATE_ROOT}
-  || core_config()->{spread_template_root};
+sub beagle_spread_template_roots {
+    return @BEAGLE_SPREAD_TEMPLATE_ROOTS if @BEAGLE_SPREAD_TEMPLATE_ROOTS;
+    if ( $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS} ) {
+        push @BEAGLE_SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
+          $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS};
+    }
 
-sub beagle_spread_template_root {
-    return $BEAGLE_SPREAD_TEMPLATE_ROOT;
+    if ( core_config()->{spread_template_roots} ) {
+        push @BEAGLE_SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
+          core_config()->{spread_template_roots};
+    }
+
+    push @BEAGLE_SPREAD_TEMPLATE_ROOTS,
+      catdir( beagle_share_root(), 'spread_templates' );
+
+    return @BEAGLE_SPREAD_TEMPLATE_ROOTS;
 }
 
-$BEAGLE_WEB_TEMPLATE_ROOT = $ENV{BEAGLE_WEB_TEMPLATE_ROOT}
-  || core_config()->{web_template_root};
+sub beagle_web_template_roots {
+    return @BEAGLE_WEB_TEMPLATE_ROOTS if @BEAGLE_WEB_TEMPLATE_ROOTS;
+    if ( $ENV{BEAGLE_WEB_TEMPLATE_ROOTS} ) {
+        push @BEAGLE_WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
+          $ENV{BEAGLE_WEB_TEMPLATE_ROOTS};
+    }
 
-sub beagle_web_template_root {
-    return $BEAGLE_WEB_TEMPLATE_ROOT;
+    if ( core_config()->{web_template_roots} ) {
+        push @BEAGLE_WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
+          core_config()->{web_template_roots};
+    }
+
+    push @BEAGLE_WEB_TEMPLATE_ROOTS,
+      catdir( beagle_share_root(), 'views' );
+
+    return @BEAGLE_WEB_TEMPLATE_ROOTS;
 }
 
 sub set_beagle_root {

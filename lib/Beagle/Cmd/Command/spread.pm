@@ -75,18 +75,14 @@ sub execute {
             if ( -f $name ) {
                 $file = $name;
             }
-            elsif ( beagle_spread_template_root()
-                && -f catfile( beagle_spread_template_root(), $name ) )
-            {
-                $file = catfile( beagle_spread_template_root(), $name );
-            }
-            elsif ( -f catfile( beagle_share_root, 'spread_templates', $name ) )
-            {
-                $file =
-                  catfile( beagle_share_root(), 'spread_templates', $name );
-            }
             else {
-                die "template file doesn't exist";
+                for my $root( beagle_spread_template_roots ) {
+                    if ( -f catfile( $root, $name ) ) {
+                        $file = catfile( beagle_spread_template_root(), $name );
+                        last;
+                    }
+                }
+                die "template file $name doesn't exist" unless defined $file;
             }
 
             $template = read_file($file);
