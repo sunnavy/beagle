@@ -15,6 +15,7 @@ my @subs = qw/
   cache_name beagle_share_root entry_marks set_entry_marks
   beagle_spread_template_roots beagle_web_template_roots
   entry_type_info entry_types
+  entry_map_path entry_marks_path
   /;
 
 for (@subs) {

@@ -20,6 +20,8 @@ our (
     $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,
     @BEAGLE_SPREAD_TEMPLATE_ROOTS,
     @BEAGLE_WEB_TEMPLATE_ROOTS,
+    $BEAGLE_ENTRY_MAP_PATH,
+    $BEAGLE_ENTRY_MARKS_PATH,
 );
 
 BEGIN {
@@ -49,6 +51,7 @@ our @EXPORT = (
       cache_name beagle_share_root entry_marks set_entry_marks
       beagle_spread_template_roots beagle_web_template_roots
       entry_type_info entry_types
+      entry_map_path entry_marks_path
       /
 );
 
@@ -306,8 +309,16 @@ sub set_beagle_roots {
     set_config($config);
 }
 
+sub entry_map_path {
+    $BEAGLE_ENTRY_MAP_PATH ||=
+         $ENV{BEAGLE_ENTRY_MAP_PATH}
+      || core_config->{entry_map_path}
+      || catfile( beagle_home(), '.entry_map' );
+    return $BEAGLE_ENTRY_MAP_PATH;
+}
+
 sub entry_map {
-    my $file = catfile( beagle_home(), '.entry_map' );
+    my $file = entry_map_path();
     if ( -e $file ) {
         return retrieve($file);
     }
@@ -318,11 +329,19 @@ sub entry_map {
 
 sub set_entry_map {
     my $map = shift or return;
-    nstore( $map, catfile( beagle_home(), '.entry_map' ) );
+    nstore( $map, entry_map_path() );
+}
+
+sub entry_marks_path {
+    $BEAGLE_ENTRY_MARKS_PATH ||=
+         $ENV{BEAGLE_ENTRY_MARKS_PATH}
+      || core_config->{entry_marks_path}
+      || catfile( beagle_home(), '.entry_marks' );
+    return $BEAGLE_ENTRY_MARKS_PATH;
 }
 
 sub entry_marks {
-    my $file = catfile( beagle_home(), '.entry_marks' );
+    my $file = entry_marks_path();
     if ( -e $file ) {
         return retrieve($file);
     }
@@ -333,7 +352,7 @@ sub entry_marks {
 
 sub set_entry_marks {
     my $marks = shift or return;
-    nstore( $marks, catfile( beagle_home(), '.entry_marks' ) );
+    nstore( $marks, entry_marks_path() );
 }
 
 sub default_format {
