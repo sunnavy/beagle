@@ -199,7 +199,7 @@ sub app {
     builder {
         enable 'Static',
           path => sub                          { s!^/system/!! },
-          root => catdir( beagle_share_root(), 'public' );
+          root => catdir( share_root(), 'public' );
 
         \&Beagle::Web::Router::handle_request;
     }

@@ -40,7 +40,7 @@ our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
       set_current_root current_root root_name set_root_name check_current_root
-      beagle_static_root kennel user_alias roots set_roots
+      current_static_root kennel user_alias roots set_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
       system_alias create_beagle alias aliases resolve_id die_entry_not_found
@@ -48,7 +48,7 @@ our @EXPORT = (
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
       detect_roots roots_root cache_root
-      cache_name beagle_share_root entry_marks set_entry_marks
+      cache_name share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
       entry_map_path entry_marks_path
@@ -104,7 +104,7 @@ sub spread_template_roots {
     }
 
     push @SPREAD_TEMPLATE_ROOTS,
-      catdir( beagle_share_root(), 'spread_templates' );
+      catdir( share_root(), 'spread_templates' );
 
     return @SPREAD_TEMPLATE_ROOTS;
 }
@@ -122,7 +122,7 @@ sub web_template_roots {
     }
 
     push @WEB_TEMPLATE_ROOTS,
-      catdir( beagle_share_root(), 'views' );
+      catdir( share_root(), 'views' );
 
     return @WEB_TEMPLATE_ROOTS;
 }
@@ -198,7 +198,7 @@ sub check_current_root {
     return;
 }
 
-sub beagle_static_root {
+sub current_static_root {
     my $handle = shift;
     return catdir( ( $handle ? $handle->root : current_root() ),
         'attachments' );
@@ -848,7 +848,7 @@ sub cache_name {
     return $name;
 }
 
-sub beagle_share_root {
+sub share_root {
     return $SHARE_ROOT if $SHARE_ROOT;
 
     if ( $ENV{BEAGLE_SHARE_ROOT} ) {
