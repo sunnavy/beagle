@@ -41,6 +41,14 @@ has 'template-file' => (
     traits        => ['Getopt'],
 );
 
+has 'to' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'to whom?',
+    traits        => ['Getopt'],
+    default       => '',
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -110,6 +118,7 @@ sub execute {
                     entry  => $entry,
                     id     => $id,
                     url    => $bh->info->url . '/entry/' . $id,
+                    to     => $self->to,
                 }
             );
         }
@@ -127,6 +136,7 @@ sub execute {
                 Subject => $entry->summary(70),
                 Data    => $entry->serialize( id => 1 ),
                 Charset => 'utf-8',
+                To      => $self->to,
                 %head,
             );
 
