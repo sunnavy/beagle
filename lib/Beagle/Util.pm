@@ -216,7 +216,15 @@ sub kennel {
 }
 
 sub cache_root {
-    return catdir( kennel, 'cache' );
+    return $CACHE_ROOT if $CACHE_ROOT;
+    if ( $ENV{BEAGLE_CACHE_ROOT} ) {
+        $CACHE_ROOT = decode( locale => $ENV{BEAGLE_CACHE_ROOT} );
+    }
+    else {
+        $CACHE_ROOT = core_config->{cache_root}
+          || catfile( kennel(), 'cache' );
+    }
+    return $CACHE_ROOT;
 }
 
 sub backend_roots_root {
