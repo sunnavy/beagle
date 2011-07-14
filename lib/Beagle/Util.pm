@@ -442,7 +442,7 @@ sub root_type {
     }
 
     $root_type{$root} ||=
-      -e catdir( encode( locale_fs => $root ), '.git' ) ? 'git' : 'fs';
+      -e encode( locale_fs => catdir( $root, '.git' ) ) ? 'git' : 'fs';
     return $root_type{$root};
 }
 
@@ -835,7 +835,7 @@ sub detect_roots {
     opendir my $dh, $base or die $!;
     while ( my $dir = readdir $dh ) {
         next if $dir eq '.' || $dir eq '..';
-        if ( check_root( catdir( $base, decode( locale_fs => $dir ) ) ) ) {
+        if ( check_root( decode( locale_fs => catdir( $base, $dir ) ) ) ) {
 
             if ( -e catdir( $base, $dir, '.git' ) ) {
                 require Beagle::Wrapper::git;

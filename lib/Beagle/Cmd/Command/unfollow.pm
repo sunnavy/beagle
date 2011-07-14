@@ -22,7 +22,7 @@ sub execute {
 
         for my $t ( '', '.drafts' ) {
             my $cache =
-              catfile( cache_root(), encode( locale_fs => $name ), $t );
+              encode( locale_fs => catfile( cache_root(), $name . $t ) );
             remove_tree($cache) if -e $cache;
         }
         my $map = entry_map;
