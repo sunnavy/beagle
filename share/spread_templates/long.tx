@@ -1,5 +1,6 @@
 url: <: $url |raw :>
+from: <: $from :>
 
-<: $subject || $entry.summary :>
+<: $subject || $entry.summary(80) :>
 
 <: $entry.body_html |raw :>

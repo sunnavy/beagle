@@ -115,6 +115,11 @@ sub execute {
             $template = $self->template;
         }
 
+        my $to = $self->to;
+        my $from = $self->from
+          || Email::Address->new( $bh->info->name, $bh->info->email )->format;
+        my $subject = $self->subject || $entry->summary(80);
+
         if ( defined $template ) {
             require Text::Xslate;
             my $tx = Text::Xslate->new(
@@ -134,9 +139,9 @@ sub execute {
                     entry   => $entry,
                     id      => $id,
                     url     => $bh->info->url . '/entry/' . $id,
-                    to      => $self->to,
-                    from    => $self->from,
-                    subject => $self->subject,
+                    to      => $to,
+                    from    => $from,
+                    subject => $subject,
                 }
             );
         }
@@ -149,13 +154,11 @@ sub execute {
             );
 
             my $mime = MIME::Entity->build(
-                From => $self->from
-                  || Email::Address->new( $bh->info->name, $bh->info->email )
-                  ->format,
-                Subject => $self->subject || $entry->summary(80),
+                From => $from,
+                Subject => $subject,
                 Data    => $entry->serialize( id => 1 ),
                 Charset => 'utf-8',
-                To      => $self->to,
+                To      => $to,
                 %head,
             );
 
