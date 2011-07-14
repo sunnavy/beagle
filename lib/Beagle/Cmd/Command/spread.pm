@@ -49,6 +49,22 @@ has 'to' => (
     default       => '',
 );
 
+has 'from' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'from who?',
+    traits        => ['Getopt'],
+    default       => '',
+);
+
+has 'subject' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'subject',
+    traits        => ['Getopt'],
+    default       => '',
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -114,11 +130,13 @@ sub execute {
             $msg = $tx->render_string(
                 $template,
                 {
-                    handle => $bh,
-                    entry  => $entry,
-                    id     => $id,
-                    url    => $bh->info->url . '/entry/' . $id,
-                    to     => $self->to,
+                    handle  => $bh,
+                    entry   => $entry,
+                    id      => $id,
+                    url     => $bh->info->url . '/entry/' . $id,
+                    to      => $self->to,
+                    from    => $self->from,
+                    subject => $self->subject,
                 }
             );
         }
@@ -131,9 +149,10 @@ sub execute {
             );
 
             my $mime = MIME::Entity->build(
-                From => Email::Address->new( $bh->info->name, $bh->info->email )
+                From => $self->from
+                  || Email::Address->new( $bh->info->name, $bh->info->email )
                   ->format,
-                Subject => $entry->summary(70),
+                Subject => $self->subject || $entry->summary(70),
                 Data    => $entry->serialize( id => 1 ),
                 Charset => 'utf-8',
                 To      => $self->to,

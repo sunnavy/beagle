@@ -1,1 +1,1 @@
-<: $entry.summary |raw :>: <: shorten($url) |raw :>
+<: $subject || $entry.summary |raw :>: <: shorten($url) |raw :>

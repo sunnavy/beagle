@@ -1,6 +1,5 @@
 url: <: $url |raw :>
-: if $entry.can('title') {
-title: <: $entry.title :>
-: }
+
+<: $subject || $entry.summary :>
 
 <: $entry.body_html |raw :>
