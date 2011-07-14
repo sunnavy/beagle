@@ -102,7 +102,7 @@ sub execute {
             else {
                 for my $root( spread_template_roots ) {
                     if ( -f catfile( $root, $name ) ) {
-                        $file = catfile( beagle_spread_template_root(), $name );
+                        $file = catfile( $root, $name );
                         last;
                     }
                 }
