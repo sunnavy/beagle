@@ -1,5 +1,5 @@
 url: <: $url |raw:>
-from: <: $from :>
+from: <: $from |raw:>
 <: $entry.serialize_meta |raw :>
 <: $entry.body_html |raw :>
 
