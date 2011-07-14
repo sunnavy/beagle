@@ -21,7 +21,8 @@ sub execute {
         }
 
         for my $t ( '', '.drafts' ) {
-            my $cache = catfile( cache_root(), safe_name($name), $t );
+            my $cache =
+              catfile( cache_root(), encode( locale_fs => $name ), $t );
             remove_tree($cache) if -e $cache;
         }
         my $map = entry_map;
