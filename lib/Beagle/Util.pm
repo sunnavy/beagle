@@ -39,15 +39,15 @@ BEGIN {
 our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
-      set_beagle_root beagle_root beagle_name set_beagle_name check_beagle_root
-      beagle_static_root beagle_home user_alias beagle_roots set_beagle_roots
+      set_root_path root_path root_name set_root_name check_root_path
+      beagle_static_root beagle_home user_alias root_paths set_root_paths
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
       system_alias create_beagle alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
-      detect_beagle_roots beagle_home_roots beagle_home_cache
+      detect_root_paths beagle_home_roots beagle_home_cache
       cache_name beagle_share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
@@ -127,17 +127,17 @@ sub web_template_roots {
     return @WEB_TEMPLATE_ROOTS;
 }
 
-sub set_beagle_root {
+sub set_root_path {
     my $dir;
     if (@_) {
         $dir = shift;
-        die "set_beagle_root is called with an undef value" unless defined $dir;
+        die "set_root_path is called with an undef value" unless defined $dir;
     }
     else {
         $dir = decode( locale => $ENV{BEAGLE_ROOT} || '' );
 
         if ( !$dir && length $ENV{BEAGLE_NAME} ) {
-            my $roots = beagle_roots();
+            my $roots = root_paths();
             my $b = $roots->{ decode( locale => $ENV{BEAGLE_NAME} ) };
             $dir = $b->{local} if $b && $b->{local};
         }
@@ -145,7 +145,7 @@ sub set_beagle_root {
         $dir ||= core_config()->{default_root};
 
         if ( !$dir && length core_config()->{default_name} ) {
-            my $roots = beagle_roots();
+            my $roots = root_paths();
             my $b     = $roots->{ core_config()->{default_name} };
             $dir = $b->{local} if $b && $b->{local};
         }
@@ -157,7 +157,7 @@ sub set_beagle_root {
 
     $dir = rel2abs($dir);
 
-    if ( check_beagle_root($dir) ) {
+    if ( check_root_path($dir) ) {
         return $ROOT = $dir;
     }
     else {
@@ -165,11 +165,11 @@ sub set_beagle_root {
     }
 }
 
-sub beagle_root {
+sub root_path {
     return $ROOT if defined $ROOT;
 
     my $not_die = shift;
-    eval { set_beagle_root() };
+    eval { set_root_path() };
     if ( $@ && !$not_die ) {
         die $@;
     }
@@ -177,18 +177,13 @@ sub beagle_root {
     return;
 }
 
-sub beagle_name {
-    my $root = beagle_root('not die');
-    return $root ? root_name($root) : 'global';
-}
-
-sub set_beagle_name {
+sub set_root_name {
     my $name = shift or die 'need name';
 
-    return set_beagle_root( name_root($name) );
+    return set_root_path( name_root($name) );
 }
 
-sub check_beagle_root {
+sub check_root_path {
     my $dir = encode( locale_fs => $_[-1] );
     return unless $dir && -d $dir;
     my $info = catfile( $dir, 'info' );
@@ -205,7 +200,7 @@ sub check_beagle_root {
 
 sub beagle_static_root {
     my $handle = shift;
-    return catdir( ( $handle ? $handle->root : beagle_root() ),
+    return catdir( ( $handle ? $handle->root : root_path() ),
         'attachments' );
 }
 
@@ -283,7 +278,7 @@ sub set_whitelist {
         ref $value eq 'ARRAY' ? ( join newline, @$value ) : $value );
 }
 
-sub beagle_roots {
+sub root_paths {
     my $config = config();
     my %roots;
     for my $section ( keys %$config ) {
@@ -294,7 +289,7 @@ sub beagle_roots {
     return \%roots;
 }
 
-sub set_beagle_roots {
+sub set_root_paths {
     my $all = shift or die;
     $config = config();
     for my $section ( keys %$config ) {
@@ -374,10 +369,12 @@ my %root_name;
 my %name_root;
 
 sub root_name {
-    my $root = shift;
+    my $root = shift || root_path('not die');
+    return 'global' unless defined $root;
+
     return $root_name{$root} if $root_name{$root};
 
-    my $roots = beagle_roots();
+    my $roots = root_paths();
     for my $name ( keys %$roots ) {
         if ( $root eq $roots->{$name}{local} ) {
             $root_name{$root} = $name;
@@ -394,7 +391,7 @@ sub name_root {
     my $name = shift;
     return $name_root{$name} if $name_root{$name};
 
-    my $roots = beagle_roots();
+    my $roots = root_paths();
 
     my $root = $roots->{$name} ? $roots->{$name}{local} : ();
 
@@ -413,7 +410,7 @@ sub root_type {
     my $root = shift;
     return $root_type{$root} if $root_type{$root};
 
-    my $roots = beagle_roots();
+    my $roots = root_paths();
     for my $name ( keys %$roots ) {
         if ( $root eq $roots->{$name}{local} ) {
             $root_type{$root} = $roots->{$name}{type};
@@ -590,7 +587,7 @@ sub resolve_entry {
         push @bh, $opt{handle};
     }
     else {
-        my $all = beagle_roots;
+        my $all = root_paths;
         @bh = map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %{$all};
     }
@@ -652,7 +649,7 @@ sub die_entry_ambiguous {
 }
 
 sub handle {
-    my $root = beagle_root('not die');
+    my $root = root_path('not die');
     require Beagle::Handle;
 
     if ($root) {
@@ -662,7 +659,7 @@ sub handle {
 }
 
 sub handles {
-    my $all = beagle_roots();
+    my $all = root_paths();
     require Beagle::Handle;
     return map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
 }
@@ -805,7 +802,7 @@ sub parse_markdown {
     return defang( Text::MultiMarkdown::markdown( join "\n", @new ) );
 }
 
-sub detect_beagle_roots {
+sub detect_root_paths {
     my $base = shift || beagle_home_roots();
     return {} unless -d $base;
     my $info = {};
@@ -814,7 +811,7 @@ sub detect_beagle_roots {
     while ( my $dir = readdir $dh ) {
         next if $dir eq '.' || $dir eq '..';
         if (
-            check_beagle_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
+            check_root_path( decode( locale_fs => catdir( $base, $dir ) ) ) )
         {
 
             if ( -e catdir( $base, $dir, '.git' ) ) {
@@ -838,7 +835,7 @@ sub detect_beagle_roots {
         }
         else {
             %$info =
-              ( %$info, %{ detect_beagle_roots( catdir( $base, $dir ) ) } );
+              ( %$info, %{ detect_root_paths( catdir( $base, $dir ) ) } );
         }
     }
     return $info;

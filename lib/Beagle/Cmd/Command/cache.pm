@@ -33,9 +33,9 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     my @roots;
-    my $root = beagle_root('not die');
+    my $root = root_path('not die');
 
-    my $all = beagle_roots();
+    my $all = root_paths();
     if ( $self->all || !$root ) {
         for my $name ( keys %$all ) {
             push @roots, $all->{$name}{local};

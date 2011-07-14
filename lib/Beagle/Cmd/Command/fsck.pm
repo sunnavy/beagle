@@ -19,7 +19,7 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $all = beagle_roots();
+    my $all = root_paths();
     for my $name ( keys %$all ) {
         my $local = $all->{$name}{local};
         next if -d $local;

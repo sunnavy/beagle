@@ -23,7 +23,7 @@ sub execute {
     my ( $old_name, $new_name ) = @$args;
     die "new name is equal to the old name." if $old_name eq $new_name;
 
-    my $all = beagle_roots();
+    my $all = root_paths();
     die "$old_name doesn't exist" unless $all->{$old_name};
 
     $all->{$new_name} = delete $all->{$old_name};
@@ -51,7 +51,7 @@ sub execute {
           or warn "failed to remove empty $old_parent: $!";
     }
 
-    set_beagle_roots($all);
+    set_root_paths($all);
 
     puts "renamed $old_name to $new_name.";
 }

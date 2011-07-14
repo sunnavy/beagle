@@ -41,7 +41,7 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $root = beagle_root('not die');
+    my $root = root_path('not die');
 
     if ( !$root ) {
         CORE::die "please specify beagle by --name or --root\n";

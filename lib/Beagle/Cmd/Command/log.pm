@@ -30,7 +30,7 @@ sub execute {
         $entry = $ret[0]->{entry};
     }
     require Beagle::Handle;
-    $bh ||= Beagle::Handle->new( root => beagle_root() );
+    $bh ||= Beagle::Handle->new( root => root_path() );
 
     my ( $ret, $out ) =
       $bh->backend->log( @$args, $entry ? ( '--follow', $entry->path ) : () );

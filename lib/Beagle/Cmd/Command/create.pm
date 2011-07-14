@@ -82,14 +82,14 @@ sub execute {
     create_beagle( %$opt, root => $root, info => $info, name => undef );
 
     if ( $self->name ) {
-        my $all = beagle_roots();
+        my $all = root_paths();
 
         $all->{$self->name} = {
             local => $root,
             type  => $self->type,
         };
 
-        set_beagle_roots($all);
+        set_root_paths($all);
         puts "created."
     }
     else {

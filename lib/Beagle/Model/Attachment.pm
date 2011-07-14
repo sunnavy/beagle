@@ -6,7 +6,7 @@ has 'root' => (
     isa     => 'Str',
     is      => 'rw',
     lazy    => 1,
-    default => sub { beagle_root() },
+    default => sub { root_path() },
 );
 
 sub path {

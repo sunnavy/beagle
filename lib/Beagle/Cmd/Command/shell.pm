@@ -20,7 +20,7 @@ use Term::ReadLine;
 use Text::ParseWords 'shellwords';
 
 sub prompt {
-    beagle_name() . '> ';
+    root_name() . '> ';
 }
 
 sub execute {
@@ -41,7 +41,7 @@ sub execute {
         if ( $line =~
             /(^|\s+)(--name|-n|--unfollow|use|switch|rename|root)\s+\w*$/ )
         {
-            return sort keys %{ beagle_roots() };
+            return sort keys %{ root_paths() };
         }
 
         if ( $line =~ /^help\s+\w*$/ ) {
@@ -83,7 +83,7 @@ sub execute {
             system( $cmd, @ARGV );
         }
         elsif ( $cmd eq 'which' ) {
-            puts beagle_name();
+            puts root_name();
         }
         elsif ( $cmd eq 'use' ) {
             my $name = $ARGV[1];
@@ -92,8 +92,8 @@ sub execute {
                     $Beagle::Util::BEAGLE_ROOT = '';
                 }
                 else {
-                    if ( beagle_roots()->{$name} ) {
-                        set_beagle_name($name);
+                    if ( root_paths()->{$name} ) {
+                        set_root_name($name);
                     }
                     else {
                         warn "invalid beagle name: $name\n";
@@ -110,8 +110,8 @@ sub execute {
                     $name                      = '';
                 }
                 else {
-                    if ( beagle_roots()->{$name} ) {
-                        set_beagle_name($name);
+                    if ( root_paths()->{$name} ) {
+                        set_root_name($name);
                     }
                     else {
                         warn "invalid beagle name: $name\n";
@@ -140,7 +140,7 @@ sub execute {
 
                 # backup settings
                 my ( $devel, $cache, $root ) =
-                  ( enabled_devel(), enabled_cache(), beagle_root('not die') );
+                  ( enabled_devel(), enabled_cache(), root_path('not die') );
 
                 my $start = Time::HiRes::time();
                 eval { Beagle::Cmd->run };
@@ -150,7 +150,7 @@ sub execute {
                 # restore settings
                 $devel ? enable_devel() : disable_devel();
                 $cache ? enable_cache() : disable_cache();
-                set_beagle_root($root) if $root;
+                set_root_path($root) if $root;
             }
         }
         $self->write_history($term);

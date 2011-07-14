@@ -23,7 +23,7 @@ sub execute {
     my @roots;
 
     if ( $self->all ) {
-        my $all = beagle_roots();
+        my $all = root_paths();
         for my $name ( keys %$all ) {
             next unless $all->{$name}{type} eq 'git';
             if ( $all->{$name}{local} && $all->{$name}{remote} ) {
@@ -32,7 +32,7 @@ sub execute {
         }
     }
     else {
-        my $root = beagle_root();
+        my $root = root_path();
         die "$root is not of type git" unless root_type($root) eq 'git';
 
         @roots = $root;

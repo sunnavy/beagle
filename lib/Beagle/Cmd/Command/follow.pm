@@ -93,7 +93,7 @@ sub execute {
             File::Copy::Recursive::dircopy( $root, $f_root );
         }
 
-        my $all = beagle_roots();
+        my $all = root_paths();
 
         $all->{$name} = {
             remote => $root,
@@ -101,7 +101,7 @@ sub execute {
             type   => $self->type,
         };
 
-        set_beagle_roots($all);
+        set_root_paths($all);
 
         puts "followed $root.";
     }

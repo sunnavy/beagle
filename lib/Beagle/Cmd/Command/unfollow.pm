@@ -30,10 +30,10 @@ sub execute {
         }
         set_entry_map( $map );
 
-        my $all = beagle_roots();
+        my $all = root_paths();
         if ( exists $all->{$name} ) {
             delete $all->{$name};
-            set_beagle_roots($all);
+            set_root_paths($all);
         }
         push @unfollowed, $name;
     }
