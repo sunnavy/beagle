@@ -83,7 +83,7 @@ sub execute {
                 }
                 die_entry_ambiguous( $i, @ret ) unless @ret == 1;
                 my $id = $ret[0]->{id};
-                puts @ids, $id;
+                push @ids, $id;
             }
         }
         else {
