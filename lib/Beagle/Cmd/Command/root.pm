@@ -27,7 +27,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
     my $root = backend_root('not die');
 
-    my $all = roots();
+    my $all = backend_roots();
 
     die "beagle root [name]" unless @$args <= 1;
 

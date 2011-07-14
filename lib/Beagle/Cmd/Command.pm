@@ -53,7 +53,7 @@ has 'name' => (
                 $Beagle::Util::ROOT = '';
             }
             else {
-                my $all = roots();
+                my $all = backend_roots();
                 die "no such name: $name" unless $all->{$name};
                 set_backend_root( $all->{$name}{local} );
             }

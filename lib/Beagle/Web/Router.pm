@@ -54,7 +54,7 @@ my $root = backend_root('not die');
 my $req;
 
 if ( $ENV{BEAGLE_ALL} || !$root ) {
-    $all = roots();
+    $all = backend_roots();
     for my $n ( keys %$all ) {
         local $Beagle::Util::ROOT = $all->{$n}{local};
         $bh{$n} = Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );

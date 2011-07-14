@@ -35,7 +35,7 @@ sub execute {
     my @roots;
     my $root = backend_root('not die');
 
-    my $all = roots();
+    my $all = backend_roots();
     if ( $self->all || !$root ) {
         for my $name ( keys %$all ) {
             push @roots, $all->{$name}{local};

@@ -172,7 +172,7 @@ sub _prepare {
         return Beagle::Handle->new( root => $root );
     }
     else {
-        my $all = roots();
+        my $all = backend_roots();
         $self->all(1);
         return map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %$all;
@@ -256,7 +256,7 @@ sub show_result {
 
     return unless @found;
 
-    my $all = roots();
+    my $all = backend_roots();
 
     require Text::Table;
     my $tb;

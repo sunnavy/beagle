@@ -56,7 +56,7 @@ sub execute {
 
     my $root =
       rel2abs( $args->[0]
-          || catdir( roots_root(), split /\//, $self->name ) );
+          || catdir( backend_roots_root(), split /\//, $self->name ) );
 
     if ($root) {
         if ( -e $root ) {
@@ -82,14 +82,14 @@ sub execute {
     create_beagle( %$opt, root => $root, info => $info, name => undef );
 
     if ( $self->name ) {
-        my $all = roots();
+        my $all = backend_roots();
 
         $all->{$self->name} = {
             local => $root,
             type  => $self->type,
         };
 
-        set_roots($all);
+        set_backend_roots($all);
         puts "created."
     }
     else {

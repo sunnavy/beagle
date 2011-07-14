@@ -41,7 +41,7 @@ sub execute {
         if ( $line =~
             /(^|\s+)(--name|-n|--unfollow|use|switch|rename|root)\s+\w*$/ )
         {
-            return sort keys %{ roots() };
+            return sort keys %{ backend_roots() };
         }
 
         if ( $line =~ /^help\s+\w*$/ ) {
@@ -92,7 +92,7 @@ sub execute {
                     $Beagle::Util::ROOT = '';
                 }
                 else {
-                    if ( roots()->{$name} ) {
+                    if ( backend_roots()->{$name} ) {
                         set_backend_root_by_name($name);
                     }
                     else {
@@ -110,7 +110,7 @@ sub execute {
                     $name                      = '';
                 }
                 else {
-                    if ( roots()->{$name} ) {
+                    if ( backend_roots()->{$name} ) {
                         set_backend_root_by_name($name);
                     }
                     else {

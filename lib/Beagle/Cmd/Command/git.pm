@@ -23,7 +23,7 @@ sub execute {
     my @roots;
 
     if ( $self->all ) {
-        my $all = roots();
+        my $all = backend_roots();
         for my $name ( keys %$all ) {
             next unless $all->{$name}{type} eq 'git';
             if ( $all->{$name}{local} && $all->{$name}{remote} ) {

@@ -22,7 +22,7 @@ sub execute {
     my $name_length;
 
     if ( $self->all || !@roots ) {
-        my $all = roots;
+        my $all = backend_roots();
         @roots = map { $all->{$_}{local} } keys %$all;
         $name_length = max_length( keys %$all ) + 1;
     }

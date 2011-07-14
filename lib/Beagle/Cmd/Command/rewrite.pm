@@ -27,7 +27,7 @@ sub execute {
         push @bh, Beagle::Handle->new( root => $root );
     }
     else {
-        my $all = roots();
+        my $all = backend_roots();
         push @bh,
           map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
     }

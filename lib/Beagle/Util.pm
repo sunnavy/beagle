@@ -40,14 +40,14 @@ our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
       set_backend_root backend_root root_name set_backend_root_by_name check_backend_root
-      current_static_root kennel user_alias roots set_roots
+      current_static_root kennel user_alias backend_roots set_backend_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
       system_alias create_beagle alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
-      detect_roots roots_root cache_root
+      detect_roots backend_roots_root cache_root
       cache_name share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
@@ -137,7 +137,7 @@ sub set_backend_root {
         $dir = decode( locale => $ENV{BEAGLE_ROOT} || '' );
 
         if ( !$dir && length $ENV{BEAGLE_NAME} ) {
-            my $roots = roots();
+            my $roots = backend_roots();
             my $b = $roots->{ decode( locale => $ENV{BEAGLE_NAME} ) };
             $dir = $b->{local} if $b && $b->{local};
         }
@@ -145,7 +145,7 @@ sub set_backend_root {
         $dir ||= core_config()->{default_root};
 
         if ( !$dir && length core_config()->{default_name} ) {
-            my $roots = roots();
+            my $roots = backend_roots();
             my $b     = $roots->{ core_config()->{default_name} };
             $dir = $b->{local} if $b && $b->{local};
         }
@@ -219,7 +219,7 @@ sub cache_root {
     return catdir( kennel, 'cache' );
 }
 
-sub roots_root {
+sub backend_roots_root {
     return catdir( kennel, 'roots' );
 }
 
@@ -278,7 +278,7 @@ sub set_whitelist {
         ref $value eq 'ARRAY' ? ( join newline, @$value ) : $value );
 }
 
-sub roots {
+sub backend_roots{
     my $config = config();
     my %roots;
     for my $section ( keys %$config ) {
@@ -289,7 +289,7 @@ sub roots {
     return \%roots;
 }
 
-sub set_roots {
+sub set_backend_roots {
     my $all = shift or die;
     $config = config();
     for my $section ( keys %$config ) {
@@ -374,7 +374,7 @@ sub root_name {
 
     return $root_name{$root} if $root_name{$root};
 
-    my $roots = roots();
+    my $roots = backend_roots();
     for my $name ( keys %$roots ) {
         if ( $root eq $roots->{$name}{local} ) {
             $root_name{$root} = $name;
@@ -391,7 +391,7 @@ sub name_root {
     my $name = shift;
     return $name_root{$name} if $name_root{$name};
 
-    my $roots = roots();
+    my $roots = backend_roots();
 
     my $root = $roots->{$name} ? $roots->{$name}{local} : ();
 
@@ -410,7 +410,7 @@ sub root_type {
     my $root = shift;
     return $root_type{$root} if $root_type{$root};
 
-    my $roots = roots();
+    my $roots = backend_roots();
     for my $name ( keys %$roots ) {
         if ( $root eq $roots->{$name}{local} ) {
             $root_type{$root} = $roots->{$name}{type};
@@ -587,7 +587,7 @@ sub resolve_entry {
         push @bh, $opt{handle};
     }
     else {
-        my $all = roots;
+        my $all = backend_roots();
         @bh = map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %{$all};
     }
@@ -659,7 +659,7 @@ sub handle {
 }
 
 sub handles {
-    my $all = roots();
+    my $all = backend_roots();
     require Beagle::Handle;
     return map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
 }
@@ -803,7 +803,7 @@ sub parse_markdown {
 }
 
 sub detect_roots {
-    my $base = shift || roots_root();
+    my $base = shift || backend_roots_root();
     return {} unless -d $base;
     my $info = {};
 
