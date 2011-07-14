@@ -28,8 +28,8 @@ sub execute {
 
     $all->{$new_name} = delete $all->{$old_name};
 
-    my $old_path = catdir( beagle_home_roots(), split qr{/}, $old_name );
-    my $new_path = catdir( beagle_home_roots(), split qr{/}, $new_name );
+    my $old_path = catdir( kennel_roots(), split qr{/}, $old_name );
+    my $new_path = catdir( kennel_roots(), split qr{/}, $new_name );
     $all->{$new_name}{local} = $new_path;
 
     if ( -e $new_path ) {

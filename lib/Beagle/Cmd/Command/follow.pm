@@ -57,7 +57,7 @@ sub execute {
             $name =~ s/\.git$//;
         }
 
-        my $f_root = catdir( beagle_home_roots(), split /\//, $name );
+        my $f_root = catdir( kennel_roots(), split /\//, $name );
         if ( -e $f_root ) {
             if ( $self->force ) {
                 remove_tree($f_root);
@@ -97,7 +97,7 @@ sub execute {
 
         $all->{$name} = {
             remote => $root,
-            local  => catdir( beagle_home_roots(), split /\//, $name ),
+            local  => catdir( kennel_roots(), split /\//, $name ),
             type   => $self->type,
         };
 

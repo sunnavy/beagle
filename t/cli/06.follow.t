@@ -9,7 +9,7 @@ use Test::Script::Run ':all';
 use File::Temp 'tempdir';
 my $beagle_cmd = Beagle::Test->beagle_command;
 
-my $home = Beagle::Test->init_home;
+my $kennel = Beagle::Test->init_kennel;
 
 my $tmpdir = tempdir( CLEANUP => 1 );
 for my $name (qw/foo bar/) {
@@ -54,7 +54,7 @@ like(
 );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
-is( last_script_stdout(), catdir( $home, 'roots', 'baz' ) . newline(),
+is( last_script_stdout(), catdir( $kennel, 'roots', 'baz' ) . newline(),
     'root output' );
 
 run_ok( $beagle_cmd, [ 'unfollow', 'bar' ], 'unfollow bar' );

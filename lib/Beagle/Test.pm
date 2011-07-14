@@ -10,22 +10,22 @@ $ENV{BEAGLE_ALL}   = 0;
 delete $ENV{BEAGLE_NAME};
 delete $ENV{BEAGLE_ROOT};
 
-sub init_home {
+sub init_kennel {
     my $class = shift;
-    my $home = tempdir( CLEANUP => 1 );
-    $ENV{BEAGLE_HOME} = $home;
+    my $kennel = tempdir( CLEANUP => 1 );
+    $ENV{BEAGLE_KENNEL} = $kennel;
 }
 
 sub init {
     my $class = shift;
 
-    my $home = $class->init_home();
+    my $kennel = $class->init_kennel();
     my $root = tempdir( CLEANUP => 1 );
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     ok( Beagle::Util::create_beagle( type => 'fs', root => $root, @_ ),
         "created beagle $root" );
     $ENV{BEAGLE_ROOT} = $root;
-    return wantarray ? ( $root, $home ) : $root;
+    return wantarray ? ( $root, $kennel ) : $root;
 }
 
 my @pids;

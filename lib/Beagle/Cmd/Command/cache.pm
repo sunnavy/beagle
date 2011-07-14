@@ -52,8 +52,8 @@ sub execute {
             if ( $self->force ) {
                 my $name = root_name($root);
                 $name =~ s!\W!_!g;
-                unlink catfile( beagle_home_cache(), $name . '.drafts' );
-                unlink catfile( beagle_home_cache(), $name );
+                unlink catfile( kennel_cache(), $name . '.drafts' );
+                unlink catfile( kennel_cache(), $name );
             }
 
             Beagle::Handle->new( root => $root, drafts => 0 );
@@ -84,7 +84,7 @@ sub execute {
             for my $p ( '', '.drafts' ) {
                 my $name = root_name($root);
                 $name =~ s![/\\]!_!g;
-                my $file = catfile( beagle_home(), 'cache', "$name$p" );
+                my $file = catfile( kennel(), 'cache', "$name$p" );
                 my $type = $p ? 'drafts' : 'normal';
                 if ( -e $file ) {
                     my $bh = Storable::retrieve($file);

@@ -16,7 +16,7 @@ subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 coerce 'Bool' => from 'Ref' => via { 1 };
 
 our (
-    $ROOT,  $HOME, $CACHE,
+    $ROOT,  $KENNEL, $CACHE,
     $DEVEL, $SHARE_ROOT,
     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS,
@@ -40,14 +40,14 @@ our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
       set_root_path root_path root_name set_root_name check_root_path
-      beagle_static_root beagle_home user_alias root_paths set_root_paths
+      beagle_static_root kennel user_alias root_paths set_root_paths
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
       system_alias create_beagle alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
-      detect_root_paths beagle_home_roots beagle_home_cache
+      detect_root_paths kennel_roots kennel_cache
       cache_name beagle_share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
@@ -204,30 +204,30 @@ sub beagle_static_root {
         'attachments' );
 }
 
-sub beagle_home {
-    return $HOME if $HOME;
-    if ( $ENV{BEAGLE_HOME} ) {
-        $HOME = decode( locale => $ENV{BEAGLE_HOME} );
+sub kennel {
+    return $KENNEL if $KENNEL;
+    if ( $ENV{BEAGLE_KENNEL} ) {
+        $KENNEL = decode( locale => $ENV{BEAGLE_KENNEL} );
     }
     else {
-        $HOME = catdir( user_home, '.beagle' );
+        $KENNEL = catdir( user_home, '.beagle' );
     }
-    return $HOME;
+    return $KENNEL;
 }
 
-sub beagle_home_cache {
-    return catdir( beagle_home, 'cache' );
+sub kennel_cache {
+    return catdir( kennel, 'cache' );
 }
 
-sub beagle_home_roots {
-    return catdir( beagle_home, 'roots' );
+sub kennel_roots {
+    return catdir( kennel, 'roots' );
 }
 
 my $config;
 
 sub config {
     my $section = shift;
-    my $config_file = catfile( beagle_home(), 'config' );
+    my $config_file = catfile( kennel(), 'config' );
     if ( -e $config_file ) {
         open my $fh, '<:encoding(utf8)', $config_file or die $!;
         $config ||= Config::INI::Reader->read_handle($fh);
@@ -250,7 +250,7 @@ sub set_config {
     else {
         $config = $value;
     }
-    my $config_file = catfile( beagle_home(), 'config' );
+    my $config_file = catfile( kennel(), 'config' );
     my $parent = parent_dir($config_file);
     make_path( parent_dir($config_file) ) or die $! unless -e $parent;
     open my $fh, '>:encoding(utf8)', $config_file or die $!;
@@ -263,14 +263,14 @@ sub set_core_config { set_config( @_, 'core' ) }
 sub set_user_alias  { set_config( @_, 'alias' ) }
 
 sub whitelist {
-    my $file = catfile( beagle_home(), 'whitelist' );
+    my $file = catfile( kennel(), 'whitelist' );
     return [] unless -e $file;
     return [ map { /(\S.*\S)/ ? $1 : () } read_file($file) ];
 }
 
 sub set_whitelist {
     my $value = @_ > 1 ? [@_] : shift;
-    my $file = catfile( beagle_home(), 'whitelist' );
+    my $file = catfile( kennel(), 'whitelist' );
     my $parent = parent_dir($file);
     make_path( parent_dir($file) ) or die $! unless -e $parent;
 
@@ -308,7 +308,7 @@ sub entry_map_path {
     $ENTRY_MAP_PATH ||=
          $ENV{BEAGLE_ENTRY_MAP_PATH}
       || core_config->{entry_map_path}
-      || catfile( beagle_home(), '.entry_map' );
+      || catfile( kennel(), '.entry_map' );
     return $ENTRY_MAP_PATH;
 }
 
@@ -331,7 +331,7 @@ sub entry_marks_path {
     $ENTRY_MARKS_PATH ||=
          $ENV{BEAGLE_ENTRY_MARKS_PATH}
       || core_config->{entry_marks_path}
-      || catfile( beagle_home(), '.entry_marks' );
+      || catfile( kennel(), '.entry_marks' );
     return $ENTRY_MARKS_PATH;
 }
 
@@ -803,7 +803,7 @@ sub parse_markdown {
 }
 
 sub detect_root_paths {
-    my $base = shift || beagle_home_roots();
+    my $base = shift || kennel_roots();
     return {} unless -d $base;
     my $info = {};
 

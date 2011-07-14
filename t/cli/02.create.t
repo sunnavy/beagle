@@ -8,7 +8,7 @@ use Beagle::Util;
 use File::Temp 'tempdir';
 my $beagle_cmd = Beagle::Test->beagle_command;
 
-Beagle::Test->init_home;
+Beagle::Test->init_kennel;
 
 {
     run_ok( $beagle_cmd, [qw/create --name foo/], 'create foo' );

@@ -38,7 +38,7 @@ has 'cache' => (
     default => sub {
         my $self = shift;
         my $name = cache_name( $self->name );
-        return catfile( beagle_home_cache,
+        return catfile( kennel_cache,
             $name . ( $self->drafts ? '.drafts' : '' ) );
     },
 );

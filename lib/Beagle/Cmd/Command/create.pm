@@ -33,7 +33,7 @@ has name => (
     isa           => 'Str',
     is            => 'rw',
     cmd_aliases   => 'n',
-    documentation => 'beagle name, will create it in $BEAGLE_HOME/roots directly',
+    documentation => 'beagle name, will create it in $BEAGLE_KENNEL/roots directly',
     traits        => ['Getopt'],
 );
 
@@ -56,7 +56,7 @@ sub execute {
 
     my $root =
       rel2abs( $args->[0]
-          || catdir( beagle_home_roots(), split /\//, $self->name ) );
+          || catdir( kennel_roots(), split /\//, $self->name ) );
 
     if ($root) {
         if ( -e $root ) {
