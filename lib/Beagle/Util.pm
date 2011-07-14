@@ -95,7 +95,7 @@ sub spread_template_roots {
     return @SPREAD_TEMPLATE_ROOTS if @SPREAD_TEMPLATE_ROOTS;
     if ( $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS} ) {
         push @SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
-          $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS};
+          decode( locale => $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS} );
     }
 
     if ( core_config()->{spread_template_roots} ) {
@@ -113,7 +113,7 @@ sub web_template_roots {
     return @WEB_TEMPLATE_ROOTS if @WEB_TEMPLATE_ROOTS;
     if ( $ENV{BEAGLE_WEB_TEMPLATE_ROOTS} ) {
         push @WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
-          $ENV{BEAGLE_WEB_TEMPLATE_ROOTS};
+          decode( locale(), $ENV{BEAGLE_WEB_TEMPLATE_ROOTS} );
     }
 
     if ( core_config()->{web_template_roots} ) {
