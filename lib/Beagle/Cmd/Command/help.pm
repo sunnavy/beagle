@@ -13,15 +13,33 @@ sub execute {
 
     ( my $cmd, $opts, $args ) = $self->app->prepare_command(@$args);
 
-    my $desc = $cmd->description;
-    $desc = "\n$desc" if length $desc;
+    require Pod::Usage;
+    require Pod::Find;
+
+    my $out;
+    open my $fh, '>', \$out or die $!;
+    Pod::Usage::pod2usage(
+        -verbose   => 2,
+        -input     => Pod::Find::pod_where(
+            { -inc => 1 },
+            ref $cmd
+        ),
+        -output => $fh,
+        -exitval => 'NOEXIT',
+    );
+    close $fh;
 
     $cmd->usage->{options} = [
         sort { $a->{desc} cmp $b->{desc} }
         grep { $_->{name} ne 'help' } @{ $cmd->usage->{options} }
     ];
-    puts join newline(), $cmd->usage->leader_text, $desc,
-      $cmd->usage->option_text;
+
+    my $opt = join newline(), 'OPTIONS', $cmd->usage->option_text;
+
+    unless ( $out =~ s!(?=^AUTHOR)!$opt!m ) {
+        $out .= $opt;
+    }
+    puts $out;
 }
 
 sub usage_desc { "show beagle help" }
