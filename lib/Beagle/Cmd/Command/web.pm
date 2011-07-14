@@ -23,14 +23,6 @@ has all => (
     lazy          => 1,
 );
 
-has 'share-root' => (
-    isa           => "Str",
-    is            => "rw",
-    accessor      => 'share_root',
-    traits        => ['Getopt'],
-    documentation => "specifiy this to overwrite share_root",
-);
-
 has 'command' => (
     isa           => 'Str',
     is            => 'rw',
@@ -52,7 +44,7 @@ sub execute {
     local $ENV{BEAGLE_NAME} = '';
     local $ENV{BEAGLE_ROOT} = $root;
 
-    my $share_root = $self->share_root || share_root();
+    my $share_root = share_root();
     local $ENV{BEAGLE_SHARE_ROOT} = $share_root;
 
     my $app = catfile( $share_root, 'app.psgi' );
