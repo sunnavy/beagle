@@ -831,11 +831,8 @@ sub parse_pod {
     my $value = $_[-1];
     return '' unless defined $value;
 
-    require Pod::Simple::XHTML;
-    my $pod = Pod::Simple::XHTML->new;
-    $pod->html_header('');
-    $pod->html_footer('');
-    $pod->html_h_level(3);
+    require Pod::PseudoPod::HTML;
+    my $pod = Pod::PseudoPod::HTML->new;
     my $out;
     $pod->output_string(\$out);
     $pod->parse_string_document($value);
