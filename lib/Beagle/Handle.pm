@@ -37,10 +37,10 @@ has 'cache' => (
     lazy    => 1,
     default => sub {
         my $self = shift;
+        my $name = $self->name;
         my $file =
           catfile( cache_root,
             encode( locale_fs => $name ) . ( $self->drafts ? '.drafts' : '' ) );
-        my $name = $self->name;
         my $parent = parent_dir($file);
         make_path( $parent ) unless -e $parent;
         return $file;
