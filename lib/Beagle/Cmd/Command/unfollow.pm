@@ -15,7 +15,7 @@ sub execute {
 
     my @unfollowed;
     for my $name (@$args) {
-        my $f_root = catdir( backend_roots_root(), split /\//, $name );
+        my $f_root = catdir( backend_root(), split /\//, $name );
         if ( -e $f_root ) {
             remove_tree($f_root);
         }
@@ -30,10 +30,10 @@ sub execute {
         }
         set_entry_map( $map );
 
-        my $all = backend_roots();
+        my $all = roots();
         if ( exists $all->{$name} ) {
             delete $all->{$name};
-            set_backend_roots($all);
+            set_roots($all);
         }
         push @unfollowed, $name;
     }

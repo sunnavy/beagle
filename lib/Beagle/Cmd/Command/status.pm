@@ -17,12 +17,12 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my @roots = backend_root('not die');
+    my @roots = current_root('not die');
 
     my $name_length;
 
     if ( $self->all || !@roots ) {
-        my $all = backend_roots();
+        my $all = roots();
         @roots = map { $all->{$_}{local} } keys %$all;
         $name_length = max_length( keys %$all ) + 1;
     }

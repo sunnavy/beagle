@@ -6,7 +6,7 @@ has 'root' => (
     isa     => 'Str',
     is      => 'rw',
     lazy    => 1,
-    default => sub { backend_root() },
+    default => sub { current_root() },
 );
 
 sub path {

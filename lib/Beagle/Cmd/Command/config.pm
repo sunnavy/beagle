@@ -79,7 +79,7 @@ sub execute {
 
         # check if there are roots already
         my $old = detect_roots();
-        set_backend_roots($old);
+        set_roots($old);
 
         puts "initialized.";
         puts "now add etc/bashrc in beagle source to your .bashrc.";

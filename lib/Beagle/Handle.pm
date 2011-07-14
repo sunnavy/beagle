@@ -25,7 +25,7 @@ has 'backend' => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        my $root = backend_root();
+        my $root = current_root();
         return Beagle::Backend->new( root => $root, type => root_type($root) );
     },
     handles => [qw/type root/],

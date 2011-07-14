@@ -33,9 +33,9 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     my @roots;
-    my $root = backend_root('not die');
+    my $root = current_root('not die');
 
-    my $all = backend_roots();
+    my $all = roots();
     if ( $self->all || !$root ) {
         for my $name ( keys %$all ) {
             push @roots, $all->{$name}{local};

@@ -23,13 +23,13 @@ sub execute {
     my ( $old_name, $new_name ) = @$args;
     die "new name is equal to the old name." if $old_name eq $new_name;
 
-    my $all = backend_roots();
+    my $all = roots();
     die "$old_name doesn't exist" unless $all->{$old_name};
 
     $all->{$new_name} = delete $all->{$old_name};
 
-    my $old_path = catdir( backend_roots_root(), split qr{/}, $old_name );
-    my $new_path = catdir( backend_roots_root(), split qr{/}, $new_name );
+    my $old_path = catdir( backend_root(), split qr{/}, $old_name );
+    my $new_path = catdir( backend_root(), split qr{/}, $new_name );
     $all->{$new_name}{local} = $new_path;
 
     if ( -e $new_path ) {
@@ -51,7 +51,7 @@ sub execute {
           or warn "failed to remove empty $old_parent: $!";
     }
 
-    set_backend_roots($all);
+    set_roots($all);
 
     puts "renamed $old_name to $new_name.";
 }

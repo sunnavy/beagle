@@ -18,7 +18,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
 
     if ( $self->update ) {
-        my $roots = backend_roots();
+        my $roots = roots();
         require Beagle::Handle;
         my $map = {};
 

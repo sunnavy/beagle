@@ -19,7 +19,7 @@ our (
     $ROOT,               $KENNEL,         $CACHE,
     $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $ENTRY_MAP_PATH, $ENTRY_MARKS_PATH,
-    $CACHE_ROOT,
+    $CACHE_ROOT, $BACKEND_ROOT
 );
 
 BEGIN {
@@ -37,15 +37,15 @@ BEGIN {
 our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
-      set_backend_root backend_root root_name set_backend_root_by_name check_backend_root
-      current_static_root kennel user_alias backend_roots set_backend_roots
+      set_current_root current_root root_name set_current_root_by_name check_current_root
+      current_static_root kennel user_alias roots set_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type
       system_alias create_backend alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
-      detect_roots backend_roots_root cache_root
+      detect_roots backend_root cache_root
       cache_name share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
@@ -123,18 +123,18 @@ sub web_template_roots {
     return @WEB_TEMPLATE_ROOTS;
 }
 
-sub set_backend_root {
+sub set_current_root {
     my $dir;
     if (@_) {
         $dir = shift;
-        die "set_backend_root is called with an undef value"
+        die "set_current_root is called with an undef value"
           unless defined $dir;
     }
     else {
         $dir = decode( locale => $ENV{BEAGLE_ROOT} || '' );
 
         if ( !$dir && length $ENV{BEAGLE_NAME} ) {
-            my $roots = backend_roots();
+            my $roots = roots();
             my $b = $roots->{ decode( locale => $ENV{BEAGLE_NAME} ) };
             $dir = $b->{local} if $b && $b->{local};
         }
@@ -142,7 +142,7 @@ sub set_backend_root {
         $dir ||= core_config()->{default_root};
 
         if ( !$dir && length core_config()->{default_name} ) {
-            my $roots = backend_roots();
+            my $roots = roots();
             my $b     = $roots->{ core_config()->{default_name} };
             $dir = $b->{local} if $b && $b->{local};
         }
@@ -154,7 +154,7 @@ sub set_backend_root {
 
     $dir = rel2abs($dir);
 
-    if ( check_backend_root($dir) ) {
+    if ( check_current_root($dir) ) {
         return $ROOT = $dir;
     }
     else {
@@ -162,11 +162,11 @@ sub set_backend_root {
     }
 }
 
-sub backend_root {
+sub current_root {
     return $ROOT if defined $ROOT;
 
     my $not_die = shift;
-    eval { set_backend_root() };
+    eval { set_current_root() };
     if ( $@ && !$not_die ) {
         die $@;
     }
@@ -174,13 +174,13 @@ sub backend_root {
     return;
 }
 
-sub set_backend_root_by_name {
+sub set_current_root_by_name {
     my $name = shift or die 'need name';
 
-    return set_backend_root( name_root($name) );
+    return set_current_root( name_root($name) );
 }
 
-sub check_backend_root {
+sub check_current_root {
     my $dir = encode( locale_fs => $_[-1] );
     return unless $dir && -d $dir;
     my $info = catfile( $dir, 'info' );
@@ -197,7 +197,7 @@ sub check_backend_root {
 
 sub current_static_root {
     my $handle = shift;
-    return catdir( ( $handle ? $handle->root : backend_root() ),
+    return catdir( ( $handle ? $handle->root : current_root() ),
         'attachments' );
 }
 
@@ -224,8 +224,16 @@ sub cache_root {
     return $CACHE_ROOT;
 }
 
-sub backend_roots_root {
-    return catdir( kennel, 'roots' );
+sub backend_root {
+    return $BACKEND_ROOT if $BACKEND_ROOT;
+    if ( $ENV{BEAGLE_BACKEND_ROOT} ) {
+        $BACKEND_ROOT = decode( locale => $ENV{BEAGLE_BACKEND_ROOT} );
+    }
+    else {
+        $BACKEND_ROOT = core_config()->{backend_root}
+          || catfile( kennel(), 'roots' );
+    }
+    return $BACKEND_ROOT;
 }
 
 my $config;
@@ -283,7 +291,7 @@ sub set_whitelist {
         ref $value eq 'ARRAY' ? ( join newline, @$value ) : $value );
 }
 
-sub backend_roots {
+sub roots {
     my $config = config();
     my %roots;
     for my $section ( keys %$config ) {
@@ -294,7 +302,7 @@ sub backend_roots {
     return \%roots;
 }
 
-sub set_backend_roots {
+sub set_roots {
     my $all = shift or die;
     $config = config();
     for my $section ( keys %$config ) {
@@ -316,7 +324,7 @@ sub entry_map_path {
         $ENTRY_MAP_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MAP_PATH} );
     }
     else {
-        $ENTRY_MAP_PATH = core_config->{entry_map_path}
+        $ENTRY_MAP_PATH = core_config()->{entry_map_path}
           || catfile( kennel(), '.entry_map' );
     }
     return $ENTRY_MAP_PATH;
@@ -344,7 +352,7 @@ sub entry_marks_path {
         $ENTRY_MARKS_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MARKS_PATH} );
     }
     else {
-        $ENTRY_MARKS_PATH = core_config->{entry_marks_path}
+        $ENTRY_MARKS_PATH = core_config()->{entry_marks_path}
           || catfile( kennel(), '.entry_marks' );
     }
     return $ENTRY_MARKS_PATH;
@@ -384,12 +392,12 @@ my %root_name;
 my %name_root;
 
 sub root_name {
-    my $root = shift || backend_root('not die');
+    my $root = shift || current_root('not die');
     return 'global' unless defined $root;
 
     return $root_name{$root} if $root_name{$root};
 
-    my $roots = backend_roots();
+    my $roots = roots();
     for my $name ( keys %$roots ) {
         if ( $root eq $roots->{$name}{local} ) {
             $root_name{$root} = $name;
@@ -406,7 +414,7 @@ sub name_root {
     my $name = shift;
     return $name_root{$name} if $name_root{$name};
 
-    my $roots = backend_roots();
+    my $roots = roots();
 
     my $root = $roots->{$name} ? $roots->{$name}{local} : ();
 
@@ -425,7 +433,7 @@ sub root_type {
     my $root = shift;
     return $root_type{$root} if $root_type{$root};
 
-    my $roots = backend_roots();
+    my $roots = roots();
     for my $name ( keys %$roots ) {
         if ( $root eq $roots->{$name}{local} ) {
             $root_type{$root} = $roots->{$name}{type};
@@ -603,7 +611,7 @@ sub resolve_entry {
         push @bh, $opt{handle};
     }
     else {
-        my $all = backend_roots();
+        my $all = roots();
         @bh = map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %{$all};
     }
@@ -665,7 +673,7 @@ sub die_entry_ambiguous {
 }
 
 sub handle {
-    my $root = backend_root('not die');
+    my $root = current_root('not die');
     require Beagle::Handle;
 
     if ($root) {
@@ -675,7 +683,7 @@ sub handle {
 }
 
 sub handles {
-    my $all = backend_roots();
+    my $all = roots();
     require Beagle::Handle;
     return map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
 }
@@ -820,7 +828,7 @@ sub parse_markdown {
 }
 
 sub detect_roots {
-    my $base = shift || backend_roots_root();
+    my $base = shift || backend_root();
     return {} unless -d $base;
     my $info = {};
 
@@ -828,7 +836,7 @@ sub detect_roots {
     while ( my $dir = readdir $dh ) {
         next if $dir eq '.' || $dir eq '..';
         if (
-            check_backend_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
+            check_current_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
         {
 
             if ( -e catdir( $base, $dir, '.git' ) ) {

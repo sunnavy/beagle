@@ -56,7 +56,7 @@ sub execute {
 
     my $root =
       rel2abs( $args->[0]
-          || catdir( backend_roots_root(), split /\//, $self->name ) );
+          || catdir( backend_root(), split /\//, $self->name ) );
 
     if ($root) {
         if ( -e $root ) {
@@ -82,14 +82,14 @@ sub execute {
     create_backend( %$opt, root => $root, info => $info, name => undef );
 
     if ( $self->name ) {
-        my $all = backend_roots();
+        my $all = roots();
 
         $all->{$self->name} = {
             local => $root,
             type  => $self->type,
         };
 
-        set_backend_roots($all);
+        set_roots($all);
         puts "created."
     }
     else {
