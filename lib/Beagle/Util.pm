@@ -16,12 +16,9 @@ subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 coerce 'Bool' => from 'Ref' => via { 1 };
 
 our (
-    $ROOT,  $KENNEL, $CACHE,
-    $DEVEL, $SHARE_ROOT,
-    @SPREAD_TEMPLATE_ROOTS,
-    @WEB_TEMPLATE_ROOTS,
-    $ENTRY_MAP_PATH,
-    $ENTRY_MARKS_PATH,
+    $ROOT,               $KENNEL,         $CACHE,
+    $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
+    @WEB_TEMPLATE_ROOTS, $ENTRY_MAP_PATH, $ENTRY_MARKS_PATH,
     $CACHE_ROOT,
 );
 
@@ -43,7 +40,7 @@ our @EXPORT = (
       set_backend_root backend_root root_name set_backend_root_by_name check_backend_root
       current_static_root kennel user_alias backend_roots set_backend_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
-      default_format split_id root_name name_root root_type 
+      default_format split_id root_name name_root root_type
       system_alias create_backend alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
@@ -104,8 +101,7 @@ sub spread_template_roots {
           core_config()->{spread_template_roots};
     }
 
-    push @SPREAD_TEMPLATE_ROOTS,
-      catdir( share_root(), 'spread_templates' );
+    push @SPREAD_TEMPLATE_ROOTS, catdir( share_root(), 'spread_templates' );
 
     return @SPREAD_TEMPLATE_ROOTS;
 }
@@ -122,8 +118,7 @@ sub web_template_roots {
           core_config()->{web_template_roots};
     }
 
-    push @WEB_TEMPLATE_ROOTS,
-      catdir( share_root(), 'views' );
+    push @WEB_TEMPLATE_ROOTS, catdir( share_root(), 'views' );
 
     return @WEB_TEMPLATE_ROOTS;
 }
@@ -132,7 +127,8 @@ sub set_backend_root {
     my $dir;
     if (@_) {
         $dir = shift;
-        die "set_backend_root is called with an undef value" unless defined $dir;
+        die "set_backend_root is called with an undef value"
+          unless defined $dir;
     }
     else {
         $dir = decode( locale => $ENV{BEAGLE_ROOT} || '' );
@@ -222,7 +218,7 @@ sub cache_root {
         $CACHE_ROOT = decode( locale => $ENV{BEAGLE_CACHE_ROOT} );
     }
     else {
-        $CACHE_ROOT = core_config->{cache_root}
+        $CACHE_ROOT = core_config()->{cache_root}
           || catfile( kennel(), 'cache' );
     }
     return $CACHE_ROOT;
@@ -287,7 +283,7 @@ sub set_whitelist {
         ref $value eq 'ARRAY' ? ( join newline, @$value ) : $value );
 }
 
-sub backend_roots{
+sub backend_roots {
     my $config = config();
     my %roots;
     for my $section ( keys %$config ) {
@@ -348,8 +344,7 @@ sub entry_marks_path {
         $ENTRY_MARKS_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MARKS_PATH} );
     }
     else {
-        $ENTRY_MARKS_PATH =
-          || core_config->{entry_marks_path}
+        $ENTRY_MARKS_PATH = core_config->{entry_marks_path}
           || catfile( kennel(), '.entry_marks' );
     }
     return $ENTRY_MARKS_PATH;
@@ -444,6 +439,7 @@ sub root_type {
 }
 
 my $entry_type_info;
+
 sub entry_type_info {
     return dclone($entry_type_info) if $entry_type_info;
 
@@ -463,10 +459,11 @@ sub entry_type_info {
 }
 
 sub entry_types {
-    return [ keys %{entry_type_info()} ];
+    return [ keys %{ entry_type_info() } ];
 }
 
 my $system_alias;
+
 sub system_alias {
     return dclone($system_alias) if $system_alias;
     $system_alias = {
@@ -492,7 +489,6 @@ sub system_alias {
         push      => q{git push},
         pull      => q{git pull},
     };
-
 
     my $type_info = entry_type_info();
     for my $type ( keys %$type_info ) {
@@ -597,13 +593,13 @@ sub resolve_entry {
     my $str = shift or return;
     return resolve_id( $str, @_ ) unless $str =~ /[^a-z0-9]/;
 
-    $str =~ s!^:!!; # : is to indicate that it's not an id
+    $str =~ s!^:!!;    # : is to indicate that it's not an id
 
     my %opt = ( handle => undef, @_ );
 
     require Beagle::Handle;
     my @bh;
-    if ($opt{handle}) {
+    if ( $opt{handle} ) {
         push @bh, $opt{handle};
     }
     else {
@@ -613,8 +609,8 @@ sub resolve_entry {
     }
 
     my @found;
-    for my $bh ( @bh ) {
-        for my $entry ( @{$bh->entries} ) {
+    for my $bh (@bh) {
+        for my $entry ( @{ $bh->entries } ) {
             if ( $entry->serialize( id => 1 ) =~ qr/$str/im ) {
                 push @found,
                   { id => $entry->id, entry => $entry, handle => $bh };
@@ -724,7 +720,6 @@ sub defang {
     return $defang->defang($html);
 }
 
-
 sub parse_wiki {
     my $value = $_[-1];
     return '' unless defined $value;
@@ -786,7 +781,9 @@ sub parse_markdown {
     for (@lines) {
         if ($block_name) {
             my $gard =
-              $block_name eq 'shell' ? '$' : $block_name eq 'prettyprint' ? ':' : '#';
+                $block_name eq 'shell'       ? '$'
+              : $block_name eq 'prettyprint' ? ':'
+              :                                '#';
             if (/^\s+\Q$gard\E\s+(.*)/m) {
                 $code .= $1 ? $1 : "\n";
             }
@@ -854,8 +851,7 @@ sub detect_roots {
             }
         }
         else {
-            %$info =
-              ( %$info, %{ detect_roots( catdir( $base, $dir ) ) } );
+            %$info = ( %$info, %{ detect_roots( catdir( $base, $dir ) ) } );
         }
     }
     return $info;
@@ -872,8 +868,7 @@ sub share_root {
     return $SHARE_ROOT if $SHARE_ROOT;
 
     if ( $ENV{BEAGLE_SHARE_ROOT} ) {
-        $SHARE_ROOT =
-          rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
+        $SHARE_ROOT = rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
     }
     else {
         require Beagle;
@@ -890,11 +885,10 @@ sub share_root {
         else {
             push @root, qw/auto share dist Beagle/;
         }
-        $SHARE_ROOT = catdir( @root );
+        $SHARE_ROOT = catdir(@root);
     }
     return $SHARE_ROOT;
 }
-
 
 1;
 __END__
