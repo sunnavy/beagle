@@ -93,7 +93,7 @@ sub execute {
                 }
                 else {
                     if ( roots()->{$name} ) {
-                        set_root_name($name);
+                        set_current_root_by_name($name);
                     }
                     else {
                         warn "invalid beagle name: $name\n";
@@ -111,7 +111,7 @@ sub execute {
                 }
                 else {
                     if ( roots()->{$name} ) {
-                        set_root_name($name);
+                        set_current_root_by_name($name);
                     }
                     else {
                         warn "invalid beagle name: $name\n";

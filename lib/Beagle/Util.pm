@@ -39,7 +39,7 @@ BEGIN {
 our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
-      set_current_root current_root root_name set_root_name check_current_root
+      set_current_root current_root root_name set_current_root_by_name check_current_root
       current_static_root kennel user_alias roots set_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
@@ -177,7 +177,7 @@ sub current_root {
     return;
 }
 
-sub set_root_name {
+sub set_current_root_by_name {
     my $name = shift or die 'need name';
 
     return set_current_root( name_root($name) );
