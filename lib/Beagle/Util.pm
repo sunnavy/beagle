@@ -305,10 +305,15 @@ sub set_backend_roots {
 }
 
 sub entry_map_path {
-    $ENTRY_MAP_PATH ||=
-         $ENV{BEAGLE_ENTRY_MAP_PATH}
-      || core_config->{entry_map_path}
-      || catfile( kennel(), '.entry_map' );
+    return $ENTRY_MAP_PATH if defined $ENTRY_MAP_PATH;
+
+    if ( $ENV{BEAGLE_ENTRY_MAP_PATH} ) {
+        $ENTRY_MAP_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MAP_PATH} );
+    }
+    else {
+        $ENTRY_MAP_PATH = core_config->{entry_map_path}
+          || catfile( kennel(), '.entry_map' );
+    }
     return $ENTRY_MAP_PATH;
 }
 
@@ -328,10 +333,16 @@ sub set_entry_map {
 }
 
 sub entry_marks_path {
-    $ENTRY_MARKS_PATH ||=
-         $ENV{BEAGLE_ENTRY_MARKS_PATH}
-      || core_config->{entry_marks_path}
-      || catfile( kennel(), '.entry_marks' );
+    return $ENTRY_MARKS_PATH if defined $ENTRY_MARKS_PATH;
+
+    if ( $ENV{BEAGLE_ENTRY_MARKS_PATH} ) {
+        $ENTRY_MARKS_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MARKS_PATH} );
+    }
+    else {
+        $ENTRY_MARKS_PATH =
+          || core_config->{entry_marks_path}
+          || catfile( kennel(), '.entry_marks' );
+    }
     return $ENTRY_MARKS_PATH;
 }
 
