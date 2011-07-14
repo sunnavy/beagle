@@ -85,7 +85,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "show entries" }
 
 1;
 

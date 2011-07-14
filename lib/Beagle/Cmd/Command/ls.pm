@@ -283,7 +283,6 @@ sub show_result {
     puts $tb;
 }
 
-sub usage_desc { "ls entries" }
 
 1;
 

@@ -56,7 +56,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "bridge to git" }
 
 1;
 

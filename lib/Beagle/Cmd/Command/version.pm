@@ -14,7 +14,6 @@ sub execute {
     puts "beagle version $Beagle::VERSION";
 }
 
-sub usage_desc { "show beagle version" }
 
 1;
 

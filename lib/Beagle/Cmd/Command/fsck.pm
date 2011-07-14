@@ -32,7 +32,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "check integrity of beagles" }
 
 1;
 

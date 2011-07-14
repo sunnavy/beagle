@@ -96,7 +96,6 @@ sub execute {
     }
 }
 
-sub usage_desc { 'manage entry marks' }
 
 1;
 

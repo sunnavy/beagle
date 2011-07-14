@@ -98,7 +98,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "create a new beagle" }
 
 1;
 

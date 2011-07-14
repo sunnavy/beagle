@@ -199,7 +199,6 @@ sub handle_attachments {
 }
 
 
-sub usage_desc { "create a new entry" }
 
 1;
 

@@ -39,7 +39,6 @@ sub execute {
     print $out if $ret;
 }
 
-sub usage_desc { "show log" }
 
 1;
 

@@ -56,7 +56,6 @@ sub execute {
     puts "renamed $old_name to $new_name.";
 }
 
-sub usage_desc { "rename a beagle" }
 
 1;
 

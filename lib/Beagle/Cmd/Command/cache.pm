@@ -108,7 +108,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "manage cache" }
 
 1;
 

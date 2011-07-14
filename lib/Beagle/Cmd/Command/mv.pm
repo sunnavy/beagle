@@ -75,7 +75,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "move entries to another beagle" }
 
 1;
 

@@ -67,7 +67,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "delete entries" }
 
 1;
 

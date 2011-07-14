@@ -122,7 +122,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "show root" }
 
 1;
 

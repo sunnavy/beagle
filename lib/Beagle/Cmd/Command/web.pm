@@ -72,7 +72,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "start web server" }
 
 1;
 

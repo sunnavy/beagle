@@ -124,7 +124,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "update entries" }
 
 1;
 

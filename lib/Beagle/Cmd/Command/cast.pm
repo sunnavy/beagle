@@ -44,7 +44,6 @@ sub execute {
     puts 'casted.';
 }
 
-sub usage_desc { "cast entres to another type" }
 
 1;
 

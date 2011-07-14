@@ -12,7 +12,6 @@ sub execute {
     App::Cmd::Command::commands::execute(@_);
 }
 
-sub usage_desc { "show beagle commands" }
 
 1;
 

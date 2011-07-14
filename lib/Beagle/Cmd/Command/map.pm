@@ -57,7 +57,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "manage entry map" }
 
 1;
 

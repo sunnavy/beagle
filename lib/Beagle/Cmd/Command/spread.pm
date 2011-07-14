@@ -216,7 +216,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "spread entries" }
 
 1;
 

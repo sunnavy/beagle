@@ -42,7 +42,6 @@ sub execute {
     puts $out;
 }
 
-sub usage_desc { "show beagle help" }
 
 1;
 

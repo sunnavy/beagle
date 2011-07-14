@@ -107,7 +107,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "follow beagles" }
 
 1;
 

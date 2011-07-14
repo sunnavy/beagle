@@ -24,7 +24,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "show beagle configurations" }
 
 1;
 

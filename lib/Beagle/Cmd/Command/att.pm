@@ -226,7 +226,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "manage attachments" }
 
 1;
 

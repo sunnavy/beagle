@@ -30,7 +30,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "open the beagle root with SHELL" }
 
 1;
 

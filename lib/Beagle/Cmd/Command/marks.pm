@@ -102,7 +102,6 @@ sub execute {
     }
 }
 
-sub usage_desc { 'show/export/import entry marks' }
 
 1;
 

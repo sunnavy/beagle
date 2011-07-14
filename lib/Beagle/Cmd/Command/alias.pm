@@ -75,7 +75,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "manage aliases" }
 
 1;
 

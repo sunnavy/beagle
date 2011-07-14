@@ -64,7 +64,6 @@ sub size_info {
     return $info;
 }
 
-sub usage_desc { "show status" }
 
 1;
 

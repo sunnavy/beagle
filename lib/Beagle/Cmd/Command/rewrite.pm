@@ -49,7 +49,6 @@ sub execute {
     puts "rewrote.";
 }
 
-sub usage_desc { "rewrite all entries" }
 
 1;
 

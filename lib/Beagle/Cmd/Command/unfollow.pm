@@ -42,7 +42,6 @@ sub execute {
     puts "unfollowed ", join( ', ', @unfollowed ), '.';
 }
 
-sub usage_desc { "unfollow beagles" }
 
 1;
 

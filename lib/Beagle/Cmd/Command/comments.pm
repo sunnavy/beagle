@@ -27,7 +27,6 @@ override 'filter' => sub {
 
 sub command_names { 'comments' };
 
-sub usage_desc { "list comments" }
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;

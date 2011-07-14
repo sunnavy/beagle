@@ -189,7 +189,6 @@ sub write_history {
     }
 }
 
-sub usage_desc { "interactive shell" }
 
 1;
 

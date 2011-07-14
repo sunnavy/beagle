@@ -115,7 +115,6 @@ sub execute {
     }
 }
 
-sub usage_desc { "configure beagle" }
 
 1;
 

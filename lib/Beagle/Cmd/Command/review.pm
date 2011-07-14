@@ -67,7 +67,6 @@ has 'translator' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
-sub usage_desc { "create a new review" }
 
 1;
 
