@@ -22,6 +22,7 @@ our (
     @WEB_TEMPLATE_ROOTS,
     $ENTRY_MAP_PATH,
     $ENTRY_MARKS_PATH,
+    $CACHE_ROOT,
 );
 
 BEGIN {
