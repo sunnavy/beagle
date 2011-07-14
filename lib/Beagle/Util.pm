@@ -37,7 +37,7 @@ BEGIN {
 our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
-      set_current_root current_root root_name set_current_root_by_name check_current_root
+      set_current_root current_root root_name set_current_root_by_name check_root
       current_static_root kennel user_alias roots set_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type
@@ -154,7 +154,7 @@ sub set_current_root {
 
     $dir = rel2abs($dir);
 
-    if ( check_current_root($dir) ) {
+    if ( check_root($dir) ) {
         return $ROOT = $dir;
     }
     else {
@@ -180,7 +180,7 @@ sub set_current_root_by_name {
     return set_current_root( name_root($name) );
 }
 
-sub check_current_root {
+sub check_root {
     my $dir = encode( locale_fs => $_[-1] );
     return unless $dir && -d $dir;
     my $info = catfile( $dir, 'info' );
@@ -836,7 +836,7 @@ sub detect_roots {
     while ( my $dir = readdir $dh ) {
         next if $dir eq '.' || $dir eq '..';
         if (
-            check_current_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
+            check_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
         {
 
             if ( -e catdir( $base, $dir, '.git' ) ) {
