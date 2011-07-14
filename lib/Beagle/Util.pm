@@ -43,7 +43,7 @@ our @EXPORT = (
       current_static_root kennel user_alias backend_roots set_backend_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
-      system_alias create_beagle alias aliases resolve_id die_entry_not_found
+      system_alias create_backend alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
@@ -488,7 +488,7 @@ sub system_alias {
     return dclone($system_alias);
 }
 
-sub create_beagle {
+sub create_backend {
     my %opt  = @_;
     my $root = $opt{root} or die "need root";
     my $type = $opt{type} || 'git';
@@ -496,14 +496,14 @@ sub create_beagle {
     $opt{'name'}  ||= core_config()->{user_name};
     $opt{'email'} ||= core_config()->{user_email};
 
-    my $sub = '_create_beagle_' . lc $type;
+    my $sub = '_create_backend_' . lc $type;
     {
         no strict 'refs';
         return $sub->(%opt);
     }
 }
 
-sub _create_beagle_fs {
+sub _create_backend_fs {
     my %opt  = @_;
     my $root = $opt{root};
 
@@ -522,7 +522,7 @@ sub _create_beagle_fs {
     return 1;
 }
 
-sub _create_beagle_git {
+sub _create_backend_git {
     my %opt  = @_;
     my $root = $opt{root};
 
@@ -554,7 +554,7 @@ sub _create_beagle_git {
         $git->config( '--add', 'user.email', $email );
     }
 
-    _create_beagle_fs( %opt, root => $git->root );
+    _create_backend_fs( %opt, root => $git->root );
 
     $git->add('.');
     $git->commit( '-m' => 'init beagle' );

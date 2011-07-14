@@ -79,7 +79,7 @@ sub execute {
     }
 
     # $opt->{name} is not user name but beagle name
-    create_beagle( %$opt, root => $root, info => $info, name => undef );
+    create_backend( %$opt, root => $root, info => $info, name => undef );
 
     if ( $self->name ) {
         my $all = backend_roots();

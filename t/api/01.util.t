@@ -7,7 +7,7 @@ my @subs = qw/
   current_static_root kennel core_config user_alias
   set_core_config set_user_alias backend_roots set_backend_roots entry_map
   set_entry_map default_format split_id root_name name_root root_type
-  system_alias create_beagle alias aliases resolve_id die_entry_not_found
+  system_alias create_backend alias aliases resolve_id die_entry_not_found
   die_entry_ambiguous handle handles share_root resolve_entry
   is_in_range parse_wiki  parse_markdown entry_marks set_entry_marks
   whitelist set_whitelist detect_roots

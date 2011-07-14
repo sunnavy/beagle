@@ -22,7 +22,7 @@ sub init {
     my $kennel = $class->init_kennel();
     my $root = tempdir( CLEANUP => 1 );
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    ok( Beagle::Util::create_beagle( type => 'fs', root => $root, @_ ),
+    ok( Beagle::Util::create_backend( type => 'fs', root => $root, @_ ),
         "created beagle $root" );
     $ENV{BEAGLE_ROOT} = $root;
     return wantarray ? ( $root, $kennel ) : $root;
