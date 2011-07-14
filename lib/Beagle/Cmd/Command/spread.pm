@@ -76,7 +76,7 @@ sub execute {
                 $file = $name;
             }
             else {
-                for my $root( beagle_spread_template_roots ) {
+                for my $root( spread_template_roots ) {
                     if ( -f catfile( $root, $name ) ) {
                         $file = catfile( beagle_spread_template_root(), $name );
                         last;

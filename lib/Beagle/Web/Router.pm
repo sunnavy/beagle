@@ -84,7 +84,7 @@ else {
 
 use Text::Xslate;
 my $xslate = Text::Xslate->new(
-    path        => [ beagle_web_template_roots() ],
+    path        => [ web_template_roots() ],
     cache_dir   => File::Spec->tmpdir,
     cache       => 1,
     input_layer => ':utf8',

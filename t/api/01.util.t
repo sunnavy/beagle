@@ -13,7 +13,7 @@ my @subs = qw/
   whitelist set_whitelist detect_beagle_roots
   detect_beagle_roots beagle_home_roots beagle_home_cache
   cache_name beagle_share_root entry_marks set_entry_marks
-  beagle_spread_template_roots beagle_web_template_roots
+  spread_template_roots web_template_roots
   entry_type_info entry_types
   entry_map_path entry_marks_path
   /;

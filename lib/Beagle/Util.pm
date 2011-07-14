@@ -16,12 +16,12 @@ subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 coerce 'Bool' => from 'Ref' => via { 1 };
 
 our (
-    $BEAGLE_ROOT,  $BEAGLE_HOME, $BEAGLE_CACHE,
-    $BEAGLE_DEVEL, $BEAGLE_SHARE_ROOT,
-    @BEAGLE_SPREAD_TEMPLATE_ROOTS,
-    @BEAGLE_WEB_TEMPLATE_ROOTS,
-    $BEAGLE_ENTRY_MAP_PATH,
-    $BEAGLE_ENTRY_MARKS_PATH,
+    $ROOT,  $HOME, $CACHE,
+    $DEVEL, $SHARE_ROOT,
+    @SPREAD_TEMPLATE_ROOTS,
+    @WEB_TEMPLATE_ROOTS,
+    $ENTRY_MAP_PATH,
+    $ENTRY_MARKS_PATH,
 );
 
 BEGIN {
@@ -49,82 +49,82 @@ our @EXPORT = (
       whitelist set_whitelist
       detect_beagle_roots beagle_home_roots beagle_home_cache
       cache_name beagle_share_root entry_marks set_entry_marks
-      beagle_spread_template_roots beagle_web_template_roots
+      spread_template_roots web_template_roots
       entry_type_info entry_types
       entry_map_path entry_marks_path
       /
 );
 
-$BEAGLE_DEVEL =
+$DEVEL =
   defined $ENV{BEAGLE_DEVEL} && length $ENV{BEAGLE_DEVEL}
   ? ( $ENV{BEAGLE_DEVEL} ? 1 : 0 )
   : ( exists core_config()->{devel} ? core_config()->{devel} : 1 );
 
 sub enabled_devel {
-    return $BEAGLE_DEVEL ? 1 : 0;
+    return $DEVEL ? 1 : 0;
 }
 
 sub enable_devel {
-    $BEAGLE_DEVEL = 1;
+    $DEVEL = 1;
 }
 
 sub disable_devel {
-    undef $BEAGLE_DEVEL;
+    undef $DEVEL;
     return 1;
 }
 
-$BEAGLE_CACHE =
+$CACHE =
   defined $ENV{BEAGLE_CACHE} && length $ENV{BEAGLE_CACHE}
   ? ( $ENV{BEAGLE_CACHE} ? 1 : 0 )
   : ( exists core_config()->{cache} ? core_config()->{cache} : 1 );
 
 sub enabled_cache {
-    return $BEAGLE_CACHE ? 1 : 0;
+    return $CACHE ? 1 : 0;
 }
 
 sub enable_cache {
-    $BEAGLE_CACHE = 1;
+    $CACHE = 1;
 }
 
 sub disable_cache {
-    undef $BEAGLE_CACHE;
+    undef $CACHE;
     return 1;
 }
 
-sub beagle_spread_template_roots {
-    return @BEAGLE_SPREAD_TEMPLATE_ROOTS if @BEAGLE_SPREAD_TEMPLATE_ROOTS;
+sub spread_template_roots {
+    return @SPREAD_TEMPLATE_ROOTS if @SPREAD_TEMPLATE_ROOTS;
     if ( $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS} ) {
-        push @BEAGLE_SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
+        push @SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
           $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS};
     }
 
     if ( core_config()->{spread_template_roots} ) {
-        push @BEAGLE_SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
+        push @SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
           core_config()->{spread_template_roots};
     }
 
-    push @BEAGLE_SPREAD_TEMPLATE_ROOTS,
+    push @SPREAD_TEMPLATE_ROOTS,
       catdir( beagle_share_root(), 'spread_templates' );
 
-    return @BEAGLE_SPREAD_TEMPLATE_ROOTS;
+    return @SPREAD_TEMPLATE_ROOTS;
 }
 
-sub beagle_web_template_roots {
-    return @BEAGLE_WEB_TEMPLATE_ROOTS if @BEAGLE_WEB_TEMPLATE_ROOTS;
+sub web_template_roots {
+    return @WEB_TEMPLATE_ROOTS if @WEB_TEMPLATE_ROOTS;
     if ( $ENV{BEAGLE_WEB_TEMPLATE_ROOTS} ) {
-        push @BEAGLE_WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
+        push @WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
           $ENV{BEAGLE_WEB_TEMPLATE_ROOTS};
     }
 
     if ( core_config()->{web_template_roots} ) {
-        push @BEAGLE_WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
+        push @WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
           core_config()->{web_template_roots};
     }
 
-    push @BEAGLE_WEB_TEMPLATE_ROOTS,
+    push @WEB_TEMPLATE_ROOTS,
       catdir( beagle_share_root(), 'views' );
 
-    return @BEAGLE_WEB_TEMPLATE_ROOTS;
+    return @WEB_TEMPLATE_ROOTS;
 }
 
 sub set_beagle_root {
@@ -158,7 +158,7 @@ sub set_beagle_root {
     $dir = rel2abs($dir);
 
     if ( check_beagle_root($dir) ) {
-        return $BEAGLE_ROOT = $dir;
+        return $ROOT = $dir;
     }
     else {
         die "$dir is invalid backend root";
@@ -166,14 +166,14 @@ sub set_beagle_root {
 }
 
 sub beagle_root {
-    return $BEAGLE_ROOT if defined $BEAGLE_ROOT;
+    return $ROOT if defined $ROOT;
 
     my $not_die = shift;
     eval { set_beagle_root() };
     if ( $@ && !$not_die ) {
         die $@;
     }
-    return $BEAGLE_ROOT if $BEAGLE_ROOT;
+    return $ROOT if $ROOT;
     return;
 }
 
@@ -210,14 +210,14 @@ sub beagle_static_root {
 }
 
 sub beagle_home {
-    return $BEAGLE_HOME if $BEAGLE_HOME;
+    return $HOME if $HOME;
     if ( $ENV{BEAGLE_HOME} ) {
-        $BEAGLE_HOME = decode( locale => $ENV{BEAGLE_HOME} );
+        $HOME = decode( locale => $ENV{BEAGLE_HOME} );
     }
     else {
-        $BEAGLE_HOME = catdir( user_home, '.beagle' );
+        $HOME = catdir( user_home, '.beagle' );
     }
-    return $BEAGLE_HOME;
+    return $HOME;
 }
 
 sub beagle_home_cache {
@@ -310,11 +310,11 @@ sub set_beagle_roots {
 }
 
 sub entry_map_path {
-    $BEAGLE_ENTRY_MAP_PATH ||=
+    $ENTRY_MAP_PATH ||=
          $ENV{BEAGLE_ENTRY_MAP_PATH}
       || core_config->{entry_map_path}
       || catfile( beagle_home(), '.entry_map' );
-    return $BEAGLE_ENTRY_MAP_PATH;
+    return $ENTRY_MAP_PATH;
 }
 
 sub entry_map {
@@ -333,11 +333,11 @@ sub set_entry_map {
 }
 
 sub entry_marks_path {
-    $BEAGLE_ENTRY_MARKS_PATH ||=
+    $ENTRY_MARKS_PATH ||=
          $ENV{BEAGLE_ENTRY_MARKS_PATH}
       || core_config->{entry_marks_path}
       || catfile( beagle_home(), '.entry_marks' );
-    return $BEAGLE_ENTRY_MARKS_PATH;
+    return $ENTRY_MARKS_PATH;
 }
 
 sub entry_marks {
@@ -852,10 +852,10 @@ sub cache_name {
 }
 
 sub beagle_share_root {
-    return $BEAGLE_SHARE_ROOT if $BEAGLE_SHARE_ROOT;
+    return $SHARE_ROOT if $SHARE_ROOT;
 
     if ( $ENV{BEAGLE_SHARE_ROOT} ) {
-        $BEAGLE_SHARE_ROOT =
+        $SHARE_ROOT =
           rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
     }
     else {
@@ -873,9 +873,9 @@ sub beagle_share_root {
         else {
             push @root, qw/auto share dist Beagle/;
         }
-        $BEAGLE_SHARE_ROOT = catdir( @root );
+        $SHARE_ROOT = catdir( @root );
     }
-    return $BEAGLE_SHARE_ROOT;
+    return $SHARE_ROOT;
 }
 
 
