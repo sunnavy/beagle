@@ -152,7 +152,7 @@ sub execute {
                 From => $self->from
                   || Email::Address->new( $bh->info->name, $bh->info->email )
                   ->format,
-                Subject => $self->subject || $entry->summary(70),
+                Subject => $self->subject || $entry->summary(80),
                 Data    => $entry->serialize( id => 1 ),
                 Charset => 'utf-8',
                 To      => $self->to,

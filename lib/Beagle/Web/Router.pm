@@ -299,7 +299,7 @@ post '/search' => sub {
         return to_json(
             {
                 results =>
-                  [ map { { id => $_->id, summary => $_->summary } } @found ],
+                  [ map { { id => $_->id, summary => $_->summary(80) } } @found ],
             }
         );
     }
