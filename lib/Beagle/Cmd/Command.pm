@@ -50,7 +50,7 @@ has 'name' => (
         my $name = shift;
         if ( defined $name && length $name ) {
             if ( $name eq 'global' ) {
-                $Beagle::Util::BEAGLE_ROOT = '';
+                $Beagle::Util::ROOT = '';
             }
             else {
                 my $all = roots();
@@ -59,7 +59,7 @@ has 'name' => (
             }
         }
         else {
-            $Beagle::Util::BEAGLE_ROOT = '';
+            $Beagle::Util::ROOT = '';
         }
     },
 );
@@ -77,7 +77,7 @@ has 'root' => (
             set_current_root($root);
         }
         else {
-            $Beagle::Util::BEAGLE_ROOT = '';
+            $Beagle::Util::ROOT = '';
         }
     },
 );

@@ -45,8 +45,6 @@ sub execute {
     local $ENV{BEAGLE_ROOT} = $root;
 
     my $share_root = share_root();
-    local $ENV{BEAGLE_SHARE_ROOT} = $share_root;
-
     my $app = catfile( $share_root, 'app.psgi' );
     require Beagle::Web;
     local $ENV{BEAGLE_WEB_ADMIN} =

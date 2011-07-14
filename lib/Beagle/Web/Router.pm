@@ -56,9 +56,8 @@ my $req;
 if ( $ENV{BEAGLE_ALL} || !$root ) {
     $all = roots();
     for my $n ( keys %$all ) {
-        local $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
-        $bh{$n} =
-          Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
+        local $Beagle::Util::ROOT = $all->{$n}{local};
+        $bh{$n} = Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
         if ( $root && $root eq $all->{$n}{local} ) {
             $bh   = $bh{$n};
             $name = $n;
@@ -185,6 +184,7 @@ sub render {
     my %vars = ( default_options(), @_ );
     return $xslate->render( "$template.tx", \%vars );
 }
+
 sub redirect {
     my $location = shift;
     my $code     = shift;
@@ -194,9 +194,9 @@ sub redirect {
 sub change_handle {
     my %vars = @_;
     my $n    = $vars{name};
-    $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
-    $bh                        = $bh{$n};
-    $name                      = $n;
+    $Beagle::Util::ROOT = $all->{$n}{local};
+    $bh                 = $bh{$n};
+    $name               = $n;
     redirect '/';
 }
 
@@ -540,7 +540,7 @@ post '/utility/markitup' => sub {
 sub process_fields {
     my ( $entry, $params ) = @_;
 
-    my %fields = Beagle::Web->field_list( $entry );
+    my %fields = Beagle::Web->field_list($entry);
     for my $field ( keys %$params ) {
         next unless $entry->can($field) && $fields{$field};
         my $new = $params->{$field};

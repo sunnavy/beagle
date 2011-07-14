@@ -89,7 +89,7 @@ sub execute {
             my $name = $ARGV[1];
             if ($name) {
                 if ( $name eq 'global' ) {
-                    $Beagle::Util::BEAGLE_ROOT = '';
+                    $Beagle::Util::ROOT = '';
                 }
                 else {
                     if ( roots()->{$name} ) {
@@ -106,7 +106,7 @@ sub execute {
             my $name = $ARGV[1];
             if ($name) {
                 if ( $name eq 'global' ) {
-                    $Beagle::Util::BEAGLE_ROOT = '';
+                    $Beagle::Util::ROOT = '';
                     $name                      = '';
                 }
                 else {
@@ -125,12 +125,12 @@ sub execute {
             }
         }
         else {
-            local $Beagle::Util::BEAGLE_ROOT = $Beagle::Util::BEAGLE_ROOT;
+            local $Beagle::Util::ROOT = $Beagle::Util::ROOT;
             if (   $self->spawn
                 || $ARGV[0] eq 'web'
                 || grep { $_ eq '--page' || $_ eq '--spawn' } @ARGV )
             {
-                local $ENV{BEAGLE_ROOT} = $Beagle::Util::BEAGLE_ROOT;
+                local $ENV{BEAGLE_ROOT} = $Beagle::Util::ROOT;
                 my $start = Time::HiRes::time();
                 system( $0, grep { $_ ne '--spawn' } @ARGV );
                 show_time($start) if enabled_devel;
