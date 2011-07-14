@@ -3,7 +3,7 @@ use Beagle::Util;
 
 my @subs = qw/
   enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
-  set_current_root current_root root_name set_current_root_by_name check_current_root
+  set_backend_root backend_root root_name set_backend_root_by_name check_backend_root
   current_static_root kennel core_config user_alias
   set_core_config set_user_alias  roots set_roots entry_map
   set_entry_map default_format split_id root_name name_root root_type

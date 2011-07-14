@@ -50,7 +50,7 @@ sub post {
 }
 
 my ( $bh, %updated, %bh, $all, $name );
-my $root = current_root('not die');
+my $root = backend_root('not die');
 my $req;
 
 if ( $ENV{BEAGLE_ALL} || !$root ) {

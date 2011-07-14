@@ -55,7 +55,7 @@ has 'name' => (
             else {
                 my $all = roots();
                 die "no such name: $name" unless $all->{$name};
-                set_current_root( $all->{$name}{local} );
+                set_backend_root( $all->{$name}{local} );
             }
         }
         else {
@@ -74,7 +74,7 @@ has 'root' => (
         my $self = shift;
         my $root = shift;
         if ( defined $root && length $root ) {
-            set_current_root($root);
+            set_backend_root($root);
         }
         else {
             $Beagle::Util::ROOT = '';

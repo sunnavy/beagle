@@ -17,7 +17,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my @roots = current_root('not die');
+    my @roots = backend_root('not die');
 
     my $name_length;
 

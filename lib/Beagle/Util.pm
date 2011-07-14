@@ -39,7 +39,7 @@ BEGIN {
 our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
-      set_current_root current_root root_name set_current_root_by_name check_current_root
+      set_backend_root backend_root root_name set_backend_root_by_name check_backend_root
       current_static_root kennel user_alias roots set_roots
       core_config set_core_config set_user_alias entry_map set_entry_map
       default_format split_id root_name name_root root_type 
@@ -127,11 +127,11 @@ sub web_template_roots {
     return @WEB_TEMPLATE_ROOTS;
 }
 
-sub set_current_root {
+sub set_backend_root {
     my $dir;
     if (@_) {
         $dir = shift;
-        die "set_current_root is called with an undef value" unless defined $dir;
+        die "set_backend_root is called with an undef value" unless defined $dir;
     }
     else {
         $dir = decode( locale => $ENV{BEAGLE_ROOT} || '' );
@@ -157,7 +157,7 @@ sub set_current_root {
 
     $dir = rel2abs($dir);
 
-    if ( check_current_root($dir) ) {
+    if ( check_backend_root($dir) ) {
         return $ROOT = $dir;
     }
     else {
@@ -165,11 +165,11 @@ sub set_current_root {
     }
 }
 
-sub current_root {
+sub backend_root {
     return $ROOT if defined $ROOT;
 
     my $not_die = shift;
-    eval { set_current_root() };
+    eval { set_backend_root() };
     if ( $@ && !$not_die ) {
         die $@;
     }
@@ -177,13 +177,13 @@ sub current_root {
     return;
 }
 
-sub set_current_root_by_name {
+sub set_backend_root_by_name {
     my $name = shift or die 'need name';
 
-    return set_current_root( name_root($name) );
+    return set_backend_root( name_root($name) );
 }
 
-sub check_current_root {
+sub check_backend_root {
     my $dir = encode( locale_fs => $_[-1] );
     return unless $dir && -d $dir;
     my $info = catfile( $dir, 'info' );
@@ -200,7 +200,7 @@ sub check_current_root {
 
 sub current_static_root {
     my $handle = shift;
-    return catdir( ( $handle ? $handle->root : current_root() ),
+    return catdir( ( $handle ? $handle->root : backend_root() ),
         'attachments' );
 }
 
@@ -369,7 +369,7 @@ my %root_name;
 my %name_root;
 
 sub root_name {
-    my $root = shift || current_root('not die');
+    my $root = shift || backend_root('not die');
     return 'global' unless defined $root;
 
     return $root_name{$root} if $root_name{$root};
@@ -649,7 +649,7 @@ sub die_entry_ambiguous {
 }
 
 sub handle {
-    my $root = current_root('not die');
+    my $root = backend_root('not die');
     require Beagle::Handle;
 
     if ($root) {
@@ -811,7 +811,7 @@ sub detect_roots {
     while ( my $dir = readdir $dh ) {
         next if $dir eq '.' || $dir eq '..';
         if (
-            check_current_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
+            check_backend_root( decode( locale_fs => catdir( $base, $dir ) ) ) )
         {
 
             if ( -e catdir( $base, $dir, '.git' ) ) {

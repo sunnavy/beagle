@@ -21,7 +21,7 @@ sub execute {
     my @bh;
     local $ENV{BEAGLE_CACHE};    # no cache
 
-    my $root = current_root('not die');
+    my $root = backend_root('not die');
     require Beagle::Handle;
     if ($root) {
         push @bh, Beagle::Handle->new( root => $root );

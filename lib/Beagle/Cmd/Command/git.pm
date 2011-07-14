@@ -32,7 +32,7 @@ sub execute {
         }
     }
     else {
-        my $root = current_root();
+        my $root = backend_root();
         die "$root is not of type git" unless root_type($root) eq 'git';
 
         @roots = $root;

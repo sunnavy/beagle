@@ -15,7 +15,7 @@ has 'root' => (
     isa     => 'Str',
     is      => 'rw',
     lazy    => 1,
-    default => sub { current_root() },
+    default => sub { backend_root() },
 );
 
 

@@ -93,7 +93,7 @@ sub execute {
                 }
                 else {
                     if ( roots()->{$name} ) {
-                        set_current_root_by_name($name);
+                        set_backend_root_by_name($name);
                     }
                     else {
                         warn "invalid beagle name: $name\n";
@@ -111,7 +111,7 @@ sub execute {
                 }
                 else {
                     if ( roots()->{$name} ) {
-                        set_current_root_by_name($name);
+                        set_backend_root_by_name($name);
                     }
                     else {
                         warn "invalid beagle name: $name\n";
@@ -140,7 +140,7 @@ sub execute {
 
                 # backup settings
                 my ( $devel, $cache, $root ) =
-                  ( enabled_devel(), enabled_cache(), current_root('not die') );
+                  ( enabled_devel(), enabled_cache(), backend_root('not die') );
 
                 my $start = Time::HiRes::time();
                 eval { Beagle::Cmd->run };
@@ -150,7 +150,7 @@ sub execute {
                 # restore settings
                 $devel ? enable_devel() : disable_devel();
                 $cache ? enable_cache() : disable_cache();
-                set_current_root($root) if $root;
+                set_backend_root($root) if $root;
             }
         }
         $self->write_history($term);

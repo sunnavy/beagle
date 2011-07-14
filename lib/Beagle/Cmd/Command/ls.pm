@@ -165,7 +165,7 @@ sub _prepare {
     my $type = $self->type || 'all';
     $self->type($type);
 
-    my $root = current_root('not die');
+    my $root = backend_root('not die');
     require Beagle::Handle;
 
     if ( !$self->all && $root ) {
