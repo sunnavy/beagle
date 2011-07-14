@@ -12,6 +12,7 @@ sub enabled_admin {
 }
 
 my %feed;
+
 sub feed {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
 
@@ -83,7 +84,7 @@ sub years {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $bh   = shift;
     my $name = $bh->name;
-    return dclone($years{$name}) if $years{$name};
+    return dclone( $years{$name} ) if $years{$name};
 
     my $years = {};
     for my $entry ( @{ $bh->entries } ) {
@@ -107,7 +108,7 @@ sub tags {
     my $bh   = shift;
     my $name = $bh->name;
 
-    return dclone($tags{$name}) if $tags{$name};
+    return dclone( $tags{$name} ) if $tags{$name};
 
     my $tags = {};
     for my $entry ( @{ $bh->entries } ) {
@@ -135,14 +136,13 @@ sub field_list {
     my @list  = (
         author => { type => 'text', },
         format => {
-            type => 'select',
-            options =>
-              [ map { { label => $_, value => $_ } } qw/plain wiki markdown/ ],
+            type    => 'select',
+            options => [
+                map { { label => $_, value => $_ } } qw/plain wiki markdown pod/
+            ],
         },
         draft => { type => 'boolean', },
-        body  => {
-            type  => 'textarea',
-        },
+        body  => { type => 'textarea', },
     );
 
     my $type = $entry->type;
@@ -163,19 +163,18 @@ sub field_list {
         unshift @list, map { $_ => { type => 'text' } } qw/parent_id/;
     }
     elsif ( $type eq 'info' ) {
-        unshift @list,
-          style => {
+        unshift @list, style => {
             type => 'select',
             options =>
               [ map { { label => $_, value => $_ } } qw/default blue dark/ ],
-          };
+        };
         unshift @list,
           map { $_ => { type => 'text' } }
           qw/title url copyright timezone sites
           name email career location avatar public_key/;
     }
 
-    @list = _fill_values($entry, @list);
+    @list = _fill_values( $entry, @list );
     return wantarray ? @list : \@list;
 }
 
@@ -193,12 +192,13 @@ sub _fill_values {
 }
 
 use Plack::Builder;
+
 sub app {
     require Beagle::Web::Router;
 
     builder {
         enable 'Static',
-          path => sub                          { s!^/system/!! },
+          path => sub                   { s!^/system/!! },
           root => catdir( share_root(), 'public' );
 
         \&Beagle::Web::Router::handle_request;

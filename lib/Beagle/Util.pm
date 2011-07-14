@@ -43,7 +43,7 @@ our @EXPORT = (
       default_format split_id root_name name_root root_type
       system_alias create_backend alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
-      is_in_range parse_wiki  parse_markdown
+      is_in_range parse_wiki  parse_markdown parse_pod
       whitelist set_whitelist
       detect_roots backend_root cache_root
       share_root entry_marks set_entry_marks
@@ -825,6 +825,21 @@ sub parse_markdown {
     }
 
     return defang( Text::MultiMarkdown::markdown( join "\n", @new ) );
+}
+
+sub parse_pod {
+    my $value = $_[-1];
+    return '' unless defined $value;
+
+    require Pod::Simple::XHTML;
+    my $pod = Pod::Simple::XHTML->new;
+    $pod->html_header('');
+    $pod->html_footer('');
+    $pod->html_h_level(3);
+    my $out;
+    $pod->output_string(\$out);
+    $pod->parse_string_document($value);
+    return defang( $out );
 }
 
 sub detect_roots {

@@ -91,6 +91,13 @@ sub _parse_body {
         elsif ( $self->format eq 'markdown' ) {
             return parse_markdown($value);
         }
+        elsif ( $self->format eq 'pod' ) {
+            return parse_pod($value);
+        }
+        else {
+            warn 'invalid format: ' . $self->format;
+            return $value;
+        }
     }
 }
 
