@@ -57,7 +57,7 @@ sub execute {
             $name =~ s/\.git$//;
         }
 
-        my $f_root = catdir( kennel_roots(), split /\//, $name );
+        my $f_root = catdir( roots_root(), split /\//, $name );
         if ( -e $f_root ) {
             if ( $self->force ) {
                 remove_tree($f_root);
@@ -93,15 +93,15 @@ sub execute {
             File::Copy::Recursive::dircopy( $root, $f_root );
         }
 
-        my $all = root_paths();
+        my $all = roots();
 
         $all->{$name} = {
             remote => $root,
-            local  => catdir( kennel_roots(), split /\//, $name ),
+            local  => catdir( roots_root(), split /\//, $name ),
             type   => $self->type,
         };
 
-        set_root_paths($all);
+        set_roots($all);
 
         puts "followed $root.";
     }

@@ -25,9 +25,9 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my $root = root_path('not die');
+    my $root = current_root('not die');
 
-    my $all = root_paths();
+    my $all = roots();
 
     die "beagle root [name]" unless @$args <= 1;
 

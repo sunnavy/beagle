@@ -41,7 +41,7 @@ sub execute {
         if ( $line =~
             /(^|\s+)(--name|-n|--unfollow|use|switch|rename|root)\s+\w*$/ )
         {
-            return sort keys %{ root_paths() };
+            return sort keys %{ roots() };
         }
 
         if ( $line =~ /^help\s+\w*$/ ) {
@@ -92,7 +92,7 @@ sub execute {
                     $Beagle::Util::BEAGLE_ROOT = '';
                 }
                 else {
-                    if ( root_paths()->{$name} ) {
+                    if ( roots()->{$name} ) {
                         set_root_name($name);
                     }
                     else {
@@ -110,7 +110,7 @@ sub execute {
                     $name                      = '';
                 }
                 else {
-                    if ( root_paths()->{$name} ) {
+                    if ( roots()->{$name} ) {
                         set_root_name($name);
                     }
                     else {
@@ -140,7 +140,7 @@ sub execute {
 
                 # backup settings
                 my ( $devel, $cache, $root ) =
-                  ( enabled_devel(), enabled_cache(), root_path('not die') );
+                  ( enabled_devel(), enabled_cache(), current_root('not die') );
 
                 my $start = Time::HiRes::time();
                 eval { Beagle::Cmd->run };
@@ -150,7 +150,7 @@ sub execute {
                 # restore settings
                 $devel ? enable_devel() : disable_devel();
                 $cache ? enable_cache() : disable_cache();
-                set_root_path($root) if $root;
+                set_current_root($root) if $root;
             }
         }
         $self->write_history($term);

@@ -50,11 +50,11 @@ sub post {
 }
 
 my ( $bh, %updated, %bh, $all, $name );
-my $root = root_path('not die');
+my $root = current_root('not die');
 my $req;
 
 if ( $ENV{BEAGLE_ALL} || !$root ) {
-    $all = root_paths();
+    $all = roots();
     for my $n ( keys %$all ) {
         local $Beagle::Util::BEAGLE_ROOT = $all->{$n}{local};
         $bh{$n} =

@@ -25,7 +25,7 @@ has 'backend' => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        my $root = root_path();
+        my $root = current_root();
         return Beagle::Backend->new( root => $root, type => root_type($root) );
     },
     handles => [qw/type root/],
@@ -38,7 +38,7 @@ has 'cache' => (
     default => sub {
         my $self = shift;
         my $name = cache_name( $self->name );
-        return catfile( kennel_cache,
+        return catfile( cache_root,
             $name . ( $self->drafts ? '.drafts' : '' ) );
     },
 );

@@ -165,14 +165,14 @@ sub _prepare {
     my $type = $self->type || 'all';
     $self->type($type);
 
-    my $root = root_path('not die');
+    my $root = current_root('not die');
     require Beagle::Handle;
 
     if ( !$self->all && $root ) {
         return Beagle::Handle->new( root => $root );
     }
     else {
-        my $all = root_paths();
+        my $all = roots();
         $self->all(1);
         return map { Beagle::Handle->new( root => $all->{$_}{local} ) }
           keys %$all;
@@ -256,7 +256,7 @@ sub show_result {
 
     return unless @found;
 
-    my $all = root_paths();
+    my $all = roots();
 
     require Text::Table;
     my $tb;

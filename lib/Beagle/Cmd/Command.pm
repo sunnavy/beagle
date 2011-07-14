@@ -53,9 +53,9 @@ has 'name' => (
                 $Beagle::Util::BEAGLE_ROOT = '';
             }
             else {
-                my $all = root_paths();
+                my $all = roots();
                 die "no such name: $name" unless $all->{$name};
-                set_root_path( $all->{$name}{local} );
+                set_current_root( $all->{$name}{local} );
             }
         }
         else {
@@ -74,7 +74,7 @@ has 'root' => (
         my $self = shift;
         my $root = shift;
         if ( defined $root && length $root ) {
-            set_root_path($root);
+            set_current_root($root);
         }
         else {
             $Beagle::Util::BEAGLE_ROOT = '';

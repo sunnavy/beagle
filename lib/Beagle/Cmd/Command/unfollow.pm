@@ -15,13 +15,13 @@ sub execute {
 
     my @unfollowed;
     for my $name (@$args) {
-        my $f_root = catdir( kennel_roots(), split /\//, $name );
+        my $f_root = catdir( roots_root(), split /\//, $name );
         if ( -e $f_root ) {
             remove_tree($f_root);
         }
 
         for my $t ( '', '.drafts' ) {
-            my $cache = catfile( kennel_cache(), cache_name($name), $t );
+            my $cache = catfile( cache_root(), cache_name($name), $t );
             remove_tree($cache) if -e $cache;
         }
         my $map = entry_map;
@@ -30,10 +30,10 @@ sub execute {
         }
         set_entry_map( $map );
 
-        my $all = root_paths();
+        my $all = roots();
         if ( exists $all->{$name} ) {
             delete $all->{$name};
-            set_root_paths($all);
+            set_roots($all);
         }
         push @unfollowed, $name;
     }

@@ -10,7 +10,7 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $root = root_path('not die');
+    my $root = current_root('not die');
     if ($root) {
 
         my $shell = $ENV{SHELL};

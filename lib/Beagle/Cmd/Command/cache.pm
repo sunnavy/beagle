@@ -33,9 +33,9 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     my @roots;
-    my $root = root_path('not die');
+    my $root = current_root('not die');
 
-    my $all = root_paths();
+    my $all = roots();
     if ( $self->all || !$root ) {
         for my $name ( keys %$all ) {
             push @roots, $all->{$name}{local};
@@ -52,8 +52,8 @@ sub execute {
             if ( $self->force ) {
                 my $name = root_name($root);
                 $name =~ s!\W!_!g;
-                unlink catfile( kennel_cache(), $name . '.drafts' );
-                unlink catfile( kennel_cache(), $name );
+                unlink catfile( cache_root(), $name . '.drafts' );
+                unlink catfile( cache_root(), $name );
             }
 
             Beagle::Handle->new( root => $root, drafts => 0 );

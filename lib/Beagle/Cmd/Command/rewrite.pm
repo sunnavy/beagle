@@ -21,13 +21,13 @@ sub execute {
     my @bh;
     local $ENV{BEAGLE_CACHE};    # no cache
 
-    my $root = root_path('not die');
+    my $root = current_root('not die');
     require Beagle::Handle;
     if ($root) {
         push @bh, Beagle::Handle->new( root => $root );
     }
     else {
-        my $all = root_paths();
+        my $all = roots();
         push @bh,
           map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
     }
