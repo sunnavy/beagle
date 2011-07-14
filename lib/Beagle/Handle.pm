@@ -37,7 +37,7 @@ has 'cache' => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        my $name = cache_name( $self->name );
+        my $name = safe_name( $self->name );
         return catfile( cache_root,
             $name . ( $self->drafts ? '.drafts' : '' ) );
     },

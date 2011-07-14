@@ -46,7 +46,7 @@ our @EXPORT = (
       is_in_range parse_wiki  parse_markdown
       whitelist set_whitelist
       detect_roots backend_root cache_root
-      cache_name share_root entry_marks set_entry_marks
+      safe_name share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
       entry_map_path entry_marks_path
@@ -863,7 +863,7 @@ sub detect_roots {
     return $info;
 }
 
-sub cache_name {
+sub safe_name {
     my $name = shift;
     return unless defined $name;
     $name =~ s!\W!_!g;
