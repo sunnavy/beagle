@@ -14,13 +14,6 @@ has 'parent' => (
     traits        => ['Getopt'],
 );
 
-has prune => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "remove orphan attachments",
-    traits        => ['Getopt'],
-);
-
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
@@ -47,11 +40,35 @@ sub execute {
     my $pid = $self->parent;
 
     my $subcmd;
-    if ( @$args && $args->[0] =~ /^(?:cat|show|ls|list|add|rm|delete)$/ ) {
+    if ( @$args && $args->[0] =~ /^(?:cat|show|ls|list|add|rm|delete|prune)$/ ) {
         $subcmd = shift @$args;
     }
     else {
         $subcmd = @$args ? 'cat' : 'ls';
+    }
+
+    if ( $subcmd eq 'prune' ) {
+        my @bh = $self->all ? handles() : ( handle || handles );
+        my $pruned;
+        for my $bh (@bh) {
+            for my $p ( keys %{ $bh->attachments_map } ) {
+                unless ( $bh->map->{$p} ) {
+                    my $dir = catdir( 'attachments', split_id($p) );
+                    if ( -e catdir( $bh->root, $dir ) ) {
+                        $bh->backend->delete( undef, path => $dir )
+                          or die "failed to delete $dir: $!";
+                        $pruned = 1;
+                    }
+                }
+            }
+        }
+        if ( $pruned ) {
+            puts 'pruned.';
+        }
+        else {
+            puts 'no orphans found.';
+        }
+        return;
     }
 
     require Beagle::Handle;
@@ -113,22 +130,9 @@ sub execute {
 
         for my $bh (@bh) {
             $handle_map{ $bh->root } = $bh;
-            for ( keys %{ $bh->attachments_map } ) {
-                unless ( $bh->map->{$_} ) {
-                    if ( $self->prune ) {
-                        my $dir = catdir( 'attachments', split_id($_) );
-                        if ( -e catdir( $bh->root, $dir ) ) {
-                            $bh->backend->delete( undef, path => $dir )
-                              or die "failed to delete $dir: $!";
-                        }
-                    }
-                    else {
-                        warn
-"article $_ doesn't exist, run 'att --prune' can clean it out"
-                          unless $bh->map->{$_};
-                    }
-                }
-
+            for my $p ( keys %{ $bh->attachments_map } ) {
+                warn "article $p doesn't exist, 'att prune' can clean it out\n"
+                  unless $bh->map->{$p};
             }
 
             for my $entry (
@@ -247,7 +251,7 @@ Beagle::Cmd::Command::att - manage attachments
     $ beagle att --parent abcd 1 # ditto
     $ beagle att rm --parent abcd 1 # delete the first attachment
  
-    $ beagle att --prune
+    $ beagle att prune
 
 =head1 AUTHOR
 
