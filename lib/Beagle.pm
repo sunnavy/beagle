@@ -18,17 +18,16 @@ Beagle - manage/version/spread articles, reviews, barks, etc.
     $ beagle follow git_repo_uri --name foo
 
     $ beagle help
-    $ beagle ls # show/search entries
     $ beagle article --title foo --body bar # create an article
-    $ beagle show uuid1 # show uuid1
-    $ beagle update uuid1 # update uuid1
-    $ beagle rm uuid1 # delete uuid1
-    $ beagle shell # beagle shell
+    $ beagle ls
+    $ beagle show id1
+    $ beagle update id1
+    $ beagle rm id1
+    $ beagle shell
 
 =head1 DESCRIPTION
 
-Beagle is your assistant to help you manage articles, reviews, barks and
-tasks, etc.
+Beagle is to help you manage articles, reviews, barks and tasks, etc.
 
 Technically, it's a thin wrapper of git(maybe more vcs in the future),
 which uses git as data source to create/show/update/delete/publish all
