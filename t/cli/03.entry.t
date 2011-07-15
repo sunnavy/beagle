@@ -33,8 +33,8 @@ for my $type (qw/article review task bark/) {
         is( last_script_stdout(), "$id bar" . newline(), 'list output' );
     }
 
-    run_ok( $beagle_cmd, [ 'map', $id ], "map $id", );
-    is( last_script_stdout(), "$id $root" . newline(), "map $id output" );
+    run_ok( $beagle_cmd, [ 'relation', $id ], "relation $id", );
+    is( last_script_stdout(), "$id $root" . newline(), "relation $id output" );
 
     run_ok( $beagle_cmd, [ 'show', '-v', $id ], "show $id", );
     my $show_out = last_script_stdout();
