@@ -35,6 +35,10 @@ sub execute {
         my $id    = $ret[0]->{id};
         my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
+        if ( $bh->name eq $to->name ) {
+            warn "$id is already in $name\n";
+            next;
+        }
 
         if ( $to->create_entry( $entry, commit => 0 ) ) {
             my $atts = $bh->attachments_map->{ $entry->id };
