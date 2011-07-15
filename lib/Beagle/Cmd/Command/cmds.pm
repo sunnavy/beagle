@@ -16,14 +16,14 @@ has 'all' => (
     is            => 'rw',
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
-    documentation => 'all the cmds and aliases',
+    documentation => 'show all the commands and aliases',
 );
 
 has 'seprator' => (
     isa           => 'Str',
     is            => 'rw',
     traits        => ['Getopt'],
-    documentation => 'seprator between cmds or aliases',
+    documentation => 'seprator',
     default       => newline(),
 );
 
@@ -63,6 +63,13 @@ __END__
 =head1 NAME
 
 Beagle::Cmd::Command::cmds - show names of all the commands/aliases
+
+=head1 SYNOPSIS
+
+    $ beagle cmds
+    $ beagle cmds --alias
+    $ beagle cmds --all
+    $ beagle cmds --sperator "\t"
 
 =head1 AUTHOR
 

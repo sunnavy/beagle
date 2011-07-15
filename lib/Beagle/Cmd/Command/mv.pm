@@ -84,6 +84,9 @@ __END__
 
 Beagle::Cmd::Command::mv - move entries to another beagle
 
+=head1 SYNOPSIS
+
+    $ beagle mv id1 id2 foo
 
 =head1 AUTHOR
 

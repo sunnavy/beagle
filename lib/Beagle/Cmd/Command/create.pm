@@ -40,7 +40,7 @@ has name => (
 has 'edit' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "edit with editor?",
+    documentation => "use editor",
     traits        => ['Getopt'],
 );
 
@@ -105,7 +105,21 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::create - create a new beagle
+Beagle::Cmd::Command::create - create a beagle
+
+=head1 SYNOPSIS
+
+    $ beagle create --name foo          # create an internal beagle in the kennel
+    $ beagle create /path/to/foo.git --bare
+
+=head1 DESCRIPTION
+
+Usually, you want to create a external git repo and then C<follow> it, using
+C<--name> will create an internal git repo and you won't be able to C<push>
+and C<pull> easily.
+
+We suppot plain file system as backend via C<--type fs>, you don't want to do
+this usually as it doesn't support version control at all.
 
 =head1 AUTHOR
 

@@ -76,6 +76,12 @@ __END__
 
 Beagle::Cmd::Command::review - create a review
 
+=head1 SYNOPSIS
+
+    $ beagle review --isbn 9787020071609 --location hangzhou --writer \
+        'Mark Twain' --published 1989-09-01  ...
+
+checkout C<article> and C<entry> commands to find more examples.
 
 =head1 AUTHOR
 

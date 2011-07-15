@@ -12,10 +12,17 @@ has 'set' => (
     traits        => ['Getopt'],
 );
 
+has 'unset' => (
+    isa           => 'ArrayRef[Str]',
+    is            => 'rw',
+    documentation => 'unset',
+    traits        => ['Getopt'],
+);
+
 has 'edit' => (
     isa           => "Bool",
     is            => "rw",
-    documentation => "edit with editor?",
+    documentation => "use editor",
     traits        => ['Getopt'],
 );
 
@@ -65,7 +72,7 @@ sub execute {
         )
     );
 
-    if ( $self->edit || $self->set ) {
+    if ( $self->edit || $self->set || $self->unset ) {
 
         if ( $self->set ) {
             for my $item ( @{ $self->set } ) {
@@ -77,21 +84,33 @@ sub execute {
                     warn "unknown key: $key\n";
                 }
             }
-
-            $template = encode_utf8 $info->serialize(
-                $self->verbose
-                ? (
-                    created => 1,
-                    updated => 1,
-                    id      => 1,
-                  )
-                : (
-                    created => undef,
-                    updated => undef,
-                    id      => undef,
-                )
-            );
         }
+
+        if ( $self->unset ) {
+
+            for my $key ( @{ $self->unset } ) {
+                if ( $info->can($key) ) {
+                    $info->$key('');
+                }
+                else {
+                    warn "unknown key: $key\n";
+                }
+            }
+        }
+
+        $template = encode_utf8 $info->serialize(
+            $self->verbose
+            ? (
+                created => 1,
+                updated => 1,
+                id      => 1,
+              )
+            : (
+                created => undef,
+                updated => undef,
+                id      => undef,
+            )
+        );
 
         if ( $self->edit ) {
 
@@ -131,6 +150,12 @@ __END__
 
 Beagle::Cmd::Command::info - manage info
 
+=head1 SYNOPSIS
+
+    $ beagle info
+    $ beagle info --edit
+    $ beagle info --set url=http://sunnavy.net
+    $ beagle info --unset url
 
 =head1 AUTHOR
 

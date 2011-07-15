@@ -9,7 +9,7 @@ has 'force' => (
     isa           => 'Bool',
     is            => 'rw',
     cmd_aliases   => 'f',
-    documentation => 'force',
+    documentation => 'force to update even no changes in editor',
     traits        => ['Getopt'],
 );
 
@@ -58,7 +58,7 @@ sub execute {
             for my $item ( @{ $self->set } ) {
                 my ( $key, $value ) = split /=/, $item, 2;
                 if ( $entry->can($key) ) {
-                    $entry->$key($value);
+                    $entry->$key( $entry->parse_field( $key, $value ) );
                 }
                 else {
                     warn "unknown key: $key\n";
@@ -133,6 +133,10 @@ __END__
 
 Beagle::Cmd::Command::update - update entries
 
+=head1 SYNOPSIS
+
+    $ beagle update id1 id2 --set 'author=lisa@thesimpsons'
+    $ beagle update id1 id2 --edit
 
 =head1 AUTHOR
 

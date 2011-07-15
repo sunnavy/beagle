@@ -66,6 +66,16 @@ __END__
 
 Beagle::Cmd::Command::map - manage entry map
 
+=head1 SYNOPSIS
+
+    $ beagle map
+    $ beagle map update
+    $ beagle map id1 id2
+
+=head1 DESCRIPTION
+
+<map> here means map of uuid => beagle name
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>

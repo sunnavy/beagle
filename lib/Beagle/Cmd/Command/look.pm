@@ -39,6 +39,9 @@ __END__
 
 Beagle::Cmd::Command::look - open the beagle root directory with SHELL
 
+=head1 SYNOPSIS
+
+    $ beagle look
 
 =head1 AUTHOR
 

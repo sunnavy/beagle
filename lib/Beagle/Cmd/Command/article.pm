@@ -18,26 +18,20 @@ has title => (
     traits        => ['Getopt'],
 );
 
-has tags => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "tags",
-    traits        => ['Getopt'],
-);
-
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my $bh = handle() || undef
-      or die "please specify beagle by --name or --root\n";
+    my $bh = handle() or die "please specify beagle by --name or --root\n";
 
     $opt->{tags} = to_array( delete $opt->{tags} );
 
     my $article;
     my $edit = delete $opt->{edit};
+
+    $opt->{body} = join ' ', @$args if @$args && !defined $opt->{body};
 
     if ( $opt->{title} && $opt->{body} && !$edit ) {
         $article = $self->class->new(
@@ -105,8 +99,15 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::article - create a new article
+Beagle::Cmd::Command::article - create an article
 
+=head1 SYNOPSIS
+
+    $ beagle article # editor will pop up if without --title and --body
+    $ beagle article --title homer --body doh
+    $ beagle article --title homer --body doh --edit # use an editor anyway
+
+checkout C<entry> command to find more examples.
 
 =head1 AUTHOR
 

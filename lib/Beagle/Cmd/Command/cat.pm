@@ -11,6 +11,14 @@ has 'raw' => (
     traits        => ['Getopt'],
 );
 
+has 'real-raw' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    accessor      => 'real_raw',
+    documentation => 'raw content',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -50,6 +58,9 @@ sub execute {
 
         if ( $self->raw ) {
             puts decode_utf8( $entry->content() );
+        }
+        elsif ( $self->real_raw ) {
+            print $entry->content();
         }
         else {
             puts $entry->serialize(
@@ -94,6 +105,13 @@ __END__
 
 Beagle::Cmd::Command::cat - show entries
 
+=head1 SYNOPSIS
+
+    $ beagle cat id1     # show content of entry id1
+    $ beagle show id1    # ditto
+    $ beagle cat id1 id2 # show both id1 and id2
+    $ beagle cat id1 --raw       # show content in file(with proper encoding)
+    $ beagle cat id1 --real-raw  # show content in file(no encoding tweak)
 
 =head1 AUTHOR
 

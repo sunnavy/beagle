@@ -23,6 +23,9 @@ __END__
 
 Beagle::Cmd::Command::version - show beagle version
 
+=head1 SYNOPSIS
+
+    $ beagle version
 
 =head1 AUTHOR
 

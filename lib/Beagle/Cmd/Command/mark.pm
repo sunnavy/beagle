@@ -3,6 +3,21 @@ use Beagle::Util;
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
+has import => (
+    isa           => 'Str',
+    accessor      => '_import',       # import sub is special in perl
+    writer        => '_import',
+    documentation => 'import path',
+    traits        => ['Getopt'],
+);
+
+has export => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'export path',
+    traits        => ['Getopt'],
+);
+
 has add => (
     isa           => 'ArrayRef[Str]',
     is            => 'rw',
@@ -36,66 +51,137 @@ has unset => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/mark marks/ }
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $updated;
     my $marks = entry_marks;
 
-    for my $i (@$args) {
-
-        my @ret = resolve_entry( $i, handle => handle() || undef );
-        unless (@ret) {
-            @ret = resolve_entry($i) or die_entry_not_found($i);
-        }
-        die_entry_ambiguous( $i, @ret ) unless @ret == 1;
-        my $id = $ret[0]->{id};
-
-        if ( $self->unset ) {
-            if ( $marks->{$id} ) {
-                delete $marks->{$id};
-                $updated = 1 unless $updated;
-            }
-        }
-
-        if ( $self->set ) {
-            $marks->{$id} = {};
-            for my $mark ( @{ $self->set } ) {
-                $marks->{$id}{$mark} = 1;
-                $updated = 1 unless $updated;
-            }
-        }
-
-        if ( $self->add ) {
-            for my $mark ( @{ $self->add } ) {
-                if ( !$marks->{$id}{$mark} ) {
-                    $marks->{$id}{$mark} = 1;
-                    $updated = 1 unless $updated;
+    if ( $self->_import || $self->export ) {
+        require JSON;
+        my $path;
+        if ( defined( $path = $self->export ) ) {
+            my $converted = {};
+            for my $id ( keys %$marks ) {
+                if ( $marks->{$id} && %{ $marks->{$id} } ) {
+                    $converted->{$id} = [ sort keys %{ $marks->{$id} } ];
                 }
             }
-        }
 
-        if ( $self->delete ) {
-            for my $mark ( @{ $self->delete } ) {
-                last unless $marks->{$id};
-                if ( exists $marks->{$id}{$mark} ) {
-                    delete $marks->{$id}{$mark};
-                    $updated = 1 unless $updated;
-                }
-                delete $marks->{$id} unless %{ $marks->{$id} };
+            if ( $path && $path ne '-' ) {
+                my $out =
+                  JSON::to_json( $converted, { utf8 => 1, pretty => 1 } );
+                write_file( $path, $out );
+                puts 'exported.';
             }
+            else {
+                my $out = JSON::to_json( $converted, { pretty => 1 } );
+                puts $out;
+            }
+            return;
         }
-    }
-
-    if ($updated) {
-        set_entry_marks($marks);
-        puts 'updated.';
+        elsif ( defined( $path = $self->_import ) ) {
+            my $in;
+            if ( $path && $path ne '-' ) {
+                $in = decode( 'utf8', read_file($path) );
+            }
+            else {
+                local $/;
+                $in = decode( locale => <STDIN> );
+            }
+            my $converted = JSON::from_json($in);
+            my $marks     = {};
+            for my $id ( keys %$converted ) {
+                if ( defined $converted->{$id} ) {
+                    if ( ref $converted->{$id} ) {
+                        if ( ref $converted->{$id} eq 'ARRAY' ) {
+                            next unless @{ $converted->{$id} };
+                            $marks->{$id} =
+                              { map { $_ => 1 } @{ $converted->{$id} } };
+                        }
+                        elsif ( ref $converted->{$id} eq 'HASH' ) {
+                            next unless %{ $converted->{$id} };
+                            $marks->{$id} =
+                              { map { $_ => 1 } keys %{ $converted->{$id} } };
+                        }
+                    }
+                    else {
+                        $marks->{$id} = { $converted->{$id} => 1 };
+                    }
+                }
+            }
+            set_entry_marks($marks);
+            puts 'imported.';
+            return;
+        }
     }
     else {
-        puts 'no changes.';
+
+        my @ids;
+        for my $i (@$args) {
+
+            my @ret = resolve_entry( $i, handle => handle() || undef );
+            unless (@ret) {
+                @ret = resolve_entry($i) or die_entry_not_found($i);
+            }
+            die_entry_ambiguous( $i, @ret ) unless @ret == 1;
+            push @ids, $ret[0]->{id};
+        }
+
+        if ( $self->add || $self->delete || $self->set || $self->unset ) {
+
+            for my $id (@ids) {
+                if ( $self->unset ) {
+                    if ( $marks->{$id} ) {
+                        delete $marks->{$id};
+                    }
+                }
+
+                if ( $self->set ) {
+                    $marks->{$id} = {};
+                    for my $mark ( @{ $self->set } ) {
+                        $marks->{$id}{$mark} = 1;
+                    }
+                }
+
+                if ( $self->add ) {
+                    for my $mark ( @{ $self->add } ) {
+                        if ( !$marks->{$id}{$mark} ) {
+                            $marks->{$id}{$mark} = 1;
+                        }
+                    }
+                }
+
+                if ( $self->delete ) {
+                    for my $mark ( @{ $self->delete } ) {
+                        last unless $marks->{$id};
+                        if ( exists $marks->{$id}{$mark} ) {
+                            delete $marks->{$id}{$mark};
+                        }
+                        delete $marks->{$id} unless %{ $marks->{$id} };
+                    }
+                }
+            }
+
+            set_entry_marks($marks);
+            puts 'updated.';
+        }
+        else {
+
+            @ids = keys %$marks unless @ids;
+
+            for my $id (@ids) {
+                puts "$id: ",
+                  $marks->{$id}
+                  ? ( join ', ', sort keys %{ $marks->{$id} } )
+                  : '<not exist>';
+            }
+        }
+
     }
 }
-
 
 1;
 
@@ -104,6 +190,19 @@ __END__
 =head1 NAME
 
 Beagle::Cmd::Command::mark - manage entry marks
+
+=head1 SYNOPSIS
+
+    $ beagle mark                               # all the marks
+    $ beagle marks                              # ditto
+    $ beagle mark id1 id2                       # marks of id1 and id2
+    $ beagle mark --set foo --set bar id1       # set "foo" and "bar" to id1
+    $ beagle mark --unset id1                   # remove all marks of id1
+    $ beagle mark --add foo --add bar id1       # add "foo" and "bar" to id1
+    $ beagle mark --delete foo id1              # delete "foo" from id1
+
+    $ beagle mark --import /path/to/foo.json
+    $ beagle mark --export /path/to/foo.json
 
 =head1 AUTHOR
 

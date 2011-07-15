@@ -21,6 +21,11 @@ __END__
 
 Beagle::Cmd::Command::commands - show beagle commands
 
+=head1 SYNOPSIS
+
+    $ beagle commands
+
+check C<cmds> if you only want the command names.
 
 =head1 AUTHOR
 

@@ -21,40 +21,41 @@ has unset => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
-sub command_names { qw/alias aliases/ };
+sub command_names { qw/alias aliases/ }
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $system_alias = system_alias;
     my $user_alias   = user_alias;
-    my $alias = alias;
+    my $alias        = alias;
 
     if ( $self->set || $self->unset ) {
 
-        my @added;
-        my @removed;
+        my @set;
+        my @unset;
         if ( $self->set ) {
-            for my $item (@{$self->set}) {
+            for my $item ( @{ $self->set } ) {
                 my ( $name, $value ) = split /=/, $item, 2;
                 $user_alias->{$name} = $value;
-                push @added, $name;
+                push @set, $name;
             }
         }
 
         if ( $self->unset ) {
-            for my $name (@{$self->unset}) {
+            for my $name ( @{ $self->unset } ) {
                 delete $user_alias->{$name};
-                push @removed, $name;
+                push @unset, $name;
             }
         }
-        set_user_alias($user_alias);
 
-        if ( @added ) {
-            puts 'added ', join ', ', @added;
+        set_user_alias($user_alias) if @set || @unset;
+
+        if (@set) {
+            puts 'set ', join ', ', @set;
         }
-        if ( @removed ) {
-            puts 'removed ', join ', ', @removed;
+        if (@unset) {
+            puts 'unset ', join ', ', @unset;
         }
 
         return;
@@ -93,7 +94,6 @@ sub execute {
     }
 }
 
-
 1;
 
 __END__
@@ -104,10 +104,9 @@ Beagle::Cmd::Command::alias - manage aliases
 
 =head1 SYNOPSIS
 
-    $ beagle alias # show current aliases
-    $ beagle aliases # ditto
-    $ beagle alias articles # show alias articles
-    $ beagle alias today yesterday # show aliases today and yesterday
+    $ beagle alias                  # show current aliases
+    $ beagle aliases                # ditto
+    $ beagle alias today week       # show aliases today and week
 
     $ beagle alias --set 'homer=ls homer' --set 'bart=ls bart'
     $ beagle alias --unset homer --unset bart

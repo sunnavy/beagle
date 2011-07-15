@@ -36,13 +36,12 @@ has unset => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/config configs/ }
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $core = core_config();
-
-    die "beagle config --init | --set ... | --unset ..."
-      unless $self->init || $self->set || $self->unset;
 
     if ( $self->init ) {
         if ( keys %$core && !$self->force ) {
@@ -89,32 +88,57 @@ sub execute {
 "if you use oh-my-zsh, copy etc/completion/zsh/beagle in beagle source to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
         return;
     }
-
-    my $updated;
-    if ( $self->set ) {
-        for my $item ( @{ $self->set } ) {
-            my ( $name, $value ) = split /=/, $item, 2;
-            $core->{$name} = $value;
-            $updated = 1 unless $updated;
+    elsif ( $self->set || $self->unset ) {
+        my $updated;
+        my @set;
+        my @unset;
+        if ( $self->set ) {
+            for my $item ( @{ $self->set } ) {
+                my ( $name, $value ) = split /=/, $item, 2;
+                $core->{$name} = $value;
+                push @set, $name;
+            }
         }
-    }
 
-    if ( $self->unset ) {
-        for my $key ( @{ $self->unset } ) {
-            delete $core->{$key};
-            $updated = 1 unless $updated;
+        if ( $self->unset ) {
+            for my $name ( @{ $self->unset } ) {
+                delete $core->{$name};
+                push @unset, $name;
+            }
         }
-    }
 
-    if ( $updated ) {
-        set_core_config($core);
-        puts 'updated.';
+        set_core_config($core) if @set || @unset;
+
+        if (@set) {
+            puts 'set ', join ', ', @set;
+        }
+        if (@unset) {
+            puts 'unset ', join ', ', @unset;
+        }
+        return;
     }
     else {
-        puts 'no changes.';
+        if (@$args) {
+            for my $key (@$args) {
+                if ( exists $core->{$key} ) {
+                    my $value = $core->{$key};
+                    $value = '' unless defined $value;
+                    puts "$key: $value";
+                }
+                else {
+                    puts "$key: <not exist>";
+                }
+            }
+        }
+        else {
+            for my $key ( sort keys %$core ) {
+                my $value = $core->{$key};
+                $value = '' unless defined $value;
+                puts "$key: $value";
+            }
+        }
     }
 }
-
 
 1;
 
@@ -123,6 +147,15 @@ __END__
 =head1 NAME
 
 Beagle::Cmd::Command::config - configure beagle
+
+=head1 SYNOPSIS
+
+    $ beagle config         # show all the configs
+    $ beagle configs        # ditto
+    $ beagle config --init
+    $ beagle config --set cache=1 --set user_name=lisa
+    $ beagle config cache user_name
+    $ beagle config --unset cache --unset user_name
 
 =head1 AUTHOR
 

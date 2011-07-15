@@ -26,20 +26,19 @@ Available commands:
       help: show beagle help
 
      alias: manage aliases
-   article: create a new article
+   article: create an article
        att: manage attachments
      cache: manage cache
       cast: cast entries to another type
        cat: show entries
       cmds: show names of all the commands/aliases
-   comment: create a new comment
+   comment: create a comment
   comments: list comments
     config: configure beagle
-   configs: show beagle configurations
-    create: create a new beagle
-     entry: create a new entry
+    create: create a beagle
+     entry: create an entry
     follow: follow beagles
-      fsck: check integrity of beagles
+      fsck: check integrity of kennel
        git: bridge to git
       info: manage info
        log: show log
@@ -47,11 +46,9 @@ Available commands:
         ls: list/search entries
        map: manage entry map
       mark: manage entry marks
-     marks: show/export/import entry marks
         mv: move entries to another beagle
     rename: rename a beagle
     review: create a review
-   rewrite: rewrite all entries
         rm: delete entries
       root: show root
      shell: interactive shell
@@ -74,8 +71,8 @@ is(
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
-  alias article att cache cast cat cmds commands comment comments config configs create
-  entry follow fsck git help info log look ls map mark marks mv rename review rewrite
+  alias article att cache cast cat cmds commands comment comments config create
+  entry follow fsck git help info log look ls map mark mv rename review
   rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
@@ -130,9 +127,6 @@ like( last_script_stdout(),
     qr/name: foobar$/m,
     'name in indeed updated'
 );
-
-run_ok( $beagle_cmd, ['rewrite'], 'rewrite' );
-is( last_script_stdout(), 'rewrote.' . newline(), 'rewrite output' );
 
 done_testing();
 

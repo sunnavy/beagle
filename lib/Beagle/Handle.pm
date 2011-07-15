@@ -302,7 +302,7 @@ sub create_entry {
     my $entry  = shift;
     my $type   = $entry->type;
     my $method = "create_$type";
-    if ( $self->can($method) ) {
+    if ( $self->can($method) && $method ne 'create_entry' ) {
         return $self->$method( $entry, @_ );
     }
     else {

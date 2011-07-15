@@ -39,7 +39,20 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::fsck - check integrity of beagles
+Beagle::Cmd::Command::fsck - check integrity of kennel
+
+=head1 SYNOPSIS
+
+    $ beagle fsck
+    $ beagle fsck --rescue
+
+=head1 DESCRIPTION
+
+C<fsck> only checks if all the beagles are there, use C<git fsck> instead to
+check the git repository's validity.
+
+C<--rescue> only trys to C<follow> them again if some beagles are missing, so
+it can't help for internal beagles.
 
 =head1 AUTHOR
 

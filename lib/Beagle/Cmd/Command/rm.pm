@@ -76,6 +76,9 @@ __END__
 
 Beagle::Cmd::Command::rm - delete entries
 
+=head1 SYNOPSIS
+
+    $ beagle rm id1 id2
 
 =head1 AUTHOR
 

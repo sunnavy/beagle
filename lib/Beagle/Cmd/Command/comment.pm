@@ -36,6 +36,12 @@ has 'message' => (
     traits        => ['Getopt'],
 );
 
+has 'edit' => (
+    isa           => "Bool",
+    is            => "rw",
+    documentation => "use editor",
+    traits        => ['Getopt'],
+);
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
@@ -62,7 +68,7 @@ sub execute {
 
     my $comment;
 
-    unless ( $body =~ /\S/ ) {
+    if ( $body !~ /\S/ || $self->edit ) {
         my $temp = Beagle::Model::Comment->new( parent_id => $pid );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
         my $template =
@@ -117,8 +123,12 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::comment - create a new comment
+Beagle::Cmd::Command::comment - create a comment
 
+=head1 SYNOPSIS
+
+    $ beagle comment --parent id1  'this rocks'  
+    $ beagle comment --parent id1  # use editor
 
 =head1 AUTHOR
 

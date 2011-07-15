@@ -6,7 +6,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the roots",
+    documentation => "all the beagles",
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
@@ -117,6 +117,11 @@ __END__
 
 Beagle::Cmd::Command::cache - manage cache
 
+=head1 SYNOPSIS
+
+    $ beagle cache # show cache info
+    $ beagle cache --update
+    $ beagle cache --update --force # force the update
 
 =head1 AUTHOR
 

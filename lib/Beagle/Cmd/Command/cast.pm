@@ -53,6 +53,13 @@ __END__
 
 Beagle::Cmd::Command::cast - cast entries to another type
 
+=head1 SYNOPSIS
+
+    $ beagle cast --type article id1 id2 # convert id1 and id2 to articles.
+
+=head1 DESCRIPTION
+
+Generally, cast is not a good thing, as it may cause some data loss.
 
 =head1 AUTHOR
 

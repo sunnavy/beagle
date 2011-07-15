@@ -1,5 +1,6 @@
 package Beagle::Cmd::Command::comments;
 use Any::Moose;
+use Beagle::Util;
 
 extends qw/Beagle::Cmd::Command::ls/;
 
@@ -22,7 +23,14 @@ override 'filter' => sub {
     my @found = super;
     my $pid   = $self->parent;
     return @found unless defined $pid;
-    return grep { $_->parent_id =~ /^$pid/ } @found;
+    my @ret = resolve_entry( $pid, handle => handle() || undef );
+    unless (@ret) {
+        @ret = resolve_entry($pid) or die_entry_not_found($pid);
+    }
+    die_entry_ambiguous( $pid, @ret ) unless @ret == 1;
+
+    my $id = $ret[0]->{id};
+    return grep { $_->parent_id eq $id } @found;
 };
 
 sub command_names { 'comments' };
@@ -39,6 +47,10 @@ __END__
 
 Beagle::Cmd::Command::comments - list comments
 
+=head1 SYNOPSIS
+
+    $ beagle comments
+    $ beagle comments --parent id1 
 
 =head1 AUTHOR
 

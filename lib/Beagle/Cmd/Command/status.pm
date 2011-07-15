@@ -7,7 +7,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the roots",
+    documentation => "all the beagles",
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
@@ -73,6 +73,9 @@ __END__
 
 Beagle::Cmd::Command::status - show status
 
+=head1 SYNOPSIS
+
+    $ beagle status
 
 =head1 AUTHOR
 

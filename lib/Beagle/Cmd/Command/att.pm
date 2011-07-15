@@ -17,14 +17,14 @@ has 'parent' => (
 has prune => (
     isa           => "Bool",
     is            => "rw",
-    documentation => "remove attachments of which parent doesn't exist",
+    documentation => "remove orphan attachments",
     traits        => ['Getopt'],
 );
 
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the roots",
+    documentation => "all the beagles",
     traits        => ['Getopt'],
 );
 
@@ -235,6 +235,19 @@ __END__
 
 Beagle::Cmd::Command::att - manage attachments
 
+=head1 SYNOPSIS
+
+    $ beagle att # list all the attachments
+    $ beagle att 1 # show the first attachment in the above list
+ 
+    $ beagle att add --parent abcd /path/to/att1 /path/to/att2
+    $ beagle att ls --parent abcd
+    $ beagle att --parent abcd # ditto
+    $ beagle att cat --parent abcd 1 # show content of the first attachment
+    $ beagle att --parent abcd 1 # ditto
+    $ beagle att rm --parent abcd 1 # delete the first attachment
+ 
+    $ beagle att --prune
 
 =head1 AUTHOR
 

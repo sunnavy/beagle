@@ -198,6 +198,9 @@ __END__
 
 Beagle::Cmd::Command::shell - interactive shell
 
+=head1 SYNOPSIS
+
+    $ beagle shell
 
 =head1 AUTHOR
 

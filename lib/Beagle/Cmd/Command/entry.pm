@@ -15,23 +15,29 @@ has 'force' => (
     isa           => 'Bool',
     is            => 'rw',
     cmd_aliases   => 'f',
-    documentation => 'force',
+    documentation => 'force to create even no changes in editor',
     traits        => ['Getopt'],
 );
 
 has 'type' => (
-    isa           => 'Str',
+    isa           => 'EntryType',
     is            => 'rw',
     cmd_aliases   => 't',
     documentation => 'type',
     traits        => ['Getopt'],
-    required      => 1,
 );
 
 has author => (
     isa           => "Str",
     is            => "rw",
     documentation => "author",
+    traits        => ['Getopt'],
+);
+
+has tags => (
+    isa           => "Str",
+    is            => "rw",
+    documentation => "tags",
     traits        => ['Getopt'],
 );
 
@@ -61,7 +67,7 @@ has 'body-file-encoding' => (
 has 'edit' => (
     isa           => "Bool",
     is            => "rw",
-    documentation => "edit with editor?",
+    documentation => "use editor",
     traits        => ['Getopt'],
 );
 
@@ -90,6 +96,7 @@ has format => (
 
 sub class {
     my $self = shift;
+    die 'no type specified' unless $self->type;
     return 'Beagle::Model::' . ucfirst lc $self->type;
 }
 
@@ -98,14 +105,9 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
+    my $bh = handle() or die "please specify beagle by --name or --root\n";
 
-    my $root = current_root('not die');
-    if ( !$root ) {
-        CORE::die "please specify beagle by --name or --root\n";
-    }
-
-    require Beagle::Handle;
-    my $bh = Beagle::Handle->new( root => $root );
+    $opt->{tags} = to_array( delete $opt->{tags} );
 
     if ( $self->body_file && !defined $opt->{body} ) {
         $opt->{body} = decode(
@@ -206,8 +208,16 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::entry - create a new entry
+Beagle::Cmd::Command::entry - create an entry
 
+=head1 SYNOPSIS
+
+    $ beagle entry --type bark
+    $ beagle bark                                   # ditto
+    $ beagle entry --type bark --verbose            # more fields to check/edit
+    $ beagle entry --type bark -a /path/to/att1 -a /path/to/att2
+    $ beagle entry --type bark --tags tv,simpsons
+    $ beagle entry --type bark --body doh --edit    # force to use editor
 
 =head1 AUTHOR
 

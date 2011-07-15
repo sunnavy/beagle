@@ -48,7 +48,7 @@ has 'updated-after' => (
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the roots",
+    documentation => "all the beagles",
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
@@ -79,8 +79,7 @@ has 'order' => (
     isa     => 'Str',
     is      => 'rw',
     default => 'updated',
-    documentation =>
-      "order of entries for each beagle, should be one of name|updated|created",
+    documentation => 'order of entries for each beagle',
     traits => ['Getopt'],
 );
 
@@ -89,7 +88,7 @@ has 'marks' => (
     is          => 'rw',
     cmd_aliases => 'm',
     documentation =>
-      "show show entries that has these masks seperated by comma",
+      "show entries that have these marks",
     traits => ['Getopt'],
 );
 
@@ -139,7 +138,7 @@ sub filter {
     }
 
     if ( $self->marks ) {
-        my @marks       = split /\s*,\s*/, $self->marks;
+        my @marks       = to_array($self->marks);
         my $marks       = entry_marks();
 
         my $filter_mark = sub {
@@ -291,6 +290,16 @@ __END__
 =head1 NAME
 
 Beagle::Cmd::Command::ls - list/search entries
+
+=head1 SYNOPSIS
+
+    $ beagle ls                             # all the entries
+    $ beagle ls homer                       # entries that match qr/homer/mi
+    $ beagle ls homer.*bart                 # entries that match qr/homer.*bart/mi
+    $ beagle ls --order created --limit 10  # only show the first 10 entries
+
+    $ beagle ls --type article homer    # articles that match "homer"
+    $ beagle articles homer             # ditto
 
 =head1 AUTHOR
 

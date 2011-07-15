@@ -65,6 +65,11 @@ __END__
 
 Beagle::Cmd::Command::rename - rename a beagle
 
+=head1 SYNOPSIS
+
+    $ beagle rename foo bar
+    $ beagle rename foo bar --force
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>

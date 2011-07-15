@@ -4,10 +4,10 @@ use Beagle::Util;
 use Encode;
 extends qw/Beagle::Cmd::Command/;
 
-has 'cmd' => (
+has 'command' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => 'spread cmd',
+    documentation => 'spread command',
     traits        => ['Getopt'],
 );
 
@@ -71,12 +71,12 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die "beagle spread --cmd spread-cmd id1 id2 [...]"
-      unless @$args && $self->cmd;
+      unless @$args && $self->command;
 
     die "can't use both --template and --template-file"
       if defined $self->template && defined $self->template_file;
 
-    my $cmd = $self->cmd;
+    my $cmd = $self->command;
     for my $i (@$args) {
         my @ret = resolve_entry( $i, handle => handle() || undef );
         unless (@ret) {
@@ -225,6 +225,59 @@ __END__
 
 Beagle::Cmd::Command::spread - spread entries
 
+=head1 SYNOPSIS
+
+    $ beagle spread --cmd /path/to/cmd id1 id2
+    $ beagle spread --cmd /path/to/cmd --template '<: $url :>' id1 id2
+    $ beagle spread --cmd /path/to/cmd --template-file short id1 id2
+
+=head1 DESCRIPTION
+
+C<spread> is used to broadcast entries via command specified by C<--cmd>.
+By default, each entry will be converted to an mime message,
+
+You can use C<--template> or C<--template-file> to override this, in which
+case each entry will be converted to a plain message based on the template.
+(All the templates use C<Text::Xslate> engine.)
+
+There are 3 items you can customize: C<from>, C<to> and C<subject>.
+
+=over
+
+=item from
+
+In mime message, this will be in head's 'From:' field.
+By default it's the beagle owner's email( a.k.a the one in C<<$bh->info>> )
+
+=item to
+
+In mime message, this will be in head's 'To:' field.
+By default it's empty.
+
+=item subject
+
+In mime message, this will be in head's 'Subject:' field.
+By default it's the entry's summary with 80 chars at most.
+
+=back
+
+Vars bound to those templates are:
+
+        {
+                    handle  => $bh,
+                    entry   => $entry,
+                    id      => $id,
+                    url     => $bh->info->url . '/entry/' . $id,
+                    to      => $to,
+                    from    => $from,
+                    subject => $subject,
+        }
+
+There are 3 template files in core: C<short>, C<long> and C<full>, which live
+in C<share/spread_templates>, you can override the templates root via config
+item C<spread_templates_root>:
+
+        $ beagle config --set spread_templates_root=/path/to/templates
 
 =head1 AUTHOR
 

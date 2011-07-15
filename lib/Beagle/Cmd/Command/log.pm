@@ -48,6 +48,10 @@ __END__
 
 Beagle::Cmd::Command::log - show log
 
+=head1 SYNOPSIS
+
+    $ beagle log            # equal to "beagle git log"
+    $ beagle log --id id1   # only show logs of entry id1
 
 =head1 AUTHOR
 

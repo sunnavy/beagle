@@ -51,6 +51,10 @@ __END__
 
 Beagle::Cmd::Command::unfollow - unfollow beagles
 
+=head1 SYNOPSIS
+
+    $ beagle unfollow foo bar
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>

@@ -65,6 +65,12 @@ __END__
 
 Beagle::Cmd::Command::git - bridge to git
 
+=head1 SYNOPSIS
+
+    $ beagle git status
+    $ beagle git log
+    $ beagle git <any git cmd>
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>

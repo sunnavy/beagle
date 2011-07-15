@@ -7,7 +7,7 @@ extends qw/Beagle::Cmd::Command/;
 has admin => (
     isa           => "Bool",
     is            => "rw",
-    documentation => "admin mode",
+    documentation => "enable admin",
     traits        => ['Getopt'],
     default       => 0,
     lazy          => 1,
@@ -81,6 +81,12 @@ __END__
 
 Beagle::Cmd::Command::web - start web server
 
+=head1 SYNOPSIS
+
+    $ beagle web
+    $ beagle web --port 8080
+    $ beagle web --command starman
+    $ beagle web --admin
 
 =head1 AUTHOR
 

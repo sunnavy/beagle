@@ -131,6 +131,9 @@ __END__
 
 Beagle::Cmd::Command::root - show root
 
+=head1 SYNOPSIS
+
+    $ beagle root
 
 =head1 AUTHOR
 

@@ -116,6 +116,13 @@ __END__
 
 Beagle::Cmd::Command::follow - follow beagles
 
+=head1 SYNOPSIS
+
+    $ beagle follow /path/to/foo.git                    # named as "foo"
+    $ beagle follow /path/to/foo/bar.git --depth 2      # named as "foo/bar"
+    $ beagle follow /path/to/foo.git --name foobar      # manually name
+    $ beagle follow /path/to/foo.git /path/to/bar.git
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>
