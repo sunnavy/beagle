@@ -56,7 +56,7 @@ sub execute {
 
     my $root =
       rel2abs( $args->[0]
-          || catdir( backend_root(), split /\//, $self->name ) );
+          || catdir( backends_root(), split /\//, $self->name ) );
 
     if ($root) {
         if ( -e $root ) {

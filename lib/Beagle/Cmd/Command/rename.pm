@@ -28,8 +28,8 @@ sub execute {
 
     $all->{$new_name} = delete $all->{$old_name};
 
-    my $old_path = catdir( backend_root(), split qr{/}, $old_name );
-    my $new_path = catdir( backend_root(), split qr{/}, $new_name );
+    my $old_path = catdir( backends_root(), split qr{/}, $old_name );
+    my $new_path = catdir( backends_root(), split qr{/}, $new_name );
     $all->{$new_name}{local} = $new_path;
 
     if ( -e $new_path ) {

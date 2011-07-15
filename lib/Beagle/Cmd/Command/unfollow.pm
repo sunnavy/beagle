@@ -15,7 +15,7 @@ sub execute {
 
     my @unfollowed;
     for my $name (@$args) {
-        my $f_root = catdir( backend_root(), split /\//, $name );
+        my $f_root = catdir( backends_root(), split /\//, $name );
         if ( -e $f_root ) {
             remove_tree($f_root);
         }

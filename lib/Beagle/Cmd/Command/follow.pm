@@ -57,7 +57,7 @@ sub execute {
             $name =~ s/\.git$//;
         }
 
-        my $f_root = catdir( backend_root(), split /\//, $name );
+        my $f_root = catdir( backends_root(), split /\//, $name );
         if ( -e $f_root ) {
             if ( $self->force ) {
                 remove_tree($f_root);
@@ -97,7 +97,7 @@ sub execute {
 
         $all->{$name} = {
             remote => $root,
-            local  => catdir( backend_root(), split /\//, $name ),
+            local  => catdir( backends_root(), split /\//, $name ),
             type   => $self->type,
         };
 

@@ -21,7 +21,7 @@ our (
     $ROOT,               $KENNEL,         $CACHE,
     $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $ENTRY_MAP_PATH, $ENTRY_MARKS_PATH,
-    $CACHE_ROOT, $BACKEND_ROOT
+    $CACHE_ROOT, $BACKENDS_ROOT
 );
 
 BEGIN {
@@ -47,7 +47,7 @@ our @EXPORT = (
       die_entry_ambiguous handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown parse_pod
       whitelist set_whitelist
-      detect_roots backend_root cache_root
+      detect_roots backends_root cache_root
       share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
@@ -226,16 +226,16 @@ sub cache_root {
     return $CACHE_ROOT;
 }
 
-sub backend_root {
-    return $BACKEND_ROOT if $BACKEND_ROOT;
-    if ( $ENV{BEAGLE_BACKEND_ROOT} ) {
-        $BACKEND_ROOT = decode( locale => $ENV{BEAGLE_BACKEND_ROOT} );
+sub backends_root {
+    return $BACKENDS_ROOT if $BACKENDS_ROOT;
+    if ( $ENV{BEAGLE_BACKENDS_ROOT} ) {
+        $BACKENDS_ROOT = decode( locale => $ENV{BEAGLE_BACKENDS_ROOT} );
     }
     else {
-        $BACKEND_ROOT = core_config()->{backend_root}
+        $BACKENDS_ROOT = core_config()->{backends_root}
           || catfile( kennel(), 'roots' );
     }
-    return $BACKEND_ROOT;
+    return $BACKENDS_ROOT;
 }
 
 my $config;
@@ -842,7 +842,7 @@ sub parse_pod {
 }
 
 sub detect_roots {
-    my $base = shift || backend_root();
+    my $base = shift || backends_root();
     return {} unless -d $base;
     my $info = {};
 
