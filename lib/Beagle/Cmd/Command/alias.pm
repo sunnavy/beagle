@@ -52,10 +52,10 @@ sub execute {
         set_user_alias($user_alias) if @set || @unset;
 
         if (@set) {
-            puts 'set ', join ', ', @set;
+            puts 'set ', join( ', ', @set ) . '.';
         }
         if (@unset) {
-            puts 'unset ', join ', ', @unset;
+            puts 'unset ', join( ', ', @unset ) . '.';
         }
 
         return;

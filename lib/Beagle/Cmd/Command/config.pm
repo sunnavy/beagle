@@ -110,10 +110,10 @@ sub execute {
         set_core_config($core) if @set || @unset;
 
         if (@set) {
-            puts 'set ', join ', ', @set;
+            puts 'set ', join( ', ', @set ) . '.';
         }
         if (@unset) {
-            puts 'unset ', join ', ', @unset;
+            puts 'unset ', join( ', ', @unset ) . '.';
         }
         return;
     }
