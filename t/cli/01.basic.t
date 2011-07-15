@@ -44,9 +44,9 @@ Available commands:
        log: show log
       look: open the beagle root directory with SHELL
         ls: list/search entries
-       map: manage entry map
       mark: manage entry marks
         mv: move entries to another beagle
+  relation: show beagle names of entries
     rename: rename a beagle
     review: create a review
         rm: delete entries
@@ -72,7 +72,7 @@ is(
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
   alias article att cache cast cat cmds commands comment comments config create
-  entry follow fsck git help info log look ls map mark mv rename review
+  entry follow fsck git help info log look ls mark mv relation rename review
   rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 

@@ -20,7 +20,7 @@ subtype 'EntryType' => as 'Str' => where { exists entry_type_info()->{$_} };
 our (
     $ROOT,               $KENNEL,         $CACHE,
     $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
-    @WEB_TEMPLATE_ROOTS, $ENTRY_MAP_PATH, $ENTRY_MARKS_PATH,
+    @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $ENTRY_MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL
 );
 
@@ -41,7 +41,7 @@ our @EXPORT = (
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
       set_current_root current_root root_name set_current_root_by_name check_root
       current_static_root kennel user_alias roots set_roots
-      core_config set_core_config set_user_alias entry_map set_entry_map
+      core_config set_core_config set_user_alias relation set_relation
       default_format split_id root_name name_root root_type
       system_alias create_backend alias aliases resolve_id die_entry_not_found
       die_entry_ambiguous handle handles resolve_entry
@@ -51,7 +51,7 @@ our @EXPORT = (
       share_root entry_marks set_entry_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
-      entry_map_path entry_marks_path
+      relation_path entry_marks_path
       web_options
       /
 );
@@ -320,21 +320,21 @@ sub set_roots {
     set_config($config);
 }
 
-sub entry_map_path {
-    return $ENTRY_MAP_PATH if defined $ENTRY_MAP_PATH;
+sub relation_path {
+    return $RELATION_PATH if defined $RELATION_PATH;
 
-    if ( $ENV{BEAGLE_ENTRY_MAP_PATH} ) {
-        $ENTRY_MAP_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MAP_PATH} );
+    if ( $ENV{BEAGLE_RELATION_PATH} ) {
+        $RELATION_PATH = decode( locale => $ENV{BEAGLE_RELATION_PATH} );
     }
     else {
-        $ENTRY_MAP_PATH = core_config()->{entry_map_path}
-          || catfile( kennel(), '.entry_map' );
+        $RELATION_PATH = core_config()->{relation_path}
+          || catfile( kennel(), '.relation' );
     }
-    return $ENTRY_MAP_PATH;
+    return $RELATION_PATH;
 }
 
-sub entry_map {
-    my $file = entry_map_path();
+sub relation {
+    my $file = relation_path();
     if ( -e $file ) {
         return retrieve($file);
     }
@@ -343,9 +343,9 @@ sub entry_map {
     }
 }
 
-sub set_entry_map {
+sub set_relation {
     my $map = shift or return;
-    nstore( $map, entry_map_path() );
+    nstore( $map, relation_path() );
 }
 
 sub entry_marks_path {
@@ -648,11 +648,11 @@ sub resolve_id {
           map { { id => $_, entry => $bh->map->{$_}, handle => $bh } } @ids;
     }
     else {
-        my $entry_map = entry_map;
-        my @ids = grep { /^$i/ } keys %$entry_map;
+        my $relation = relation;
+        my @ids = grep { /^$i/ } keys %$relation;
         my @ret;
         for my $i (@ids) {
-            my $root = name_root( $entry_map->{$i} );
+            my $root = name_root( $relation->{$i} );
             my $bh = Beagle::Handle->new( root => $root );
             push @ret, { id => $i, entry => $bh->map->{$i}, handle => $bh };
         }

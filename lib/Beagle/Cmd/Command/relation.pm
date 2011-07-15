@@ -1,4 +1,4 @@
-package Beagle::Cmd::Command::map;
+package Beagle::Cmd::Command::relation;
 use Beagle::Util;
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
@@ -29,11 +29,11 @@ sub execute {
             }
         }
 
-        set_entry_map($map);
+        set_relation($map);
         puts "updated map.";
     }
     else {
-        my $map = entry_map;
+        my $map = relation;
         my @ids;
 
         if (@$args) {
@@ -64,21 +64,20 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::map - manage entry map
+Beagle::Cmd::Command::relation - show beagle names of entries
 
 =head1 SYNOPSIS
 
-    $ beagle map
-    $ beagle map update
-    $ beagle map id1 id2
+    $ beagle relation 
+    $ beagle relation  --update
+    $ beagle relation  id1 id2
 
 =head1 DESCRIPTION
 
-C<map> here means map of C<< uuid => beagle name >>, and it's stored in a file
-locally in kennel by default.
+This relation/map is stored in a file locally in kennel by default.
 
-The file path can be customized via env C<BEAGLE_ENTRY_MAP_PATH> or config
-item C<entry_map_path>.
+The file path can be customized via env C<BEAGLE_RELATION_PATH> or config
+item C<relation_path>.
 
 =head1 AUTHOR
 

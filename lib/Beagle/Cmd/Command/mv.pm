@@ -19,7 +19,7 @@ sub execute {
     die "beagle mv id [...] name" unless @$args > 1;
 
     my @created;
-    my $entry_map;
+    my $relation;
 
     my $name = pop @{$args};
     my $to_root = name_root($name) or die "no such beagle with name: $name";

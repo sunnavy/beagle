@@ -29,7 +29,7 @@ sub execute {
     die "beagle rm id [...]" unless @$args;
 
     my @deleted;
-    my $entry_map;
+    my $relation;
 
     for my $i (@$args) {
         my @ret = resolve_entry( $i, handle => handle() || undef );

@@ -169,7 +169,7 @@ sub update_cache {
 
 sub update_global_map {
     my $self = shift;
-    my $map  = entry_map();
+    my $map  = relation();
     for my $key ( keys %$map ) {
         delete $map->{$key}
           if $map->{$key} eq $self->name;
@@ -177,7 +177,7 @@ sub update_global_map {
     for my $entry ( @{ $self->comments }, @{ $self->entries } ) {
         $map->{ $entry->id } = $self->name;
     }
-    set_entry_map($map);
+    set_relation($map);
 }
 
 sub init_info {

@@ -25,11 +25,11 @@ sub execute {
               encode( locale_fs => catfile( cache_root(), $name . $t ) );
             remove_tree($cache) if -e $cache;
         }
-        my $map = entry_map;
+        my $map = relation;
         for my $id ( keys %$map ) {
             delete $map->{$id} if $map->{$id} eq $name;
         }
-        set_entry_map( $map );
+        set_relation( $map );
 
         my $all = roots();
         if ( exists $all->{$name} ) {
