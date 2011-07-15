@@ -20,7 +20,7 @@ subtype 'EntryType' => as 'Str' => where { exists entry_type_info()->{$_} };
 our (
     $ROOT,               $KENNEL,         $CACHE,
     $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
-    @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $ENTRY_MARKS_PATH,
+    @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL
 );
 
@@ -48,10 +48,10 @@ our @EXPORT = (
       is_in_range parse_wiki  parse_markdown parse_pod
       whitelist set_whitelist
       detect_roots backends_root cache_root
-      share_root entry_marks set_entry_marks
+      share_root marks set_marks
       spread_template_roots web_template_roots
       entry_type_info entry_types
-      relation_path entry_marks_path
+      relation_path marks_path
       web_options
       /
 );
@@ -348,21 +348,21 @@ sub set_relation {
     nstore( $map, relation_path() );
 }
 
-sub entry_marks_path {
-    return $ENTRY_MARKS_PATH if defined $ENTRY_MARKS_PATH;
+sub marks_path {
+    return $MARKS_PATH if defined $MARKS_PATH;
 
-    if ( $ENV{BEAGLE_ENTRY_MARKS_PATH} ) {
-        $ENTRY_MARKS_PATH = decode( locale => $ENV{BEAGLE_ENTRY_MARKS_PATH} );
+    if ( $ENV{BEAGLE_MARKS_PATH} ) {
+        $MARKS_PATH = decode( locale => $ENV{BEAGLE_MARKS_PATH} );
     }
     else {
-        $ENTRY_MARKS_PATH = core_config()->{entry_marks_path}
-          || catfile( kennel(), '.entry_marks' );
+        $MARKS_PATH = core_config()->{marks_path}
+          || catfile( kennel(), '.marks' );
     }
-    return $ENTRY_MARKS_PATH;
+    return $MARKS_PATH;
 }
 
-sub entry_marks {
-    my $file = entry_marks_path();
+sub marks {
+    my $file = marks_path();
     if ( -e $file ) {
         return retrieve($file);
     }
@@ -371,9 +371,9 @@ sub entry_marks {
     }
 }
 
-sub set_entry_marks {
+sub set_marks {
     my $marks = shift or return;
-    nstore( $marks, entry_marks_path() );
+    nstore( $marks, marks_path() );
 }
 
 sub default_format {

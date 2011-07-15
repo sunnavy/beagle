@@ -57,7 +57,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $updated;
-    my $marks = entry_marks;
+    my $marks = marks;
 
     if ( $self->_import || $self->export ) {
         require JSON;
@@ -112,7 +112,7 @@ sub execute {
                     }
                 }
             }
-            set_entry_marks($marks);
+            set_marks($marks);
             puts 'imported.';
             return;
         }
@@ -169,7 +169,7 @@ sub execute {
                 }
             }
 
-            set_entry_marks($marks);
+            set_marks($marks);
             puts 'updated.';
         }
         else {
@@ -214,8 +214,8 @@ C<marks> are stored in a file locally in kennel by default, so you can't expect
 C<beagle push> could C<push> that too, that's why I added C<--export>/C<--import>
 supports.
 
-The file path can be customized via env C<BEAGLE_ENTRY_MARKS_PATH> or config
-item C<entry_marks_path>.
+The file path can be customized via env C<BEAGLE_MARKS_PATH> or config
+item C<marks_path>.
 
 BTW, To make it available everywhere, you may want to store the file in places
 like Dropbox, Ubuntu One, etc.

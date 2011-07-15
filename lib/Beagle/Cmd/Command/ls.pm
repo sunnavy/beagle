@@ -137,7 +137,7 @@ sub filter {
 
     if ( $self->marks ) {
         my $cond = to_array( $self->marks );
-        my $marks = entry_marks();
+        my $marks = marks();
 
         my $filter_mark = sub {
             my $id = shift;
