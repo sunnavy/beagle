@@ -5,8 +5,8 @@ extends qw/Beagle::Cmd::GlobalCommand/;
 
 has import => (
     isa           => 'Str',
+    is            => 'rw',
     accessor      => '_import',       # import sub is special in perl
-    writer        => '_import',
     documentation => 'import path',
     traits        => ['Getopt'],
 );
