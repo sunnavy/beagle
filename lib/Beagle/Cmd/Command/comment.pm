@@ -61,8 +61,10 @@ sub execute {
     $pid = $ret[0]->{id};
     my $bh = $ret[0]->{handle};
 
-    my $author = $self->author
-      || Email::Address->new( $bh->info->name, $bh->info->email )->format;
+    my $author =
+         $self->author
+      || Email::Address->new( $bh->info->name, $bh->info->email )->format
+      || '';
 
     my $body = join ' ', @$args;
 
@@ -103,7 +105,7 @@ sub execute {
     else {
         $comment = Beagle::Model::Comment->new(
             body   => $body,
-            author => $self->author,
+            author => $author,
         );
     }
 
