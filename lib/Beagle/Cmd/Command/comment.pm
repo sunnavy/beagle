@@ -72,6 +72,7 @@ sub execute {
         my $temp = Beagle::Model::Comment->new(
             parent_id => $pid,
             author    => $author,
+            body      => $body,
         );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
         my $template =
