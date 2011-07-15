@@ -602,9 +602,8 @@ sub aliases {
 
 sub resolve_entry {
     my $str = shift or return;
-    return resolve_id( $str, @_ ) unless $str =~ /[^a-z0-9]/;
-
-    $str =~ s!^:!!;    # : is to indicate that it's not an id
+    return resolve_id( $str, @_ ) if $str =~ /^[a-z0-9]+$/;
+    return unless $str =~ s/^://;
 
     my %opt = ( handle => undef, @_ );
 
