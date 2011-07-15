@@ -56,7 +56,6 @@ sub command_names { qw/mark marks/ }
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $updated;
     my $marks = marks;
 
     if ( $self->_import || $self->export ) {
@@ -169,8 +168,10 @@ sub execute {
                 }
             }
 
-            set_marks($marks);
-            puts 'updated.';
+            if (@ids) {
+                set_marks($marks);
+                puts 'updated.';
+            }
         }
         else {
 
