@@ -24,6 +24,8 @@ run_ok( $beagle_cmd, [ 'info', ], "info", );
 like( last_script_stdout(), qr!url: http://sunnavy\.net!, 'info output' );
 
 run_ok( $beagle_cmd, [ 'info', '--unset', 'url', ], "info --unset", );
+is( last_script_stdout(), 'updated info.' . newline, 'info --set output' );
+
 run_ok( $beagle_cmd, [ 'info', ], "info", );
 like( last_script_stdout(), qr!url:\s*$!m, 'info output' );
 
