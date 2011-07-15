@@ -86,6 +86,7 @@ has 'order' => (
 has 'marks' => (
     isa           => 'Str',
     is            => 'rw',
+    accessor      => '_marks',
     cmd_aliases   => 'm',
     documentation => "show entries that have these marks",
     traits        => ['Getopt'],
@@ -135,8 +136,8 @@ sub filter {
         @found = @results;
     }
 
-    if ( $self->marks ) {
-        my $cond = to_array( $self->marks );
+    if ( $self->_marks ) {
+        my $cond = to_array( $self->_marks );
         my $marks = marks();
 
         my $filter_mark = sub {
