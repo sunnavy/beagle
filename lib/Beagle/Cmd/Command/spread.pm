@@ -246,19 +246,19 @@ There are 3 items you can customize: C<from>, C<to> and C<subject>.
 
 =item from
 
-In MIME messages, this will be in head's 'From:' field.
+In MIME messages, this will be the value of field 'From:'.
 
 By default it's the beagle owner's email( a.k.a the one in C<< $bh->info >> )
 
 =item to
 
-In MIME messages, this will be in head's 'To:' field.
+In MIME messages, this will be the value of field 'To:'.
 
 By default it's empty.
 
 =item subject
 
-In MIME messages, this will be in head's 'Subject:' field.
+In MIME messages, this will be the value of field 'Subject:'.
 
 By default it's the entry's summary with 80 chars at most.
 
