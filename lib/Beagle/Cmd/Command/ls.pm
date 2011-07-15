@@ -76,26 +76,25 @@ has 'final' => (
 );
 
 has 'order' => (
-    isa     => 'Str',
-    is      => 'rw',
-    default => 'updated',
+    isa           => 'Str',
+    is            => 'rw',
+    default       => '-updated',
     documentation => 'order of entries for each beagle',
-    traits => ['Getopt'],
+    traits        => ['Getopt'],
 );
 
 has 'marks' => (
-    isa         => 'Str',
-    is          => 'rw',
-    cmd_aliases => 'm',
-    documentation =>
-      "show entries that have these marks",
-    traits => ['Getopt'],
+    isa           => 'Str',
+    is            => 'rw',
+    cmd_aliases   => 'm',
+    documentation => "show entries that have these marks",
+    traits        => ['Getopt'],
 );
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
-sub command_names { qw/ls list search/ };
+sub command_names { qw/ls list search/ }
 
 sub filter {
     my $self = shift;
@@ -109,10 +108,9 @@ sub filter {
     %condition = %{ $opt->{condition} } if $opt->{condition};
 
     my $type_info = entry_type_info();
-    for my $t (keys %$type_info) {
+    for my $t ( keys %$type_info ) {
         my $attr = $type_info->{$t}{plural};
-        if ( $type eq $t || $type eq 'all' )
-        {
+        if ( $type eq $t || $type eq 'all' ) {
             for my $entry ( @{ $bh->$attr } ) {
                 next
                   if ( $self->draft && !$entry->draft )
@@ -127,7 +125,7 @@ sub filter {
     if (@$args) {
         my @results;
         for my $entry (@found) {
-            my $pass    = 1;
+            my $pass = 1;
             my $content = $entry->serialize( id => 1 );
             for my $regex (@$args) {
                 undef $pass unless $content =~ qr/$regex/mi;
@@ -138,14 +136,14 @@ sub filter {
     }
 
     if ( $self->marks ) {
-        my @marks       = to_array($self->marks);
-        my $marks       = entry_marks();
+        my $cond = to_array( $self->marks );
+        my $marks = entry_marks();
 
         my $filter_mark = sub {
-            my $id    = shift;
-            return 1 unless @marks;
-            return unless $marks->{$id};
-            for my $mark (@marks) {
+            my $id = shift;
+            return 1 unless @$cond;
+            return   unless $marks->{$id};
+            for my $mark (@$cond) {
                 if ( !exists $marks->{$id}{$mark} ) {
                     return;
                 }
@@ -197,7 +195,14 @@ sub execute {
     $opt->{condition} = \%condition;
 
     my @found;
-    for my $bh ( sort { $a->name cmp $b->name } @bh ) {
+    for my $bh (
+        sort {
+            $self->order =~ /-name/i
+              ? ( $b->name cmp $a->name )
+              : ( $a->name cmp $b->name )
+        } @bh
+      )
+    {
         push @found, $self->filter( $bh, $opt, $args );
         if (   $self->limit
             && $self->limit > 0
@@ -223,26 +228,27 @@ sub show_result {
     $limit = 0 if !$limit || $limit < 0;
 
     my $order = lc $self->order;
+    ( my $sign, $order ) = $order =~ /^([\+\-])?(.+)/;
+    $sign ||= '+' if $order eq 'type';
+    $sign ||= '-';
+
     if ( $order ne 'name' ) {
-        if ( $order eq 'type' ) {
+        if ( $found[0]->can($order) ) {
             if ( $limit && $limit < @found ) {
-                @found =
-                  ( sort { $a->$order cmp $b->$order } @found )
-                  [ 0 .. $limit - 1 ];
+                @found = (
+                    sort {
+                        $sign eq '+'
+                          ? ( $a->$order cmp $b->$order )
+                          : ( $b->$order cmp $a->$order )
+                      } @found
+                )[ 0 .. $limit - 1 ];
             }
             else {
-                @found =
-                  sort { $a->$order cmp $b->$order } @found;
-            }
-        }
-        elsif ( $found[0]->can($order) ) {
-            if ( $limit && $limit < @found ) {
-                @found =
-                  ( sort { $b->$order <=> $a->$order } @found )
-                  [ 0 .. $limit - 1 ];
-            }
-            else {
-                @found = sort { $b->$order <=> $a->$order } @found;
+                @found = sort {
+                    $sign eq '+'
+                      ? ( $a->$order cmp $b->$order )
+                      : ( $b->$order cmp $a->$order )
+                } @found;
             }
         }
         else {
@@ -281,7 +287,6 @@ sub show_result {
     }
     puts $tb;
 }
-
 
 1;
 
