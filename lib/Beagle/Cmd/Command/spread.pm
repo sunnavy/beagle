@@ -234,7 +234,7 @@ Beagle::Cmd::Command::spread - spread entries
 =head1 DESCRIPTION
 
 C<spread> is used to broadcast entries via command specified by C<--cmd>.
-By default, each entry will be converted to an mime message,
+By default, each entry will be converted to an MIME message,
 
 You can use C<--template> or C<--template-file> to override this, in which
 case each entry will be converted to a plain message based on the template.
@@ -246,17 +246,20 @@ There are 3 items you can customize: C<from>, C<to> and C<subject>.
 
 =item from
 
-In mime message, this will be in head's 'From:' field.
-By default it's the beagle owner's email( a.k.a the one in C<<$bh->info>> )
+In MIME messages, this will be in head's 'From:' field.
+
+By default it's the beagle owner's email( a.k.a the one in C<< $bh->info >> )
 
 =item to
 
-In mime message, this will be in head's 'To:' field.
+In MIME messages, this will be in head's 'To:' field.
+
 By default it's empty.
 
 =item subject
 
-In mime message, this will be in head's 'Subject:' field.
+In MIME messages, this will be in head's 'Subject:' field.
+
 By default it's the entry's summary with 80 chars at most.
 
 =back

@@ -208,6 +208,18 @@ Beagle::Cmd::Command::mark - manage entry marks
     $ beagle mark --import /path/to/foo.json
     $ beagle mark --export /path/to/foo.json
 
+=head1 DESCRIPTION
+
+C<marks> are stored in a file locally in kennel by default, so you can't expect
+C<beagle push> could C<push> that too, that's why I added C<--export>/C<--import>
+supports.
+
+The file path can be customized via env C<BEAGLE_ENTRY_MARKS_PATH> or config
+item C<entry_marks_path>.
+
+BTW, To make it available everywhere, you may want to store the file in places
+like Dropbox, Ubuntu One, etc.
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>

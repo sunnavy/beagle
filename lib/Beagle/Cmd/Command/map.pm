@@ -74,7 +74,11 @@ Beagle::Cmd::Command::map - manage entry map
 
 =head1 DESCRIPTION
 
-<map> here means map of uuid => beagle name
+C<map> here means map of C<< uuid => beagle name >>, and it's stored in a file
+locally in kennel by default.
+
+The file path can be customized via env C<BEAGLE_ENTRY_MAP_PATH> or config
+item C<entry_map_path>.
 
 =head1 AUTHOR
 
