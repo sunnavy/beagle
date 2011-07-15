@@ -121,13 +121,17 @@ sub execute {
 
         my @ids;
         for my $i (@$args) {
-
-            my @ret = resolve_entry( $i, handle => handle() || undef );
-            unless (@ret) {
-                @ret = resolve_entry($i) or die_entry_not_found($i);
+            if ( $i =~ /^\w{32}$/ ) {
+                push @ids, $i;
             }
-            die_entry_ambiguous( $i, @ret ) unless @ret == 1;
-            push @ids, $ret[0]->{id};
+            else {
+                my @ret = resolve_entry( $i, handle => handle() || undef );
+                unless (@ret) {
+                    @ret = resolve_entry($i) or die_entry_not_found($i);
+                }
+                die_entry_ambiguous( $i, @ret ) unless @ret == 1;
+                push @ids, $ret[0]->{id};
+            }
         }
 
         if ( $self->add || $self->delete || $self->set || $self->unset ) {
