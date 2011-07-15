@@ -178,7 +178,7 @@ sub execute {
             @ids = keys %$marks unless @ids;
 
             for my $id (@ids) {
-                puts "$id: ",
+                puts "$id ",
                   $marks->{$id}
                   ? ( join ', ', sort keys %{ $marks->{$id} } )
                   : '<not exist>';
