@@ -34,7 +34,8 @@ sub execute {
         grep { $_->{name} ne 'help' } @{ $cmd->usage->{options} }
     ];
 
-    my $opt = join newline(), 'OPTIONS', $cmd->usage->option_text;
+    # '' is for a newline
+    my $opt = join newline(), 'OPTIONS', $cmd->usage->option_text, '';
 
     unless ( $out =~ s!(?=^AUTHOR)!$opt!m ) {
         $out .= $opt;
