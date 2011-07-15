@@ -883,6 +883,9 @@ sub share_root {
     if ( $ENV{BEAGLE_SHARE_ROOT} ) {
         $SHARE_ROOT = rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
     }
+    elsif (core_config()->{share_root}) {
+        $SHARE_ROOT = rel2abs( core_config()->{share_root} );
+    }
     else {
         require Beagle;
         my @root = splitdir( rel2abs( parent_dir( $INC{'Beagle.pm'} ) ) );
