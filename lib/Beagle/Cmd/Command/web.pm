@@ -49,8 +49,8 @@ sub execute {
     require Beagle::Web;
     local $ENV{BEAGLE_WEB_ADMIN} =
       exists $self->{admin} ? $self->admin : Beagle::Web->enabled_admin();
-    local $ENV{BEAGLE_ALL} =
-      exists $self->{all} ? $self->all : $ENV{BEAGLE_ALL};
+    local $ENV{BEAGLE_WEB_ALL} =
+      exists $self->{all} ? $self->all : $ENV{BEAGLE_WEB_ALL};
 
     require Plack::Runner;
     my $r = Plack::Runner->new;

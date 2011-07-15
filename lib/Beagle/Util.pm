@@ -377,7 +377,7 @@ sub set_entry_marks {
 
 sub default_format {
     return
-         $ENV{BEAGLE_FORMAT}
+         $ENV{BEAGLE_DEFAULT_FORMAT}
       || core_config()->{default_format}
       || 'plain';
 }

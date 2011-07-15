@@ -53,7 +53,7 @@ my ( $bh, %updated, %bh, $all, $name );
 my $root = current_root('not die');
 my $req;
 
-if ( $ENV{BEAGLE_ALL} || !$root ) {
+if ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
     $all = roots();
     for my $n ( keys %$all ) {
         local $Beagle::Util::ROOT = $all->{$n}{local};
