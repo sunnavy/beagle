@@ -69,7 +69,10 @@ sub execute {
     my $comment;
 
     if ( $body !~ /\S/ || $self->edit ) {
-        my $temp = Beagle::Model::Comment->new( parent_id => $pid );
+        my $temp = Beagle::Model::Comment->new(
+            parent_id => $pid,
+            author    => $author,
+        );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
         my $template =
           $self->verbose
@@ -80,7 +83,7 @@ sub execute {
             id        => 1,
             parent_id => 1,
           )
-          : $temp->serialize_body($body);
+          : $temp->serialize();
         my $updated = edit_text($template);
         if ( !$self->force && $template eq $updated ) {
             puts "aborted.";
@@ -97,11 +100,14 @@ sub execute {
         }
     }
     else {
-        $comment = Beagle::Model::Comment->new( body => $body, );
+        $comment = Beagle::Model::Comment->new(
+            body   => $body,
+            author => $self->author,
+        );
     }
 
     $comment->parent_id($pid);
-    $comment->author($author) if $author;
+    $comment->author($author) if $author && !$comment->author;
     $comment->timezone( $bh->info->timezone ) if $bh->info->timezone;
     if (
         $bh->create_entry(
