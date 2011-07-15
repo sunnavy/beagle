@@ -37,7 +37,14 @@ sub execute {
     # '' is for a newline
     my $opt = join newline(), 'OPTIONS', $cmd->usage->option_text, '';
 
-    unless ( $out =~ s!(?=^AUTHOR)!$opt!m ) {
+    # users don't want to see AUTHOR and COPYRIGHT normally
+    if ( $self->verbose ) {
+        unless ( $out =~ s!(?=^AUTHOR)!$opt!m ) {
+            $out .= $opt;
+        }
+    }
+    else {
+        $out =~ s!^AUTHOR.*!!sm;
         $out .= $opt;
     }
     puts $out;
