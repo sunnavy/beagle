@@ -30,7 +30,7 @@ sub execute {
         }
 
         set_relation($map);
-        puts "updated map.";
+        puts "updated relation.";
     }
     else {
         my $map = relation;
