@@ -48,7 +48,7 @@ has 'updated-after' => (
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "show all the beagles",
+    documentation => "all the roots",
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );

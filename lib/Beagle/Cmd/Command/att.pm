@@ -24,7 +24,7 @@ has prune => (
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the beagles",
+    documentation => "all the roots",
     traits        => ['Getopt'],
 );
 

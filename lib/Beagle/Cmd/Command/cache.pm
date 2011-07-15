@@ -6,7 +6,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "cache for all the beagles",
+    documentation => "all the roots",
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
