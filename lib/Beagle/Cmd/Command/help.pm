@@ -11,6 +11,12 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opts, $args ) = @_;
 
+    my $alias        = alias;
+    if ( $alias->{$args->[0]} ) {
+        puts qq!"$args->[0]" is aliased to "$alias->{$args->[0]}".!;
+        return;
+    }
+
     my ($cmd) = $self->app->prepare_command(@$args);
     exit 1
       if ref $cmd eq 'Beagle::Cmd::Command::commands'
