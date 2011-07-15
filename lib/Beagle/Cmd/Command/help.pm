@@ -11,10 +11,21 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opts, $args ) = @_;
 
-    ( my $cmd, $opts, $args ) = $self->app->prepare_command(@$args);
+    my ($cmd) = $self->app->prepare_command(@$args);
+    exit 1
+      if ref $cmd eq 'Beagle::Cmd::Command::commands'
+          && $args->[0] ne 'commands';
 
     require Pod::Usage;
     require Pod::Find;
+
+    $cmd->usage->{options} = [
+        sort { $a->{desc} cmp $b->{desc} }
+        grep { $_->{name} ne 'help' } @{ $cmd->usage->{options} }
+    ];
+
+    # '' is for a newline
+    my $opt = join newline(), 'OPTIONS', $cmd->usage->option_text, '';
 
     my $out;
     open my $fh, '>', \$out or die $!;
@@ -28,14 +39,6 @@ sub execute {
         -exitval => 'NOEXIT',
     );
     close $fh;
-
-    $cmd->usage->{options} = [
-        sort { $a->{desc} cmp $b->{desc} }
-        grep { $_->{name} ne 'help' } @{ $cmd->usage->{options} }
-    ];
-
-    # '' is for a newline
-    my $opt = join newline(), 'OPTIONS', $cmd->usage->option_text, '';
 
     # users don't want to see AUTHOR and COPYRIGHT normally
     if ( $self->verbose ) {
