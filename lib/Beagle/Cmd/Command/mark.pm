@@ -121,7 +121,7 @@ sub execute {
 
         my @ids;
         for my $i (@$args) {
-            if ( $i =~ /^\w{32}$/ ) {
+            if ( length $i == 32 ) {
                 push @ids, $i;
             }
             else {
