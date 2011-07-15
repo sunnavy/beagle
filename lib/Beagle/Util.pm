@@ -21,7 +21,7 @@ our (
     $ROOT,               $KENNEL,         $CACHE,
     $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $ENTRY_MAP_PATH, $ENTRY_MARKS_PATH,
-    $CACHE_ROOT, $BACKENDS_ROOT
+    $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL
 );
 
 BEGIN {
@@ -52,6 +52,7 @@ our @EXPORT = (
       spread_template_roots web_template_roots
       entry_type_info entry_types
       entry_map_path entry_marks_path
+      web_options
       /
 );
 
@@ -904,6 +905,34 @@ sub share_root {
         $SHARE_ROOT = catdir(@root);
     }
     return $SHARE_ROOT;
+}
+
+sub web_options {
+    return @$WEB_OPTIONS if $WEB_OPTIONS;
+    require Text::ParseWords;
+    my $value =
+      defined $ENV{BEAGLE_WEB_OPTIONS}
+      ? $ENV{BEAGLE_WEB_OPTIONS}
+      : core_config()->{web_options};
+
+    if ( defined $value ) {
+        $WEB_OPTIONS = [ Text::ParseWords::shellwords($value) ];
+    }
+    else {
+        $WEB_OPTIONS = [];
+    }
+    return @$WEB_OPTIONS;
+}
+
+sub web_all {
+    return $WEB_ALL if defined $WEB_ALL;
+    $WEB_ALL =
+        defined $ENV{BEAGLE_WEB_ALL} ? $ENV{BEAGLE_WEB_ALL}
+      : defined core_config()->{web_all}    ? core_config()->{web_all}
+      :                                0;
+
+    return $WEB_ALL;
+    return @$WEB_OPTIONS;
 }
 
 1;

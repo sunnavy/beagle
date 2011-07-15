@@ -15,7 +15,7 @@ my @subs = qw/
   share_root entry_marks set_entry_marks
   spread_template_roots web_template_roots
   entry_type_info entry_types
-  entry_map_path entry_marks_path
+  entry_map_path entry_marks_path web_options
   /;
 
 for (@subs) {

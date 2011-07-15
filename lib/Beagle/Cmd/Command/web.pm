@@ -56,11 +56,7 @@ sub execute {
     my $r = Plack::Runner->new;
 
     my @args;
-    if ( $ENV{BEAGLE_WEB_OPT} ) {
-        require Text::ParseWords;
-        push @args, Text::ParseWords::shellwords( $ENV{BEAGLE_WEB_OPT} );
-    }
-    push @args, @$args;
+    push @args, web_options(), @$args;
 
     if ( $self->command ) {
         system( $self->command, $app, @args );
