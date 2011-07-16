@@ -69,26 +69,24 @@ sub execute {
                 }
             }
 
-            if ( $path && $path ne '-' ) {
-                my $out =
-                  JSON::to_json( $converted, { utf8 => 1, pretty => 1 } );
+            my $out = JSON::to_json( $converted, { utf8 => 1, pretty => 1 } );
+            if ( $path ne '-' ) {
                 write_file( $path, $out );
                 puts 'exported.';
             }
             else {
-                my $out = JSON::to_json( $converted, { pretty => 1 } );
-                puts $out;
+                print $out;
             }
             return;
         }
         elsif ( defined( $path = $self->_import ) ) {
             my $in;
-            if ( $path && $path ne '-' ) {
+            if ( $path ne '-' ) {
                 $in = decode( 'utf8', read_file($path) );
             }
             else {
                 local $/;
-                $in = decode( locale => <STDIN> );
+                $in = decode( 'utf8' => <STDIN> );
             }
             my $converted = JSON::from_json($in);
             my $marks     = {};
