@@ -26,6 +26,7 @@ our (
 
 BEGIN {
     *CORE::GLOBAL::die = sub {
+        goto &die unless (caller())[0] =~ /^Beagle::/;
         goto &confess if enabled_devel();
         @_ = grep { defined } @_;
 
@@ -36,6 +37,11 @@ BEGIN {
     };
 
     *CORE::GLOBAL::warn = sub {
+# interesting, I get warn if use goto:
+# Goto undefined subroutine &Beagle::Util::warn
+#       goto &warn unless (caller())[0] =~ /^Beagle::/;
+        return warn @_ unless (caller())[0] =~ /^Beagle::/;
+
         goto &cluck if enabled_devel();
         @_ = grep { defined } @_;
 
