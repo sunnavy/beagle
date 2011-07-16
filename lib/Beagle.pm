@@ -11,19 +11,24 @@ Beagle - a modern way to manage/track/serve posts
 
 =head1 SYNOPSIS
 
-    $ beagle config --init # tell it your name and email
-    $ beagle create --name foo
+    $ beagle help
+    $ beagle config --init
+    $ beagle create /path/to/foo.git  --bare
 
     # if you already have one, you can follow it
-    $ beagle follow git_repo_uri --name foo
+    $ beagle follow /path/to/foo.git
 
-    $ beagle help
-    $ beagle article --title foo --body bar # create an article
+    $ beagle article --title foo --body bar
     $ beagle ls
-    $ beagle show id1
-    $ beagle update id1
-    $ beagle rm id1
+    $ beagle show ID1
+    $ beagle update ID1
+    $ beagle rm ID1
     $ beagle shell
+
+    $ beagle pull
+    $ beagle push
+
+    $ beagle web
 
 =head1 DESCRIPTION
 
