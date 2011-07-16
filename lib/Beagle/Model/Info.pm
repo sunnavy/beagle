@@ -8,7 +8,7 @@ sub path { 'info' }
 has 'url' => (
     isa     => 'Str',
     is      => 'rw',
-    default => 'localhost'
+    default => 'http://localhost',
 );
 
 has 'title' => (
