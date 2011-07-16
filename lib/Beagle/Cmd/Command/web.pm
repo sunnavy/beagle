@@ -84,6 +84,11 @@ Beagle::Cmd::Command::web - start web server
     $ beagle web --command starman
     $ beagle web --admin
 
+=head1 DESCRIPTION
+
+Besices options below, C<web> supports options of C<plackup> too, so you can
+use C<--port>, C<--listen>, etc.
+
 =head1 AUTHOR
 
     sunnavy <sunnavy@gmail.com>
