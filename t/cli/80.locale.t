@@ -4,11 +4,6 @@ use warnings;
 use Test::More;
 use Beagle::Util;
 
-if (is_windows()) {
-    plan skip_all => 'locale tests do not work well on windows';
-    exit;
-}
-
 use Beagle::Test;
 use Test::Script::Run ':all';
 

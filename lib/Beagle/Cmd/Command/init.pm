@@ -73,7 +73,7 @@ sub execute {
             }
         }
     }
-    make_path($root) or die "failed to create $root";
+    make_path( encode( locale_fs => $root ) ) or die "failed to create $root";
 
     my $info;
     if ( $self->edit ) {

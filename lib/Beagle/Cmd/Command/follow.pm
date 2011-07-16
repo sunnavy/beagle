@@ -71,7 +71,7 @@ sub execute {
             }
         }
 
-        my $parent = parent_dir($f_root);
+        my $parent = encode( locale_fs => parent_dir($f_root) );
         make_path($parent) or die "failed to create $parent" unless -d $parent;
 
         if ( $self->type eq 'git' ) {

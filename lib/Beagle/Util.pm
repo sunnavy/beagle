@@ -288,7 +288,7 @@ sub set_config {
         $config = $value;
     }
     my $config_file = catfile( kennel(), 'config' );
-    my $parent = parent_dir($config_file);
+    my $parent = encode( locale_fs => parent_dir($config_file) );
     make_path( parent_dir($config_file) ) or die $! unless -e $parent;
     open my $fh, '>:encoding(utf8)', $config_file or die $!;
     return Config::INI::Writer->write_handle( $config, $fh );
@@ -307,7 +307,7 @@ sub whitelist {
 
 sub set_whitelist {
     my $value = @_ > 1 ? [@_] : shift;
-    my $file = catfile( kennel(), 'whitelist' );
+    my $file = encode( locale_fs => catfile( kennel(), 'whitelist' ) );
     my $parent = parent_dir($file);
     make_path( parent_dir($file) ) or die $! unless -e $parent;
 
@@ -571,7 +571,7 @@ sub _create_backend_fs {
         ( $email ? ( email => $email ) : () ),
         root => '',
     );
-    write_file( catfile( $root, 'info' ), $info->serialize )
+    write_file( encode( locale_fs => catfile( $root, 'info' ) ), $info->serialize )
       or die $!;
 
     return 1;

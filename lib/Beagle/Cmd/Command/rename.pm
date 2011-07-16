@@ -32,9 +32,13 @@ sub execute {
 
     $all->{$new_name} = delete $all->{$old_name};
 
-    my $old_path = catdir( backends_root(), split qr{/}, $old_name );
-    my $new_path = catdir( backends_root(), split qr{/}, $new_name );
-    $all->{$new_name}{local} = $new_path;
+    $all->{$new_name}{local} =
+      catdir( backends_root(), split qr{/}, $new_name );
+
+    my $old_path =
+      encode( locale_fs => catdir( backends_root(), split qr{/}, $old_name ) );
+    my $new_path =
+      encode( locale_fs => catdir( backends_root(), split qr{/}, $new_name ) );
 
     if ( -e $new_path ) {
         die "$new_path already exists, use --force|-f to override"
