@@ -3,6 +3,13 @@ use warnings;
 
 use Test::More;
 use Beagle::Test;
+use Beagle::Util;
+
+if (is_windows()) {
+    plan skip_all => 'test server do not work well on windows';
+    exit;
+}
+
 use Test::WWW::Mechanize;
 use Beagle::Handle;
 
