@@ -39,6 +39,8 @@ has type => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
+sub command_names { qw/follow clone/ };
+
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die "beagle follow repo_uri1 [...]" unless @$args;
