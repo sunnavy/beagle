@@ -37,7 +37,7 @@ BEGIN {
     };
 
     *CORE::GLOBAL::warn = sub {
-# interesting, I get warn if use goto:
+# interesting, I get warn if use goto &warn:
 # Goto undefined subroutine &Beagle::Util::warn
 #       goto &warn unless (caller())[0] =~ /^Beagle::/;
         return warn @_ unless (caller())[0] =~ /^Beagle::/;
