@@ -7,7 +7,7 @@ __END__
 
 =head1 NAME
 
-Beagle - manage/version/spread articles, reviews, barks, etc.
+Beagle - a modern way to manage/track/serve posts
 
 =head1 SYNOPSIS
 
@@ -27,11 +27,13 @@ Beagle - manage/version/spread articles, reviews, barks, etc.
 
 =head1 DESCRIPTION
 
-Beagle is to help you manage articles, reviews, barks and tasks, etc.
+Technically, it's a thin wrapper of git(maybe more vcs in the future), which
+uses it as data source to manage/track/serve all kinds of entries( articles,
+review, etc ).
 
-Technically, it's a thin wrapper of git(maybe more vcs in the future),
-which uses git as data source to create/show/update/delete/publish all
-kinds of entries( articles, review, etc ).
+=head1 SEE ALSO
+
+L<Beagle::Manual::Tutorial>
 
 =head1 AUTHOR
 

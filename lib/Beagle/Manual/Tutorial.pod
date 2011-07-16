@@ -87,7 +87,7 @@ switches current beagle only in current session.
 
 =head1 SEE ALSO
 
-L<Beagle>
+L<Beagle>, L<Beagle::Manual::ENV>
 
 =head1 AUTHOR
 
