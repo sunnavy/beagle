@@ -70,8 +70,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die "beagle spread --cmd spread-cmd id1 id2 [...]"
-      unless @$args && $self->command;
+    die 'beagle spread id1 id2 [...]' unless @$args;
 
     die "can't use both --template and --template-file"
       if defined $self->template && defined $self->template_file;
@@ -144,6 +143,7 @@ sub execute {
                     subject => $subject,
                 }
             );
+            $msg = encode_utf8( $msg );
         }
         else {
             require MIME::Entity;
@@ -154,11 +154,11 @@ sub execute {
             );
 
             my $mime = MIME::Entity->build(
-                From => $from,
-                Subject => $subject,
+                From    => encode( 'MIME-HEADER', $from ),
+                Subject => encode( 'MIME-HEADER', $subject ),
                 Data    => $entry->serialize( id => 1 ),
                 Charset => 'utf-8',
-                To      => $to,
+                To => encode( 'MIME-HEADER', $to ),
                 %head,
             );
 
@@ -187,31 +187,38 @@ sub execute {
 
         $msg =~ s!\s+$!newline()!e;
 
-        puts "going to call `$cmd` with input:", newline(), decode_utf8($msg)
-          unless $self->quiet && !$self->dry_run;
+        if ($cmd) {
+            puts "going to call `$cmd` with input:", newline(),
+              decode_utf8($msg)
+              unless $self->quiet && !$self->dry_run;
 
-        if ( !$self->dry_run ) {
-            my $doit = 1;
-            if ( !$self->quiet ) {
-                print "spread? (Y/n): ";
-                my $val = <STDIN>;
-                undef $doit if $val =~ /n/i;
-            }
+            if ( !$self->dry_run ) {
+                my $doit = 1;
+                if ( !$self->quiet ) {
+                    print "spread? (Y/n): ";
+                    my $val = <STDIN>;
+                    undef $doit if $val =~ /n/i;
+                }
 
-            if ($doit) {
-                my @cmd = Text::ParseWords::shellwords($cmd);
-                require IPC::Run3;
-                my ( $out, $err );
-                IPC::Run3::run3( [@cmd], \$msg, \$out, \$err, );
-                if ($?) {
-                    die "failed to run $cmd: exit code is "
-                      . ( $? >> 8 )
-                      . ", out is $out, err is $err\n";
-                }
-                else {
-                    print $out;
+                if ($doit) {
+                    my @cmd = Text::ParseWords::shellwords($cmd);
+                    require IPC::Run3;
+                    my ( $out, $err );
+                    IPC::Run3::run3( [@cmd], \$msg, \$out, \$err, );
+                    if ($?) {
+                        die "failed to run $cmd: exit code is "
+                          . ( $? >> 8 )
+                          . ", out is $out, err is $err\n";
+                    }
+                    else {
+                        print $out;
+                    }
                 }
             }
+        }
+        else {
+            # yes, print utf8 encoded string all the time
+            print $msg;
         }
     }
 }
