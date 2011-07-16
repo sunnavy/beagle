@@ -81,7 +81,8 @@ sub execute {
         set_roots($old);
 
         puts "initialized.";
-        puts "now add etc/bashrc in beagle source to your .bashrc or .zshrc.";
+        puts
+"to make beagle more friendly, add etc/bashrc in beagle source to your .bashrc or .zshrc.";
         puts
 "if you use bash's completion, add etc/completion/bash in beagle source to your .bashrc.";
         puts
