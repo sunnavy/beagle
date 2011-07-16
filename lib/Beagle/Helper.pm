@@ -5,7 +5,7 @@ use strict;
 use File::Spec::Functions qw/catdir splitdir rel2abs catfile splitpath/;
 use Encode;
 use Encode::Locale;
-use Carp;
+use Carp 'confess', 'cluck';
 use File::Slurp;
 use Date::Format;
 use base 'Exporter';
@@ -27,7 +27,7 @@ our @EXPORT = qw/
   newline is_windows puts  
   user_home file_size parent_dir to_array from_array edit_text max_length
   term_size term_width term_height  mime_type make_path remove_tree
-  pretty_datetime parse_datetime confess encode decode 
+  pretty_datetime parse_datetime confess cluck encode decode 
   encode_entities decode_entities
   /;
 

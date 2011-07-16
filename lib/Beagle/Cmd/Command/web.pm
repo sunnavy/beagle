@@ -38,7 +38,7 @@ sub execute {
 
     my $root = current_root('not die');
     if ( !$root && !$self->all ) {
-        CORE::die "please specify beagle by --name or --root\n";
+        die "please specify beagle by --name or --root";
     }
 
     local $ENV{BEAGLE_NAME} = '';

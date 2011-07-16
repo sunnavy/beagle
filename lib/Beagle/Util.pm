@@ -34,6 +34,16 @@ BEGIN {
         @_ = map { encode( locale => $_ ) } @_;
         die @_;
     };
+
+    *CORE::GLOBAL::warn = sub {
+        goto &cluck if enabled_devel();
+        @_ = grep { defined } @_;
+
+        # we want to show user the line info if there is nothing to print
+        push @_, newline() if @_;
+        @_ = map { encode( locale => $_ ) } @_;
+        warn @_;
+    };
 }
 
 our @EXPORT = (

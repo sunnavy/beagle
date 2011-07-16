@@ -39,7 +39,7 @@ sub execute {
     }
 
     if ( !@roots ) {
-        CORE::die "please specify beagle by --name or --root\n";
+        die "please specify beagle by --name or --root";
     }
 
     $cmd =~ s!-!_!g;

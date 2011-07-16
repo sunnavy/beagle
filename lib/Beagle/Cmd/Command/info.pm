@@ -51,7 +51,7 @@ sub execute {
     my $root = current_root('not die');
 
     if ( !$root ) {
-        CORE::die "please specify beagle by --name or --root\n";
+        die "please specify beagle by --name or --root";
     }
 
     require Beagle::Handle;
@@ -81,7 +81,7 @@ sub execute {
                     $info->$key($value);
                 }
                 else {
-                    warn "unknown key: $key\n";
+                    warn "unknown key: $key";
                 }
             }
         }
@@ -93,7 +93,7 @@ sub execute {
                     $info->$key('');
                 }
                 else {
-                    warn "unknown key: $key\n";
+                    warn "unknown key: $key";
                 }
             }
         }

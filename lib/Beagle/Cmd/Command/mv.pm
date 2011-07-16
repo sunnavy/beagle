@@ -36,7 +36,7 @@ sub execute {
         my $bh    = $ret[0]->{handle};
         my $entry = $ret[0]->{entry};
         if ( $bh->name eq $to->name ) {
-            warn "$id is already in $name\n";
+            warn "$id is already in $name";
             next;
         }
 

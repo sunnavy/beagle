@@ -69,7 +69,7 @@ sub new_from_string {
                 }
             }
             else {
-                warn "unknown key: $key\n";
+                warn "unknown key: $key";
             }
         }
     }
@@ -101,7 +101,7 @@ sub new_from_string {
                     }
                 }
                 else {
-                    warn "unknown key: $key\n";
+                    warn "unknown key: $key";
                 }
             }
         }

@@ -61,7 +61,7 @@ sub execute {
                     $entry->$key( $entry->parse_field( $key, $value ) );
                 }
                 else {
-                    warn "unknown key: $key\n";
+                    warn "unknown key: $key";
                 }
             }
         }

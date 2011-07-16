@@ -96,7 +96,7 @@ sub execute {
                         set_current_root_by_name($name);
                     }
                     else {
-                        warn "invalid beagle name: $name\n";
+                        warn "invalid beagle name: $name";
                         next;
                     }
                 }
@@ -114,7 +114,7 @@ sub execute {
                         set_current_root_by_name($name);
                     }
                     else {
-                        warn "invalid beagle name: $name\n";
+                        warn "invalid beagle name: $name";
                         next;
                     }
                 }
@@ -159,9 +159,7 @@ sub execute {
 
 sub show_time {
     my $start = shift;
-    warn newline(),
-      sprintf( '%.6f', Time::HiRes::time() - $start ),
-      ' seconds' . newline();
+    warn newline(), sprintf( '%.6f', Time::HiRes::time() - $start ), ' seconds';
 }
 
 sub history_file {

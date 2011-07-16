@@ -105,7 +105,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my $bh = handle() or die "please specify beagle by --name or --root\n";
+    my $bh = handle() or die "please specify beagle by --name or --root";
 
     $opt->{tags} = to_array( delete $opt->{tags} );
 
