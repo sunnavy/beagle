@@ -25,8 +25,13 @@ our (
 );
 
 BEGIN {
+
+# I got error: "Goto undefined subroutine &die" on windows strawberry 5.12.2
+# &CORE::die doesn't help
+
     *CORE::GLOBAL::die = sub {
-        goto &die unless (caller())[0] =~ /^Beagle::/;
+#        goto &die unless ( caller() )[0] =~ /^Beagle::/;
+        return die @_ unless ( caller() )[0] =~ /^Beagle::/;
         goto &confess if enabled_devel();
         @_ = grep { defined } @_;
 
@@ -40,7 +45,7 @@ BEGIN {
 # interesting, I get warn if use goto &warn:
 # Goto undefined subroutine &Beagle::Util::warn
 #       goto &warn unless (caller())[0] =~ /^Beagle::/;
-        return warn @_ unless (caller())[0] =~ /^Beagle::/;
+        return warn @_ unless ( caller() )[0] =~ /^Beagle::/;
 
         goto &cluck if enabled_devel();
         @_ = grep { defined } @_;
@@ -425,7 +430,11 @@ sub root_name {
     }
     $name_root{ $root_name{$root} } ||= $root if $root_name{$root};
 
-    $root_name{$root} ||= $root;
+    unless ( $root_name{$root} ) {
+        my $name = $root;
+        $name =~ s!:!_!g if is_windows;
+        $root_name{$root} ||= $name;
+    }
     return $root_name{$root};
 }
 

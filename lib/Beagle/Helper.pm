@@ -58,16 +58,14 @@ sub is_windows       { $IS_WINDOWS }
 
 sub puts {
     if (@_) {
+        my @opt = @_;
+        $opt[-1] =~ s!(\r?\n)*$!$NEWLINE!;
+
         print(
             encode(
                 locale =>,
                 join '',
-                @_,
-                (
-                    $_[-1] =~ /$NEWLINE$/
-                    ? ()
-                    : $NEWLINE
-                )
+                @opt,
             )
         );
     }

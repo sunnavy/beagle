@@ -18,7 +18,7 @@ is( $out, 'beagle version ' . $Beagle::VERSION . newline(), 'version output' );
 run_ok( $beagle_cmd, ['help'], 'help' );
 
 my $help_output = <<EOF;
-beagle <command>
+<command>
 
 Available commands:
 
@@ -61,13 +61,17 @@ Available commands:
 
 EOF
 
-is( last_script_stdout(), $help_output, 'help output' );
+my $actual_help_output = last_script_stdout;
+
+if ( is_windows() ) {
+    is( $actual_help_output, 'beagle.BAT ' . $help_output, 'help output' );
+}
+else {
+    is( $actual_help_output, 'beagle ' . $help_output, 'help output' );
+}
+
 run_ok( $beagle_cmd, ['commands'], 'commands' );
-is(
-    last_script_stdout(),
-    $help_output,
-    'commands output'
-);
+is( last_script_stdout(), $actual_help_output, 'commands output' );
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
@@ -84,26 +88,31 @@ is( last_script_stdout(), join( ' ', '@', 'external', 'fs', $root ) . newline(),
     'roots output' );
 
 run_ok( $beagle_cmd, ['status'], 'status' );
+my $name = $root;
+if ( is_windows ) {
+    $name =~ s!:!_!g;
+}
+
 $expect = <<"EOF";
 name    type       size
-$root articles   0   
-$root tasks      0   
-$root barks      0   
-$root reviews    0   
-$root comments   0   
-$root total size
+$name articles   0   
+$name tasks      0   
+$name barks      0   
+$name reviews    0   
+$name comments   0   
+$name total size
 EOF
 
 $out = last_script_stdout();
 like( $out, qr/^name\s+type\s+size\s*$/m, 'status output' );
-like( $out, qr/\Q$root\E\s+articles\s+0\s*$/m, 'status output articles part' );
-like( $out, qr/\Q$root\E\s+barks\s+0\s*$/m, 'status output barks part' );
-like( $out, qr/\Q$root\E\s+reviews\s+0\s*$/m, 'status output reviews part' );
-like( $out, qr/\Q$root\E\s+tasks\s+0\s*$/m, 'status output tasks part' );
-like( $out, qr/\Q$root\E\s+comments\s+0\s*$/m, 'status output comments part' );
+like( $out, qr/\Q$name\E\s+articles\s+0\s*$/m, 'status output articles part' );
+like( $out, qr/\Q$name\E\s+barks\s+0\s*$/m, 'status output barks part' );
+like( $out, qr/\Q$name\E\s+reviews\s+0\s*$/m, 'status output reviews part' );
+like( $out, qr/\Q$name\E\s+tasks\s+0\s*$/m, 'status output tasks part' );
+like( $out, qr/\Q$name\E\s+comments\s+0\s*$/m, 'status output comments part' );
 like(
     $out,
-    qr/\Q$root\E\s+total size\s+[\d.]+K\s*\Z/m,
+    qr/\Q$name\E\s+total size\s+[\d.]+K\s*\Z/m,
     'status output total size part'
 );
 

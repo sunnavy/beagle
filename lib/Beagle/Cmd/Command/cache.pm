@@ -51,7 +51,6 @@ sub execute {
 
             if ( $self->force ) {
                 my $name = root_name($root);
-                $name =~ s!\W!_!g;
                 unlink catfile( cache_root(), $name . '.drafts' );
                 unlink catfile( cache_root(), $name );
             }

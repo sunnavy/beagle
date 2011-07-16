@@ -6,7 +6,9 @@ my ($root) = Beagle::Test->init;
 
 my $bh = Beagle::Handle->new();
 is( $bh->root, $root, 'root' );
-is( $bh->name, $root, 'name' );
+my $name = $root;
+$name =~ s!:!_!g if is_windows();
+is( $bh->name, $name, 'name' );
 is( $bh->type, 'fs',  'type' );
 isa_ok( $bh->backend, 'Beagle::Backend::fs' );
 
