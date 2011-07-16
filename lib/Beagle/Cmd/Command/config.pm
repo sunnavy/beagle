@@ -80,13 +80,14 @@ sub execute {
         my $old = detect_roots();
         set_roots($old);
 
+        my $share = share_root();
         puts "initialized.";
         puts
-"to make beagle more friendly, add etc/bashrc in beagle source to your .bashrc or .zshrc.";
+qq{to make beagle more friendly, add "source $share/etc/bashrc" to your .bashrc or .zshrc.};
         puts
-"if you use bash's completion, add etc/completion/bash in beagle source to your .bashrc.";
+qq{if you use bash's completion, add "source $share/etc/completion/bash" to your .bashrc.};
         puts
-"if you use oh-my-zsh, copy etc/completion/zsh/beagle in beagle source to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.";
+qq{if you use oh-my-zsh, copy $share/etc/completion/zsh/beagle to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.};
         return;
     }
     elsif ( $self->set || $self->unset ) {
