@@ -82,6 +82,7 @@ sub execute {
 
         my $share = share_root();
         puts "initialized.";
+        return if is_windows();
         puts
 qq{you may want to add "source $share/etc/bashrc" to your .bashrc or .zshrc.};
 #        puts
