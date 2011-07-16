@@ -143,7 +143,7 @@ sub parse_sites {
 around 'serialize_meta' => sub {
     my $orig = shift;
     my $self = shift;
-    my %opt  = @_;
+    my %opt  = ( @_, tags => 0 );
     $opt{author} = undef;
     $opt{draft} = undef;
     my $str = $self->_serialize_meta('id') . $self->$orig(%opt);
