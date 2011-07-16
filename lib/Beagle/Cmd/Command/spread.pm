@@ -7,7 +7,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'command' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => 'spread command',
+    documentation => 'command which expects input from STDIN',
     traits        => ['Getopt'],
 );
 
@@ -253,25 +253,25 @@ There are 3 items you can customize: C<from>, C<to> and C<subject>.
 
 =item from
 
-In MIME messages, this will be the value of field 'From:'.
+In MIME messages, it's the value of head field C<From>.
 
-By default it's the beagle owner's email( a.k.a the one in C<< $bh->info >> )
+By default it's the beagle owner's email( a.k.a the one in file info )
 
 =item to
 
-In MIME messages, this will be the value of field 'To:'.
+In MIME messages, it's the value of head field C<To>.
 
 By default it's empty.
 
 =item subject
 
-In MIME messages, this will be the value of field 'Subject:'.
+In MIME messages, it's the value of head field C<Subject>.
 
 By default it's the entry's summary with 80 chars at most.
 
 =back
 
-Vars bound to those templates are:
+Vars bound to C<Text::Xslate> templates are:
 
         {
                     handle  => $bh,
@@ -284,7 +284,7 @@ Vars bound to those templates are:
         }
 
 There are 3 template files in core: C<short>, C<long> and C<full>, which live
-in C<share/spread_templates>, you can override the templates root via config
+in C<share/spread_templates>, you can expand the templates root via config
 item C<spread_templates_root>:
 
         $ beagle config --set spread_templates_root=/path/to/templates
