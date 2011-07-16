@@ -234,13 +234,13 @@ Beagle::Cmd::Command::spread - spread entries
 
 =head1 SYNOPSIS
 
-    $ beagle spread --cmd /path/to/cmd id1 id2
-    $ beagle spread --cmd /path/to/cmd --template '<: $url :>' id1 id2
-    $ beagle spread --cmd /path/to/cmd --template-file short id1 id2
+    $ beagle spread --command /path/to/cmd id1 id2
+    $ beagle spread --command /path/to/cmd --template '<: $url :>' id1 id2
+    $ beagle spread --command /path/to/cmd --template-file short id1 id2
 
 =head1 DESCRIPTION
 
-C<spread> is used to broadcast entries via command specified by C<--cmd>.
+C<spread> is used to broadcast entries via command specified by C<--command>.
 By default, each entry will be converted to an MIME message,
 
 You can use C<--template> or C<--template-file> to override this, in which
