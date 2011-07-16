@@ -22,7 +22,7 @@ has 'real-raw' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
-sub command_names { qw/cat show/ };
+sub command_names { qw/cat show read/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
