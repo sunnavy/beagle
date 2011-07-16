@@ -83,11 +83,11 @@ sub execute {
         my $share = share_root();
         puts "initialized.";
         puts
-qq{to make beagle more friendly, add "source $share/etc/bashrc" to your .bashrc or .zshrc.};
-        puts
-qq{if you use bash's completion, add "source $share/etc/completion/bash" to your .bashrc.};
-        puts
-qq{if you use oh-my-zsh, copy $share/etc/completion/zsh/beagle to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.};
+qq{you may want to add "source $share/etc/bashrc" to your .bashrc or .zshrc.};
+#        puts
+#qq{if you use bash's completion, add "source $share/etc/completion/bash" to your .bashrc.};
+#        puts
+#qq{if you use oh-my-zsh, copy $share/etc/completion/zsh/beagle to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.};
         return;
     }
     elsif ( $self->set || $self->unset ) {
