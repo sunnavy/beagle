@@ -23,6 +23,10 @@ sub execute {
     my ( $old_name, $new_name ) = @$args;
     die "new name is equal to the old name." if $old_name eq $new_name;
 
+    die "name can't contain colon on windows"
+      if is_windows() && $new_name =~ /:/;
+
+
     my $all = roots();
     die "$old_name doesn't exist" unless $all->{$old_name};
 

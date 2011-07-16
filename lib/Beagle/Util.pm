@@ -73,7 +73,7 @@ our @EXPORT = (
       spread_template_roots web_template_roots
       entry_type_info entry_types
       relation_path marks_path
-      web_options
+      web_options tweak_name
       /
 );
 
@@ -430,12 +430,15 @@ sub root_name {
     }
     $name_root{ $root_name{$root} } ||= $root if $root_name{$root};
 
-    unless ( $root_name{$root} ) {
-        my $name = $root;
-        $name =~ s!:!_!g if is_windows;
-        $root_name{$root} ||= $name;
-    }
+    $root_name{$root} ||= tweak_name( $root );
     return $root_name{$root};
+}
+
+sub tweak_name {
+    my $name = shift;
+    return unless defined $name;
+    $name =~ s!:!_!g if is_windows;
+    return $name;
 }
 
 sub name_root {

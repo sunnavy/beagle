@@ -8,6 +8,7 @@ use Beagle::Util;
 my $beagle_cmd = Beagle::Test->beagle_command;
 
 my $root = Beagle::Test->init;
+my $name = tweak_name($root);
 
 for my $type (qw/article review task bark/) {
     run_ok(
@@ -34,7 +35,7 @@ for my $type (qw/article review task bark/) {
     }
 
     run_ok( $beagle_cmd, [ 'relation', $id ], "relation $id", );
-    is( last_script_stdout(), "$id $root" . newline(), "relation $id output" );
+    is( last_script_stdout(), "$id $name" . newline(), "relation $id output" );
 
     run_ok( $beagle_cmd, [ 'show', '-v', $id ], "show $id", );
     my $show_out = last_script_stdout();
@@ -43,7 +44,7 @@ for my $type (qw/article review task bark/) {
     if ( $type =~ /article|review/ ) {
         like( $show_out, qr/title: foo/, 'get title' );
     }
-    like( $show_out, qr/\r?\n\r?\n^bar\Z/m, 'get body' );
+    like( $show_out, qr/\r?\n\r?\n^bar\s*\Z/m, 'get body' );
 
     run_ok(
         $beagle_cmd,
@@ -60,7 +61,7 @@ for my $type (qw/article review task bark/) {
         'update body output' );
 
     run_ok( $beagle_cmd, [ 'show', $id ], "show $id", );
-    like( last_script_stdout(), qr/\r?\n\r?\n^baz\Z/m,
+    like( last_script_stdout(), qr/\r?\n\r?\n^baz\s*\Z/m,
         'body is indeed updated' );
 
     run_ok( $beagle_cmd, [ 'rm', $id ], "rm $id", );

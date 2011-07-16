@@ -1,6 +1,7 @@
 use Test::More;
 use Beagle::Handle;
 use Beagle::Test;
+use Beagle::Util;
 
 my ($root) = Beagle::Test->init;
 

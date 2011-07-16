@@ -16,6 +16,7 @@ my @subs = qw/
   spread_template_roots web_template_roots
   entry_type_info entry_types
   relation_path marks_path web_options
+  tweak_name
   /;
 
 for (@subs) {

@@ -54,10 +54,12 @@ sub execute {
         $depth = 0 unless $depth > 0;
 
         if ( !$name ) {
-            $root =~ m{(([^/]+/){$depth}[^/]+)$};
+            $root =~ m{(([^/\\]+[/\\]){$depth}[^/\\]+)$};
             $name = $1 or die "can't resolve the name";
             $name =~ s/\.git$//;
         }
+
+        $name = tweak_name( $name );
 
         my $f_root = catdir( backends_root(), split /\//, $name );
         if ( -e $f_root ) {

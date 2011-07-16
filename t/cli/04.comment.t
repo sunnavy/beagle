@@ -41,7 +41,7 @@ run_ok( $beagle_cmd, [ 'show', '-v', $id ], "show $id", );
 my $show_out = last_script_stdout();
 like( $show_out, qr/id: $id/, 'get id' );
 
-like( $show_out, qr/\r?\n\r?\n^comment_baz\Z/m, 'get body' );
+like( $show_out, qr/\r?\n\r?\n^comment_baz\s*\Z/m, 'get body' );
 
 my $update = $show_out;
 $update =~ s/bar/barbar/;
@@ -52,7 +52,7 @@ is( last_script_stdout(), "updated $id." . newline(), 'update body output' );
 run_ok( $beagle_cmd, [ 'show', $id ], "show $id", );
 like(
     last_script_stdout(),
-    qr/\r?\n\r?\n^comment_apple\Z/m,
+    qr/\r?\n\r?\n^comment_apple\s*\Z/m,
     'body is indeed updated'
 );
 

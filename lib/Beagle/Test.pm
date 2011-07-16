@@ -37,6 +37,8 @@ sub start_server {
     my $port = $class->find_port();
 
     my $started;
+
+    # windows doesn't support USR1 signal
     local $SIG{USR1} = sub { $started = 1 };
 
     require Plack::Loader;

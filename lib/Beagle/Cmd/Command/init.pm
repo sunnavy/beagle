@@ -56,6 +56,9 @@ sub execute {
     die "can't specify --root with --name"   if $self->name && @$args;
     die "need root" unless @$args || $self->name;
 
+    die "name can't contain colon on windows"
+      if is_windows() && $self->name && $self->name =~ /:/;
+
     my $root =
       rel2abs( $args->[0]
           || catdir( backends_root(), split /\//, $self->name ) );
