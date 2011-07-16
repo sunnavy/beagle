@@ -13,7 +13,7 @@ Beagle - a modern way to manage/track/serve posts
 
     $ beagle help
     $ beagle config --init
-    $ beagle create /path/to/foo.git  --bare
+    $ beagle init /path/to/foo.git  --bare
 
     # if you already have one, you can follow it
     $ beagle follow /path/to/foo.git

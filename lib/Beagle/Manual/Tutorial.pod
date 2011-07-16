@@ -16,15 +16,15 @@ L<CPANPLUS> or L<App::cpanminus>:
     $ cpanp -i Beagle
     $ cpanm Beagle
 
-=head2 INIT
+=head2 INIT CONFIG
 
     $ beagle config --init
 
-=head2 CREATE AND FOLLOW
+=head2 INIT AND FOLLOW
 
 create a beagle:
 
-    $ beagle create /tmp/foo.git --bare
+    $ beagle init /tmp/foo.git --bare
 
 clone it into Beagle's kennel
 

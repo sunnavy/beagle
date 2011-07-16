@@ -14,10 +14,10 @@ my $kennel = Beagle::Test->init_kennel;
 my $tmpdir = tempdir( CLEANUP => 1 );
 for my $name (qw/foo bar/) {
     my $root = catdir( $tmpdir, $name );
-    run_ok( $beagle_cmd, [ 'create', $root, '--bare' ], "create $root" );
+    run_ok( $beagle_cmd, [ 'init', $root, '--bare' ], "init $root" );
     my $expect =
-      "created, please run `beagle follow $root --type git` to continue.";
-    is( last_script_stdout(), $expect . newline(), "create $root output" );
+      "initialized, please run `beagle follow $root --type git` to continue.";
+    is( last_script_stdout(), $expect . newline(), "init $root output" );
 }
 
 my $foo = catdir( $tmpdir, 'foo' );

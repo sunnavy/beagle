@@ -3,7 +3,7 @@ use Beagle::Util;
 use Encode;
 
 use Any::Moose;
-extends qw/Beagle::Cmd::Command::entry/;
+extends qw/Beagle::Cmd::Command::create/;
 
 has 'type' => (
     isa     => 'Str',

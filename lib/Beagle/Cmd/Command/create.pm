@@ -1,102 +1,205 @@
 package Beagle::Cmd::Command::create;
-use Beagle::Util;
 use Encode;
-
 use Any::Moose;
-extends qw/Beagle::Cmd::GlobalCommand/;
+use Beagle::Util;
+extends qw/Beagle::Cmd::Command/;
 
-has bare => (
-    isa           => "Bool",
-    is            => "rw",
-    cmd_aliases   => "b",
-    documentation => "bare git repo",
-    traits        => ['Getopt'],
-);
-
-has force => (
-    isa           => "Bool",
-    is            => "rw",
-    cmd_aliases   => "f",
-    documentation => "force to create",
-    traits        => ['Getopt'],
-);
-
-has type => (
-    isa           => "BackendType",
-    is            => "rw",
-    documentation => "type of the backend",
-    traits        => ['Getopt'],
-    default       => 'git',
-);
-
-has name => (
-    isa           => 'Str',
+has draft => (
+    isa           => 'Bool',
     is            => 'rw',
-    cmd_aliases   => 'n',
-    documentation => 'beagle name, will create it in $BEAGLE_KENNEL/roots directly',
+    documentation => 'is draft',
+    traits        => ['Getopt'],
+);
+
+has 'force' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    cmd_aliases   => 'f',
+    documentation => 'force to create even no changes in editor',
+    traits        => ['Getopt'],
+);
+
+has 'type' => (
+    isa           => 'EntryType',
+    is            => 'rw',
+    cmd_aliases   => 't',
+    documentation => 'type',
+    traits        => ['Getopt'],
+);
+
+has author => (
+    isa           => "Str",
+    is            => "rw",
+    documentation => "author",
+    traits        => ['Getopt'],
+);
+
+has tags => (
+    isa           => "Str",
+    is            => "rw",
+    documentation => "tags",
+    traits        => ['Getopt'],
+);
+
+has body => (
+    isa           => "Str",
+    is            => "rw",
+    documentation => "body",
+    traits        => ['Getopt'],
+);
+
+has 'body-file' => (
+    isa           => "Str",
+    is            => "rw",
+    accessor      => 'body_file',
+    documentation => "body file path",
+    traits        => ['Getopt'],
+);
+
+has 'body-file-encoding' => (
+    isa           => "Str",
+    is            => "rw",
+    accessor      => 'body_file_encoding',
+    documentation => "body file encoding",
     traits        => ['Getopt'],
 );
 
 has 'edit' => (
-    isa           => 'Bool',
-    is            => 'rw',
+    isa           => "Bool",
+    is            => "rw",
     documentation => "use editor",
     traits        => ['Getopt'],
 );
+
+has 'message' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'message to commit',
+    cmd_aliases   => "m",
+    traits        => ['Getopt'],
+);
+
+has attachments => (
+    isa           => "ArrayRef[Str]",
+    is            => "rw",
+    cmd_aliases   => "a",
+    documentation => "attachments",
+    traits        => ['Getopt'],
+);
+
+has format => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'format',
+    traits        => ['Getopt'],
+);
+
+sub class {
+    my $self = shift;
+    die 'no type specified' unless $self->type;
+    return 'Beagle::Model::' . ucfirst lc $self->type;
+}
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
+    my $bh = handle() or die "please specify beagle by --name or --root";
 
-    die "can't specify --bare with --name" if $self->name && $self->bare;
-    die "can't specify --root with --name"   if $self->name && @$args;
-    die "need root" unless @$args || $self->name;
+    $opt->{tags} = to_array( delete $opt->{tags} );
 
-    my $root =
-      rel2abs( $args->[0]
-          || catdir( backends_root(), split /\//, $self->name ) );
-
-    if ($root) {
-        if ( -e $root ) {
-            if ( $self->force ) {
-                remove_tree($root);
-            }
-            else {
-                die "$root already exists, use --force|-f to override";
-            }
-        }
+    if ( $self->body_file && !defined $opt->{body} ) {
+        $opt->{body} = decode(
+            $self->body_file_encoding || 'utf8',
+            read_file( $self->body_file )
+        ) or die $!;
     }
-    make_path($root) or die "failed to create $root";
+    $opt->{body} = join ' ', @$args if @$args && !defined $opt->{body};
 
-    my $info;
-    if ( $self->edit ) {
-        require Beagle::Model::Info;
-        my $template = Beagle::Model::Info->new()->serialize;
-        my $updated = edit_text($template);
-        $info = Beagle::Model::Info->new_from_string( decode_utf8 $updated);
-    }
-
-    # $opt->{name} is not user name but beagle name
-    create_backend( %$opt, root => $root, info => $info, name => undef );
-
-    if ( $self->name ) {
-        my $all = roots();
-
-        $all->{$self->name} = {
-            local => $root,
-            type  => $self->type,
-        };
-
-        set_roots($all);
-        puts "created."
+    my $entry;
+    if ( defined $opt->{body} && !$self->edit ) {
+        $entry = $self->class->new(
+            map { $_ => $opt->{$_} }
+            grep { defined $opt->{$_} } keys %$opt
+        );
     }
     else {
-        puts
-"created, please run `beagle follow $root --type @{[$self->type]}` to continue.";
+        my $temp = $self->class->new(
+            map { $_ => $opt->{$_} }
+            grep { defined $opt->{$_} } keys %$opt
+        );
+        $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
+        $temp->author( $self->author
+              || Email::Address->new( $bh->info->name, $bh->info->email )->format );
+
+        my $template = $temp->serialize(
+            $self->verbose
+            ? (
+                path    => 1,
+                created => 1,
+                updated => 1,
+                id      => 1,
+              )
+            : (
+                path    => 0,
+                created => 0,
+                updated => 0,
+                id      => 0,
+            )
+        );
+        my $updated = edit_text($template);
+
+        if ( !$self->force && $template eq $updated ) {
+            puts "aborted.";
+            return;
+        }
+
+        $entry = $self->class->new_from_string( decode_utf8 $updated );
+    }
+
+    $entry->timezone( $bh->info->timezone )
+      if $bh->info->timezone
+          && !$entry->timezone;
+    $entry->author( $self->author
+          || Email::Address->new( $bh->info->name, $bh->info->email )->format )
+      unless $entry->author;
+
+    if ( $bh->create_entry( $entry, commit => 0, ) ) {
+        $self->handle_attachments($entry);
+        $bh->backend->commit( message => $self->message
+              || 'created ' . $entry->id );
+        puts "created " . $entry->id . ".";
+    }
+    else {
+        die "failed to create the entry.";
     }
 }
+
+sub handle_attachments {
+    my $self   = shift;
+    my $parent = shift;
+    return unless $self->attachments;
+    for my $file ( @{ $self->attachments } ) {
+        $file = decode( locale_fs => $file );
+        if ( -f $file ) {
+
+            require File::Basename;
+            my $basename = File::Basename::basename($file);
+            my $att      = Beagle::Model::Attachment->new(
+                name         => $basename,
+                content_file => $file,
+                parent_id    => $parent->id,
+            );
+
+            handle->create_attachment( $att, commit => 0 );
+        }
+        else {
+            die "$file is not a file or doesn't exist.";
+        }
+    }
+}
+
 
 
 1;
@@ -105,21 +208,16 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::create - create a beagle
+Beagle::Cmd::Command::create - create an entry
 
 =head1 SYNOPSIS
 
-    $ beagle create --name foo          # create an internal beagle in the kennel
-    $ beagle create /path/to/foo.git --bare
-
-=head1 DESCRIPTION
-
-Usually, you want to create a external git repo and then C<follow> it, using
-C<--name> will create an internal git repo and you won't be able to C<push>
-and C<pull> easily.
-
-We suppot plain file system as backend via C<--type fs>, you don't want to do
-this usually as it doesn't support version control at all.
+    $ beagle create --type bark
+    $ beagle bark                                   # ditto
+    $ beagle create --type bark --verbose            # more fields to check/edit
+    $ beagle create --type bark -a /path/to/att1 -a /path/to/att2
+    $ beagle create --type bark --tags tv,simpsons
+    $ beagle create --type bark --body doh --edit    # force to use editor
 
 =head1 AUTHOR
 

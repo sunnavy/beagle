@@ -13,14 +13,14 @@ my $beagle_cmd = Beagle::Test->beagle_command;
 
 Beagle::Test->init_kennel;
 
-run_ok( $beagle_cmd, [qw/create --name 甲乙/], 'create 甲乙' );
-is( last_script_stdout(), 'created.' . newline(), 'create output' );
+run_ok( $beagle_cmd, [qw/init --name 甲乙/], 'init 甲乙' );
+is( last_script_stdout(), 'initialized.' . newline(), 'init output' );
 
 run_ok( $beagle_cmd, [qw/rename 甲乙 丙丁/], 'rename foo to 丙丁' );
 is(
     last_script_stdout(),
     'renamed 甲乙 to 丙丁.' . newline(),
-    'create output'
+    'rename output'
 );
 
 run_ok( $beagle_cmd, [qw/root/], 'root cmd' );

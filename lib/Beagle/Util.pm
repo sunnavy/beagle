@@ -520,7 +520,7 @@ sub system_alias {
     my $type_info = entry_type_info();
     for my $type ( keys %$type_info ) {
         unless ( try_load_class("Beagle::Cmd::Command::$type") ) {
-            $system_alias->{$type} = "entry --type $type";
+            $system_alias->{$type} = "create --type $type";
         }
 
         my $pl = $type_info->{$type}{plural};
