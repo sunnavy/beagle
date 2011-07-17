@@ -8,15 +8,15 @@ has 'parent_id' => (
     is  => 'rw',
 );
 
-sub serialize_meta {
+around 'serialize_meta' => sub {
+    my $orig = shift;
     my $self = shift;
     my %opt  = ( @_, tags => 0 );
-    my $str  = '';
-    $str .= 'parent_id: ' . $self->parent_id . "\n";
-    # we want to hack @_, so can't use super
-    $str .= $self->SUPER::serialize_meta( %opt );
+    my $str = 'parent_id: ' . $self->parent_id . "\n";
+    $str .= $self->$orig(%opt);
+
     return $str;
-}
+};
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
