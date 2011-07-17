@@ -324,7 +324,7 @@ get '/admin/entry/:type/new' => sub {
     my %vars = @_;
     my $type = lc $vars{'type'};
     if ($type) {
-        my $class = 'Beagle::Model::' . ucfirst lc $type;
+        my $class = entry_type_info->{lc $type};
         if ( try_load_class($class) ) {
 
             my $entry = $class->new( id => 'new' );

@@ -97,7 +97,7 @@ has format => (
 sub class {
     my $self = shift;
     die 'no type specified' unless $self->type;
-    return 'Beagle::Model::' . ucfirst lc $self->type;
+    return entry_type_info->{ lc $self->type }{class};
 }
 
 no Any::Moose;

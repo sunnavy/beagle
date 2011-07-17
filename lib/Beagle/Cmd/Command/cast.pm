@@ -19,8 +19,9 @@ sub execute {
     die "beagle cast --type new_type id1 id2 [...]"
       unless @$args && $self->type;
 
-    my $type      = ucfirst lc $self->type;
-    my $new_class = 'Beagle::Model::' . $type;
+    my $type      = lc $self->type;
+    my $new_class = entry_type_info->{$type}{class};
+
     for my $i (@$args) {
         my @ret = resolve_entry( $i, handle => handle() || undef );
         unless (@ret) {

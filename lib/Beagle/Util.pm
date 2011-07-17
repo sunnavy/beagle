@@ -15,7 +15,7 @@ subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
 # to handle checkbox input.
 coerce 'Bool' => from 'Ref' => via { 1 };
 
-subtype 'EntryType' => as 'Str' => where { exists entry_type_info()->{$_} };
+subtype 'EntryType' => as 'Str' => where { exists entry_type_info()->{lc $_} };
 
 our (
     $ROOT,               $KENNEL,         $CACHE,
