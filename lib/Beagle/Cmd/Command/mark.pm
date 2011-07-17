@@ -127,7 +127,7 @@ sub execute {
         for my $id ( keys %$marks ) {
             next if $relation->{$id};
             delete $marks->{$id};
-            $proned = 1;
+            $pruned = 1;
         }
 
         if ( $pruned ) {
