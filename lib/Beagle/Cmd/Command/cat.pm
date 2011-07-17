@@ -29,7 +29,6 @@ sub execute {
     die "beagle cat id [...]" unless @$args;
 
     my $first = 1;
-    my $relation;
     for my $i (@$args) {
         my @ret = resolve_entry($i, handle => handle() || undef );
         unless (@ret) {
