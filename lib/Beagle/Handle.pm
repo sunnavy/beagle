@@ -423,6 +423,11 @@ sub init_entries {
     }
 }
 
+sub DEMOLISH {
+    my $self = shift;
+    $self->update_relation;
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
