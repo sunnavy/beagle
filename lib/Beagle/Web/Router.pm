@@ -49,7 +49,7 @@ sub post {
     any( [qw/POST/], $_[0], $_[1] );
 }
 
-my ( $bh, %updated, %bh, $all, $name, $prefix );
+my ( $bh, %updated, %bh, $all, $name, $prefix, $static );
 my $root = current_root('not die');
 my $req;
 
@@ -621,6 +621,10 @@ sub set_prefix {
     $prefix = shift;
 }
 
+sub set_static {
+    $static = shift;
+}
+
 sub default_options {
     return (
         $bh->list,
@@ -631,6 +635,7 @@ sub default_options {
         tags          => Beagle::Web->tags($bh),
         entry_types   => entry_types(),
         prefix        => $prefix,
+        static        => $static,
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( roots => $all ),

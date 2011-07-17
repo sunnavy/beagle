@@ -80,6 +80,7 @@ sub execute {
         dircopy( $static, 'static' );
 
         Beagle::Web::Router::change_handle( handle => $bh );
+        Beagle::Web::Router::set_static(1);
         Beagle::Web::Router::set_prefix('');
 
         save_link( '/', 'index.html' );
