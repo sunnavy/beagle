@@ -19,7 +19,7 @@
 
   <div class="extra">
 : for $entry.extra_meta_fields -> $field {
-: if $entry.type != 'review' && $field != 'link' && $entry[$field] {
+: if $entry[$field] && not ( $entry.type == 'review' && $field == 'link' ) {
     <span title="<: $field :>">
 :   if match( $entry[$field], '^https?://' ) {
     <a href="<: $entry[$field] :>"><: $field :></a>
