@@ -148,7 +148,7 @@ sub BUILD {
         my $updated = $self->backend->updated;
         $self->updated($updated) if $updated;
         $self->update_cache if enabled_cache();
-        $self->update_global_map;
+        $self->update_relation;
     }
 
     return $self;
@@ -167,7 +167,7 @@ sub update_cache {
     Storable::nstore( $self, $self->cache );
 }
 
-sub update_global_map {
+sub update_relation {
     my $self = shift;
     my $map  = relation();
     for my $key ( keys %$map ) {
