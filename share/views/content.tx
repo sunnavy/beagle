@@ -10,10 +10,10 @@
 <div class="attachments">
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
-<a class="image" href="/static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="/static/<: split_id($entry.id) :>/<: $name :>" /></a>
+<a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" /></a>
 : }
 : else {
-<a href="/static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
 : }
 
 : }

@@ -5,7 +5,7 @@
 : }
 
 : if $enabled_admin {
-  <a href="/admin/entry/<: $entry.id :>"><: _('edit') :></a>
+  <a href="<: $prefix :>admin/entry/<: $entry.id :>"><: _('edit') :></a>
 <div class="delete">
 <form class="delete">
 <input type="hidden" name="id" value="<: $entry.id :>" />

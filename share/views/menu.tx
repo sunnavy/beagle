@@ -1,19 +1,19 @@
 <div id="menu">
 
 <div id="head" class="head">
-<h4><a href="/"><: $info.title :></a></h4>
+<h4><a href="<: $prefix :>"><: $info.title :></a></h4>
 </div>
 
 <div id="profile" class="profile">
 : if $info.avatar {
-<a href="/about"> <img alt="avatar" height="80" src="<: $info.avatar :>" /></a>
+<a href="<: $prefix :>about"> <img alt="avatar" height="80" src="<: $info.avatar :>" /></a>
 : }
 <ul>
 <li><a href="mailto:<: $info.email :>"><: $info.email :></a></li>
 <li><: $info.location :></li>
 <li><: $info.career :></li>
 : if $info.public_key {
-<li><a href="<: $info.public_key :>">public key</a></li>
+<li><a href="<: $prefix :><: $info.public_key :>">public key</a></li>
 : }
 </ul>
 </div>
@@ -30,11 +30,11 @@
 <ul>
 : for $years.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
     <li>
-    <span class="toggle-expand year_<: $year :>">+</span> <a href="/date/<: $year :>"><: $year :>(<: size($years[$year]) :>)</a>
+    <span class="toggle-expand year_<: $year :>">+</span> <a href="<: $prefix :>date/<: $year :>"><: $year :>(<: size($years[$year]) :>)</a>
         <ul class="hidden">
 : for $years[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
 : for $years[$year][$month] -> $id {
-                <li><a href="/entry/<: $id :>"><: $map[$id].summary  || '' :></a></li>
+                <li><a href="<: $prefix :>entry/<: $id :>"><: $map[$id].summary  || '' :></a></li>
 : }
 : }
         </ul>
@@ -49,9 +49,9 @@
 <ul>
 : for $tags.keys().sort() -> $tag {
 : if $tag ~~ $entry_types {
-    <li><a href="/tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a></li>
+    <li><a href="<: $prefix :>tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a></li>
 : } else {
-    <li><a href="/tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a></li>
+    <li><a href="<: $prefix :>tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a></li>
 : } }
 </ul>
 </div>

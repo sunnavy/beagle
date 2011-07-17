@@ -5,7 +5,7 @@
 : if $entry.id != 'new' {
 <div class="admin-links">
 : if $entry.type != 'info' {
-<a href="/entry/<: $entry.id :>"><: _('view') :></a>
+<a href="<: $prefix :>entry/<: $entry.id :>"><: _('view') :></a>
 <div class="delete">
 <form class="delete" method="post" action="/admin/entry/<: $entry.id :>/delete" >
 <a href="" class="delete"><: _('delete') :></a>
@@ -33,13 +33,13 @@
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
-<a class="image" href="/static/<: split_id($entry.id) :>/<: $name :>">
-<img title="<:$name:>" src="/static/<: split_id($entry.id) :>/<: $name :>" />
+<a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
+<img title="<:$name:>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" />
 </a>
 
 : }
 : else {
-<a href="/static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
 : }
 <input title="check to delete" type="checkbox" value="<: $name :>" name="delete-attachments" />
 

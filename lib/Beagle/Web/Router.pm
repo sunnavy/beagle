@@ -67,6 +67,7 @@ if ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
             {
                 code => sub {
                     change_handle( name => $n );
+                    redirect('/');
                 },
             }
         );
@@ -79,6 +80,7 @@ if ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
 else {
     $bh = Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
     $name = $bh->name;
+    $bh{$name} = $bh;
 }
 
 use Text::Xslate;
@@ -197,7 +199,6 @@ sub change_handle {
     $Beagle::Util::ROOT = $all->{$n}{local};
     $bh                 = $bh{$n};
     $name               = $n;
-    redirect '/';
 }
 
 get '/' => sub {
@@ -593,6 +594,11 @@ sub add_attachments {
 
 sub current_handle { $bh }
 
+my $prefix = '/';
+sub set_prefix {
+    $prefix = shift;
+}
+
 sub default_options {
     return (
         $bh->list,
@@ -602,6 +608,7 @@ sub default_options {
         years         => Beagle::Web->years($bh),
         tags          => Beagle::Web->tags($bh),
         entry_types   => entry_types(),
+        prefix        => $prefix,
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( roots => $all ),

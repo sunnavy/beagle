@@ -1,27 +1,27 @@
 <html>
 <head>
 <title><: $info.title :><: $title ? ( ': ' ~ $title ) : '' :></title>
-<link href="<: $info.avatar || '/favicon.ico' :>" rel="apple-touch-icon" />
-<link href="<: $info.avatar || '/favicon.ico' :>" rel="icon" />
+<link href="<: $prefix :><: $info.avatar || 'favicon.ico' :>" rel="apple-touch-icon" />
+<link href="<: $prefix :><: $info.avatar || 'favicon.ico' :>" rel="icon" />
 
-<link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="/feed" />
-<link rel="stylesheet" type="text/css" href="/system/css/beagle<: $info.style && $info.style != 'default' ? ('_' ~ $info.style) : '' :>.css" />
+<link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="<: $prefix :>feed" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/beagle<: $info.style && $info.style != 'default' ? ('_' ~ $info.style) : '' :>.css" />
 
-<script type="text/javascript" src="/system/js/prettify.js"></script>
-<link rel="stylesheet" type="text/css" href="/system/css/prettify.css" />
+<script type="text/javascript" src="<: $prefix :>system/js/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/prettify.css" />
 
-<script type="text/javascript" src="/system/js/jquery.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/jquery.js"></script>
 
-<script type="text/javascript" src="/system/js/beagle.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/beagle.js"></script>
 
 : if $enabled_admin {
-<script type="text/javascript" src="/system/js/jquery.form.js"></script>
-<link rel="stylesheet" type="text/css" href="/system/css/markitup_set.css" />
-<link rel="stylesheet" type="text/css" href="/system/css/markitup_skin.css" />
-<script type="text/javascript" src="/system/js/jquery.markitup.js"></script>
-<script type="text/javascript" src="/system/js/jquery.markitup.set.js"></script>
-<link rel="stylesheet" type="text/css" href="/system/css/beagle-admin.css" />
-<script type="text/javascript" src="/system/js/beagle-admin.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_set.css" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_skin.css" />
+<script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.set.js"></script>
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/beagle-admin.css" />
+<script type="text/javascript" src="<: $prefix :>system/js/beagle-admin.js"></script>
 : }
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -49,9 +49,9 @@ beagleInit( { admin: 1 } );
 <div class="nav-roots">
 : for $roots.keys().sort() -> $x {
 : if $x == $name {
-  <a class="current" href="/<: $x :>"><: $x :></a>
+  <a class="current" href="<: $prefix :>/<: $x :>"><: $x :></a>
 : } else {
-  <a href="/<: $x :>"><: $x :></a>
+  <a href="<: $prefix :><: $x :>"><: $x :></a>
 : }
 : }
 </div>
@@ -59,11 +59,11 @@ beagleInit( { admin: 1 } );
 
 : if $enabled_admin {
 <div class="admin-links">
-  <a href="/admin/info"><: _('info') :></a>
-  <a href="/admin/entries"><: _('all entries') :></a>
+  <a href="<: $prefix :>admin/info"><: _('info') :></a>
+  <a href="<: $prefix :>/admin/entries"><: _('all entries') :></a>
 : for $entry_types.sort() -> $x {
 : next if $x == 'comment';
-  <a href="/admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $x ) :></a>
+  <a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $x ) :></a>
 : }
 </div>
 : }

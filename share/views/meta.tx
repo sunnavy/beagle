@@ -11,9 +11,9 @@
   </div>
 
   <div class="tags" title="tags">
-    <a href="/tag/<: $entry.type :>"><: _($entry.type) :></a>
+    <a href="<: $prefix :>tag/<: $entry.type :>"><: _($entry.type) :></a>
 : for $entry.tags -> $tag {
-    <a href="/tag/<: $tag :>"><: $tag :></a>
+    <a href="<: $prefix :>tag/<: $tag :>"><: $tag :></a>
 : }
   </div>
 
@@ -37,7 +37,7 @@
 : my $update = $entry.update;
 : if $update {
 <div class="warnings">
-This article is obsolete, please see the new version <a href="/entry/<: $update :>">here</a>
+This article is obsolete, please see the new version <a href="<: $prefix :>entry/<: $update :>">here</a>
 </div>
 : }
 

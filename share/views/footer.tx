@@ -7,7 +7,7 @@
 <span class="number"><: $total_size :></span>
 </div>
 : for $info.sites -> $site {
-<a href="/<: $site.name :>"><: $site.name :></a>
+<a href="<: $prefix :><: $site.name :>"><: $site.name :></a>
 &nbsp;
 : }
 <div class="updated">

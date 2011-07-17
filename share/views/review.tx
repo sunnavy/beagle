@@ -11,9 +11,9 @@
 : }
 
 : if $entry.cover {
-    <img title="<: $entry.title :>" src="/static/<: split_id($entry.id) :>/<: $entry.cover :>" />
+    <img title="<: $entry.title :>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $entry.cover :>" />
 : } else {
-    <img title="<: $entry.title :>" src="/static/cover.jpg" />
+    <img title="<: $entry.title :>" src="<: $prefix :>static/cover.jpg" />
 : }
 
 : if $entry.link {
@@ -32,10 +32,10 @@
 <div class="attachments">
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 : if $entry.cover != $name && match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
-<a class="image" href="/static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="/static/<: $entry.id :>/<: $name :>" /></a>
+<a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="<: $prefix :>static/<: $entry.id :>/<: $name :>" /></a>
 : }
 : else {
-<a href="/static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
 : }
 
 : }

@@ -9,22 +9,22 @@
 : if length($entry.path) > 24 {
     title="<: $entry.path :>" 
 : }
-    href="/admin/entry/<: $entry.id :>"><: substr($entry.path,24) :></a>
+    href="<: $prefix :>admin/entry/<: $entry.id :>"><: substr($entry.path,24) :></a>
 </div>
 <div class="summary">
     <a
 : if length($entry.summary) > 20 {
     title="<: $entry.summary :>" 
 : }
-    href="/admin/entry/<: $entry.id :>"><: substr($entry.summary,20) :></a>
+    href="<: $prefix :>admin/entry/<: $entry.id :>"><: substr($entry.summary,20) :></a>
 </div>
 
 <div class="view">
-    <a href="/entry/<: $entry.id :>">view</a>
+    <a href="<: $prefix :>entry/<: $entry.id :>">view</a>
 </div>
 
 <div class="edit">
-    <a href="/admin/entry/<: $entry.id :>">edit</a>
+    <a href="<: $prefix :>admin/entry/<: $entry.id :>">edit</a>
 </div>
 
 <div class="delete">

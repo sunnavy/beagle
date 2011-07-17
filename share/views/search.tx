@@ -12,7 +12,7 @@
 <ul>
 : for $results -> $entry {
 <li>
-    <a href="/entry/<: $entry.id :>"><: $entry.summary :></a>
+    <a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a>
 </li>
 : }
 </ul>
