@@ -26,6 +26,7 @@ _1st_arguments=(
 "ls:list/search entries"
 "mark:manage entry marks"
 "mv:move entries to another beagle"
+"publish: generate static files"
 "relation:show beagle names of entries"
 "rename:rename a beagle"
 "review:create a review"

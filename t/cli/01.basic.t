@@ -46,6 +46,7 @@ Available commands:
         ls: list/search entries
       mark: manage entry marks
         mv: move entries to another beagle
+   publish: generate static files
   relation: show beagle names of entries
     rename: rename a beagle
     review: create a review
@@ -76,7 +77,7 @@ is( last_script_stdout(), $actual_help_output, 'commands output' );
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
   alias article att cache cast cat cmds commands comment comments config create
-  follow fsck git help info init log look ls mark mv relation rename review
+  follow fsck git help info init log look ls mark mv publish relation rename review
   rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 

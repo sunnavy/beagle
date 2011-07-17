@@ -13,7 +13,7 @@ run_ok( $beagle_cmd, [ 'info', ], "info", );
 like( last_script_stdout(), qr/id: \w{32}/, 'info output' );
 like(
     last_script_stdout(),
-    qr!avatar: /system/images/beagle.png!,
+    qr!avatar: system/images/beagle\.png!,
     'default avatar'
 );
 
