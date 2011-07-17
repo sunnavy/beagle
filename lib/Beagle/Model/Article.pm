@@ -11,10 +11,7 @@ has 'title' => (
 
 override 'serialize_meta' => sub {
     my $self = shift;
-    my $str  = '';
-    $str .= $self->_serialize_meta( $_ ) for qw/title/;
-    $str .= super;
-
+    my $str = $self->_serialize_meta( 'title' ) . super;
     return $str;
 };
 
