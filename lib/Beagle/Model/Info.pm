@@ -100,7 +100,7 @@ has 'avatar' => (
     trigger => sub {
         my $self = shift;
         my $value = shift;
-        return if $value;
+        return unless $value && $value !~ m{/};
         $value = join '/', 'static', split_id($self->id), $value;
         $self->{avatar} = $value;
     },
@@ -113,7 +113,7 @@ has 'public_key' => (
     trigger => sub {
         my $self = shift;
         my $value = shift;
-        return unless $value && $value =~ m{^[^/]};
+        return unless $value && $value !~ m{/};
         $value = join '/', 'static', split_id($self->id), $value;
         $self->{public_key} = $value;
     },
