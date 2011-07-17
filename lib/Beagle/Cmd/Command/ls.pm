@@ -125,11 +125,29 @@ sub filter {
 
     if (@$args) {
         my @results;
+        my @regex;
+        for my $arg (@$args) {
+            my ( $value, $modifier ) = $arg =~ m{^(?:qr|m)?/(.+)/(.*)};
+            my $regex;
+            if ($value) {
+                if ($modifier) {
+                    $regex = qr/(?$modifier)$value/;
+                }
+                else {
+                    $regex = qr/$value/;
+                }
+            }
+            else {
+                  $regex = qr/$arg/mi;
+            }
+            push @regex, $regex;
+        }
+
         for my $entry (@found) {
             my $pass = 1;
             my $content = $entry->serialize( id => 1 );
-            for my $regex (@$args) {
-                undef $pass unless $content =~ qr/$regex/mi;
+            for my $regex (@regex) {
+                undef $pass unless $content =~ $regex;
             }
             push @results, $entry if $pass;
         }
@@ -301,7 +319,8 @@ Beagle::Cmd::Command::ls - list/search entries
 
     $ beagle ls                             # all the entries
     $ beagle ls homer                       # entries that match qr/homer/mi
-    $ beagle ls homer.*bart                 # entries that match qr/homer.*bart/mi
+    $ beagle ls 'homer.*bart'               # entries that match qr/homer.*bart/mi
+    $ beagle ls '/homer.*bart/im'           # ditto
     $ beagle ls --order created --limit 10  # only show the first 10 entries
 
     $ beagle ls --type article homer    # articles that match "homer"
