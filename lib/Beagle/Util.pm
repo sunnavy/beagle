@@ -47,7 +47,6 @@ BEGIN {
 #       goto &warn unless (caller())[0] =~ /^Beagle::/;
         return warn @_ unless ( caller() )[0] =~ /^Beagle::/;
 
-        goto &cluck if enabled_devel();
         @_ = grep { defined } @_;
 
         # we want to show user the line info if there is nothing to print
