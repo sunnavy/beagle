@@ -9,7 +9,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'to' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => 'directory to publish to',
+    documentation => 'parent directory to publish',
     traits        => ['Getopt'],
 );
 
@@ -25,6 +25,13 @@ has 'drafts' => (
     isa           => 'Bool',
     is            => 'rw',
     documentation => 'including drafts too',
+    traits        => ['Getopt'],
+);
+
+has 'lang' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'preferred language',
     traits        => ['Getopt'],
 );
 
@@ -83,27 +90,27 @@ sub execute {
         Beagle::Web::Router::set_static(1);
         Beagle::Web::Router::set_prefix('');
 
-        save_link( '/', 'index.html' );
-        save_link( '/about', );
-        save_link( '/feed' );
+        $self->save_link( '/', 'index.html' );
+        $self->save_link( '/about', );
+        $self->save_link('/feed');
 
         my $entries = $bh->entries;
-        for my $entry ( @$entries ) {
-            save_link( '/entry/' . $entry->id );
+        for my $entry (@$entries) {
+            $self->save_link( '/entry/' . $entry->id );
         }
 
-        for my $tag ( keys %{Beagle::Web::tags($bh)} ) {
-            save_link("/tag/$tag");
+        for my $tag ( keys %{ Beagle::Web::tags($bh) } ) {
+            $self->save_link("/tag/$tag");
         }
 
-        for my $year ( keys %{Beagle::Web::years($bh)} ) {
-            save_link("/date/$year");
+        for my $year ( keys %{ Beagle::Web::years($bh) } ) {
+            $self->save_link("/date/$year");
         }
     }
 }
 
-
 sub save_link {
+    my $self = shift;
     my $link = shift or die 'need a link';
     my $file = shift;
     $file = $link unless defined $file;
@@ -112,9 +119,10 @@ sub save_link {
 
     my $res = $app->(
         {
-            'PATH_INFO'      => $link,
-            'REQUEST_METHOD' => 'GET',
-            'BEAGLE_NAME'    => $handle->name,
+            'PATH_INFO'            => $link,
+            'REQUEST_METHOD'       => 'GET',
+            'BEAGLE_NAME'          => $handle->name,
+            'HTTP_ACCEPT_LANGUAGE' => $self->lang,
         }
     );
     die "failed to get $link: " if $res->[0] != 200;
@@ -122,7 +130,6 @@ sub save_link {
     make_path($parent) unless -e $parent;
     write_file( $file, $res->[2] );
 }
-
 
 1;
 
@@ -139,7 +146,7 @@ Beagle::Cmd::Command::publish - publish beagles
 =head1 DESCRIPTION
 
 C<publish> is used to generate static html files so you can serve them
-statically.
+as static files.
 
 =head1 AUTHOR
 
