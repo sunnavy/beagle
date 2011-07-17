@@ -7,7 +7,7 @@ has 'update' => (
     isa           => 'Bool',
     is            => 'rw',
     documentation => 'update',
-    cmd_aliases   => "u",
+    cmd_aliases   => 'u',
     traits        => ['Getopt'],
 );
 

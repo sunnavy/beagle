@@ -5,31 +5,31 @@ use Encode;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
 has force => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "force",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'force',
     cmd_aliases   => 'f',
     traits        => ['Getopt'],
 );
 
 has init => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "initialize config items",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'initialize config items',
     traits        => ['Getopt'],
 );
 
 has set => (
-    isa           => "ArrayRef[Str]",
-    is            => "rw",
-    documentation => "set config items",
+    isa           => 'ArrayRef[Str]',
+    is            => 'rw',
+    documentation => 'set config items',
     traits        => ['Getopt'],
 );
 
 has unset => (
-    isa           => "ArrayRef[Str]",
-    is            => "rw",
-    documentation => "delete config items",
+    isa           => 'ArrayRef[Str]',
+    is            => 'rw',
+    documentation => 'delete config items',
     traits        => ['Getopt'],
 );
 

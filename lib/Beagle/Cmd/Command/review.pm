@@ -9,58 +9,58 @@ has 'type' => (
 );
 
 has isbn => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "isbn",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'isbn',
     traits        => ['Getopt'],
 );
 
 has 'location' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "location",
+    documentation => 'location',
     traits        => ['Getopt'],
 );
 
 has 'published' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "published date",
+    documentation => 'published date',
     traits        => ['Getopt'],
 );
 
 has 'link' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "remote url for the work being reviewed",
+    documentation => 'remote url for the work being reviewed',
     traits        => ['Getopt'],
 );
 
 has 'price' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "price",
+    documentation => 'price',
     traits        => ['Getopt'],
 );
 
 has 'publisher' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "publisher",
+    documentation => 'publisher',
     traits        => ['Getopt'],
 );
 
 has 'author' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "author",
+    documentation => 'author',
     traits        => ['Getopt'],
 );
 
 has 'translator' => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => "translator",
+    documentation => 'translator',
     traits        => ['Getopt'],
 );
 

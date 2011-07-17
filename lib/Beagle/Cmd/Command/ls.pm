@@ -6,49 +6,49 @@ use Any::Moose;
 extends qw/Beagle::Cmd::Command/;
 
 has type => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "type",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'type',
     cmd_aliases   => 't',
     traits        => ['Getopt'],
 );
 
 has 'created-before' => (
-    isa           => "Str",
-    is            => "rw",
+    isa           => 'Str',
+    is            => 'rw',
     accessor      => 'created_before',
-    documentation => "show entries created before the time",
+    documentation => 'show entries created before the time',
     traits        => ['Getopt'],
 );
 
 has 'created-after' => (
-    isa           => "Str",
-    is            => "rw",
+    isa           => 'Str',
+    is            => 'rw',
     accessor      => 'created_after',
-    documentation => "show entries created after the time",
+    documentation => 'show entries created after the time',
     traits        => ['Getopt'],
 );
 
 has 'updated-before' => (
-    isa           => "Str",
-    is            => "rw",
+    isa           => 'Str',
+    is            => 'rw',
     accessor      => 'updated_before',
-    documentation => "show entries updated before the time",
+    documentation => 'show entries updated before the time',
     traits        => ['Getopt'],
 );
 
 has 'updated-after' => (
-    isa           => "Str",
-    is            => "rw",
+    isa           => 'Str',
+    is            => 'rw',
     accessor      => 'updated_after',
-    documentation => "show entries updated after the time",
+    documentation => 'show entries updated after the time',
     traits        => ['Getopt'],
 );
 
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the beagles",
+    documentation => 'all the beagles',
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
@@ -56,7 +56,7 @@ has 'all' => (
 has 'limit' => (
     isa           => 'Num',
     is            => 'rw',
-    documentation => "limit number of entries",
+    documentation => 'limit number of entries',
     cmd_aliases   => 'l',
     traits        => ['Getopt'],
 );
@@ -64,14 +64,14 @@ has 'limit' => (
 has 'draft' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "only show draft entries",
+    documentation => 'only show draft entries',
     traits        => ['Getopt'],
 );
 
 has 'final' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "only show not-draft entries",
+    documentation => 'only show not-draft entries',
     traits        => ['Getopt'],
 );
 
@@ -88,7 +88,7 @@ has 'marks' => (
     is            => 'rw',
     accessor      => '_marks',
     cmd_aliases   => 'm',
-    documentation => "show entries that have these marks",
+    documentation => 'show entries that have these marks',
     traits        => ['Getopt'],
 );
 

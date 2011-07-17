@@ -6,25 +6,25 @@ use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
 has bare => (
-    isa           => "Bool",
-    is            => "rw",
-    cmd_aliases   => "b",
-    documentation => "bare git repo",
+    isa           => 'Bool',
+    is            => 'rw',
+    cmd_aliases   => 'b',
+    documentation => 'bare git repo',
     traits        => ['Getopt'],
 );
 
 has force => (
-    isa           => "Bool",
-    is            => "rw",
-    cmd_aliases   => "f",
+    isa           => 'Bool',
+    is            => 'rw',
+    cmd_aliases   => 'f',
     documentation => 'remove the path if it exists already',
     traits        => ['Getopt'],
 );
 
 has type => (
-    isa           => "BeagleBackendType",
-    is            => "rw",
-    documentation => "type of the backend",
+    isa           => 'BeagleBackendType',
+    is            => 'rw',
+    documentation => 'type of the backend',
     traits        => ['Getopt'],
     default       => 'git',
 );
@@ -40,7 +40,7 @@ has name => (
 has 'edit' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "use editor",
+    documentation => 'use editor',
     traits        => ['Getopt'],
 );
 

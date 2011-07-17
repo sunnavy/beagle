@@ -7,7 +7,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the beagles",
+    documentation => 'all the beagles',
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );

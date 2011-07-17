@@ -7,9 +7,9 @@ use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
 has rescue => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "rescue",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'rescue',
     traits        => ['Getopt'],
 );
 

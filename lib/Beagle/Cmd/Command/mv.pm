@@ -7,7 +7,7 @@ has 'message' => (
     isa           => 'Str',
     is            => 'rw',
     documentation => 'message to commit',
-    cmd_aliases   => "m",
+    cmd_aliases   => 'm',
     traits        => ['Getopt'],
 );
 

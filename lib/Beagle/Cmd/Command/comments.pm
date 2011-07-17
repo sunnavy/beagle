@@ -5,9 +5,9 @@ use Beagle::Util;
 extends qw/Beagle::Cmd::Command::ls/;
 
 has 'parent' => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "parent id",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'parent id',
     cmd_aliases   => 'p',
     traits        => ['Getopt'],
 );

@@ -13,8 +13,8 @@ has set => (
 
 has unset => (
     isa           => 'ArrayRef[Str]',
-    is            => "rw",
-    documentation => "unset",
+    is            => 'rw',
+    documentation => 'unset',
     traits        => ['Getopt'],
 );
 

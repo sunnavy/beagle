@@ -6,17 +6,17 @@ use Any::Moose;
 extends qw/Beagle::Cmd::Command/;
 
 has all => (
-    isa           => "Bool",
-    is            => "rw",
+    isa           => 'Bool',
+    is            => 'rw',
     cmd_aliases   => 'a',
-    documentation => "all",
+    documentation => 'all',
     traits        => ['Getopt'],
 );
 
 has 'names' => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "show all names seperated by newlines",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'show all names seperated by newlines',
     traits        => ['Getopt'],
 );
 

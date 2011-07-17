@@ -6,7 +6,7 @@ extends qw/Beagle::Cmd::Command/;
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the beagles",
+    documentation => 'all the beagles',
     cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
@@ -14,7 +14,7 @@ has 'all' => (
 has 'update' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "update",
+    documentation => 'update',
     cmd_aliases   => 'u',
     traits        => ['Getopt'],
 );
@@ -22,7 +22,7 @@ has 'update' => (
 has 'force' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "force update",
+    documentation => 'force update',
     cmd_aliases   => 'f',
     traits        => ['Getopt'],
 );

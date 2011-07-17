@@ -12,9 +12,9 @@ has 'type' => (
 );
 
 has title => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "title",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'title',
     traits        => ['Getopt'],
 );
 

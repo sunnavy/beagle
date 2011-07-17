@@ -5,18 +5,18 @@ use Any::Moose;
 extends qw/Beagle::Cmd::Command/;
 
 has admin => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "enable admin",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'enable admin',
     traits        => ['Getopt'],
     default       => 0,
     lazy          => 1,
 );
 
 has all => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "enable all beagles",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'enable all beagles',
     traits        => ['Getopt'],
     default       => 0,
     cmd_aliases   => 'a',

@@ -16,7 +16,7 @@ has 'to' => (
 has 'force' => (
     isa           => 'Bool',
     is            => 'rw',
-    cmd_aliases   => "f",
+    cmd_aliases   => 'f',
     documentation => 'remove the path if it exists already',
     traits        => ['Getopt'],
 );

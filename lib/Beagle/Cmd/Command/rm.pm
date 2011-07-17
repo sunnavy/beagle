@@ -7,14 +7,14 @@ has 'message' => (
     isa           => 'Str',
     is            => 'rw',
     documentation => 'message to commit',
-    cmd_aliases   => "m",
+    cmd_aliases   => 'm',
     traits        => ['Getopt'],
 );
 
 has 'force' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "delete even it's ambiguous",
+    documentation => 'delete even the id is ambiguous',
     cmd_aliases   => 'f',
     traits        => ['Getopt'],
 );

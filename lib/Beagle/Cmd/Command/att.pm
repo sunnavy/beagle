@@ -7,9 +7,9 @@ use File::Basename;
 extends qw/Beagle::Cmd::Command/;
 
 has 'parent' => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "parent id",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'parent id',
     cmd_aliases   => 'p',
     traits        => ['Getopt'],
 );
@@ -17,7 +17,7 @@ has 'parent' => (
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => "all the beagles",
+    documentation => 'all the beagles',
     traits        => ['Getopt'],
 );
 
@@ -25,7 +25,7 @@ has 'message' => (
     isa           => 'Str',
     is            => 'rw',
     documentation => 'message to commit',
-    cmd_aliases   => "m",
+    cmd_aliases   => 'm',
     traits        => ['Getopt'],
 );
 

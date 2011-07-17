@@ -6,32 +6,32 @@ use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
 has name => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "name of following",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'name of following',
     traits        => ['Getopt'],
 );
 
 has depth => (
-    isa           => "Num",
-    is            => "rw",
-    documentation => "depth of repo to be named",
+    isa           => 'Num',
+    is            => 'rw',
+    documentation => 'depth of repo to be named',
     traits        => ['Getopt'],
     default       => 0,
 );
 
 has force => (
-    isa           => "Bool",
-    is            => "rw",
-    cmd_aliases   => "f",
-    documentation => "force to follow",
+    isa           => 'Bool',
+    is            => 'rw',
+    cmd_aliases   => 'f',
+    documentation => 'force to follow',
     traits        => ['Getopt'],
 );
 
 has type => (
-    isa           => "BeagleBackendType",
-    is            => "rw",
-    documentation => "type of the backend",
+    isa           => 'BeagleBackendType',
+    is            => 'rw',
+    documentation => 'type of the backend',
     traits        => ['Getopt'],
     default       => 'git',
 );

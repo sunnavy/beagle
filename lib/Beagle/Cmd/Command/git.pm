@@ -5,9 +5,9 @@ extends qw/Beagle::Cmd::Command/;
 
 has all => (
     isa           => 'Bool',
-    is            => "rw",
+    is            => 'rw',
     cmd_aliases   => 'a',
-    documentation => "all",
+    documentation => 'all',
     traits        => ['Getopt'],
 );
 

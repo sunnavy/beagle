@@ -6,17 +6,17 @@ use Any::Moose;
 extends qw/Beagle::Cmd::Command/;
 
 has 'parent' => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "parent id",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'parent id',
     cmd_aliases   => 'p',
     traits        => ['Getopt'],
 );
 
 has author => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "author",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'author',
     traits        => ['Getopt'],
 );
 
@@ -32,14 +32,14 @@ has 'message' => (
     isa           => 'Str',
     is            => 'rw',
     documentation => 'message to commit',
-    cmd_aliases   => "m",
+    cmd_aliases   => 'm',
     traits        => ['Getopt'],
 );
 
 has 'edit' => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "use editor",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'use editor',
     traits        => ['Getopt'],
 );
 

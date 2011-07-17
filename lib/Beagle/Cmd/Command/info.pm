@@ -20,9 +20,9 @@ has 'unset' => (
 );
 
 has 'edit' => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "use editor",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'use editor',
     traits        => ['Getopt'],
 );
 
@@ -38,7 +38,7 @@ has 'message' => (
     isa           => 'Str',
     is            => 'rw',
     documentation => 'message to commit',
-    cmd_aliases   => "m",
+    cmd_aliases   => 'm',
     traits        => ['Getopt'],
 );
 

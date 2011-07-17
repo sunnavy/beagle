@@ -31,46 +31,46 @@ has 'type' => (
 );
 
 has author => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "author",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'author',
     traits        => ['Getopt'],
 );
 
 has tags => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "tags",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'tags',
     traits        => ['Getopt'],
 );
 
 has body => (
-    isa           => "Str",
-    is            => "rw",
-    documentation => "body",
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'body',
     traits        => ['Getopt'],
 );
 
 has 'body-file' => (
-    isa           => "Str",
-    is            => "rw",
+    isa           => 'Str',
+    is            => 'rw',
     accessor      => 'body_file',
-    documentation => "body file path",
+    documentation => 'body file path',
     traits        => ['Getopt'],
 );
 
 has 'body-file-encoding' => (
-    isa           => "Str",
-    is            => "rw",
+    isa           => 'Str',
+    is            => 'rw',
     accessor      => 'body_file_encoding',
-    documentation => "body file encoding",
+    documentation => 'body file encoding',
     traits        => ['Getopt'],
 );
 
 has 'edit' => (
-    isa           => "Bool",
-    is            => "rw",
-    documentation => "use editor",
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'use editor',
     traits        => ['Getopt'],
 );
 
@@ -78,15 +78,15 @@ has 'message' => (
     isa           => 'Str',
     is            => 'rw',
     documentation => 'message to commit',
-    cmd_aliases   => "m",
+    cmd_aliases   => 'm',
     traits        => ['Getopt'],
 );
 
 has attachments => (
-    isa           => "ArrayRef[Str]",
-    is            => "rw",
-    cmd_aliases   => "a",
-    documentation => "attachments",
+    isa           => 'ArrayRef[Str]',
+    is            => 'rw',
+    cmd_aliases   => 'a',
+    documentation => 'attachments',
     traits        => ['Getopt'],
 );
 

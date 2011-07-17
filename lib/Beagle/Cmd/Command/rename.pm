@@ -6,10 +6,10 @@ use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
 has force => (
-    isa           => "Bool",
-    is            => "rw",
-    cmd_aliases   => "f",
-    documentation => "force to rename",
+    isa           => 'Bool',
+    is            => 'rw',
+    cmd_aliases   => 'f',
+    documentation => 'force to rename',
     traits        => ['Getopt'],
 );
 
