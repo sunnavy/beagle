@@ -141,7 +141,8 @@ Beagle::Cmd::Command::publish - generate static files
 
 =head1 SYNOPSIS
 
-    $ beagle publish --to /path/to/dir name1 name2
+    $ beagle publish --to /path/to/dir  # publish current beagle
+    $ beagle publish --lang zh-cn --to /path/to/dir name1 name2
 
 =head1 DESCRIPTION
 
