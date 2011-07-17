@@ -26,7 +26,6 @@ Available commands:
       help: show beagle help
 
      alias: manage aliases
-   article: create an article
        att: manage attachments
      cache: manage cache
       cast: cast entries to another type
@@ -49,7 +48,6 @@ Available commands:
    publish: generate static files
   relation: show beagle names of entries
     rename: rename a beagle
-    review: create a review
         rm: delete entries
       root: show root
      shell: interactive shell
@@ -76,8 +74,8 @@ is( last_script_stdout(), $actual_help_output, 'commands output' );
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
-  alias article att cache cast cat cmds commands comment comments config create
-  follow fsck git help info init log look ls mark mv publish relation rename review
+  alias att cache cast cat cmds commands comment comments config create
+  follow fsck git help info init log look ls mark mv publish relation rename 
   rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
