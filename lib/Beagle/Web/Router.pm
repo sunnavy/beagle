@@ -512,7 +512,7 @@ get '/static/*' => sub {
     my %vars = @_;
     my @parts = split '/', decode_utf8 $vars{splat}[0];
     my $file =
-      encode( 'locale_fs', catfile( current_static_root($bh), @parts ) );
+      encode( 'locale_fs', catfile( static_root($bh), @parts ) );
     return unless -e $file && -r $file;
 
     my $res = $req->new_response('200');

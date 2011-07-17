@@ -60,7 +60,7 @@ our @EXPORT = (
     @Beagle::Helper::EXPORT, qw/
       enabled_devel enable_devel disable_devel enabled_cache enable_cache disable_cache
       set_current_root current_root root_name set_current_root_by_name check_root
-      current_static_root kennel user_alias roots set_roots
+      static_root kennel user_alias roots set_roots
       core_config set_core_config set_user_alias relation set_relation
       default_format split_id root_name name_root root_type
       system_alias create_backend alias aliases resolve_id die_entry_not_found
@@ -218,7 +218,7 @@ sub check_root {
     return;
 }
 
-sub current_static_root {
+sub static_root {
     my $handle = shift;
     return catdir( ( $handle ? $handle->root : current_root() ),
         'attachments' );
