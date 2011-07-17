@@ -34,13 +34,6 @@ sub execute {
 
         my @set;
         my @unset;
-        if ( $self->set ) {
-            for my $item ( @{ $self->set } ) {
-                my ( $name, $value ) = split /=/, $item, 2;
-                $user_alias->{$name} = $value;
-                push @set, $name;
-            }
-        }
 
         if ( $self->unset ) {
             for my $name ( @{ $self->unset } ) {
@@ -49,13 +42,21 @@ sub execute {
             }
         }
 
+        if ( $self->set ) {
+            for my $item ( @{ $self->set } ) {
+                my ( $name, $value ) = split /=/, $item, 2;
+                $user_alias->{$name} = $value;
+                push @set, $name;
+            }
+        }
+
         set_user_alias($user_alias) if @set || @unset;
 
-        if (@set) {
-            puts 'set ', join( ', ', @set ) . '.';
-        }
         if (@unset) {
             puts 'unset ', join( ', ', @unset ) . '.';
+        }
+        if (@set) {
+            puts 'set ', join( ', ', @set ) . '.';
         }
 
         return;

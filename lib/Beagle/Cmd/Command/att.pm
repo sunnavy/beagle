@@ -57,9 +57,17 @@ sub command_names { qw/att attachment attachments/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
+
+    my $sub = 0;
+    $sub++ if $self->add;
+    $sub++ if $self->delete;
+    $sub++ if $self->prune;
+
+    die 'you can only specify one of --add, --delete and --prune' if $sub > 1;
+
     die "beagle att --add --parent foo /path/to/a.txt [...]"
       if $self->add && !$self->parent;
-    die "beagle att --delete  3 [...]" if $self->delete && !@$args;
+    die "beagle att --delete 3 [...]" if $self->delete && !@$args;
 
     if ( $self->prune ) {
         my @bh = $self->all ? handles() : ( handle || handles );

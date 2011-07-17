@@ -65,6 +65,18 @@ sub execute {
 
     my $marks = marks;
 
+    my $sub = 0;
+    $sub++ if $self->_import;
+    $sub++ if $self->export;
+    $sub++ if $self->prune;
+
+    die '--import, --export and --prune can not coexist with each other'
+      if $sub > 1;
+
+    die
+'--import, --export or --prune can not coexist with --add, --delete, --set or --unset'
+      if $sub && ( $self->add || $self->delete || $self->set || $self->unset );
+
     if ( $self->_import || $self->export ) {
         require JSON;
         my $path;
@@ -158,6 +170,17 @@ sub execute {
         if ( $self->add || $self->delete || $self->set || $self->unset ) {
 
             for my $id (@ids) {
+
+                if ( $self->delete ) {
+                    for my $mark ( @{ $self->delete } ) {
+                        last unless $marks->{$id};
+                        if ( exists $marks->{$id}{$mark} ) {
+                            delete $marks->{$id}{$mark};
+                        }
+                        delete $marks->{$id} unless %{ $marks->{$id} };
+                    }
+                }
+
                 if ( $self->unset ) {
                     if ( $marks->{$id} ) {
                         delete $marks->{$id};
@@ -176,16 +199,6 @@ sub execute {
                         if ( !$marks->{$id}{$mark} ) {
                             $marks->{$id}{$mark} = 1;
                         }
-                    }
-                }
-
-                if ( $self->delete ) {
-                    for my $mark ( @{ $self->delete } ) {
-                        last unless $marks->{$id};
-                        if ( exists $marks->{$id}{$mark} ) {
-                            delete $marks->{$id}{$mark};
-                        }
-                        delete $marks->{$id} unless %{ $marks->{$id} };
                     }
                 }
             }

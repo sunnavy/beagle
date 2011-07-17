@@ -74,11 +74,11 @@ sub execute {
 
     if ( $self->edit || $self->set || $self->unset ) {
 
-        if ( $self->set ) {
-            for my $item ( @{ $self->set } ) {
-                my ( $key, $value ) = split /=/, $item, 2;
+        if ( $self->unset ) {
+
+            for my $key ( @{ $self->unset } ) {
                 if ( $info->can($key) ) {
-                    $info->$key($value);
+                    $info->$key('');
                 }
                 else {
                     warn "unknown key: $key";
@@ -86,11 +86,11 @@ sub execute {
             }
         }
 
-        if ( $self->unset ) {
-
-            for my $key ( @{ $self->unset } ) {
+        if ( $self->set ) {
+            for my $item ( @{ $self->set } ) {
+                my ( $key, $value ) = split /=/, $item, 2;
                 if ( $info->can($key) ) {
-                    $info->$key('');
+                    $info->$key($value);
                 }
                 else {
                     warn "unknown key: $key";
