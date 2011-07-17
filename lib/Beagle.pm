@@ -7,7 +7,7 @@ __END__
 
 =head1 NAME
 
-Beagle - a modern way to manage/track/serve posts
+Beagle - an advanced way to manage/track/serve posts
 
 =head1 SYNOPSIS
 
