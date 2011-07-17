@@ -96,12 +96,12 @@ has 'location' => (
 has 'avatar' => (
     isa     => 'Str',
     is      => 'rw',
-    default => '/system/images/beagle.png',
+    default => 'system/images/beagle.png',
     trigger => sub {
         my $self = shift;
         my $value = shift;
-        return unless $value && $value =~ m{^[^/]};
-        $value = join '/', '/static', split_id($self->id), $value;
+        return if $value;
+        $value = join '/', 'static', split_id($self->id), $value;
         $self->{avatar} = $value;
     },
 );
