@@ -83,7 +83,7 @@ normal git repository.
 You can create other types of entry besides existing ones(
 articles/reviews/tasks/barks/comments ), and it's easy to do too.
 
-check out L<Beagle::Manual::ExtendTypes>
+check out L<Beagle::Manual::Cookbook>
 
 =back
 
@@ -91,7 +91,7 @@ C<Beagle> can be your right arm.
 
 =head1 SEE ALSO
 
-L<Beagle::Manual::Tutorial>, L<Beagle::Manual::ExtendTypes>
+L<Beagle::Manual::Tutorial>, L<Beagle::Manual::Cookbook>
 
 =head1 AUTHOR
 
