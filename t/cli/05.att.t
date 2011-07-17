@@ -28,7 +28,7 @@ my $name = ( splitpath($filename) )[2];
 
 run_ok(
     $beagle_cmd,
-    [ 'att', '-p', $pid, 'add', $filename ],
+    [ 'att', '-p', $pid, '--add', $filename ],
     "create att $name",
 );
 is( last_script_stdout(), "added $name." . newline(), 'added x.pl' );
@@ -45,7 +45,7 @@ is(
     'get att content'
 );
 
-run_ok( $beagle_cmd, [ 'att', 'rm', 1 ], "delete att 1", );
+run_ok( $beagle_cmd, [ 'att', '--delete', 1 ], "delete att 1", );
 is(
     last_script_stdout(),
     "deleted $name." . newline(),
@@ -54,6 +54,13 @@ is(
 
 run_ok( $beagle_cmd, ['att'], "list att", );
 is( last_script_stdout(), '', "$name is indeed deleted" );
+
+run_ok( $beagle_cmd, ['att', '--prune'], "prune att", );
+is(
+    last_script_stdout(),
+    'no orphans found.' . newline(),
+    "$name is indeed deleted"
+);
 
 done_testing();
 

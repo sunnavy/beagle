@@ -21,6 +21,27 @@ has 'all' => (
     traits        => ['Getopt'],
 );
 
+has 'add' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'add attachments',
+    traits        => ['Getopt'],
+);
+
+has 'delete' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'delete attachments',
+    traits        => ['Getopt'],
+);
+
+has 'prune' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'prune orphans',
+    traits        => ['Getopt'],
+);
+
 has 'message' => (
     isa           => 'Str',
     is            => 'rw',
@@ -36,18 +57,11 @@ sub command_names { qw/att attachment attachments/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    require Beagle::Handle;
-    my $pid = $self->parent;
+    die "beagle att --add --parent foo /path/to/a.txt [...]"
+      if $self->add && !$self->parent;
+    die "beagle att --delete  3 [...]" if $self->delete && !@$args;
 
-    my $subcmd;
-    if ( @$args && $args->[0] =~ /^(?:cat|show|ls|list|add|rm|delete|prune)$/ ) {
-        $subcmd = shift @$args;
-    }
-    else {
-        $subcmd = @$args ? 'cat' : 'ls';
-    }
-
-    if ( $subcmd eq 'prune' ) {
+    if ( $self->prune ) {
         my @bh = $self->all ? handles() : ( handle || handles );
         my $pruned;
         for my $bh (@bh) {
@@ -74,6 +88,7 @@ sub execute {
     require Beagle::Handle;
     my $bh;
 
+    my $pid = $self->parent;;
     if ( $pid ) {
         my @ret = resolve_entry( $pid, handle => handle() || undef );
         unless (@ret) {
@@ -84,8 +99,7 @@ sub execute {
         $bh = $ret[0]->{handle};
     }
 
-    if ( $subcmd eq 'add' ) {
-        die "beagle att add --parent foo /path/to/a.txt [...]" unless $pid;
+    if ( $self->add ) {
         my @added;
         for my $file (@$args) {
             if ( -f $file ) {
@@ -151,8 +165,7 @@ sub execute {
         }
     }
 
-    if ( $subcmd =~ /^(?:delete|rm)$/ ) {
-        die "beagle att rm 3 [...]" unless @$args;
+    if ( $self->delete ) {
         my @deleted;
 
         # before deleting anything, let's make sure no invliad index
@@ -187,9 +200,7 @@ sub execute {
         return;
     }
 
-    if ( $subcmd =~ /^(?:show|cat)$/ ) {
-        die "beagle att cat 3 [...]" unless @$args;
-
+    if ( @$args ) {
         my $first = 1;
 
         for my $i (@$args) {
@@ -207,8 +218,6 @@ sub execute {
     }
     else {
         return unless @att;
-
-        die "beagle att ls [--parent foo]" if @$args;
 
         my $name_length = max_length( map { $_->name } @att ) + 1;
         $name_length = 10 if $name_length < 10;
@@ -241,17 +250,14 @@ Beagle::Cmd::Command::att - manage attachments
 
 =head1 SYNOPSIS
 
-    $ beagle att # list all the attachments
-    $ beagle att 1 # show the first attachment in the above list
+    $ beagle att                    # list all the attachments
+    $ beagle att 1                  # show the first attachment
+    $ beagle att --parent id1       # list atttachments of entry id1
  
-    $ beagle att add --parent abcd /path/to/att1 /path/to/att2
-    $ beagle att ls --parent abcd
-    $ beagle att --parent abcd # ditto
-    $ beagle att cat --parent abcd 1 # show content of the first attachment
-    $ beagle att --parent abcd 1 # ditto
-    $ beagle att rm --parent abcd 1 # delete the first attachment
- 
-    $ beagle att prune
+    $ beagle att --add --parent abcd /path/to/att1 /path/to/att2
+    $ beagle att --parent id1 1
+    $ beagle att --delete --parent abcd 1
+    $ beagle att --prune
 
 =head1 AUTHOR
 
