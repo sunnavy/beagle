@@ -195,10 +195,21 @@ sub redirect {
 
 sub change_handle {
     my %vars = @_;
-    my $n    = $vars{name};
-    $Beagle::Util::ROOT = $all->{$n}{local};
-    $bh                 = $bh{$n};
-    $name               = $n;
+    if ( $vars{handle} ) {
+        $name = $bh->name;
+        $bh = $vars{$bh->name};
+        $bh{$name} = $bh;
+    }
+    elsif ( $vars{name} ) {
+        my $n = $vars{name};
+        $bh                 = $bh{$n};
+        $name               = $n;
+    }
+    else {
+        return;
+    }
+
+    return $Beagle::Util::ROOT = $bh->root;
 }
 
 get '/' => sub {
