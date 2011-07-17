@@ -7,7 +7,7 @@ __END__
 
 =head1 NAME
 
-Beagle - an advanced way to manage/track/serve posts
+Beagle - an advanced way to manage/track/serve entries
 
 =head1 SYNOPSIS
 
@@ -32,9 +32,60 @@ Beagle - an advanced way to manage/track/serve posts
 
 =head1 DESCRIPTION
 
-Technically, it's a thin wrapper of git(maybe more vcs in the future), which
-uses it as data source to manage/track/serve all kinds of entries( articles,
-review, etc ).
+So how do you manage your articles?  Before using C<Beagle>, I managed them
+poorly: they were plain files messily living in the hard drive.
+
+That way is not good, as I had to find the file's location before doing
+something on it, which could be depressing if I couldn't remember the location
+at all(it did happen for a few times), not to mention sharing or the version
+control stuff.
+
+L<git|http://git-scm.com/> is a great version control system. With it, you can
+version control your files and share them easily, though C<git> itself
+can't help you much of finding files' locations.
+
+Things are more bothersome if you use some markup language such as C<Wiki> or
+L<Markdown|http://daringfireball.net/projects/markdown/> in your entries.  It
+would be awesome if you can convert them to html automatically and check if
+something is wrong before publishing.
+
+C<Beagle> was born for this, and more.
+
+
+=over
+
+=item BLOG
+
+C<Beagle> includes a blog system.
+
+Check out L<http://sunnavy.net> for a quick look
+
+=item EASY TO USE
+
+C<Beagle> has a very handy CLI, and a web admin interface too.
+
+=item AGILE SEARCH
+
+C<Beagle> supports nearly full text search(not including contents of
+attachments), it's very fast, and the search string can be a regex!
+
+=item GIT
+
+Thanks to C<git>, your articles are in version control and backup is easy.
+
+=item LUCID DESIGN
+
+Technically, C<Beagle> is a thin and clean wrapper of git, so each beagle is a
+normal git repository.
+
+=item EXTENDABLE TYPES
+
+You can create other types of entry besides existing ones(
+articles/reviews/tasks/barks/comments ), and it's easy to do too.
+
+=back
+
+C<Beagle> can be your right arm.
 
 =head1 SEE ALSO
 
