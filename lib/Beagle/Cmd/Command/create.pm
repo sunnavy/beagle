@@ -3,6 +3,7 @@ use Encode;
 use Any::Moose;
 use Beagle::Util;
 extends qw/Beagle::Cmd::Command/;
+use Any::Moose 'Util::TypeConstraints', => [ 'enum' ];
 
 has draft => (
     isa           => 'Bool',
@@ -19,8 +20,10 @@ has 'force' => (
     traits        => ['Getopt'],
 );
 
+enum 'BeagleEntryType'   => entry_types();
+
 has 'type' => (
-    isa           => 'EntryType',
+    isa           => 'BeagleEntryType',
     is            => 'rw',
     cmd_aliases   => 't',
     documentation => 'type',
