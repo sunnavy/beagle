@@ -48,6 +48,13 @@ has unset => (
     traits        => ['Getopt'],
 );
 
+has prune => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'prune orphans',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -113,6 +120,23 @@ sub execute {
             puts 'imported.';
             return;
         }
+    }
+    elsif ( $self->prune ) {
+        my $relation = relation();
+        my $pruned;
+        for my $id ( keys %$marks ) {
+            next if $relation->{$id};
+            delete $marks->{$id};
+            $proned = 1;
+        }
+
+        if ( $pruned ) {
+            puts 'pruned.';
+        }
+        else {
+            puts 'no orphans found.';
+        }
+        return;
     }
     else {
 
@@ -203,6 +227,7 @@ Beagle::Cmd::Command::mark - manage entry marks
     $ beagle mark --unset id1                   # remove all marks of id1
     $ beagle mark --add foo --add bar id1       # add "foo" and "bar" to id1
     $ beagle mark --delete foo id1              # delete "foo" from id1
+    $ beagle mark --prune                       # prune orphans
 
     $ beagle mark --import /path/to/foo.json
     $ beagle mark --export /path/to/foo.json
