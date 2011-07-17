@@ -18,6 +18,10 @@ has 'root' => (
     default => sub { current_root() },
 );
 
+has 'update' => (
+    isa => 'Str',
+    is  => 'rw',
+);
 
 has 'original_path' => (
     isa     => 'Str',
@@ -131,6 +135,7 @@ sub serialize_meta {
         draft   => 1,
         tags    => 1,
         path    => 0,
+        update  => 1,
         @_
     );
     my $str = '';
@@ -138,6 +143,11 @@ sub serialize_meta {
     for my $type (qw/id format author tags draft path/) {
         $str .= $self->_serialize_meta($type) if $args{$type};
     }
+
+    if ( $args{update} && $self->update ) {
+        $str .= $self->_serialize_meta('update');
+    }
+
 
     if ( $args{created} ) {
         $str .=

@@ -9,20 +9,11 @@ has 'title' => (
     default => '',
 );
 
-has 'update' => (
-    isa => 'Str',
-    is  => 'rw',
-);
-
 override 'serialize_meta' => sub {
     my $self = shift;
     my $str  = '';
     $str .= $self->_serialize_meta( $_ ) for qw/title/;
     $str .= super;
-
-    if ( $self->update ) {
-        $str .= 'update: ' . $self->update . "\n";
-    }
 
     return $str;
 };
