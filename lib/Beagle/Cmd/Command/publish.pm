@@ -43,7 +43,7 @@ my $handle;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die 'beagle publish --to /path/to' unless defined $self->to;
+    die 'beagle publish --to /path/to/dir' unless defined $self->to;
     my @bh;
     for my $name (@$args) {
         require Beagle::Handle;
@@ -137,7 +137,7 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::publish - publish beagles
+Beagle::Cmd::Command::publish - generate static files
 
 =head1 SYNOPSIS
 
