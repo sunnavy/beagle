@@ -142,7 +142,7 @@ div.meta div.tags a {
 }
 
 
-div.meta div.info {
+div.meta div.extra {
     display: block;
 }
 
@@ -176,7 +176,7 @@ div.review div.cover img {
     width: auto;
 }
 
-div.bark.single div.body:first-child {
+div.bark div.body:first-child {
     font-size: 200%;
 }
 

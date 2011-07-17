@@ -1,5 +1,3 @@
-<div id="<: $entry.id :>" class="entry <: $entry.type :>">
-<h3 class="title"><a href="/entry/<: $entry.id :>"><: $entry.title :></a></h3>
 <div class="meta">
 
 : if ( $entry.author ) {
@@ -15,13 +13,27 @@
   <div class="tags" title="tags">
     <a href="/tag/<: $entry.type :>"><: _($entry.type) :></a>
 : for $entry.tags -> $tag {
-    <a href="/tag/<: $entry.type :>"><: $tag :></a>
+    <a href="/tag/<: $tag :>"><: $tag :></a>
 : }
+  </div>
+
+  <div class="extra">
+: for $entry.extra_meta_fields -> $field {
+: if $entry.type != 'review' && $field != 'link' && $entry[$field] {
+    <span title="<: $field :>">
+:   if match( $entry[$field], '^https?://' ) {
+    <a href="<: $entry[$field] :>"><: $field :></a>
+:   } else {
+    <: $entry[$field] :>
+:   }
+    </span>
+: } }
   </div>
 
 : include 'utility.tx' { entry => $entry };
 
 </div>
+
 : my $update = $entry.update;
 : if $update {
 <div class="warnings">
@@ -29,6 +41,3 @@ This article is obsolete, please see the new version <a href="/entry/<: $update 
 </div>
 : }
 
-: include "content.tx" { entry => $entry };
-
-</div>
