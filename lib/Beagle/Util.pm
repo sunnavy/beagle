@@ -702,7 +702,7 @@ sub die_entry_ambiguous {
 }
 
 sub handle {
-    my $root = current_root('not die');
+    my $root = shift || current_root('not die');
     require Beagle::Handle;
 
     if ($root) {
