@@ -133,7 +133,7 @@ sub update_tags {
 sub field_list {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $entry = shift;
-    my @list  = (
+    my @list = (
         author => { type => 'text', },
         format => {
             type    => 'select',
@@ -145,33 +145,31 @@ sub field_list {
         body  => { type => 'textarea', },
     );
 
+    if ( $type ne 'info' && $type ne 'comment' ) {
+        push @list, tags  => { type => 'text', },
+    }
+
     my $type = $entry->type;
-    if ( $type eq 'article' ) {
-        unshift @list,
-          title => { type => 'text', },
-          tags  => { type => 'text', };
-    }
-    elsif ( $type eq 'review' ) {
-        unshift @list,
-          title => { type => 'text', },
-          tags  => { type => 'text', };
-        push @list,
-          map { $_ => { type => 'text' } }
-          qw/isbn writer translator publisher published location/;
-    }
-    elsif ( $type eq 'comment' ) {
-        unshift @list, map { $_ => { type => 'text' } } qw/parent_id/;
-    }
-    elsif ( $type eq 'info' ) {
-        unshift @list, style => {
-            type => 'select',
-            options =>
-              [ map { { label => $_, value => $_ } } qw/default blue dark/ ],
-        };
-        unshift @list,
-          map { $_ => { type => 'text' } }
-          qw/title url copyright timezone sites
-          name email career location avatar public_key/;
+    if ( $type ne 'entry' ) {
+        my $names = $entry->extra_meta_fields;
+        for my $name (@$names) {
+            my $attr = $entry->meta->get_attribute($name);
+            my $const = $attr->type_constraint;
+            if ($const) {
+                if ( $const->can('values') ) {
+                    push @list, $name => {
+                        type    => 'select',
+                        options => $const->values,
+                    };
+                    next;
+                }
+                elsif ( "$const" eq 'Bool' ) {
+                    push @list, $name => { type => 'boolean', };
+                    next;
+                }
+            }
+            push @list, $name => { type => 'text', };
+        }
     }
 
     @list = _fill_values( $entry, @list );

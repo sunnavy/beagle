@@ -24,7 +24,7 @@ has 'copyright' => (
 );
 
 has 'style' => (
-    isa     => 'Str',
+    isa     => 'BeagleStyle',
     is      => 'rw',
     default => 'default',
 );

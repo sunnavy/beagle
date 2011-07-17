@@ -10,12 +10,12 @@ use Any::Moose 'Util::TypeConstraints';
 use Lingua::EN::Inflect 'PL';
 use Class::Load qw/load_class try_load_class/;
 
-subtype 'BackendType' => as 'Str' => where { $_ =~ /^(?:fs|git)$/ };
-
 # to handle checkbox input.
 coerce 'Bool' => from 'Ref' => via { 1 };
 
-subtype 'EntryType' => as 'Str' => where { exists entry_type_info()->{lc $_} };
+enum 'BeagleBackendType' => [qw/git fs/];
+enum 'BeagleStyle'       => [qw/default blue dark/];
+enum 'BeagleFormat'      => [qw/plain markdown wiki pod/];
 
 our (
     $ROOT,               $KENNEL,         $CACHE,

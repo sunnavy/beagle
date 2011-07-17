@@ -4,7 +4,7 @@ use Any::Moose 'Role';
 use Beagle::Util;
 
 has 'format' => (
-    isa     => 'Str',
+    isa     => 'BeagleFormat',
     is      => 'rw',
     default => default_format(),
     lazy    => 1,
@@ -44,7 +44,8 @@ has '_body_html' => (
 
 sub body_html {
     my $self = shift;
-    if ( $self->format eq 'plain' && $self->body !~ /\[BeagleAttachmentPath\]/) {
+    if ( $self->format eq 'plain' && $self->body !~ /\[BeagleAttachmentPath\]/ )
+    {
         return '<pre>' . encode_entities( $self->body ) . '</pre>';
     }
     else {

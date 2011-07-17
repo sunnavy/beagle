@@ -29,7 +29,7 @@ has force => (
 );
 
 has type => (
-    isa           => "BackendType",
+    isa           => "BeagleBackendType",
     is            => "rw",
     documentation => "type of the backend",
     traits        => ['Getopt'],

@@ -290,6 +290,11 @@ sub serialize_tags {
     return from_array( $self->tags );
 }
 
+sub extra_meta_fields {
+    my $self = shift;
+    return [ $self->meta->get_attribute_list ];
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
