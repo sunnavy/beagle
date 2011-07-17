@@ -110,15 +110,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
     my $bh = handle() or die "please specify beagle by --name or --root";
 
-    $opt->{tags} = to_array( delete $opt->{tags} );
-
-    if ( $self->body_file && !defined $opt->{body} ) {
-        $opt->{body} = decode(
-            $self->body_file_encoding || 'utf8',
-            read_file( $self->body_file )
-        ) or die $!;
-    }
-    $opt->{body} = join ' ', @$args if @$args && !defined $opt->{body};
+    $self->handle_options( $opt, $args );
 
     my $entry;
     if ( defined $opt->{body} && !$self->edit ) {
@@ -203,6 +195,36 @@ sub handle_attachments {
     }
 }
 
+sub handle_options {
+    my $self = shift;
+    my $opt  = shift;
+    my $args = shift;
+
+    my @new_args;
+    while (@$args) {
+        my $arg = shift @$args;
+        if ( $arg && $arg =~ /^--([\-\w]+)$/ ) {
+            my $field = $1;
+            $field =~ s!-!_!g;
+            if ( $self->class->can($field) ) {
+                $opt->{$field} = shift @$args;
+                next;
+            }
+        }
+        push @new_args, $arg;
+    }
+    @$args = @new_args;
+
+    $opt->{tags} = to_array( delete $opt->{tags} );
+    if ( $self->body_file && !defined $opt->{body} ) {
+        $opt->{body} = decode(
+            $self->body_file_encoding || 'utf8',
+            read_file( $self->body_file )
+        ) or die $!;
+    }
+    $opt->{body} = join ' ', @$args if @$args && !defined $opt->{body};
+
+}
 
 
 1;
