@@ -6,7 +6,7 @@
 
 <div id="profile" class="profile">
 : if $info.avatar {
-<a href="<: $prefix :>about"> <img alt="avatar" height="80" src="<: $info.avatar :>" /></a>
+<a href="<: $prefix :>about"> <img alt="avatar" height="80" src="<: $prefix :><: $info.avatar :>" /></a>
 : }
 <ul>
 <li><a href="mailto:<: $info.email :>"><: $info.email :></a></li>
