@@ -49,7 +49,7 @@ sub post {
     any( [qw/POST/], $_[0], $_[1] );
 }
 
-my ( $bh, %updated, %bh, $all, $name );
+my ( $bh, %updated, %bh, $all, $name, $prefix );
 my $root = current_root('not die');
 my $req;
 
@@ -197,7 +197,7 @@ sub change_handle {
     my %vars = @_;
     if ( $vars{handle} ) {
         $name = $bh->name;
-        $bh = $vars{$bh->name};
+        $bh = $vars{handle};
         $bh{$name} = $bh;
     }
     elsif ( $vars{name} ) {
@@ -240,7 +240,8 @@ get '/tag/:tag' => sub {
     render 'index',
       $tag  => 1,
       title => "tag $tag",
-      entries => [ map { $bh->map->{$_} } @{ Beagle::Web->tags($bh)->{$tag} } ];
+      entries => [ map { $bh->map->{$_} } @{ Beagle::Web->tags($bh)->{$tag} } ],
+      prefix => $prefix ? () : '../';
 };
 
 get '/date/{year:[0-9]+}' => sub {
@@ -254,7 +255,8 @@ get '/date/{year:[0-9]+}' => sub {
           map { @{ Beagle::Web->years($bh)->{$year}{$_} } }
           keys %{ Beagle::Web->years($bh)->{$year} }
       ],
-      title => "in $year";
+      title => "in $year",
+      prefix => $prefix ? () : '../';
 };
 
 get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
@@ -265,7 +267,8 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     return render 'index',
       entries =>
       [ map { $bh->map->{$_} } @{ Beagle::Web->years($bh)->{$year}{$month} } ],
-      title => "in $year/$month";
+      title  => "in $year/$month",
+      prefix => $prefix ? () : '../../';
 };
 
 get '/entry/:id' => sub {
@@ -285,7 +288,8 @@ get '/entry/:id' => sub {
     render 'index',
       entries      => [$entry],
       $entry->type => 1,
-      title        => $entry->summary(10);
+      title        => $entry->summary(10),
+      prefix => $prefix ? () : '../';
 };
 
 get '/about' => sub {
@@ -329,7 +333,9 @@ post '/search' => sub {
 };
 
 get '/admin/entries' => sub {
-    render 'admin/entries', title => 'admin';
+    render 'admin/entries',
+      title  => 'admin',
+      prefix => $prefix ? () : '../';
 };
 
 get '/admin/entry/:type/new' => sub {
@@ -345,7 +351,8 @@ get '/admin/entry/:type/new' => sub {
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
-              title => 'create ' . A($type);
+              title => 'create ' . A($type),
+              prefix => $prefix ? () : '../../../';
         }
     }
 };
@@ -360,7 +367,8 @@ get '/admin/entry/{id:\w{32}}' => sub {
       entry   => $bh->map->{$id},
       form    => Beagle::Web::Form->new(
         field_list => scalar Beagle::Web->field_list( $bh->map->{$id} ) ),
-      title => "update $id";
+      title  => "update $id",
+      prefix => $prefix ? () : '../../';
 };
 
 post '/admin/entry/:type/new' => sub {
@@ -462,14 +470,16 @@ post '/admin/entry/{id:\w{32}}' => sub {
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
-              message => 'updated';
+              message => 'updated',
+              prefix => $prefix ? () : '../../';
         }
         else {
             render 'admin/entry',
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
-              message => 'invalid';
+              message => 'invalid',
+              prefix => $prefix ? () : '../../';
         }
     }
     else {
@@ -546,7 +556,9 @@ post '/utility/markitup' => sub {
     elsif ( $format eq 'markdown' ) {
         $content = parse_markdown($data);
     }
-    render 'markitup', content => $content;
+    render 'markitup',
+      content => $content,
+      prefix  => $prefix ? () : '../';
 };
 
 sub process_fields {
@@ -605,7 +617,6 @@ sub add_attachments {
 
 sub current_handle { $bh }
 
-my $prefix = '/';
 sub set_prefix {
     $prefix = shift;
 }

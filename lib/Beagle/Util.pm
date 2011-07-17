@@ -706,7 +706,7 @@ sub handle {
     require Beagle::Handle;
 
     if ($root) {
-        return Beagle::Handle->new( root => $root );
+        return Beagle::Handle->new( root => $root, @_ );
     }
     return;
 }
