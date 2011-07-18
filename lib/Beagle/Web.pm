@@ -201,7 +201,7 @@ sub app {
                 enable 'Static',
                   path => sub                          { s!^/system/!! },
                   root => catdir( share_root($plugin), 'public' ),
-                  path_through => 1;
+                  pass_through => 1;
             }
         }
 
