@@ -972,7 +972,6 @@ sub share_root {
         }
         return $SHARE_ROOT{$module} if $SHARE_ROOT{$module};
     }
-    my @parts = split /::/, $module;
     my $name  = $module;
     my $depth = $name =~ s!::!/!g;
     $name .= '.pm';
@@ -990,7 +989,9 @@ sub share_root {
         $root[-1] = 'share';
     }
     else {
-        push @root, qw/auto share dist/, @parts;
+        my $file = $module;
+        $file =~ s!::!-!g;
+        push @root, qw/auto share dist/, $file;
     }
     $SHARE_ROOT{$module} = catdir(@root);
 }
