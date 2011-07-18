@@ -50,6 +50,7 @@ sub post {
 }
 
 my ( $bh, %updated, %bh, $all, $name, $prefix, $static );
+$prefix = '/';
 my $root = current_root('not die');
 my $req;
 
