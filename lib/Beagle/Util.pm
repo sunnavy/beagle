@@ -974,7 +974,7 @@ sub share_root {
     }
     my @parts = split /::/, $module;
     my $name  = $module;
-    my $depth = $name =~ s!::!-!g;
+    my $depth = $name =~ s!::!/!g;
     $name .= '.pm';
     my $path = $INC{$name};
     do { $path = parent_dir($path) } while $depth--;
