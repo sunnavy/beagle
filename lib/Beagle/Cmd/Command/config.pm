@@ -84,11 +84,9 @@ sub execute {
         puts "initialized.";
         return if is_windows();
         puts
-qq{you may want to add "source $share/etc/bashrc" to your .bashrc or .zshrc.};
-#        puts
-#qq{if you use bash's completion, add "source $share/etc/completion/bash" to your .bashrc.};
-#        puts
-#qq{if you use oh-my-zsh, copy $share/etc/completion/zsh/beagle to your oh-my-zsh/plugins/, then add beagle to plugins in your .zshrc.};
+qq{to be more efficient, add "source $share/etc/bashrc" to your .bashrc.};
+        puts
+qq{if you use bash-completion, add "source $share/etc/completion.bashrc" to your .bashrc.};
         return;
     }
     elsif ( $self->set || $self->unset ) {
