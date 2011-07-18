@@ -261,13 +261,16 @@ hr.attachments {
     margin-left: 3%;
 }
 
-pre.shell {
+pre {
     border: 1px solid #000;
+    padding: 1%;
+    margin-right: 3%;
+}
+
+pre.shell {
     background-color: #333;
     color: #eee;
-    padding: 0.6%;
     -moz-opacity: 0.7;
-    margin-right: 3%;
 }
 
 div.comment {
