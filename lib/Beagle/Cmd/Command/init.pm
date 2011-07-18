@@ -4,6 +4,7 @@ use Encode;
 
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
+use File::Which 'which';
 
 has bare => (
     isa           => 'Bool',
@@ -26,7 +27,7 @@ has type => (
     is            => 'rw',
     documentation => 'type of the backend',
     traits        => ['Getopt'],
-    default       => 'git',
+    default       => sub { which('git') ? 'git' : 'fs' },
 );
 
 has name => (
