@@ -9,7 +9,7 @@ my $beagle_cmd = Beagle::Test->beagle_command;
 
 Beagle::Test->init_kennel;
 
-run_ok( $beagle_cmd, [qw/init --name foo/], 'init foo' );
+run_ok( $beagle_cmd, [qw/init --name foo --type fs/], 'init foo' );
 is( last_script_stdout(), 'initialized.' . newline(), 'init output' );
 
 run_ok(

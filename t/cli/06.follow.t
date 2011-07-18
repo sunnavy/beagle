@@ -6,15 +6,20 @@ use Beagle::Test;
 use Beagle::Util;
 use Test::Script::Run ':all';
 
-use File::Temp 'tempdir';
+unless ( Beagle::Test::which('git') ) {
+    plan skip_all => 'no git found';
+    exit;
+}
+
 my $beagle_cmd = Beagle::Test->beagle_command;
 
+use File::Temp 'tempdir';
 my $kennel = Beagle::Test->init_kennel;
 
 my $tmpdir = tempdir( CLEANUP => 1 );
 for my $name (qw/foo bar/) {
     my $root = catdir( $tmpdir, $name );
-    run_ok( $beagle_cmd, [ 'init', $root, '--bare' ], "init $root" );
+    run_ok( $beagle_cmd, [ 'init', $root ], "init $root" );
     my $expect =
       "initialized, please run `beagle follow $root --type git` to continue.";
     is( last_script_stdout(), $expect . newline(), "init $root output" );
