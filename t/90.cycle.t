@@ -9,5 +9,5 @@ if ($@) {
 use Beagle::Handle;
 Beagle::Test->init;
 my $bh = Beagle::Handle->new();
-Test::Memory::Cycle::memory_cycle_ok($object, 'no memory cycle');
+Test::Memory::Cycle::memory_cycle_ok($bh, 'no memory cycle');
 done_testing();
