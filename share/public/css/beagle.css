@@ -261,7 +261,7 @@ hr.attachments {
     margin-left: 3%;
 }
 
-pre {
+pre.pod, pre.shell {
     border: 1px solid #000;
     padding: 1%;
     margin-right: 3%;
