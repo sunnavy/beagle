@@ -27,7 +27,6 @@ has type => (
     is            => 'rw',
     documentation => 'type of the backend',
     traits        => ['Getopt'],
-    default       => sub { which('git') ? 'git' : 'fs' },
 );
 
 has name => (
@@ -57,6 +56,23 @@ sub execute {
     die "can't specify --root with --name"   if $self->name && @$args;
     die "need root" unless @$args || $self->name;
 
+    my $type = $self->type;
+    if ($type) {
+
+        if ( $type eq 'git' && which('git') ) {
+            die "no git found";
+        }
+    }
+    else {
+        if ( which('git') ) {
+            $type = 'git';
+        }
+        else {
+            warn 'no git found, back to fs';
+            $type = 'fs';
+        }
+    }
+
     die "name can't contain colon on windows"
       if is_windows() && $self->name && $self->name =~ /:/;
 
@@ -85,7 +101,13 @@ sub execute {
     }
 
     # $opt->{name} is not user name but beagle name
-    create_backend( %$opt, root => $root, info => $info, name => undef );
+    create_backend(
+        %$opt,
+        type => $type,
+        root => $root,
+        info => $info,
+        name => undef
+    );
 
     if ( $self->name ) {
         my $all = roots();
