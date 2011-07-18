@@ -219,9 +219,10 @@ sub change_handle {
 }
 
 get '/' => sub {
-    my $limit = scalar @{ $bh->entries } - 1;
-    $limit = 9 if $limit > 9;
-    render 'index', entries => [ @{ $bh->entries }[ 0 .. $limit ] ];
+    my $limit = scalar @{ $bh->entries };
+    my $max = Beagle::Web->home_max;
+    $limit = $max if $limit > $max;
+    render 'index', entries => [ @{ $bh->entries }[ 0 .. $limit - 1 ] ];
 };
 
 get '/fragment/menu' => sub {

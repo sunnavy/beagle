@@ -33,9 +33,11 @@ sub feed {
     $feed->image( $info->avatar, $info->title, $info->url, $info->body, 80,
         80 );
 
-    my $limit = scalar @{$entries} - 1;
-    $limit = 19 if $limit > 19;
-    for my $entry ( @{$entries}[ 0 .. $limit ] ) {
+    my $limit = scalar @{$entries};
+    my $max = feed_max();
+    $limit = $max if $limit > $max;
+
+    for my $entry ( @{$entries}[ 0 .. $limit-1 ] ) {
         my $item = $feed->add_item();
         $item->link( $info->url . "/entry/" . $entry->id );
         if ( $entry->can('title') ) {
@@ -211,6 +213,14 @@ sub app {
 
         \&Beagle::Web::Router::handle_request;
     }
+}
+
+sub home_max {
+    return core_config->{web_home_max} || 10;
+}
+
+sub feed_max {
+    return core_config->{web_feed_max} || 20;
 }
 
 1;
