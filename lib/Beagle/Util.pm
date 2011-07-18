@@ -865,6 +865,9 @@ sub parse_pod {
     my $out;
     $pod->output_string(\$out);
     $pod->parse_string_document($value);
+    $out =~ s!^<pre><code>!<pre class="pod">\n!mg;
+    $out =~ s!</code>(?=</pre>$)!!mg;
+
     return defang( $out );
 }
 
