@@ -196,10 +196,13 @@ sub app {
 
     builder {
         for my $plugin ( reverse plugins() ) {
-            enable 'Static',
-              path         => sub                          { s!^/system/!! },
-              root         => catdir( share_root($plugin), 'public' ),
-              path_through => 1;
+            my $root = catdir( share_root($plugin), 'public' );
+            if ( -e $root ) {
+                enable 'Static',
+                  path => sub                          { s!^/system/!! },
+                  root => catdir( share_root($plugin), 'public' ),
+                  path_through => 1;
+            }
         }
 
         enable 'Static',
