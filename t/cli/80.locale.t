@@ -8,6 +8,13 @@ use Beagle::Test;
 use Test::Script::Run ':all';
 
 use Encode;
+use I18N::Langinfo 'langinfo', 'CODESET';
+my $codeset = langinfo(CODESET);
+
+unless ( $codeset && $codeset =~ /utf-8/i ) {
+    plan skip_all => 'not utf-8 system';
+    exit;
+}
 
 $ENV{BEAGLE_CACHE} = 1;
 my $beagle_cmd = Beagle::Test->beagle_command;
