@@ -9,9 +9,8 @@ use Beagle::Util;
 {
     my %import;
     my @po;
-    check_po_root( catdir( share_root(), 'po' ), \%import );
-    for my $plugin ( plugins() ) {
-        catfile( share_root($plugin), 'po' );
+    for my $root ( po_roots() ) {
+        check_po_root( $root, \%import );
     }
 
     Locale::Maketext::Lexicon->import( { _decode => 1, _auto => 1, %import } );

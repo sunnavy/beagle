@@ -22,7 +22,7 @@ our (
     $DEVEL,              %SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
-    @PLUGINS,
+    @PLUGINS, @PO_ROOTS,
 );
 
 BEGIN {
@@ -73,7 +73,7 @@ our @EXPORT = (
       spread_template_roots web_template_roots
       entry_type_info entry_types
       relation_path marks_path
-      web_options tweak_name plugins
+      web_options tweak_name plugins po_roots
       /
 );
 
@@ -163,6 +163,32 @@ sub web_template_roots {
     push @WEB_TEMPLATE_ROOTS, catdir( share_root(), 'views' );
 
     return @WEB_TEMPLATE_ROOTS;
+}
+
+sub po_roots {
+    return @PO_ROOTS if @PO_ROOTS;
+    push @PO_ROOTS, catdir( share_root(), 'po' );
+
+    for my $plugin ( plugins() ) {
+        if ( try_load_class($plugin) ) {
+            my $root = catdir( share_root($plugin), 'views' );
+            if ( -e $root ) {
+                push @PO_ROOTS, $root;
+            }
+        }
+    }
+
+    if ( core_config()->{po_roots} ) {
+        push @PO_ROOTS, split /\s*,\s*/,
+          core_config()->{po_roots};
+    }
+
+    if ( $ENV{BEAGLE_PO_ROOTS} ) {
+        push @PO_ROOTS, split /\s*,\s*/,
+          decode( locale(), $ENV{BEAGLE_PO_ROOTS} );
+    }
+
+    return @PO_ROOTS;
 }
 
 sub set_current_root {
@@ -504,7 +530,7 @@ sub entry_type_info {
     require Module::Pluggable::Object;
     my $models =
     Module::Pluggable::Object->new(
-        search_path => [ 'Beagle::Model', map { "$_::Model" } @PLUGINS ] );
+        search_path => [ 'Beagle::Model', map { $_ .'::Model' } plugins() ] );
     my @models = $models->plugins;
     for my $m (@models) {
         Class::Load::load_class($m);
