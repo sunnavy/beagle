@@ -6,11 +6,11 @@ Beagle::Manual::Cookbook - Cookbook
 
 =head2 Add a new entry type
 
-to add a new type "RTx" with an extra meta key "category", you just need to
-create a module Beagle::Model::RTx which inherits from Beagle::Model::Entry,
-then update beagle's cache, that's it.
+to add a new type "Foo" with an extra meta key "category", you just need to
+create a module Beagle::Model::Foo which inherits from Beagle::Model::Entry.
+that's it.
 
-    package Beagle::Model::RTx;
+    package Beagle::Model::Foo;
     use Any::Moose;
     extends 'Beagle::Model::Entry';
     
@@ -19,20 +19,11 @@ then update beagle's cache, that's it.
         is      => 'rw',
         default => '',
     );
-    
-    override 'serialize_meta' => sub {
-        my $self = shift;
-        my $str  = super;
-        $str .= $self->_serialize_meta( 'category' );
-        return $str;
-    };
 
     1;
 
 
-    $ beagle cache -ufa
-
-now you have rtx and rtxes commands automatically.
+now you have foo and foos commands automatically.
 
 =head1 SEE ALSO
 
