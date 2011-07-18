@@ -62,8 +62,8 @@ sub start_server {
     else {
         require Beagle::Web;
         local $ENV{BEAGLE_WEB_ADMIN} = $ENV{BEAGLE_WEB_ADMIN};
-        if ( exists $args{admin} ) {
-            $ENV{BEAGLE_WEB_ADMIN} = $args{admin};
+        if ( exists $args{web_admin} ) {
+            $ENV{BEAGLE_WEB_ADMIN} = $args{web_admin};
         }
 
         $server->run( Beagle::Web->app );

@@ -14,7 +14,7 @@ use Test::WWW::Mechanize;
 use Beagle::Handle;
 
 Beagle::Test->init;
-my $url = Beagle::Test->start_server( admin => 1 );
+my $url = Beagle::Test->start_server( web_admin => 1 );
 
 my $bh = Beagle::Handle->new();
 my $article = Beagle::Model::Article->new(
