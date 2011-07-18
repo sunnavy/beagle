@@ -15,11 +15,19 @@ sub execute {
 
     my @unfollowed;
     for my $name (@$args) {
+        my $all = roots();
+        if ( exists $all->{$name} ) {
+            delete $all->{$name};
+            set_roots($all);
+        }
+        else {
+            die "$name doesn't exist, maybe a typo?";
+        }
+
         my $f_root = catdir( backends_root(), split /\//, $name );
         if ( -e $f_root ) {
             remove_tree($f_root);
         }
-
         for my $t ( '', '.drafts' ) {
             my $cache =
               encode( locale_fs => catfile( cache_root(), $name . $t ) );
@@ -31,11 +39,6 @@ sub execute {
         }
         set_relation( $map );
 
-        my $all = roots();
-        if ( exists $all->{$name} ) {
-            delete $all->{$name};
-            set_roots($all);
-        }
         push @unfollowed, $name;
     }
 
