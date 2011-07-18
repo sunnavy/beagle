@@ -1,6 +1,7 @@
 package Beagle::Cmd::Command::follow;
 use Beagle::Util;
 use Encode;
+use File::Which 'which';
 
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
@@ -33,7 +34,6 @@ has type => (
     is            => 'rw',
     documentation => 'type of the backend',
     traits        => ['Getopt'],
-    default       => 'git',
 );
 
 no Any::Moose;
@@ -49,6 +49,22 @@ sub execute {
 
     my $name  = $self->name;
     my $depth = $self->depth;
+    my $type  = $self->type;
+    if ($type) {
+        if ( $type eq 'git' && !which('git') ) {
+            die "no git found";
+        }
+    }
+    else {
+        if ( which('git') ) {
+            $type = 'git';
+        }
+        else {
+            warn 'no git found, back to fs';
+            $type = 'fs';
+        }
+    }
+
     for my $root (@$args) {
 
         $depth = 0 unless $depth > 0;
@@ -74,7 +90,7 @@ sub execute {
         my $parent = encode( locale_fs => parent_dir($f_root) );
         make_path($parent) or die "failed to create $parent" unless -d $parent;
 
-        if ( $self->type eq 'git' ) {
+        if ( $type eq 'git' ) {
             require Beagle::Wrapper::git;
             my $git = Beagle::Wrapper::git->new( verbose => $self->verbose );
 
@@ -92,7 +108,7 @@ sub execute {
                 $git->config( '--add', 'user.email', $user_email );
             }
         }
-        elsif ( $self->type eq 'fs' ) {
+        elsif ( $type eq 'fs' ) {
             require File::Copy::Recursive;
             File::Copy::Recursive::dircopy( $root, $f_root );
         }
@@ -102,7 +118,7 @@ sub execute {
         $all->{$name} = {
             remote => $root,
             local  => catdir( backends_root(), split /\//, $name ),
-            type   => $self->type,
+            type   => $type,
         };
 
         set_roots($all);

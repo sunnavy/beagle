@@ -5,11 +5,7 @@ use Test::More;
 use Beagle::Test;
 use Beagle::Util;
 use Test::Script::Run ':all';
-
-unless ( Beagle::Test::which('git') ) {
-    plan skip_all => 'no git found';
-    exit;
-}
+my $type = Beagle::Test::which('git') ? 'git' : 'fs';
 
 my $beagle_cmd = Beagle::Test->beagle_command;
 
@@ -21,7 +17,7 @@ for my $name (qw/foo bar/) {
     my $root = catdir( $tmpdir, $name );
     run_ok( $beagle_cmd, [ 'init', $root ], "init $root" );
     my $expect =
-      "initialized, please run `beagle follow $root --type git` to continue.";
+      "initialized, please run `beagle follow $root --type $type` to continue.";
     is( last_script_stdout(), $expect . newline(), "init $root output" );
 }
 
@@ -30,18 +26,18 @@ run_ok( $beagle_cmd, [ 'follow', $foo, qw/--name baz/ ], "follow $foo as baz" );
 is( last_script_stdout(), "followed $foo." . newline(), "follow $foo output" );
 
 my $bar = catdir( $tmpdir, 'bar' );
-run_ok( $beagle_cmd, [ 'follow', $bar, qw/--type git/ ], "follow $bar" );
+run_ok( $beagle_cmd, [ 'follow', $bar ], "follow $bar" );
 is( last_script_stdout(), "followed $bar." . newline(), "follow $bar output" );
 
 run_ok( $beagle_cmd, ['roots'], "roots" );
 like(
     last_script_stdout(),
-    qr/^\s+baz\s+git\s+\Q$foo\E\s*$/m,
+    qr/^\s+baz\s+$type\s+\Q$foo\E\s*$/m,
     "$foo is indeed followed"
 );
 like(
     last_script_stdout(),
-    qr/^\s+bar\s+git\s+\Q$bar\E\s*$/m,
+    qr/^\s+bar\s+$type\s+\Q$bar\E\s*$/m,
     "$bar is indeed followed"
 );
 
@@ -49,12 +45,12 @@ local $ENV{BEAGLE_NAME} = 'baz';
 run_ok( $beagle_cmd, ['roots'], "roots" );
 like(
     last_script_stdout(),
-    qr/^\@\s+baz\s+git\s+\Q$foo\E\s*$/m,
+    qr/^\@\s+baz\s+$type\s+\Q$foo\E\s*$/m,
     "$foo is current beagle"
 );
 like(
     last_script_stdout(),
-    qr/^\s+bar\s+git\s+\Q$bar\E\s*$/m,
+    qr/^\s+bar\s+$type\s+\Q$bar\E\s*$/m,
     "$bar is not current"
 );
 
