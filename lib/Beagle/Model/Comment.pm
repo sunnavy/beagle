@@ -12,8 +12,7 @@ around 'serialize_meta' => sub {
     my $orig = shift;
     my $self = shift;
     my %opt  = ( @_, tags => 0 );
-    my $str = 'parent_id: ' . $self->parent_id . "\n";
-    $str .= $self->$orig(%opt);
+    my $str  = $self->$orig(%opt);
 
     return $str;
 };

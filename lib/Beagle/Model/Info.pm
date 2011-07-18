@@ -146,14 +146,6 @@ around 'serialize_meta' => sub {
     my %opt  = ( @_, tags => 0, author => 0, draft => 0 );
     my $str = $self->_serialize_meta('id') . $self->$orig(%opt);
 
-    for (
-        qw/title url copyright language timezone style name email career location
-        avatar public_key sites/
-      )
-    {
-        $str .= $self->_serialize_meta( $_ );
-    }
-
     return $str;
 };
 

@@ -195,6 +195,13 @@ sub app {
     require Beagle::Web::Router;
 
     builder {
+        for my $plugin ( reverse plugins() ) {
+            enable 'Static',
+              path         => sub                          { s!^/system/!! },
+              root         => catdir( share_root($plugin), 'public' ),
+              path_through => 1;
+        }
+
         enable 'Static',
           path => sub                   { s!^/system/!! },
           root => catdir( share_root(), 'public' );

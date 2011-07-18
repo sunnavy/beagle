@@ -19,9 +19,10 @@ enum 'BeagleFormat'      => [qw/plain markdown wiki pod/];
 
 our (
     $ROOT,               $KENNEL,         $CACHE,
-    $DEVEL,              $SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
+    $DEVEL,              %SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
-    $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL
+    $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
+    @PLUGINS,
 );
 
 BEGIN {
@@ -72,7 +73,7 @@ our @EXPORT = (
       spread_template_roots web_template_roots
       entry_type_info entry_types
       relation_path marks_path
-      web_options tweak_name
+      web_options tweak_name plugins
       /
 );
 
@@ -124,6 +125,15 @@ sub spread_template_roots {
           core_config()->{spread_template_roots};
     }
 
+    for my $plugin ( reverse plugins() ) {
+        if ( try_load_class($plugin) ) {
+            my $root = catdir( share_root($plugin), 'spread_templates' );
+            if ( -e $root ) {
+                push @SPREAD_TEMPLATE_ROOTS, $root;
+            }
+        }
+    }
+
     push @SPREAD_TEMPLATE_ROOTS, catdir( share_root(), 'spread_templates' );
 
     return @SPREAD_TEMPLATE_ROOTS;
@@ -139,6 +149,15 @@ sub web_template_roots {
     if ( core_config()->{web_template_roots} ) {
         push @WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
           core_config()->{web_template_roots};
+    }
+
+    for my $plugin ( reverse plugins() ) {
+        if ( try_load_class($plugin) ) {
+            my $root = catdir( share_root($plugin), 'views' );
+            if ( -e $root ) {
+                push @WEB_TEMPLATE_ROOTS, $root;
+            }
+        }
     }
 
     push @WEB_TEMPLATE_ROOTS, catdir( share_root(), 'views' );
@@ -484,13 +503,18 @@ sub entry_type_info {
     require Class::Load;
     require Module::Pluggable::Object;
     my $models =
-      Module::Pluggable::Object->new( search_path => 'Beagle::Model', );
+    Module::Pluggable::Object->new(
+        search_path => [ 'Beagle::Model', map { "$_::Model" } @PLUGINS ] );
     my @models = $models->plugins;
     for my $m (@models) {
         Class::Load::load_class($m);
         next if $m =~ /^Beagle::Model::(?:Info|Attachment|Entry)$/;
-        next unless $m =~ /^Beagle::Model::(\w+)$/;
+        next unless $m =~ /::Model::(\w+)$/;
         my $type = lc $1;
+        if ( $entry_type_info->{$type} ) {
+            warn
+"conflict found for $type: $m will overrite $entry_type_info->{$type}{class}";
+        }
         $entry_type_info->{$type} = { plural => PL($type), class => $m };
     }
     return $entry_type_info;
@@ -908,32 +932,41 @@ sub detect_roots {
 }
 
 sub share_root {
-    return $SHARE_ROOT if $SHARE_ROOT;
+    my $module = shift || 'Beagle';
+    return $SHARE_ROOT{$module} if $SHARE_ROOT{$module};
 
-    if ( $ENV{BEAGLE_SHARE_ROOT} ) {
-        $SHARE_ROOT = rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
+    try_load_class($module) or die;
+    if ( $module eq 'Beagle' ) {
+        if ( $ENV{BEAGLE_SHARE_ROOT} ) {
+            $SHARE_ROOT{$module} =
+              rel2abs( decode( locale => $ENV{BEAGLE_SHARE_ROOT} ) );
+        }
+        elsif ( core_config()->{share_root} ) {
+            $SHARE_ROOT{Beagle} = rel2abs( core_config()->{share_root} );
+        }
+        return $SHARE_ROOT{$module} if $SHARE_ROOT{$module};
     }
-    elsif (core_config()->{share_root}) {
-        $SHARE_ROOT = rel2abs( core_config()->{share_root} );
+    my @parts = split /::/, $module;
+    my $name  = $module;
+    my $depth = $name =~ s!::!-!g;
+    $name .= '.pm';
+    my $path = $INC{$name};
+    do { $path = parent_dir($path) } while $depth--;
+
+    my @root = splitdir( rel2abs($path) );
+
+    if (   $root[-2] ne 'blib'
+        && $root[-1] eq 'lib'
+        && ( $^O !~ /MSWin/ || $root[-2] ne 'site' ) )
+    {
+
+        # so it's -Ilib in the Beagle's source dir
+        $root[-1] = 'share';
     }
     else {
-        require Beagle;
-        my @root = splitdir( rel2abs( parent_dir( $INC{'Beagle.pm'} ) ) );
-
-        if (   $root[-2] ne 'blib'
-            && $root[-1] eq 'lib'
-            && ( $^O !~ /MSWin/ || $root[-2] ne 'site' ) )
-        {
-
-            # so it's -Ilib in the Beagle's source dir
-            $root[-1] = 'share';
-        }
-        else {
-            push @root, qw/auto share dist Beagle/;
-        }
-        $SHARE_ROOT = catdir(@root);
+        push @root, qw/auto share dist/, @parts;
     }
-    return $SHARE_ROOT;
+    $SHARE_ROOT{$module} = catdir(@root);
 }
 
 sub web_options {
@@ -962,6 +995,27 @@ sub web_all {
 
     return $WEB_ALL;
     return @$WEB_OPTIONS;
+}
+
+my $searched_plugins;
+
+sub plugins {
+    return @PLUGINS if $searched_plugins;
+    if ( $ENV{BEAGLE_PLUGINS} ) {
+        push @PLUGINS, split /\s*,\s*/,
+          decode( locale => $ENV{BEAGLE_PLUGINS} );
+    }
+
+    if ( core_config()->{plugins} ) {
+        push @PLUGINS, split /\s*,\s*/,
+          core_config()->{plugins};
+    }
+    $searched_plugins = 1;
+
+    @PLUGINS =
+      map { /^Beagle::Plugin::/ ? $_ : "Beagle::Plugin::$_" } @PLUGINS;
+
+    return @PLUGINS;
 }
 
 1;
