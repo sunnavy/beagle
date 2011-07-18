@@ -631,6 +631,32 @@ sub set_static {
     $static = shift;
 }
 
+my ( @css, @js );
+for my $plugin ( plugins() ) {
+    my $name;
+    if ( $plugin->can('name') ) {
+        $name = $plugin->name;
+    }
+
+    unless ($name) {
+        $name = $plugin;
+        $name =~ s!^Beagle::Plugin::!!;
+        $name =~ s!::!-!g;
+    }
+
+    $name = lc $name;
+
+    if ( -e catfile( share_root($plugin), 'public', $name, 'css', 'main.css' ) )
+    {
+        push @css, join '/', $name, 'css', 'main.css';
+    }
+
+    if ( -e catfile( share_root($plugin), 'public', $name, 'js', 'main.js' ) )
+    {
+        push @js,  join '/', $name, 'js',  'main.js';
+    }
+}
+
 sub default_options {
     return (
         $bh->list,
@@ -642,6 +668,8 @@ sub default_options {
         entry_types   => entry_types(),
         prefix        => $prefix,
         static        => $static,
+        css           => \@css,
+        js            => \@js,
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( roots => $all ),
