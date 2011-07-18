@@ -300,6 +300,11 @@ sub extra_meta_fields {
     return [ $self->meta->get_attribute_list ];
 }
 
+sub extra_meta_fields_in_web_view {
+    my $self = shift;
+    return $self->extra_meta_fields;
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
