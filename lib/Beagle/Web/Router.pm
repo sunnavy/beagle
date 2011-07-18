@@ -167,7 +167,12 @@ my $xslate = Text::Xslate->new(
         template_exists => sub {
             my $name = shift;
             return unless defined $name;
-            return -e catfile( share_root(), 'views', $name );
+            $name .= '.tx' unless $name =~ /\.tx$/;
+            my @roots = web_template_roots();
+            for my $root (@roots) {
+                return 1 if -e catfile( $root, $name );
+            }
+            return;
         },
     },
 );
