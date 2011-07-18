@@ -206,6 +206,11 @@ sub app {
           path => sub                   { s!^/system/!! },
           root => catdir( share_root(), 'public' );
 
+        enable 'Static',
+          path         => sub { s!^/static/!! },
+          root         => static_root(),
+          pass_through => 1;
+
         \&Beagle::Web::Router::handle_request;
     }
 }
