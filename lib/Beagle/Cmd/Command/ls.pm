@@ -8,7 +8,7 @@ extends qw/Beagle::Cmd::Command/;
 has type => (
     isa           => 'Str',
     is            => 'rw',
-    documentation => 'type',
+    documentation => 'filter by type',
     cmd_aliases   => 't',
     traits        => ['Getopt'],
 );
@@ -17,7 +17,7 @@ has 'created-before' => (
     isa           => 'Str',
     is            => 'rw',
     accessor      => 'created_before',
-    documentation => 'show entries created before the time',
+    documentation => 'filter by created(before this value)',
     traits        => ['Getopt'],
 );
 
@@ -25,7 +25,7 @@ has 'created-after' => (
     isa           => 'Str',
     is            => 'rw',
     accessor      => 'created_after',
-    documentation => 'show entries created after the time',
+    documentation => 'filter by created(after this value)',
     traits        => ['Getopt'],
 );
 
@@ -33,7 +33,7 @@ has 'updated-before' => (
     isa           => 'Str',
     is            => 'rw',
     accessor      => 'updated_before',
-    documentation => 'show entries updated before the time',
+    documentation => 'filter by updated(before this value)',
     traits        => ['Getopt'],
 );
 
@@ -41,7 +41,7 @@ has 'updated-after' => (
     isa           => 'Str',
     is            => 'rw',
     accessor      => 'updated_after',
-    documentation => 'show entries updated after the time',
+    documentation => 'filter by updated(after this value)',
     traits        => ['Getopt'],
 );
 
@@ -64,14 +64,14 @@ has 'limit' => (
 has 'draft' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => 'only show draft entries',
+    documentation => 'filter by draft',
     traits        => ['Getopt'],
 );
 
 has 'final' => (
     isa           => 'Bool',
     is            => 'rw',
-    documentation => 'only show not-draft entries',
+    documentation => 'filter by not-draft',
     traits        => ['Getopt'],
 );
 
@@ -79,7 +79,7 @@ has 'order' => (
     isa           => 'Str',
     is            => 'rw',
     default       => '-updated',
-    documentation => 'order of entries for each beagle',
+    documentation => 'order of entries in each beagle',
     traits        => ['Getopt'],
 );
 
@@ -88,7 +88,16 @@ has 'marks' => (
     is            => 'rw',
     accessor      => '_marks',
     cmd_aliases   => 'm',
-    documentation => 'show entries that have these marks',
+    documentation => 'filter by marks',
+    traits        => ['Getopt'],
+);
+
+has 'tags' => (
+    isa           => 'Str',
+    is            => 'rw',
+    accessor      => 'tags',
+    cmd_aliases   => 'm',
+    documentation => 'filter by tags',
     traits        => ['Getopt'],
 );
 
@@ -109,6 +118,7 @@ sub filter {
     %condition = %{ $opt->{condition} } if $opt->{condition};
 
     my $type_info = entry_type_info();
+
     for my $t ( keys %$type_info ) {
         my $attr = $type_info->{$t}{plural};
         if ( $type eq $t || $type eq 'all' ) {
@@ -122,6 +132,24 @@ sub filter {
             }
         }
     }
+
+    if ( $self->tags ) {
+        my $cond = to_array( $self->tags );
+        my $filter_tags = sub {
+            my $entry = shift;
+            return 1 unless @$cond;
+            my $tags = $entry->tags;
+            for my $tag (@$cond) {
+                if ( !grep { $tag eq $_ } @$tags ) {
+                    return;
+                }
+            }
+            return 1;
+        };
+
+        @found = grep { $filter_tags->($_) } @found;
+    }
+
 
     if (@$args) {
         my @results;
@@ -158,7 +186,7 @@ sub filter {
         my $cond = to_array( $self->_marks );
         my $marks = marks();
 
-        my $filter_mark = sub {
+        my $filter_marks = sub {
             my $id = shift;
             return 1 unless @$cond;
             return   unless $marks->{$id};
@@ -170,7 +198,7 @@ sub filter {
             return 1;
         };
 
-        @found = grep { $filter_mark->( $_->id ) } @found;
+        @found = grep { $filter_marks->( $_->id ) } @found;
     }
 
     return @found;
