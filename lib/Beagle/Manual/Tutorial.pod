@@ -6,10 +6,10 @@ Beagle::Manual::Tutorial - Tutorial
 
 =head2 INSTALL
 
-C<Beagle> needs C<git>, so please make sure you have it installed and
-C<git> command is available.
+C<Beagle> requires L<git|http://git-scm.com/>, so please make sure you have it
+installed.
 
-C<Beagle> a plain CPAN module, so you can install it via L<CPAN> or
+C<Beagle> is a plain CPAN module, so you can install it via L<CPAN> or
 L<CPANPLUS> or L<App::cpanminus>:
 
     $ cpan Beagle
@@ -42,16 +42,16 @@ you can follow it from another box too, as it's a plain git repository.
     $ beagle ls
     $ beagle articles
     $ beagle barks
-    $ beagle cat ID
-    $ beagle update ID
-    $ beagle rm ID
+    $ beagle cat id1
+    $ beagle update id1
+    $ beagle rm id1
 
 =head2 PULL AND PUSH AND SPREAD
 
     $ beagle pull -n foo # from original /tmp/foo.git
     $ beagle push -n foo # to original /tmp/foo.git
 
-    $ beagle spread ID --command command --template-file short
+    $ beagle spread id1 --command command --template-file short
     $ beagle help spread 
 
 =head2 START WEB SERVER
@@ -61,10 +61,10 @@ you can follow it from another box too, as it's a plain git repository.
 
 =head1 ADVANCED
 
-=head2 SET CURRENT BEAGLE
+=head2 SET DEFAULT BEAGLE
 
 it's annoying if we have to specify the beagle name by C<-n foo> in commands,
-and here are some ways to avoid this:
+here are some ways to avoid this:
 
 =over
 
@@ -72,13 +72,13 @@ and here are some ways to avoid this:
 
     $ export BEAGLE_NAME=foo
 
-=item etc/bashrc
+=item share/etc/bashrc
 
 it's in share root of C<Beagle>, which supplies 3 extra "commands":
 C<which>, C<use> and C<switch>.
 
-C<which> shows current beagle name, C<switch> switches current beagle, C<use>
-switches current beagle only in current session.
+C<which> shows current beagle name, C<switch> switches default beagle, C<use>
+switches default beagle only in current session.
 
     $ beagle which
     $ beagle switch foo
