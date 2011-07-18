@@ -59,7 +59,7 @@ sub execute {
     my $type = $self->type;
     if ($type) {
 
-        if ( $type eq 'git' && which('git') ) {
+        if ( $type eq 'git' && !which('git') ) {
             die "no git found";
         }
     }
@@ -122,7 +122,7 @@ sub execute {
     }
     else {
         puts
-"initialized, please run `beagle follow $root --type @{[$self->type]}` to continue.";
+"initialized, please run `beagle follow $root --type $type` to continue.";
     }
 }
 
