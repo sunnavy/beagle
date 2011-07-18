@@ -314,7 +314,7 @@ sub create_entry {
         }
         else {
             my $attr = PL($type);
-            $self->$attr( [ $entry, @{ $self->$attr } ] );
+            $self->$attr( [ $entry, @{ $self->$attr || [] } ] );
         }
     }
     return 1;
