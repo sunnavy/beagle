@@ -233,7 +233,7 @@ get '/fragment/entry/:id' => sub {
 
 get '/tag/:tag' => sub {
     my %vars = @_;
-    my $tag  = $vars{tag};
+    my $tag  = decode_utf8 $vars{tag};
 
     return redirect '/' unless $tag && Beagle::Web->tags($bh)->{$tag};
 
