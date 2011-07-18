@@ -79,6 +79,12 @@ sub cover {
     return;
 }
 
+sub extra_meta_fields_in_web_view {
+    [
+        qw/writer translator publisher published isbn/
+    ];
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 

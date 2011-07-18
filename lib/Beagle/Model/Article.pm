@@ -22,6 +22,8 @@ sub summary {
     $self->_summary( $value, @_ );
 }
 
+sub extra_meta_fields_in_web_view { [] }
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
