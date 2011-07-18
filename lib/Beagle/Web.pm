@@ -216,11 +216,11 @@ sub app {
 }
 
 sub home_max {
-    return core_config->{web_home_max} || 10;
+    return $ENV{BEAGLE_WEB_HOME_MAX} || core_config->{web_home_max} || 10;
 }
 
 sub feed_max {
-    return core_config->{web_feed_max} || 20;
+    return $ENV{BEAGLE_WEB_FEED_MAX} || core_config->{web_feed_max} || 20;
 }
 
 1;
