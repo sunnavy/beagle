@@ -488,7 +488,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
 };
 
 post '/admin/entry/delete' => sub {
-    my $id = $req->param(id);
+    my $id = $req->param('id');
 
     if ( my $entry = $bh->map->{$id} ) {
         $bh->delete_entry($entry);
