@@ -58,7 +58,7 @@ C<Beagle> was born for this, and more.
 
 C<Beagle> includes a blog system.
 
-Check out L<http://sunnavy.net> for a quick look
+Check out L<http://abeagle.com> for a quick look
 
 =item EASY TO USE
 
@@ -67,7 +67,7 @@ C<Beagle> has a very handy CLI, and a web admin interface too.
 =item AGILE SEARCH
 
 C<Beagle> supports nearly full text search(not including contents of
-attachments), it's very fast, and the search string can be a regex!
+attachments), it's very fast too, and the search string can be regex!
 
 =item GIT
 
@@ -81,9 +81,7 @@ normal git repository.
 =item EXTENDABLE TYPES
 
 You can create other types of entry besides existing ones(
-articles/reviews/tasks/barks/comments ), and it's easy to do too.
-
-check out L<Beagle::Manual::Cookbook>
+info/articles/reviews/tasks/barks/comments ), and it's easy too.
 
 =back
 
