@@ -148,6 +148,11 @@ sub serialize_meta {
         $str .= $self->_serialize_meta('update');
     }
 
+    my $extra = $self->extra_meta_fields;
+    for my $field ( @$extra ) {
+        $str .= $self->_serialize_meta($field)
+          if defined $self->$field && !$args{$field};
+    }
 
     if ( $args{created} ) {
         $str .=
