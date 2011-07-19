@@ -125,17 +125,6 @@ my $xslate = Text::Xslate->new(
             }
             return;
         },
-        subarr => sub {
-            my $value  = shift;
-            my $length = shift;
-            return $value unless $length;
-            if ( scalar @$value <= $length ) {
-                return $value;
-            }
-            else {
-                return [ splice @$value, 0, $length ];
-            }
-        },
         can => sub {
             my ( $obj, $method ) = @_;
             return $obj->can($method);
