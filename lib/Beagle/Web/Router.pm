@@ -147,12 +147,10 @@ get '/about' => sub {
 
 get '/feed' => sub { Beagle::Web->feed()->to_string };
 
-get '/search' => sub {
-    Beagle::Web::render 'search', title => 'search';
-};
-
-post '/search' => sub {
+any '/search' => sub {
     my $query = req()->param('query');
+    return Beagle::Web::render 'search', title => 'search' unless $query;
+
     my @found;
     for my $entry ( @{ bh()->entries } ) {
         push @found, $entry if $entry->serialize =~ /\Q$query/i;
