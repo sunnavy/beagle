@@ -44,7 +44,7 @@ sub execute {
     my ( $self, $opt, $args ) = @_;
 
     my $root = current_root('not die');
-    if ( !$root && !$self->all ) {
+    if ( !$root && !$self->all && !$self->names ) {
         die "please specify beagle by --name or --root";
     }
 
