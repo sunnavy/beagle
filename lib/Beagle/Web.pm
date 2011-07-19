@@ -18,7 +18,7 @@ my %feed;
 sub feed {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
 
-    my $bh   = shift;
+    my $bh   = current_handle();
     my $name = $bh->name;
     return $feed{$name} if $feed{$name};
 
