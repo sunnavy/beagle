@@ -1,0 +1,4 @@
+<div id="head" class="head">
+<h4><a href="<: $prefix :>"><: $info.title :></a></h4>
+</div>
+

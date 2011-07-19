@@ -1,0 +1,11 @@
+<div id="tags" class="tags">
+<h3 class="menu"><: _('Tags') :></h3>
+<ul>
+: for $tags.keys().sort() -> $tag {
+: if $tag ~~ $entry_types {
+    <li><a href="<: $prefix :>tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a></li>
+: } else {
+    <li><a href="<: $prefix :>tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a></li>
+: } }
+</ul>
+</div>
