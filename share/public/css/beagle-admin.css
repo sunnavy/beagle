@@ -1,5 +1,6 @@
 div.admin, div.admin-list {
     margin-top: 3%;
+    font-family: monospace;
 }
 
 div.admin label {
@@ -93,7 +94,7 @@ div.admin-list li {
 }
 
 div.admin-list div.id {
-    width: 30%;
+    width: 20%;
     margin-left: 1%;
     text-align: left;
     overflow: hidden;
@@ -105,14 +106,14 @@ div.admin-list div.summary {
     margin-left: 1%;
     overflow: hidden;
     white-space: nowrap;
-    width: 30%;
+    width: 40%;
     float: left;
 }
 
 
 div.admin-list div.view {
-    margin-left: 1%;
     float: left;
+    margin-left: 1%;
 }
 
 div.admin-list div.edit {
@@ -123,6 +124,10 @@ div.admin-list div.edit {
 div.admin-list div.delete {
     float: left;
     margin-left: 1%;
+}
+
+div.admin-list div.delete * {
+    display: inline;
 }
 
 div.admin form {
