@@ -30,6 +30,19 @@ has names => (
     traits        => ['Getopt'],
 );
 
+has plugins => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'plugins to use',
+    traits        => ['Getopt'],
+    trigger       => sub {
+        my $self = shift;
+        my $value = shift;
+        undef @Beagle::Util::PLUGINS;
+        $ENV{BEAGLE_PLUGINS} = encode( locale => $value );
+    },
+);
+
 has 'command' => (
     isa           => 'Str',
     is            => 'rw',
