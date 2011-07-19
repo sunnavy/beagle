@@ -1,14 +1,13 @@
 @import "beagle.css";
 
 html, body {
-    background-color: #F0F3FF;
+    background-color: #f0f3ff;
 }
 
 h3.title { 
-    background-color: #D2DFF1;
+    background-color: #d2dff1;
 }
 
 h3.menu {
-    background-color: #E2DFF1;
+    background-color: #e2dff1;
 }
-

@@ -1,5 +1,5 @@
 html, body {
-    background-color: #FFF3F0;
+    background-color: #fff3f0;
 }
 
 a {
@@ -96,7 +96,7 @@ span.datetime, span.number {
 
 h3.title { 
     margin-top: 2%;
-    background-color: #EFD595;
+    background-color: #efd595;
     color: navy;
     padding: 3px;
     padding-left: 10px;
@@ -138,7 +138,7 @@ div.meta div.tags {
 }
 
 div.meta div.tags a {
-    color: #4E387E;
+    color: #4e387e;
 }
 
 
@@ -203,7 +203,7 @@ div.message {
 div.warnings {
     margin-top: 2%;
     text-align: center;
-    border: #A00 3px solid;
+    border: #a00 3px solid;
     font-size: 200%;
 }
 
@@ -211,7 +211,7 @@ h3.menu {
     margin-top: 25px;
     margin-bottom: 5px;
     padding-left: 30px;
-    background-color: #F0E0C0;
+    background-color: #f0e0c0;
 }
 
 .annotation {
