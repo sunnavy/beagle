@@ -705,7 +705,7 @@ sub handle_request {
                     );
                 }
                 else {
-                    $res = $req->new_response( 403, [], [] );
+                    $res = $req->new_response( 404, [], [] );
                 }
             }
         }
