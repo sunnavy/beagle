@@ -326,7 +326,7 @@ sub xslate {
     );
 }
 
-my ( $bh, %updated, %bh, $name, $prefix, $static, $router );
+my ( $bh, %updated, %bh, $name, $names, $prefix, $static, $router );
 $prefix = '/';
 my $req;
 
@@ -343,7 +343,7 @@ sub init {
         $names = [ sort keys %$all ];
     }
 
-    $names = [ grep { $all->{$_} } @$names ];
+    $names = [ grep { $all->{$_} } @$names ] if $names;
 
     if ( $names ) {
         for my $n ( @$names ) {
