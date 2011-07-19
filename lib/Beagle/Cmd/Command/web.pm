@@ -60,7 +60,7 @@ sub execute {
       exists $self->{all} ? $self->all : $ENV{BEAGLE_WEB_ALL};
 
     local $ENV{BEAGLE_WEB_NAMES} =
-      $self->{names} ? $self->names : $ENV{BEAGLE_WEB_NAMES};
+      $self->{names} ? encode( locale => $self->names ) : $ENV{BEAGLE_WEB_NAMES};
 
     require Plack::Runner;
     my $r = Plack::Runner->new;
