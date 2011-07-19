@@ -33,13 +33,6 @@
 
 : include 'utility.tx' { entry => $entry };
 
-: my $update = $entry.update;
-: if $update {
-<div class="warnings">
-<a href="<: $prefix :>entry/<: $update :>"><: _('newer version') :></a>
-</div>
-: }
-
 : include '_wedge.tx' { template => $entry.type ~ '_meta_end.tx' };
 </div>
 

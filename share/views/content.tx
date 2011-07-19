@@ -1,6 +1,13 @@
 <div class="content">
 : include '_wedge.tx' { template => 'content_start.tx' };
 
+: my $update = $entry.update;
+: if $update {
+<div class="warnings">
+<a href="<: $prefix :>entry/<: $update :>"><: _('newer version') :></a>
+</div>
+: }
+
 : include 'body.tx' { entry => $entry };
 : include 'attachments.tx' { entry => $entry };
 : include "comments.tx" { entry => $entry };
