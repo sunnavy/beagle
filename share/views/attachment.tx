@@ -1,3 +1,6 @@
+: if template_exists( $entry.type ~ '_attachment.tx' ) {
+:   include $entry.type ~ '_attachment.tx';
+: } else {
 <div class="attachment">
 : include '_wedge.tx' { template => $entry.type ~ '_attachment_start.tx' };
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
@@ -8,3 +11,4 @@
 : }
 : include '_wedge.tx' { template => $entry.type ~ '_attachment_end.tx' };
 </div>
+: }

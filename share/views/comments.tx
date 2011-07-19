@@ -1,3 +1,6 @@
+: if template_exists( $entry.type ~ '_comments.tx' ) {
+:   include $entry.type ~ '_comments.tx';
+: } else {
 : if $enabled_admin || $comments_map[$entry.id] {
 <div class="comments">
 : include '_wedge.tx' { template => 'comments_start.tx' };
@@ -9,7 +12,7 @@
 
 : my $comments = $comments_map[$entry.id];
 : for $comments.keys().sort( -> $x, $y { $comments[$x].created <=> $comments[$y].created } ) -> $id {
-: include 'comment.tx' { entry => $comments[$id] };
+: include 'comment.tx' { entry => $comments[$id], parent => $entry };
 : }
 
 : }
@@ -22,4 +25,4 @@
 : }
 </div>
 : }
-
+: }

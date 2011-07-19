@@ -1,3 +1,6 @@
+: if template_exists( $entry.type ~ '_attachments.tx' ) {
+:   include $entry.type ~ '_attachments.tx';
+: } else {
 <div class="attachments">
 : if $attachments_map[$entry.id] {
 <hr class="attachments" />
@@ -9,3 +12,4 @@
 : }
 : include '_wedge.tx' { template => 'attachments_end.tx' };
 </div>
+: }
