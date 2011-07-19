@@ -223,6 +223,20 @@ sub feed_limit {
     return $ENV{BEAGLE_WEB_FEED_LIMIT} || core_config->{web_feed_limit} || 20;
 }
 
+sub template_exists {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
+    my $name = shift;
+    return unless defined $name;
+    $name .= '.tx' unless $name =~ /\.tx$/;
+    my @roots = web_template_roots();
+    my @parts = split /\//, $name;
+    for my $root (@roots) {
+        return 1 if -e encode( locale_fs => catfile( $root, @parts ) );
+    }
+    return;
+}
+
+
 1;
 
 __END__

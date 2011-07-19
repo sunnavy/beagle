@@ -164,16 +164,7 @@ my $xslate = Text::Xslate->new(
             my $handle = i18n_handle();
             $handle->maketext(@_);
         },
-        template_exists => sub {
-            my $name = shift;
-            return unless defined $name;
-            $name .= '.tx' unless $name =~ /\.tx$/;
-            my @roots = web_template_roots();
-            for my $root (@roots) {
-                return 1 if -e catfile( $root, $name );
-            }
-            return;
-        },
+        template_exists => sub { Beagle::Web->template_exists(@_) },
     },
 );
 
@@ -724,6 +715,14 @@ sub handle_request {
 
     $res->finalize;
 }
+
+get '/extra/*' => sub {
+    my %vars = @_;
+    my $name = decode_utf8 $vars{splat}[0];
+    return unless $name;
+    return unless Beagle::Web->template_exists( "extra/$name" );
+    render( "extra/$name" );
+};
 
 1;
 
