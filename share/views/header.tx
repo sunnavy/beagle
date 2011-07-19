@@ -49,5 +49,3 @@ beagleInit( { admin: 1 } );
 
 : include 'menu.tx';
 
-: include 'container.tx';
-
