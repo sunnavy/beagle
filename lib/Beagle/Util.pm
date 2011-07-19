@@ -171,7 +171,7 @@ sub po_roots {
 
     for my $plugin ( plugins() ) {
         if ( try_load_class($plugin) ) {
-            my $root = catdir( share_root($plugin), 'views' );
+            my $root = catdir( share_root($plugin), 'po' );
             if ( -e $root ) {
                 push @PO_ROOTS, $root;
             }
