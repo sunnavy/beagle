@@ -65,5 +65,5 @@ msgid "task"
 msgstr "任务"
 
 msgid "newer version"
-msgstr "更新版本"
+msgstr "新版本"
 
