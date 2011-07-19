@@ -92,33 +92,37 @@ div.admin-list li {
     margin-right: 1%;
 }
 
-div.admin-list div.path {
-    float: left;
-    width: 35%;
+div.admin-list div.id {
+    width: 30%;
     margin-left: 1%;
     text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
 }
 
 div.admin-list div.summary {
     margin-left: 1%;
-    float: left;
+    overflow: hidden;
+    white-space: nowrap;
     width: 30%;
+    float: left;
 }
 
 
 div.admin-list div.view {
-    margin-left: 2%;
+    margin-left: 1%;
     float: left;
 }
 
 div.admin-list div.edit {
-    margin-left: 2%;
     float: left;
+    margin-left: 1%;
 }
 
 div.admin-list div.delete {
-    margin-left: 2%;
     float: left;
+    margin-left: 1%;
 }
 
 div.admin form {

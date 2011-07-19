@@ -1,22 +1,14 @@
-: include "/header.tx";
+: include "header.tx";
 <div class="admin-list">
-
 <ul>
 : for $entries -> $entry {
 <li class="contrast">
-<div class="path">
-    <a 
-: if length($entry.path) > 24 {
-    title="<: $entry.path :>" 
-: }
-    href="<: $prefix :>admin/entry/<: $entry.id :>"><: substr($entry.path,24) :></a>
+<div class="id">
+    <a href="<: $prefix :>admin/entry/<: $entry.id :>"><: $entry.id :></a>
 </div>
 <div class="summary">
-    <a
-: if length($entry.summary) > 20 {
-    title="<: $entry.summary :>" 
-: }
-    href="<: $prefix :>admin/entry/<: $entry.id :>"><: substr($entry.summary,20) :></a>
+    <a title="<: $entry.summary :>"
+    href="<: $prefix :>admin/entry/<: $entry.id :>"><: $entry.summary :></a>
 </div>
 
 <div class="view">
@@ -38,4 +30,4 @@
 : }
 </ul>
 </div>
-: include "/footer.tx";
+: include "footer.tx";
