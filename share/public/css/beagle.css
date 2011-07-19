@@ -329,6 +329,14 @@ div.more {
     font-size: large;
 }
 
+div.search input[name=query] {
+    width: 80%;
+    height: 2em;
+    margin-left: 10%;
+    margin-top: 3%;
+    font-size: large;
+}
+
 #menu div.search input[name=query] {
     margin-left: 5%;
     margin-top: 2%;
