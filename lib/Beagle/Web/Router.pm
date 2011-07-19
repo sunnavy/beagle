@@ -15,8 +15,10 @@ use I18N::LangTags::Detect;
 my $router = Router::Simple->new();
 
 sub router { $router }
+sub bh     { Beagle::Web->current_handle() }
+sub req    { Beagle::Web->current_request() }
 
-my $admin  = $router->submapper(
+my $admin = $router->submapper(
     '/admin',
     {},
     {
@@ -52,10 +54,11 @@ sub post {
 }
 
 get '/' => sub {
-    my $limit = scalar @{ Beagle::Web->current_handle->entries };
-    my $max = Beagle::Web->home_limit;
+    my $limit = scalar @{ bh()->entries };
+    my $max   = Beagle::Web->home_limit;
     $limit = $max if $limit > $max;
-    Beagle::Web::render 'index', entries => [ @{ Beagle::Web->current_handle->entries }[ 0 .. $limit - 1 ] ];
+    Beagle::Web::render 'index',
+      entries => [ @{ bh()->entries }[ 0 .. $limit - 1 ] ];
 };
 
 get '/fragment/menu' => sub {
@@ -65,7 +68,7 @@ get '/fragment/menu' => sub {
 get '/fragment/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id} or return;
-    my @ret  = resolve_id( $i, handle => Beagle::Web->current_handle );
+    my @ret  = resolve_id( $i, handle => bh() );
     return unless @ret == 1;
 
     Beagle::Web::render 'entry', entry => $ret[0]->{entry};
@@ -75,12 +78,14 @@ get '/tag/:tag' => sub {
     my %vars = @_;
     my $tag  = decode_utf8 $vars{tag};
 
-    return Beagle::Web::redirect '/' unless $tag && Beagle::Web->tags(Beagle::Web->current_handle)->{$tag};
+    return Beagle::Web::redirect '/'
+      unless $tag && Beagle::Web->tags( bh() )->{$tag};
 
     Beagle::Web::render 'index',
       $tag  => 1,
       title => "tag $tag",
-      entries => [ map { Beagle::Web->current_handle->map->{$_} } @{ Beagle::Web->tags(Beagle::Web->current_handle)->{$tag} } ],
+      entries =>
+      [ map { bh()->map->{$_} } @{ Beagle::Web->tags( bh() )->{$tag} } ],
       prefix => $prefix || '../';
 };
 
@@ -88,14 +93,14 @@ get '/date/{year:[0-9]+}' => sub {
     my %vars = @_;
     my $year = $vars{year};
     return Beagle::Web::redirect '/'
-      unless $year && Beagle::Web->years(Beagle::Web->current_handle)->{$year};
+      unless $year && Beagle::Web->years( bh() )->{$year};
     return Beagle::Web::render 'index',
       entries => [
-        map   { Beagle::Web->current_handle->map->{$_} }
-          map { @{ Beagle::Web->years(Beagle::Web->current_handle)->{$year}{$_} } }
-          keys %{ Beagle::Web->years(Beagle::Web->current_handle)->{$year} }
+        map   { bh()->map->{$_} }
+          map { @{ Beagle::Web->years( bh() )->{$year}{$_} } }
+          keys %{ Beagle::Web->years( bh() )->{$year} }
       ],
-      title => "in $year",
+      title  => "in $year",
       prefix => $prefix || '../';
 };
 
@@ -103,10 +108,11 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my %vars  = @_;
     my $year  = $vars{year};
     my $month = $vars{month};
-    return Beagle::Web::redirect '/' unless Beagle::Web->years(Beagle::Web->current_handle)->{$year}{$month};
+    return Beagle::Web::redirect '/'
+      unless Beagle::Web->years( bh() )->{$year}{$month};
     return Beagle::Web::render 'index',
-      entries =>
-      [ map { Beagle::Web->current_handle->map->{$_} } @{ Beagle::Web->years(Beagle::Web->current_handle)->{$year}{$month} } ],
+      entries => [ map { bh()->map->{$_} }
+          @{ Beagle::Web->years( bh() )->{$year}{$month} } ],
       title  => "in $year/$month",
       prefix => $prefix || '../../';
 };
@@ -114,7 +120,7 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
 get '/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id};
-    my @ret  = resolve_id( $i, handle => Beagle::Web->current_handle );
+    my @ret  = resolve_id( $i, handle => bh() );
     return Beagle::Web::redirect "/" unless @ret == 1;
     my $id = $ret[0]->{id};
     return Beagle::Web::redirect "/entry/$id" unless $i eq $id;
@@ -122,40 +128,44 @@ get '/entry/:id' => sub {
     my $entry = $ret[0]->{entry};
 
     if ( $entry->type eq 'comment' ) {
-        return Beagle::Web::redirect '/entry/' . $entry->parent_id . '#' . $entry->id;
+        return
+            Beagle::Web::redirect '/entry/'
+          . $entry->parent_id . '#'
+          . $entry->id;
     }
 
     Beagle::Web::render 'index',
       entries      => [$entry],
       $entry->type => 1,
       title        => $entry->summary(10),
-      prefix => $prefix || '../';
+      prefix       => $prefix || '../';
 };
 
 get '/about' => sub {
     Beagle::Web::render 'about', title => 'about';
 };
 
-get '/feed' => sub { Beagle::Web->feed(Beagle::Web->current_handle)->to_string };
+get '/feed' => sub { Beagle::Web->feed()->to_string };
 
 get '/search' => sub {
     Beagle::Web::render 'search', title => 'search';
 };
 
 post '/search' => sub {
-    my $query = Beagle::Web->current_request->param('query');
+    my $query = req()->param('query');
     my @found;
-    for my $entry ( @{ Beagle::Web->current_handle->entries } ) {
+    for my $entry ( @{ bh()->entries } ) {
         push @found, $entry if $entry->serialize =~ /\Q$query/i;
     }
 
     @found = sort { $b->updated <=> $a->updated } @found;
 
-    if ( Beagle::Web->current_request->header('Accept') =~ /json/ ) {
+    if ( req()->header('Accept') =~ /json/ ) {
         return to_json(
             {
-                results =>
-                  [ map { { id => $_->id, summary => $_->summary(80) } } @found ],
+                results => [
+                    map { { id => $_->id, summary => $_->summary(80) } } @found
+                ],
             }
         );
     }
@@ -182,7 +192,7 @@ get '/admin/entry/:type/new' => sub {
     my %vars = @_;
     my $type = lc $vars{'type'};
     if ($type) {
-        my $class = entry_type_info->{lc $type};
+        my $class = entry_type_info->{ lc $type };
         if ( try_load_class($class) ) {
 
             my $entry = $class->new( id => 'new' );
@@ -191,7 +201,7 @@ get '/admin/entry/:type/new' => sub {
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
-              title => 'create ' . A($type),
+              title  => 'create ' . A($type),
               prefix => $prefix || '../../../';
         }
     }
@@ -201,12 +211,12 @@ get '/admin/entry/{id:\w{32}}' => sub {
     my %vars = @_;
     my ($id) = $vars{id};
 
-    return Beagle::Web::redirect '/admin/entries' unless Beagle::Web->current_handle->map->{$id};
+    return Beagle::Web::redirect '/admin/entries' unless bh()->map->{$id};
     Beagle::Web::render 'admin/entry',
       message => $vars{'message'},
-      entry   => Beagle::Web->current_handle->map->{$id},
+      entry   => bh()->map->{$id},
       form    => Beagle::Web::Form->new(
-        field_list => scalar Beagle::Web->field_list( Beagle::Web->current_handle->map->{$id} ) ),
+        field_list => scalar Beagle::Web->field_list( bh()->map->{$id} ) ),
       title  => "update $id",
       prefix => $prefix || '../../';
 };
@@ -217,30 +227,31 @@ post '/admin/entry/:type/new' => sub {
     if ($type) {
         my $class = 'Beagle::Model::' . ucfirst lc $type;
         if ( try_load_class($class) ) {
-            my $entry = $class->new( timezone => Beagle::Web->current_handle->info->timezone );
+            my $entry = $class->new( timezone => bh()->info->timezone );
             if ( $entry->can('author') && !$entry->author ) {
                 $entry->author(
-                    Email::Address->new( Beagle::Web->current_handle->info->name, Beagle::Web->current_handle->info->email )
+                    Email::Address->new( bh()->info->name, bh()->info->email )
                       ->format );
             }
 
-            if ( $type eq 'comment' && !Beagle::Web->current_request->param('format') ) {
+            if ( $type eq 'comment' && !req()->param('format') ) {
 
                 # make comment's format be plain by default if from web ui
                 $entry->format('plain');
             }
 
-            if ( process_fields( $entry, Beagle::Web->current_request->parameters->mixed ) ) {
+            if ( process_fields( $entry, req()->parameters->mixed ) ) {
                 my ($created) =
-                  Beagle::Web->current_handle->create_entry( $entry, message => $vars{message}, );
+                  bh()->create_entry( $entry, message => $vars{message}, );
 
                 if ($created) {
-                    add_attachments( $entry, Beagle::Web->current_request->upload('attachments') );
-                    if ( Beagle::Web->current_request->header('Accept') =~ /json/ ) {
+                    add_attachments( $entry, req()->upload('attachments') );
+                    if ( req()->header('Accept') =~ /json/ ) {
                         my $ret = {
                             status    => 'created',
                             parent_id => $entry->parent_id,
-                            content   => Beagle::Web::render( 'entry', entry => $entry ),
+                            content =>
+                              Beagle::Web::render( 'entry', entry => $entry ),
                         };
                         return to_json($ret);
                     }
@@ -260,7 +271,7 @@ post '/admin/entry/:type/new' => sub {
                     }
                 }
                 else {
-                    if ( Beagle::Web->current_request->header('Accept') =~ /json/ ) {
+                    if ( req()->header('Accept') =~ /json/ ) {
                         my $ret = {
                             status  => 'error',
                             message => 'failed to create',
@@ -279,7 +290,7 @@ post '/admin/entry/:type/new' => sub {
         }
     }
 
-    if ( Beagle::Web->current_request->header('Accept') =~ /json/ ) {
+    if ( req()->header('Accept') =~ /json/ ) {
         my $ret = {
             status  => 'error',
             content => "invalid type: $type",
@@ -295,23 +306,23 @@ post '/admin/entry/{id:\w{32}}' => sub {
     my %vars = @_;
     my ($id) = $vars{id};
 
-    if ( my $entry = Beagle::Web->current_handle->map->{$id} ) {
+    if ( my $entry = bh()->map->{$id} ) {
 
-        if ( process_fields( $entry, Beagle::Web->current_request->parameters->mixed ) ) {
+        if ( process_fields( $entry, req()->parameters->mixed ) ) {
 
-            Beagle::Web->current_handle->update_entry( $entry, message => $vars{message} );
+            bh()->update_entry( $entry, message => $vars{message} );
 
             my $del = $vars{'delete-attachments'};
             delete_attachments( $entry, ref $del ? @$del : $del );
 
-            add_attachments( $entry, Beagle::Web->current_request->upload('attachments') );
+            add_attachments( $entry, req()->upload('attachments') );
 
             Beagle::Web::render 'admin/entry',
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
               message => 'updated',
-              prefix => $prefix || '../../';
+              prefix  => $prefix || '../../';
         }
         else {
             Beagle::Web::render 'admin/entry',
@@ -319,7 +330,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
               message => 'invalid',
-              prefix => $prefix || '../../';
+              prefix  => $prefix || '../../';
         }
     }
     else {
@@ -328,11 +339,11 @@ post '/admin/entry/{id:\w{32}}' => sub {
 };
 
 post '/admin/entry/delete' => sub {
-    my $id = Beagle::Web->current_request->param('id');
+    my $id = req()->param('id');
 
-    if ( my $entry = Beagle::Web->current_handle->map->{$id} ) {
-        Beagle::Web->current_handle->delete_entry($entry);
-        if ( Beagle::Web->current_request->header('Accept') =~ /json/ ) {
+    if ( my $entry = bh()->map->{$id} ) {
+        bh()->delete_entry($entry);
+        if ( req()->header('Accept') =~ /json/ ) {
             my $ret = { status => 'deleted' };
             $ret->{redraw_menu} = 1 unless $entry->type eq 'comment';
             return to_json($ret);
@@ -349,13 +360,13 @@ post '/admin/entry/delete' => sub {
 };
 
 any '/admin/info' => sub {
-    my $entry = Beagle::Web->current_handle->info;
+    my $entry = bh()->info;
     Beagle::Web::redirect '/admin/entry/' . $entry->id;
 };
 
 get '/favicon.ico' => sub {
-    if ( Beagle::Web->current_handle->info->avatar && Beagle::Web->current_handle->info->avatar ne '/favicon.ico' ) {
-        Beagle::Web::redirect Beagle::Web->current_handle->info->avatar;
+    if ( bh()->info->avatar && bh()->info->avatar ne '/favicon.ico' ) {
+        Beagle::Web::redirect bh()->info->avatar;
     }
     else {
         Beagle::Web::redirect '/system/beagle.png';
@@ -363,22 +374,21 @@ get '/favicon.ico' => sub {
 };
 
 get '/static/*' => sub {
-    my %vars = @_;
+    my %vars  = @_;
     my @parts = split '/', decode_utf8 $vars{splat}[0];
-    my $file =
-      encode( 'locale_fs', catfile( static_root(Beagle::Web->current_handle), @parts ) );
+    my $file  = encode( 'locale_fs', catfile( static_root( bh() ), @parts ) );
     return unless -e $file && -r $file;
 
-    my $res = Beagle::Web->current_request->new_response('200');
+    my $res = req()->new_response('200');
     $res->content_type( mime_type($file) );
     $res->body( read_file $file);
     return $res;
 };
 
 post '/utility/markitup' => sub {
-    my $data = Beagle::Web->current_request->param('data');
+    my $data = req()->param('data');
     return unless $data;
-    my $format = Beagle::Web->current_request->param('format');
+    my $format = req()->param('format');
     return unless $format;
 
     my $content;
@@ -397,8 +407,8 @@ get '/extra/*' => sub {
     my %vars = @_;
     my $name = decode_utf8 $vars{splat}[0];
     return unless $name;
-    return unless Beagle::Web->template_exists( "extra/$name" );
-    Beagle::Web::render( "extra/$name" );
+    return unless Beagle::Web->template_exists("extra/$name");
+    Beagle::Web::render("extra/$name");
 };
 
 1;
