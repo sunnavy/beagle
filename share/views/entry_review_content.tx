@@ -1,7 +1,3 @@
-<div id="<: $entry.id :>" class="entry <: $entry.type :>">
-: include 'title.tx';
-: include 'meta.tx';
-
 <div class="content">
 <div class="body">
 
@@ -28,8 +24,8 @@
 
 : if $attachments_map[$entry.id] &&
 : !( size($attachments_map[$entry.id]) == 1 && $entry.cover == $attachments_map[$entry.id].keys().0 ) {
-<hr class="attachments" />
 <div class="attachments">
+<hr class="attachments" />
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 : if $entry.cover != $name && match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
 <a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="<: $prefix :>static/<: $entry.id :>/<: $name :>" /></a>
@@ -43,7 +39,5 @@
 : }
 
 : include "comments.tx";
-
-</div>
 
 </div>
