@@ -22,7 +22,7 @@ our (
     $DEVEL,              %SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
-    @PLUGINS, @PO_ROOTS,
+    @PLUGINS, @PO_ROOTS, $HANDLES,
 );
 
 BEGIN {
@@ -762,9 +762,14 @@ sub handle {
 }
 
 sub handles {
+    return $HANDLES if $HANDLES;
     my $all = roots();
     require Beagle::Handle;
-    return map { Beagle::Handle->new( root => $all->{$_}{local} ) } keys %$all;
+    $HANDLES = {
+        map { $_ => Beagle::Handle->new( root => $all->{$_}{local} ) }
+          keys %$all
+    };
+    return $HANDLES;
 }
 
 sub is_in_range {
