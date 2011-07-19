@@ -23,6 +23,13 @@ has all => (
     lazy          => 1,
 );
 
+has names => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 has 'command' => (
     isa           => 'Str',
     is            => 'rw',
@@ -51,6 +58,9 @@ sub execute {
       exists $self->{admin} ? $self->admin : Beagle::Web->enabled_admin();
     local $ENV{BEAGLE_WEB_ALL} =
       exists $self->{all} ? $self->all : $ENV{BEAGLE_WEB_ALL};
+
+    local $ENV{BEAGLE_WEB_NAMES} =
+      $self->{names} ? $self->names : $ENV{BEAGLE_WEB_NAMES};
 
     require Plack::Runner;
     my $r = Plack::Runner->new;
