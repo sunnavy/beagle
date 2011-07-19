@@ -32,12 +32,12 @@
 
 : include 'utility.tx' { entry => $entry };
 
-</div>
-
 : my $update = $entry.update;
 : if $update {
 <div class="warnings">
-This article is obsolete, please see the new version <a href="<: $prefix :>entry/<: $update :>">here</a>
+<a href="<: $prefix :>entry/<: $update :>"><: _('newer version') :></a>
 </div>
 : }
+
+</div>
 

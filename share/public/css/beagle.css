@@ -202,8 +202,7 @@ div.message {
 div.warnings {
     margin-top: 2%;
     text-align: center;
-    color: red;
-    border: #800 1px solid;
+    border: #A00 3px solid;
     font-size: 200%;
 }
 

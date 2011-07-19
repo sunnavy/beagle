@@ -64,3 +64,6 @@ msgstr "书评"
 msgid "task"
 msgstr "任务"
 
+msgid "newer version"
+msgstr "更新版本"
+
