@@ -333,6 +333,7 @@ my $req;
 sub init {
     my $root = current_root('not die');
 
+    $router = Beagle::Web::Router->router;
     if ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
         $all = roots();
         for my $n ( keys %$all ) {
@@ -391,7 +392,6 @@ sub init {
             push @js, join '/', $name, 'js', 'main.js';
         }
     }
-    $router = Beagle::Web::Router->router;
 }
 
 sub i18n_handle {
