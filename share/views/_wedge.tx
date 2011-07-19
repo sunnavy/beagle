@@ -1,3 +1,19 @@
+: # for _start, we want the general one to show first
+: # but for _end, we want the converse behavior
+
+: if !$general && $entry && match( $template, '_end' ) {
+: if template_exists( $entry.type ~ '_' ~ $template ) {
+:   include $entry.type ~ '_' ~ $template;
+: }
+: }
+
 : if template_exists( $template ) {
 :   include $template;
 : }
+
+: if !$general && $entry && match( $template, '_start' ) {
+: if template_exists( $entry.type ~ '_' ~ $template ) {
+:   include $entry.type ~ '_' ~ $template;
+: }
+: }
+
