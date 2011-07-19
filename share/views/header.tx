@@ -74,9 +74,7 @@ beagleInit( { admin: 1 } );
   <a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $x ) :></a>
 : }
 </div>
-: }
 
-: if $enabled_admin {
 <div class="message-wrapper">
 : if $message {
 <div class="message">
