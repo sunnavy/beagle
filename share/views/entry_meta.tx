@@ -31,7 +31,7 @@
 : } }
   </div>
 
-: include 'utility.tx' { entry => $entry };
+: include 'utility.tx';
 
 : include '_wedge.tx' { template => $entry.type ~ '_meta_end.tx' };
 </div>

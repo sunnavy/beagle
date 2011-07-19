@@ -8,9 +8,9 @@
 </div>
 : }
 
-: include 'entry_body.tx' { entry => $entry };
-: include 'attachments.tx' { entry => $entry };
-: include "comments.tx" { entry => $entry };
+: include 'entry_body.tx';
+: include 'attachments.tx';
+: include "comments.tx";
 
 : include '_wedge.tx' { template => 'content_end.tx' };
 </div>

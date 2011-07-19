@@ -10,15 +10,15 @@
 : }
 
 : if template_exists( 'entry_' ~ $entry.type ~ '_meta.tx' ) {
-:   include 'entry_' ~ $entry.type ~ '_meta.tx' { entry => $entry };
+:   include 'entry_' ~ $entry.type ~ '_meta.tx';
 : } else {
-:   include "entry_meta.tx" { entry => $entry }
+:   include "entry_meta.tx";
 : }
 
 : if template_exists( 'entry_' ~ $entry.type ~ '_content.tx' ) {
-:   include 'entry_' ~ $entry.type ~ '_content.tx' { entry => $entry };
+:   include 'entry_' ~ $entry.type ~ '_content.tx';
 : } else {
-:   include "entry_content.tx" { entry => $entry };
+:   include "entry_content.tx";
 : }
 </div>
 : }
