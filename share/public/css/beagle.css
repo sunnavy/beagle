@@ -321,28 +321,12 @@ div.more {
     text-align: right;
 }
 
-#search input[name=query] {
-    width: 80%;
-    height: 2em;
-    margin-left: 10%;
-    margin-top: 3%;
-    font-size: large;
-}
-
 div.search input[name=query] {
     width: 80%;
     height: 2em;
     margin-left: 10%;
     margin-top: 3%;
     font-size: large;
-}
-
-#menu div.search input[name=query] {
-    margin-left: 5%;
-    margin-top: 2%;
-    margin-bottom: -3%;
-    height: 1.2em;
-    width: 80%;
 }
 
 div.results {
