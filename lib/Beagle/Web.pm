@@ -326,7 +326,7 @@ sub xslate {
     );
 }
 
-my ( $bh, %updated, %bh, $all, $name, $prefix, $static, $router );
+my ( $bh, %updated, %bh, $name, $prefix, $static, $router );
 $prefix = '/';
 my $req;
 
@@ -334,12 +334,23 @@ sub init {
     my $root = current_root('not die');
 
     $router = Beagle::Web::Router->router;
-    if ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
-        $all = roots();
-        for my $n ( keys %$all ) {
-            local $Beagle::Util::ROOT = $all->{$n}{local};
-            $bh{$n} =
-              Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
+    my $all = roots();
+    if ( $ENV{BEAGLE_WEB_NAMES} ) {
+        $names =
+          [ split /\s*,\s*/, decode( locale => $ENV{BEAGLE_WEB_NAMES} ) ];
+    }
+    elsif ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
+        $names = [ sort keys %$all ];
+    }
+
+    $names = [ grep { $all->{$_} } @$names ];
+
+    if ( $names ) {
+        for my $n ( @$names ) {
+            $bh{$n} = Beagle::Handle->new(
+                drafts => Beagle::Web->enabled_admin(),
+                root   => $all->{$n}{local},
+            );
             if ( $root && $root eq $all->{$n}{local} ) {
                 $bh   = $bh{$n};
                 $name = $n;
@@ -360,7 +371,10 @@ sub init {
         $name ||= $bh->name if $bh;
     }
     else {
-        $bh = Beagle::Handle->new( drafts => Beagle::Web->enabled_admin() );
+        $bh = Beagle::Handle->new(
+            drafts => Beagle::Web->enabled_admin(),
+            root   => $root,
+        );
         $name = $bh->name;
         $bh{$name} = $bh;
     }
@@ -505,7 +519,7 @@ sub default_options {
         js            => \@js,
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
-        : ( roots => $all ),
+        : ( names => $names ),
     );
 }
 

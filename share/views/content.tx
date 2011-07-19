@@ -1,7 +1,7 @@
 <div id="content">
-: if $roots {
+: if $names {
 <div class="nav-roots">
-: for $roots.keys().sort() -> $x {
+: for $names -> $x {
 : if $x == $name {
   <a class="current" href="<: $prefix :>/<: $x :>"><: $x :></a>
 : } else {
