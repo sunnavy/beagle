@@ -49,37 +49,5 @@ beagleInit( { admin: 1 } );
 
 : include 'menu.tx';
 
-<div id="container">
+: include 'container.tx';
 
-  <div id="content">
-
-: if $roots {
-<div class="nav-roots">
-: for $roots.keys().sort() -> $x {
-: if $x == $name {
-  <a class="current" href="<: $prefix :>/<: $x :>"><: $x :></a>
-: } else {
-  <a href="<: $prefix :><: $x :>"><: $x :></a>
-: }
-: }
-</div>
-: }
-
-: if $enabled_admin {
-<div class="admin-links">
-  <a href="<: $prefix :>admin/info"><: _('info') :></a>
-  <a href="<: $prefix :>admin/entries"><: _('all entries') :></a>
-: for $entry_types.sort() -> $x {
-: next if $x == 'comment';
-  <a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $x ) :></a>
-: }
-</div>
-
-<div class="message-wrapper">
-: if $message {
-<div class="message">
-<: $message :>
-</div>
-: }
-</div>
-: }

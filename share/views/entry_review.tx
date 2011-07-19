@@ -1,6 +1,6 @@
 <div id="<: $entry.id :>" class="entry <: $entry.type :>">
-: include 'title.tx' { entry => $entry };
-: include 'meta.tx' { entry => $entry };
+: include 'title.tx';
+: include 'meta.tx';
 
 <div class="content">
 <div class="body">
@@ -22,7 +22,7 @@
 
 </div>
 
-: include 'body.tx' { entry => $entry }
+: include 'entry_body.tx';
 
 </div>
 
@@ -42,7 +42,7 @@
 </div>
 : }
 
-: include "comments.tx" { entry => $entry };
+: include "comments.tx";
 
 </div>
 

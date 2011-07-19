@@ -8,7 +8,7 @@
 </div>
 : }
 
-: include 'body.tx' { entry => $entry };
+: include 'entry_body.tx' { entry => $entry };
 : include 'attachments.tx' { entry => $entry };
 : include "comments.tx" { entry => $entry };
 

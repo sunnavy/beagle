@@ -1,24 +1,24 @@
-: if template_exists( $entry.type ~ '.tx' ) {
-:   include $entry.type ~ '.tx' { entry => $entry };
+: if template_exists( 'entry_' ~ $entry.type ~ '.tx' ) {
+:   include 'entry_' ~ $entry.type ~ '.tx';
 : }
 : else {
 <div id="<: $entry.id :>" class="entry <: $entry.type :>">
-: if template_exists( $entry.type ~ '_title.tx' ) {
-:   include $entry.type ~ '_title.tx' { entry => $entry };
+: if template_exists( 'entry_' ~ $entry.type ~ '_title.tx' ) {
+:   include $entry.type ~ '_title.tx';
 : } else {
-:   include 'title.tx' { entry => $entry };
+:   include 'entry_title.tx';
 : }
 
-: if template_exists( $entry.type ~ '_meta.tx' ) {
-:   include $entry.type ~ '_meta.tx' { entry => $entry };
+: if template_exists( 'entry_' ~ $entry.type ~ '_meta.tx' ) {
+:   include 'entry_' ~ $entry.type ~ '_meta.tx' { entry => $entry };
 : } else {
-:   include "meta.tx" { entry => $entry }
+:   include "entry_meta.tx" { entry => $entry }
 : }
 
-: if template_exists( $entry.type ~ '_content.tx' ) {
-:   include $entry.type ~ '_content.tx' { entry => $entry };
+: if template_exists( 'entry_' ~ $entry.type ~ '_content.tx' ) {
+:   include 'entry_' ~ $entry.type ~ '_content.tx' { entry => $entry };
 : } else {
-:   include "content.tx" { entry => $entry };
+:   include "entry_content.tx" { entry => $entry };
 : }
 </div>
 : }

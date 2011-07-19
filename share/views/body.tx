@@ -1,5 +1,0 @@
-<div class="body">
-: include '_wedge.tx' { template => 'body_start.tx' };
-<: $entry.body_html | raw :>
-: include '_wedge.tx' { template => 'body_end.tx' };
-</div>

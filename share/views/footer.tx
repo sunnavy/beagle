@@ -1,7 +1,3 @@
-  </div>
-  <div id="push"></div>
-</div>
-
 <div id="footer">
 <div class="magical-number">
 <span class="number"><: $total_size :></span>
