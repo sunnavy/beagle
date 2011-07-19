@@ -355,3 +355,6 @@ textarea {
     font-size: 120% !important;
 }
 
+div.attachment {
+    display: inline;
+}
