@@ -3,6 +3,11 @@ div.admin, div.admin-list {
     font-family: monospace;
 }
 
+div.admin-list li {
+    height: 1em;
+    padding: 0.5%;
+}
+
 div.admin label {
     float: left;
     width: 32%;
@@ -74,11 +79,6 @@ div.even, a.even, li.even {
     background-color: #eee;
 }
 
-div.admin-list div.contrast {
-    margin: 2%;
-    padding: 0;
-}
-
 div.admin-list ul {
     list-style-type: none;
     margin-top: 1%;
@@ -94,7 +94,7 @@ div.admin-list li {
 }
 
 div.admin-list div.id {
-    width: 25%;
+    width: 35%;
     margin-left: 1%;
     text-align: left;
     overflow: hidden;
@@ -107,7 +107,7 @@ div.admin-list div.summary {
     margin-left: 1%;
     overflow: hidden;
     white-space: nowrap;
-    width: 35%;
+    width: 45%;
     float: left;
     margin-bottom: 1%;
 }
