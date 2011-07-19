@@ -1,3 +1,2 @@
-: include "/header.tx";
-: include "/container.tx";
-: include "/footer.tx";
+: include "header.tx";
+: include "footer.tx";
