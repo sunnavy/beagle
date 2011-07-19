@@ -544,7 +544,7 @@ sub handle_request {
     my $n = $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name');
     $n = decode_utf8($n) unless Encode::is_utf8($n);
 
-    if ( $n && handles()->{$n} ) {
+    if ( $names && $n && grep { $n eq $_ } @$names ) {
         $bh   = $bh{$n};
         $name = $n;
     }
