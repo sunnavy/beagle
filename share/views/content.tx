@@ -1,25 +1,9 @@
 <div class="content">
-<div class="body">
+: include '_wedge.tx' { template => 'content_start.tx' };
 
 : include 'body.tx' { entry => $entry };
-
-</div>
-
-: if $attachments_map[$entry.id] {
-<hr class="attachments" />
-<div class="attachments">
-: for $attachments_map[$entry.id].keys().sort() -> $name {
-: if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
-<a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" /></a>
-: }
-: else {
-<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
-: }
-
-: }
-</div>
-: }
-
+: include 'attachments.tx' { entry => $entry };
 : include "comments.tx" { entry => $entry };
 
+: include '_wedge.tx' { template => 'content_end.tx' };
 </div>

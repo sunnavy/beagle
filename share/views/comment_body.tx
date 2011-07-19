@@ -1,0 +1,6 @@
+<div class="body" title="<: $entry.id :>" >
+: include '_wedge.tx' { template => 'comment_body_start.tx' };
+<: $entry.body_html |raw :>
+: include '_wedge.tx' { template => 'comment_body_end.tx' };
+</div>
+

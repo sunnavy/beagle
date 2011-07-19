@@ -1,4 +1,5 @@
 <div class="meta">
+: include '_wedge.tx' { template => $entry.type ~ '_meta_start.tx' };
 
 : if ( $entry.author ) {
   <div class="author" title="<: $entry.author :>" >
@@ -39,5 +40,6 @@
 </div>
 : }
 
+: include '_wedge.tx' { template => $entry.type ~ '_meta_end.tx' };
 </div>
 

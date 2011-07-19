@@ -1,0 +1,10 @@
+<div class="attachment">
+: include '_wedge.tx' { template => $entry.type ~ '_attachment_start.tx' };
+: if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
+<a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" /></a>
+: }
+: else {
+<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+: }
+: include '_wedge.tx' { template => $entry.type ~ '_attachment_end.tx' };
+</div>

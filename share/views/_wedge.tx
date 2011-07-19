@@ -1,0 +1,3 @@
+: if template_exists( $template ) {
+:   include $template;
+: }

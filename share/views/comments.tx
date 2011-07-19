@@ -1,5 +1,6 @@
 : if $enabled_admin || $comments_map[$entry.id] {
 <div class="comments">
+: include '_wedge.tx' { template => 'comments_start.tx' };
 
 <h5><a class="comments-toggle" href=""><: _('Comments') :></a></h5>
 
@@ -14,10 +15,11 @@
 : }
 </div>
 
-: if $enabled_admin {
-: include "create_comment.tx" { parent => $entry };
-: }
+: include '_wedge.tx' { template => 'comments_end.tx' };
 
+: if $enabled_admin {
+:   include "create_comment.tx" { parent => $entry };
+: }
 </div>
 : }
 

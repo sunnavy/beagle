@@ -1,15 +1,9 @@
 <div id="<: $entry.id :>" class="comment contrast">
+: include '_wedge.tx' { template => 'comment_start.tx' };
 
-<div class="meta">
-  <div title="<: $entry.author :>" class="author"><: $entry.author :></div>
-  <div class="date" title="created date <: $entry.created :>" >
-    <: $entry.created_string :>
-  </div>
-: include 'utility.tx' { entry => $entry, no_hide => 1 };
-</div>
+: include 'comment_meta.tx';
+: include 'comment_body.tx';
 
-<div class="body" title="<: $entry.id :>" >
-<: $entry.body_html |raw :>
-</div>
+: include '_wedge.tx' { template => 'comment_end.tx' };
 
 </div>

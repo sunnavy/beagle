@@ -1,0 +1,11 @@
+: if $attachments_map[$entry.id] {
+<hr class="attachments" />
+: }
+
+<div class="attachments">
+: include '_wedge.tx' { template => 'attachments_start.tx' };
+: for $attachments_map[$entry.id].keys().sort() -> $name {
+:   include 'attachment.tx' { name => $name };
+: }
+: include '_wedge.tx' { template => 'attachments_end.tx' };
+</div>
