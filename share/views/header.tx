@@ -7,14 +7,6 @@
 <link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="<: $prefix :>feed" />
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/beagle<: $info.style && $info.style != 'default' ? ('_' ~ $info.style) : '' :>.css" />
 
-: for $css -> $item {
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/<: $item :>" />
-: }
-
-: for $js -> $item {
-<script type="text/javascript" src="<: $prefix :>system/<: $item :>"></script>
-: }
-
 <script type="text/javascript" src="<: $prefix :>system/js/prettify.js"></script>
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/prettify.css" />
 
@@ -43,6 +35,14 @@ beagleInit( { admin: 1 } );
 
 });
 </script>
+
+: for $css -> $item {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/<: $item :>" />
+: }
+
+: for $js -> $item {
+<script type="text/javascript" src="<: $prefix :>system/<: $item :>"></script>
+: }
 
 </head>
 <body>
