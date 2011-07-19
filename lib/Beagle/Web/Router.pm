@@ -158,7 +158,22 @@ my $xslate = Text::Xslate->new(
             my $value = shift;
             my $regex = shift;
             return unless defined $value && defined $regex;
-            return $value =~ qr/$regex/i;
+            return $value =~ qr/$regex/;
+        },
+        grep => sub {
+            my $values = shift;
+            my $regex  = shift;
+            return unless defined $values && defined $regex;
+
+            my $flag;
+            if (@_) {
+                $flag = $_[0];
+            }
+            else {
+                $flag = 1;
+            }
+
+            return [ grep { /$regex/ ? $flag : 0 } @$values ];
         },
         _ => sub {
             my $handle = i18n_handle();
