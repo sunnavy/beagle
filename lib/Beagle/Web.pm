@@ -34,7 +34,7 @@ sub feed {
         80 );
 
     my $limit = scalar @{$entries};
-    my $max = feed_max();
+    my $max = feed_limit();
     $limit = $max if $limit > $max;
 
     for my $entry ( @{$entries}[ 0 .. $limit-1 ] ) {
@@ -215,12 +215,12 @@ sub app {
     }
 }
 
-sub home_max {
-    return $ENV{BEAGLE_WEB_HOME_MAX} || core_config->{web_home_max} || 10;
+sub home_limit {
+    return $ENV{BEAGLE_WEB_HOME_LIMIT} || core_config->{web_home_limit} || 10;
 }
 
-sub feed_max {
-    return $ENV{BEAGLE_WEB_FEED_MAX} || core_config->{web_feed_max} || 20;
+sub feed_limit {
+    return $ENV{BEAGLE_WEB_FEED_LIMIT} || core_config->{web_feed_limit} || 20;
 }
 
 1;

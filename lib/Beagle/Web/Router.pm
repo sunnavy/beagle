@@ -220,7 +220,7 @@ sub change_handle {
 
 get '/' => sub {
     my $limit = scalar @{ $bh->entries };
-    my $max = Beagle::Web->home_max;
+    my $max = Beagle::Web->home_limit;
     $limit = $max if $limit > $max;
     render 'index', entries => [ @{ $bh->entries }[ 0 .. $limit - 1 ] ];
 };
