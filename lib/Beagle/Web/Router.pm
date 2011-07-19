@@ -125,10 +125,6 @@ my $xslate = Text::Xslate->new(
             }
             return;
         },
-        can => sub {
-            my ( $obj, $method ) = @_;
-            return $obj->can($method);
-        },
         split_id => sub {
             join '/', split_id(shift);
         },
