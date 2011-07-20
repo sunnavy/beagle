@@ -11,48 +11,10 @@ use JSON;
 use Beagle::I18N;
 use I18N::LangTags;
 use I18N::LangTags::Detect;
+use Beagle::Web::Router::Util;
 
-my $router = Router::Simple->new();
-
-sub router { $router }
-sub bh     { Beagle::Web->current_handle() }
-sub req    { Beagle::Web->current_request() }
-sub render { goto \&Beagle::Web::render }
-
-my $admin = $router->submapper(
-    '/admin',
-    {},
-    {
-        on_match => sub {
-            return Beagle::Web->enabled_admin() ? 1 : 0;
-        },
-    }
-);
-
-sub any {
-    my $methods;
-    $methods = shift if @_ == 3;
-
-    my $pattern = shift;
-    my $code    = shift;
-    my $dest    = { code => $code };
-    my $opt     = { $methods ? ( method => $methods ) : () };
-
-    if ( $pattern =~ s{^/admin(?=/)}{} ) {
-        $admin->connect( $pattern, $dest, $opt );
-    }
-    else {
-        $router->connect( $pattern, $dest, $opt, );
-    }
-}
-
-sub get {
-    any( [qw/GET HEAD/], $_[0], $_[1] );
-}
-
-sub post {
-    any( [qw/POST/], $_[0], $_[1] );
-}
+my ( $router, $router_admin ) = new_router();
+sub router { return ( $router, $router_admin ) }
 
 get '/' => sub {
     my $limit = scalar @{ bh()->entries };
