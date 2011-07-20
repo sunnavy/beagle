@@ -338,6 +338,7 @@ sub init {
         my $m = $plugin . '::Web::Router';
         if ( Class::Load::try_load_class($m) ) {
             if ( $m->can('router') ) {
+                my $r = $m->router;
                 unshift $router->{routes}, @{ $r->{routes} } if $r->{routes};
             }
         }
