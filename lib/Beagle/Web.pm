@@ -18,7 +18,7 @@ my %feed;
 sub feed {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
 
-    my $bh   = current_handle();
+    my $bh   = handle();
     my $name = $bh->name;
     return $feed{$name} if $feed{$name};
 
@@ -503,8 +503,8 @@ sub add_attachments {
     }
 }
 
-sub current_handle { $bh }
-sub current_request { $req }
+sub handle { $bh }
+sub request { $req }
 
 sub set_prefix {
     $prefix = shift;
