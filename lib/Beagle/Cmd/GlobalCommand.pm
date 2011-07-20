@@ -9,7 +9,7 @@ has 'verbose' => (
     isa           => 'Bool',
     is            => 'rw',
     documentation => 'verbose',
-    cmd_aliases   => "v",
+    cmd_aliases   => 'v',
     traits        => ['Getopt'],
 );
 
@@ -18,7 +18,7 @@ has 'output' => (
     is            => 'rw',
     documentation => 'output file',
     traits        => ['Getopt'],
-    cmd_aliases   => "o",
+    cmd_aliases   => 'o',
     trigger       => sub {
         my $self = shift;
         my $file = shift;
@@ -45,6 +45,7 @@ has plugins => (
     is            => 'rw',
     documentation => 'plugins to use',
     traits        => ['Getopt'],
+    cmd_aliases   => 'x',
     trigger       => sub {
         my $self = shift;
         my $value = shift;
