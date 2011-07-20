@@ -1,15 +1,33 @@
 package Beagle::Web::Router::Util;
 use Router::Simple;
 use base 'Exporter';
-
-our @EXPORT = qw/bh req render get post any new_router/;
+our @EXPORT = qw/bh req render get post any router admin/;
 sub bh     { Beagle::Web->current_handle() }
 sub req    { Beagle::Web->current_request() }
 sub render { goto \&Beagle::Web::render }
 
-sub new_router {
-    my $router = Router::Simple->new();
-    my $admin  = $router->submapper(
+sub router {
+    my $class = shift || router_package();
+    no strict 'refs';
+    return ${"${class}::ROUTER"};
+}
+
+sub admin {
+    my $class = shift || router_package();
+    no strict 'refs';
+    return ${"${class}::ADMIN"};
+}
+
+sub import {
+    init();
+    __PACKAGE__->export_to_level(1, @_);
+}
+
+sub init {
+    my $pkg = router_package();
+    no strict 'refs';
+    ${"${pkg}::ROUTER"} ||= Router::Simple->new();
+    ${"${pkg}::ADMIN"}  ||= ${"${pkg}::ROUTER"}->submapper(
         '/admin',
         {},
         {
@@ -18,19 +36,18 @@ sub new_router {
             },
         }
     );
-    return ( $router, $admin );
 }
 
 sub router_package {
-    my $package;
+    my $pkg;
     for my $i ( 1 .. 10 ) {
         my $p = ( caller($i) )[0];
         if ( $p && $p =~ /::Router$/ ) {
-            $package = $p;
+            $pkg = $p;
         }
     }
-    die "failed to find router package" unless $package;
-    return $package;
+    die "failed to find router package" unless $pkg;
+    return $pkg;
 }
 
 sub any {
@@ -42,7 +59,8 @@ sub any {
     my $dest    = { code => $code };
     my $opt     = { $methods ? ( method => $methods ) : () };
 
-    my ( $router, $admin ) = router_package()->router;
+    my $router = router_package()->router;
+    my $admin = router_package()->admin;
 
     if ( $pattern =~ s{^/admin(?=/)}{} ) {
         $admin->connect( $pattern, $dest, $opt );

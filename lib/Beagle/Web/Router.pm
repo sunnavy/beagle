@@ -13,9 +13,6 @@ use I18N::LangTags;
 use I18N::LangTags::Detect;
 use Beagle::Web::Router::Util;
 
-my ( $router, $router_admin ) = new_router();
-sub router { return wantarray ? ( $router, $router_admin ) : $router }
-
 get '/' => sub {
     my $limit = scalar @{ bh()->entries };
     my $max   = Beagle::Web->home_limit;
