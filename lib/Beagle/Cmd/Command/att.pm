@@ -69,7 +69,7 @@ sub execute {
     die "beagle att --delete 3 [...]" if $self->delete && !@$args;
 
     if ( $self->prune ) {
-        my @bh = $self->all ? handles() : ( handle || handles );
+        my @bh = $self->all ? handles() : ( current_handle() || handles() );
         my $pruned;
         for my $bh (@bh) {
             for my $p ( keys %{ $bh->attachments_map } ) {
@@ -147,7 +147,7 @@ sub execute {
         @att = sort values %$map;
     }
     else {
-        my @bh = $self->all ? handles() : ( handle || handles );
+        my @bh = $self->all ? handles() : ( current_handle() || handles() );
 
         for my $bh (@bh) {
             $handle_map{ $bh->root } = $bh;

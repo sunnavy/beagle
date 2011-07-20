@@ -64,7 +64,7 @@ our @EXPORT = (
       core_config set_core_config set_user_alias relation set_relation
       default_format split_id root_name name_root root_type
       system_alias create_backend alias aliases resolve_id die_entry_not_found
-      die_entry_ambiguous handle handles resolve_entry
+      die_entry_ambiguous current_handle handles resolve_entry
       is_in_range parse_wiki  parse_markdown parse_pod
       whitelist set_whitelist
       detect_roots backends_root cache_root
