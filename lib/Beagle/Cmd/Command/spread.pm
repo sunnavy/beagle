@@ -65,20 +65,6 @@ has 'subject' => (
     default       => '',
 );
 
-has plugins => (
-    isa           => 'Str',
-    is            => 'rw',
-    documentation => 'plugins to use',
-    traits        => ['Getopt'],
-    trigger       => sub {
-        my $self = shift;
-        my $value = shift;
-        undef @Beagle::Util::PLUGINS;
-        $ENV{BEAGLE_PLUGINS} = encode( locale => $value );
-    },
-);
-
-
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
