@@ -340,7 +340,7 @@ sub init {
             if ( $m->can('router') ) {
                 my $r = $m->router;
                 if ($r) {
-                    unshift $router->{routes}, @{ $r->{routes} }
+                    unshift @{ $router->{routes} }, @{ $r->{routes} }
                       if $r->{routes};
                 }
             }
