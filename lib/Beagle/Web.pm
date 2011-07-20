@@ -4,6 +4,9 @@ use Beagle::Util;
 use Beagle::Handle;
 use Encode;
 use Beagle::Web::Request;
+use Beagle::I18N;
+use I18N::LangTags;
+use I18N::LangTags::Detect;
 
 sub enabled_admin {
 

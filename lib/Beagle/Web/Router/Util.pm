@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 package Beagle::Web::Router::Util;
 use Router::Simple;
 use JSON;
