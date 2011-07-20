@@ -22,7 +22,7 @@ our (
     $DEVEL,              %SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
-    @PLUGINS, @PO_ROOTS, $HANDLES,
+    @PLUGINS, $SEARCHED_PLUGINS, @PO_ROOTS, $HANDLES,
 );
 
 BEGIN {
@@ -115,6 +115,8 @@ sub disable_cache {
 
 sub spread_template_roots {
     return @SPREAD_TEMPLATE_ROOTS if @SPREAD_TEMPLATE_ROOTS;
+    @SPREAD_TEMPLATE_ROOTS = ();
+
     if ( $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS} ) {
         push @SPREAD_TEMPLATE_ROOTS, split /\s*,\s*/,
           decode( locale => $ENV{BEAGLE_SPREAD_TEMPLATE_ROOTS} );
@@ -141,6 +143,7 @@ sub spread_template_roots {
 
 sub web_template_roots {
     return @WEB_TEMPLATE_ROOTS if @WEB_TEMPLATE_ROOTS;
+    @WEB_TEMPLATE_ROOTS = ();
     if ( $ENV{BEAGLE_WEB_TEMPLATE_ROOTS} ) {
         push @WEB_TEMPLATE_ROOTS, split /\s*,\s*/,
           decode( locale(), $ENV{BEAGLE_WEB_TEMPLATE_ROOTS} );
@@ -1026,10 +1029,9 @@ sub web_all {
     return @$WEB_OPTIONS;
 }
 
-my $searched_plugins;
-
 sub plugins {
-    return @PLUGINS if $searched_plugins;
+    return @PLUGINS if $SEARCHED_PLUGINS;
+    @PLUGINS = ();
     if ( $ENV{BEAGLE_PLUGINS} ) {
         push @PLUGINS, split /\s*,\s*/,
           decode( locale => $ENV{BEAGLE_PLUGINS} );
@@ -1039,7 +1041,7 @@ sub plugins {
         push @PLUGINS, split /\s*,\s*/,
           core_config()->{plugins};
     }
-    $searched_plugins = 1;
+    $SEARCHED_PLUGINS = 1;
 
     @PLUGINS =
       map { /^Beagle::Plugin::/ ? $_ : "Beagle::Plugin::$_" } @PLUGINS;

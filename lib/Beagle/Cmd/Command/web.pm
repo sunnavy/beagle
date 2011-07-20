@@ -38,7 +38,7 @@ has plugins => (
     trigger       => sub {
         my $self = shift;
         my $value = shift;
-        undef @Beagle::Util::PLUGINS;
+        undef $Beagle::Util::SEARCHED_PLUGINS;
         $ENV{BEAGLE_PLUGINS} = encode( locale => $value );
     },
 );
