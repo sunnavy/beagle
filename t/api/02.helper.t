@@ -9,8 +9,8 @@ my @subs = qw/
   puts  user_home file_size parent_dir
   to_array from_array edit_text max_length
   term_size term_width term_height make_path remove_tree
-  pretty_datetime parse_datetime confess cluck encode decode
-  encode_entities decode_entities
+  pretty_datetime parse_datetime confess cluck 
+  encode decode encode_utf8 decode_utf8 encode_entities decode_entities
   load_class try_load_class is_class_loaded load_optional_class
 
   /;

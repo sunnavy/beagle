@@ -1,7 +1,6 @@
 package Beagle::Web::Router;
 use Beagle::Web;
 use Beagle::Util;
-use Encode;
 use Lingua::EN::Inflect 'A';
 use Beagle::Web::Form;
 use Beagle::Web::Router::Util;
