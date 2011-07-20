@@ -333,13 +333,16 @@ my $req;
 sub init {
     my $root = current_root('not die');
 
-    ($router) = Beagle::Web::Router->router;
+    $router = Beagle::Web::Router->router;
     for my $plugin ( plugins() ) {
         my $m = $plugin . '::Web::Router';
         if ( Class::Load::try_load_class($m) ) {
             if ( $m->can('router') ) {
                 my $r = $m->router;
-                unshift $router->{routes}, @{ $r->{routes} } if $r->{routes};
+                if ($r) {
+                    unshift $router->{routes}, @{ $r->{routes} }
+                      if $r->{routes};
+                }
             }
         }
     }
