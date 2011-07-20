@@ -17,6 +17,7 @@ my $router = Router::Simple->new();
 sub router { $router }
 sub bh     { Beagle::Web->current_handle() }
 sub req    { Beagle::Web->current_request() }
+sub render { goto \&Beagle::Web::render }
 
 my $admin = $router->submapper(
     '/admin',
@@ -57,12 +58,12 @@ get '/' => sub {
     my $limit = scalar @{ bh()->entries };
     my $max   = Beagle::Web->home_limit;
     $limit = $max if $limit > $max;
-    Beagle::Web::render 'index',
+    render 'index',
       entries => [ @{ bh()->entries }[ 0 .. $limit - 1 ] ];
 };
 
 get '/fragment/menu' => sub {
-    Beagle::Web::render 'menu';
+    render 'menu';
 };
 
 get '/fragment/entry/:id' => sub {
@@ -71,7 +72,7 @@ get '/fragment/entry/:id' => sub {
     my @ret  = resolve_id( $i, handle => bh() );
     return unless @ret == 1;
 
-    Beagle::Web::render 'entry', entry => $ret[0]->{entry};
+    render 'entry', entry => $ret[0]->{entry};
 };
 
 get '/tag/:tag' => sub {
@@ -81,7 +82,7 @@ get '/tag/:tag' => sub {
     return Beagle::Web::redirect '/'
       unless $tag && Beagle::Web->tags( bh() )->{$tag};
 
-    Beagle::Web::render 'index',
+    render 'index',
       $tag  => 1,
       title => "tag $tag",
       entries =>
@@ -94,7 +95,7 @@ get '/date/{year:[0-9]+}' => sub {
     my $year = $vars{year};
     return Beagle::Web::redirect '/'
       unless $year && Beagle::Web->years( bh() )->{$year};
-    return Beagle::Web::render 'index',
+    return render 'index',
       entries => [
         map   { bh()->map->{$_} }
           map { @{ Beagle::Web->years( bh() )->{$year}{$_} } }
@@ -110,7 +111,7 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my $month = $vars{month};
     return Beagle::Web::redirect '/'
       unless Beagle::Web->years( bh() )->{$year}{$month};
-    return Beagle::Web::render 'index',
+    return render 'index',
       entries => [ map { bh()->map->{$_} }
           @{ Beagle::Web->years( bh() )->{$year}{$month} } ],
       title  => "in $year/$month",
@@ -134,7 +135,7 @@ get '/entry/:id' => sub {
           . $entry->id;
     }
 
-    Beagle::Web::render 'index',
+    render 'index',
       entries      => [$entry],
       $entry->type => 1,
       title        => $entry->summary(10),
@@ -142,14 +143,14 @@ get '/entry/:id' => sub {
 };
 
 get '/about' => sub {
-    Beagle::Web::render 'about', title => 'about';
+    render 'about', title => 'about';
 };
 
 get '/feed' => sub { Beagle::Web->feed()->to_string };
 
 any '/search' => sub {
     my $query = req()->param('query');
-    return Beagle::Web::render 'search', title => 'search' unless $query;
+    return render 'search', title => 'search' unless $query;
 
     my @found;
     for my $entry ( @{ bh()->entries } ) {
@@ -172,7 +173,7 @@ any '/search' => sub {
             return Beagle::Web::redirect '/entry/' . $found[0]->id;
         }
         else {
-            Beagle::Web::render 'search',
+            render 'search',
               title   => 'search',
               results => \@found,
               query   => $query;
@@ -181,7 +182,7 @@ any '/search' => sub {
 };
 
 get '/admin/entries' => sub {
-    Beagle::Web::render 'admin/entries',
+    render 'admin/entries',
       title  => 'admin',
       prefix => $prefix || '../';
 };
@@ -195,7 +196,7 @@ get '/admin/entry/:type/new' => sub {
 
             my $entry = $class->new( id => 'new' );
 
-            return Beagle::Web::render 'admin/entry',
+            return render 'admin/entry',
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
@@ -210,7 +211,7 @@ get '/admin/entry/{id:\w{32}}' => sub {
     my ($id) = $vars{id};
 
     return Beagle::Web::redirect '/admin/entries' unless bh()->map->{$id};
-    Beagle::Web::render 'admin/entry',
+    render 'admin/entry',
       message => $vars{'message'},
       entry   => bh()->map->{$id},
       form    => Beagle::Web::Form->new(
@@ -249,7 +250,7 @@ post '/admin/entry/:type/new' => sub {
                             status    => 'created',
                             parent_id => $entry->parent_id,
                             content =>
-                              Beagle::Web::render( 'entry', entry => $entry ),
+                              render( 'entry', entry => $entry ),
                         };
                         return to_json($ret);
                     }
@@ -279,7 +280,7 @@ post '/admin/entry/:type/new' => sub {
                 }
             }
             else {
-                return Beagle::Web::render "admin/entry/$type/new",
+                return render "admin/entry/$type/new",
                   entry => $entry,
                   form  => Beagle::Web::Form->new(
                     field_list => scalar Beagle::Web->field_list($entry) ),
@@ -315,7 +316,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
 
             add_attachments( $entry, req()->upload('attachments') );
 
-            Beagle::Web::render 'admin/entry',
+            render 'admin/entry',
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
@@ -323,7 +324,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
               prefix  => $prefix || '../../';
         }
         else {
-            Beagle::Web::render 'admin/entry',
+            render 'admin/entry',
               entry => $entry,
               form  => Beagle::Web::Form->new(
                 field_list => scalar Beagle::Web->field_list($entry) ),
@@ -396,7 +397,7 @@ post '/utility/markitup' => sub {
     elsif ( $format eq 'markdown' ) {
         $content = parse_markdown($data);
     }
-    Beagle::Web::render 'markitup',
+    render 'markitup',
       content => $content,
       prefix  => $prefix || '../';
 };
@@ -406,7 +407,7 @@ get '/extra/*' => sub {
     my $name = decode_utf8 $vars{splat}[0];
     return unless $name;
     return unless Beagle::Web->template_exists("extra/$name");
-    Beagle::Web::render("extra/$name");
+    render("extra/$name");
 };
 
 1;
