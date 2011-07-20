@@ -334,10 +334,16 @@ sub set_config {
     else {
         $config = $value;
     }
+
+    my $input = Config::INI::Writer->preprocess_input($config);
+    eval { Config::INI::Writer->validate_input( $input ) };
+    die $@ if $@;
+
     my $config_file = catfile( kennel(), 'config' );
     my $parent = encode( locale_fs => parent_dir($config_file) );
     make_path( parent_dir($config_file) ) or die $! unless -e $parent;
     open my $fh, '>:encoding(utf8)', $config_file or die $!;
+
     return Config::INI::Writer->write_handle( $config, $fh );
 }
 
