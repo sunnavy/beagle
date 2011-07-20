@@ -53,7 +53,7 @@ sub execute {
     my $pid = $self->parent;
     die "beagle comment --parent parent_id ..." unless $pid;
 
-    my @ret = resolve_entry( $pid, handle => handle() || undef );
+    my @ret = resolve_entry( $pid, handle => current_handle() || undef );
     unless (@ret) {
         @ret = resolve_entry($pid) or die_entry_not_found($pid);
     }

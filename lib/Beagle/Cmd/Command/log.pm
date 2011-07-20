@@ -20,7 +20,7 @@ sub execute {
     my ( $id, $entry, $bh );
     if ( $self->id ) {
         my $i = $self->id;
-        my @ret = resolve_entry( $i, handle => handle() || undef );
+        my @ret = resolve_entry( $i, handle => current_handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }

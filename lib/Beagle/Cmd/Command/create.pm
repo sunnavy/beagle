@@ -108,7 +108,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my $bh = handle() or die "please specify beagle by --name or --root";
+    my $bh = current_handle() or die "please specify beagle by --name or --root";
 
     $self->handle_options( $opt, $args );
 

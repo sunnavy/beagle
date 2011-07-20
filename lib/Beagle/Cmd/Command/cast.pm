@@ -23,7 +23,7 @@ sub execute {
     my $new_class = entry_type_info->{$type}{class};
 
     for my $i (@$args) {
-        my @ret = resolve_entry( $i, handle => handle() || undef );
+        my @ret = resolve_entry( $i, handle => current_handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($i) or die_entry_not_found($i);
         }

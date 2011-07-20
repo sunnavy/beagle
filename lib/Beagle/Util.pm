@@ -758,8 +758,8 @@ sub die_entry_ambiguous {
     die join newline(), @out;
 }
 
-sub handle {
-    my $root = shift || current_root('not die');
+sub current_handle {
+    my $root = current_root('not die');
     require Beagle::Handle;
 
     if ($root) {
