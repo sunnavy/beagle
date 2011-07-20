@@ -137,7 +137,7 @@ sub spread_template_roots {
     }
 
     push @SPREAD_TEMPLATE_ROOTS, catdir( share_root(), 'spread_templates' );
-
+    @SPREAD_TEMPLATE_ROOTS = uniq @SPREAD_TEMPLATE_ROOTS;
     return @SPREAD_TEMPLATE_ROOTS;
 }
 
@@ -164,7 +164,7 @@ sub web_template_roots {
     }
 
     push @WEB_TEMPLATE_ROOTS, catdir( share_root(), 'views' );
-
+    @WEB_TEMPLATE_ROOTS = uniq @WEB_TEMPLATE_ROOTS;
     return @WEB_TEMPLATE_ROOTS;
 }
 
@@ -191,6 +191,7 @@ sub po_roots {
           decode( locale(), $ENV{BEAGLE_PO_ROOTS} );
     }
 
+    @PO_ROOTS = uniq @PO_ROOTS;
     return @PO_ROOTS;
 }
 
@@ -1043,7 +1044,7 @@ sub plugins {
     }
     $SEARCHED_PLUGINS = 1;
 
-    @PLUGINS =
+    @PLUGINS = uniq
       map { /^Beagle::Plugin::/ ? $_ : "Beagle::Plugin::$_" } @PLUGINS;
 
     return @PLUGINS;
