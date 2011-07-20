@@ -59,7 +59,7 @@ sub feed {
         );
 
         $item->pubDate( $entry->created );
-        $item->author( $info->name . ' (' . $info->email . ')' );
+        $item->author( $entry->author || $info->name . ' (' . $info->email . ')' );
         my $category = $entry->type,;
         if ( $entry->can('tags') ) {
             $category = join ', ', $category, $entry->type,

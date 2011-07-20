@@ -161,6 +161,11 @@ sub summary {
     return $self->title . ' ' . $self->url;
 }
 
+sub author {
+    my $self = shift;
+    return Email::Address->new( $self->info->name, $self->info->email )->format;
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 

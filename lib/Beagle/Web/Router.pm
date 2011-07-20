@@ -186,9 +186,7 @@ post '/admin/entry/:type/new' => sub {
         if ( try_load_class($class) ) {
             my $entry = $class->new( timezone => bh()->info->timezone );
             if ( $entry->can('author') && !$entry->author ) {
-                $entry->author(
-                    Email::Address->new( bh()->info->name, bh()->info->email )
-                      ->format );
+                $entry->author( bh()->info->author );
             }
 
             if ( $type eq 'comment' && !req()->param('format') ) {

@@ -211,10 +211,7 @@ sub init_entry_type {
             );
             next if $entry->draft && !$self->drafts;
 
-            $entry->author(
-                Email::Address->new( $self->info->name, $self->info->email )
-                  ->format )
-              unless $entry->author;
+            $entry->author( $self->info->author ) unless $entry->author;
 
             push @entries, $entry;
             $self->map->{ $entry->id } = $entry;

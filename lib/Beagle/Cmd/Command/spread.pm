@@ -115,8 +115,7 @@ sub execute {
         }
 
         my $to = $self->to;
-        my $from = $self->from
-          || Email::Address->new( $bh->info->name, $bh->info->email )->format;
+        my $from = $self->from || $bh->info->author;
         my $subject = $self->subject || $entry->summary(80);
 
         if ( defined $template ) {

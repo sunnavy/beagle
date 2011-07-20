@@ -125,8 +125,7 @@ sub execute {
             grep { defined $opt->{$_} } keys %$opt
         );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
-        $temp->author( $self->author
-              || Email::Address->new( $bh->info->name, $bh->info->email )->format );
+        $temp->author( $bh->info->author );
 
         my $template = $temp->serialize(
             $self->verbose
@@ -156,9 +155,7 @@ sub execute {
     $entry->timezone( $bh->info->timezone )
       if $bh->info->timezone
           && !$entry->timezone;
-    $entry->author( $self->author
-          || Email::Address->new( $bh->info->name, $bh->info->email )->format )
-      unless $entry->author;
+    $entry->author( $self->author || $bh->info->author ) unless $entry->author;
 
     if ( $bh->create_entry( $entry, commit => 0, ) ) {
         $self->handle_attachments($entry);
