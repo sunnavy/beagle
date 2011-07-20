@@ -1,5 +1,5 @@
 package Beagle::Web::Request;
-
+use Encode;
 use base 'Plack::Request';
 use Hash::MultiValue;
 
