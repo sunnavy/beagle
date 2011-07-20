@@ -50,6 +50,7 @@ has plugins => (
         my $value = shift;
         undef $Beagle::Util::SEARCHED_PLUGINS;
         $ENV{BEAGLE_PLUGINS} = encode( locale => $value );
+        Beagle::Util::plugins();
     },
 );
 

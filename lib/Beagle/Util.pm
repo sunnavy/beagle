@@ -1045,8 +1045,13 @@ sub plugins {
     $SEARCHED_PLUGINS = 1;
 
     @PLUGINS = uniq
-      map { /^Beagle::Plugin::/ ? $_ : "Beagle::Plugin::$_" } @PLUGINS;
+      map { /^Beagle::Plugin::/ ? $_ : "Beagle::Plugin::$_" }
+      grep { $_ } @PLUGINS;
 
+    undef $entry_type_info;
+    if ( delete $INC{'Beagle/Handle.pm'} ) {
+        require Beagle::Handle;
+    }
     return @PLUGINS;
 }
 
