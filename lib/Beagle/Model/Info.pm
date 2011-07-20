@@ -163,7 +163,7 @@ sub summary {
 
 sub author {
     my $self = shift;
-    return Email::Address->new( $self->info->name, $self->info->email )->format;
+    return Email::Address->new( $self->name, $self->email )->format;
 }
 
 no Any::Moose;
