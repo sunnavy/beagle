@@ -1,6 +1,5 @@
 package Beagle::Role::File;
 use Beagle::Util;
-use Encode;
 use Any::Moose 'Role';
 requires('path');
 

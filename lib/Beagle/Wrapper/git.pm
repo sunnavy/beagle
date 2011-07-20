@@ -1,7 +1,6 @@
 package Beagle::Wrapper::git;
 use Beagle::Util;
 use Any::Moose;
-use Encode;
 has 'root' => (
     isa     => 'Str',
     is      => 'rw',

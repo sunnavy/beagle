@@ -1,6 +1,5 @@
 package Beagle::Cmd::Command::follow;
 use Beagle::Util;
-use Encode;
 use File::Which 'which';
 
 use Any::Moose;

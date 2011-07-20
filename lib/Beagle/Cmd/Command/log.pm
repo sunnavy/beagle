@@ -1,6 +1,5 @@
 package Beagle::Cmd::Command::log;
 use Beagle::Util;
-use Encode;
 
 use Any::Moose;
 extends qw/Beagle::Cmd::Command/;

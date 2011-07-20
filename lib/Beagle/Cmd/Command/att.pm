@@ -1,5 +1,4 @@
 package Beagle::Cmd::Command::att;
-use Encode;
 use Beagle::Util;
 use Any::Moose;
 use File::Basename;

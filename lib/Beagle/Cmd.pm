@@ -1,7 +1,6 @@
 package Beagle::Cmd;
 use Any::Moose;
 use Beagle::Util;
-use Encode;
 extends any_moose('X::App::Cmd');
 
 before 'run' => sub {

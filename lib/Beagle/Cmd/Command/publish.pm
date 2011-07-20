@@ -1,7 +1,6 @@
 package Beagle::Cmd::Command::publish;
 use Any::Moose;
 use Beagle::Util;
-use Encode;
 use File::Copy::Recursive 'dircopy';
 
 extends qw/Beagle::Cmd::Command/;

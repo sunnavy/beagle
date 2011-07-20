@@ -2,7 +2,6 @@ package Beagle::Backend::git;
 use Any::Moose;
 use Beagle::Wrapper::git;
 use Beagle::Util;
-use Encode;
 use Email::Address;
 
 extends 'Beagle::Backend::base';

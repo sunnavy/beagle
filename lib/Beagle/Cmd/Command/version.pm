@@ -1,5 +1,4 @@
 package Beagle::Cmd::Command::version;
-use Encode;
 use Beagle::Util;
 use Any::Moose;
 

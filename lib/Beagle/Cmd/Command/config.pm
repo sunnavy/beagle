@@ -1,7 +1,6 @@
 package Beagle::Cmd::Command::config;
 use Beagle::Util;
 use Any::Moose;
-use Encode;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
 has force => (

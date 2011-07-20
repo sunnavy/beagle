@@ -1,7 +1,6 @@
 package Beagle::Web::Request;
 
 use base 'Plack::Request';
-use Encode;
 use Hash::MultiValue;
 
 sub query_parameters {

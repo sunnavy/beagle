@@ -1,7 +1,6 @@
 package Beagle::Cmd::Command::cat;
 use Any::Moose;
 use Beagle::Util;
-use Encode;
 extends qw/Beagle::Cmd::Command/;
 
 has 'raw' => (

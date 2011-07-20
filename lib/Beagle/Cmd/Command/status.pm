@@ -1,5 +1,4 @@
 package Beagle::Cmd::Command::status;
-use Encode;
 use Any::Moose;
 use Beagle::Util;
 extends qw/Beagle::Cmd::Command/;

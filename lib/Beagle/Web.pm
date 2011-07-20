@@ -2,7 +2,6 @@ package Beagle::Web;
 use Beagle;
 use Beagle::Util;
 use Beagle::Handle;
-use Encode;
 use Beagle::Web::Request;
 use Beagle::I18N;
 use I18N::LangTags;

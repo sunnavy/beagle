@@ -1,7 +1,6 @@
 package Beagle::Backend::base;
 use Any::Moose;
 use Beagle::Util;
-use Encode;
 
 has 'root' => (
     isa      => 'Str',

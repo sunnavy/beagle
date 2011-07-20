@@ -1,5 +1,4 @@
 package Beagle::Cmd::Command::cmds;
-use Encode;
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
 
