@@ -1,7 +1,9 @@
 package Beagle::Web::Router::Util;
 use Router::Simple;
+use JSON;
 use base 'Exporter';
-our @EXPORT = qw/handle request render get post any router admin/;
+our @EXPORT =
+  qw/handle request render get post any router admin from_json to_json/;
 
 sub handle  { Beagle::Web->handle() }
 sub request { Beagle::Web->request() }

@@ -6,7 +6,6 @@ use Lingua::EN::Inflect 'A';
 use Router::Simple;
 use Beagle::Web::Request;
 use Beagle::Web::Form;
-use JSON;
 use Beagle::I18N;
 use I18N::LangTags;
 use I18N::LangTags::Detect;
