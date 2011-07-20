@@ -13,11 +13,11 @@ use I18N::LangTags::Detect;
 use Beagle::Web::Router::Util;
 
 get '/' => sub {
-    my $limit = scalar @{ bh()->entries };
-    my $max   = Beagle::Web->home_limit;
+    my $limit = scalar @{ current_handle() ()->entries };
+    my $max = Beagle::Web->home_limit;
     $limit = $max if $limit > $max;
     render 'index',
-      entries => [ @{ bh()->entries }[ 0 .. $limit - 1 ] ];
+      entries => [ @{ current_handle() ()->entries }[ 0 .. $limit - 1 ] ];
 };
 
 get '/fragment/menu' => sub {
@@ -27,7 +27,7 @@ get '/fragment/menu' => sub {
 get '/fragment/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id} or return;
-    my @ret  = resolve_id( $i, handle => bh() );
+    my @ret  = resolve_id( $i, handle => current_handle() () );
     return unless @ret == 1;
 
     render 'entry', entry => $ret[0]->{entry};
@@ -38,13 +38,13 @@ get '/tag/:tag' => sub {
     my $tag  = decode_utf8 $vars{tag};
 
     return Beagle::Web::redirect '/'
-      unless $tag && Beagle::Web->tags( bh() )->{$tag};
+      unless $tag && Beagle::Web->tags( current_handle() () )->{$tag};
 
     render 'index',
       $tag  => 1,
       title => "tag $tag",
-      entries =>
-      [ map { bh()->map->{$_} } @{ Beagle::Web->tags( bh() )->{$tag} } ],
+      entries => [ map { current_handle() ()->map->{$_} }
+          @{ Beagle::Web->tags( current_handle() () )->{$tag} } ],
       prefix => $prefix || '../';
 };
 
@@ -52,12 +52,12 @@ get '/date/{year:[0-9]+}' => sub {
     my %vars = @_;
     my $year = $vars{year};
     return Beagle::Web::redirect '/'
-      unless $year && Beagle::Web->years( bh() )->{$year};
+      unless $year && Beagle::Web->years( current_handle() () )->{$year};
     return render 'index',
       entries => [
-        map   { bh()->map->{$_} }
-          map { @{ Beagle::Web->years( bh() )->{$year}{$_} } }
-          keys %{ Beagle::Web->years( bh() )->{$year} }
+        map { current_handle() ()->map->{$_} }
+          map { @{ Beagle::Web->years( current_handle() () )->{$year}{$_} } }
+          keys %{ Beagle::Web->years( current_handle() () )->{$year} }
       ],
       title  => "in $year",
       prefix => $prefix || '../';
@@ -68,10 +68,10 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my $year  = $vars{year};
     my $month = $vars{month};
     return Beagle::Web::redirect '/'
-      unless Beagle::Web->years( bh() )->{$year}{$month};
+      unless Beagle::Web->years( current_handle() () )->{$year}{$month};
     return render 'index',
-      entries => [ map { bh()->map->{$_} }
-          @{ Beagle::Web->years( bh() )->{$year}{$month} } ],
+      entries => [ map { current_handle() ()->map->{$_} }
+          @{ Beagle::Web->years( current_handle() () )->{$year}{$month} } ],
       title  => "in $year/$month",
       prefix => $prefix || '../../';
 };
@@ -79,7 +79,7 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
 get '/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id};
-    my @ret  = resolve_id( $i, handle => bh() );
+    my @ret  = resolve_id( $i, handle => current_handle() () );
     return Beagle::Web::redirect "/" unless @ret == 1;
     my $id = $ret[0]->{id};
     return Beagle::Web::redirect "/entry/$id" unless $i eq $id;
@@ -107,17 +107,17 @@ get '/about' => sub {
 get '/feed' => sub { Beagle::Web->feed()->to_string };
 
 any '/search' => sub {
-    my $query = req()->param('query');
+    my $query = request()->param('query');
     return render 'search', title => 'search' unless $query;
 
     my @found;
-    for my $entry ( @{ bh()->entries } ) {
+    for my $entry ( @{ current_handle() ()->entries } ) {
         push @found, $entry if $entry->serialize =~ /\Q$query/i;
     }
 
     @found = sort { $b->updated <=> $a->updated } @found;
 
-    if ( req()->header('Accept') =~ /json/ ) {
+    if ( request()->header('Accept') =~ /json/ ) {
         return to_json(
             {
                 results => [
@@ -168,12 +168,13 @@ get '/admin/entry/{id:\w{32}}' => sub {
     my %vars = @_;
     my ($id) = $vars{id};
 
-    return Beagle::Web::redirect '/admin/entries' unless bh()->map->{$id};
+    return Beagle::Web::redirect '/admin/entries'
+      unless current_handle() ()->map->{$id};
     render 'admin/entry',
       message => $vars{'message'},
-      entry   => bh()->map->{$id},
-      form    => Beagle::Web::Form->new(
-        field_list => scalar Beagle::Web->field_list( bh()->map->{$id} ) ),
+      entry   => current_handle() ()->map->{$id},
+      form    => Beagle::Web::Form->new( field_list =>
+          scalar Beagle::Web->field_list( current_handle() ()->map->{$id} ) ),
       title  => "update $id",
       prefix => $prefix || '../../';
 };
@@ -184,29 +185,29 @@ post '/admin/entry/:type/new' => sub {
     if ($type) {
         my $class = 'Beagle::Model::' . ucfirst lc $type;
         if ( try_load_class($class) ) {
-            my $entry = $class->new( timezone => bh()->info->timezone );
+            my $entry =
+              $class->new( timezone => current_handle() ()->info->timezone );
             if ( $entry->can('author') && !$entry->author ) {
-                $entry->author( bh()->info->author );
+                $entry->author( current_handle() ()->info->author );
             }
 
-            if ( $type eq 'comment' && !req()->param('format') ) {
+            if ( $type eq 'comment' && !request()->param('format') ) {
 
                 # make comment's format be plain by default if from web ui
                 $entry->format('plain');
             }
 
-            if ( process_fields( $entry, req()->parameters->mixed ) ) {
-                my ($created) =
-                  bh()->create_entry( $entry, message => $vars{message}, );
+            if ( process_fields( $entry, request()->parameters->mixed ) ) {
+                my ($created) = current_handle()
+                  ()->create_entry( $entry, message => $vars{message}, );
 
                 if ($created) {
-                    add_attachments( $entry, req()->upload('attachments') );
-                    if ( req()->header('Accept') =~ /json/ ) {
+                    add_attachments( $entry, request()->upload('attachments') );
+                    if ( request()->header('Accept') =~ /json/ ) {
                         my $ret = {
                             status    => 'created',
                             parent_id => $entry->parent_id,
-                            content =>
-                              render( 'entry', entry => $entry ),
+                            content   => render( 'entry', entry => $entry ),
                         };
                         return to_json($ret);
                     }
@@ -226,7 +227,7 @@ post '/admin/entry/:type/new' => sub {
                     }
                 }
                 else {
-                    if ( req()->header('Accept') =~ /json/ ) {
+                    if ( request()->header('Accept') =~ /json/ ) {
                         my $ret = {
                             status  => 'error',
                             message => 'failed to create',
@@ -245,7 +246,7 @@ post '/admin/entry/:type/new' => sub {
         }
     }
 
-    if ( req()->header('Accept') =~ /json/ ) {
+    if ( request()->header('Accept') =~ /json/ ) {
         my $ret = {
             status  => 'error',
             content => "invalid type: $type",
@@ -261,16 +262,17 @@ post '/admin/entry/{id:\w{32}}' => sub {
     my %vars = @_;
     my ($id) = $vars{id};
 
-    if ( my $entry = bh()->map->{$id} ) {
+    if ( my $entry = current_handle() ()->map->{$id} ) {
 
-        if ( process_fields( $entry, req()->parameters->mixed ) ) {
+        if ( process_fields( $entry, request()->parameters->mixed ) ) {
 
-            bh()->update_entry( $entry, message => $vars{message} );
+            current_handle()
+              ()->update_entry( $entry, message => $vars{message} );
 
             my $del = $vars{'delete-attachments'};
             delete_attachments( $entry, ref $del ? @$del : $del );
 
-            add_attachments( $entry, req()->upload('attachments') );
+            add_attachments( $entry, request()->upload('attachments') );
 
             render 'admin/entry',
               entry => $entry,
@@ -294,11 +296,11 @@ post '/admin/entry/{id:\w{32}}' => sub {
 };
 
 post '/admin/entry/delete' => sub {
-    my $id = req()->param('id');
+    my $id = request()->param('id');
 
-    if ( my $entry = bh()->map->{$id} ) {
-        bh()->delete_entry($entry);
-        if ( req()->header('Accept') =~ /json/ ) {
+    if ( my $entry = current_handle() ()->map->{$id} ) {
+        current_handle() ()->delete_entry($entry);
+        if ( request()->header('Accept') =~ /json/ ) {
             my $ret = { status => 'deleted' };
             $ret->{redraw_menu} = 1 unless $entry->type eq 'comment';
             return to_json($ret);
@@ -315,13 +317,15 @@ post '/admin/entry/delete' => sub {
 };
 
 any '/admin/info' => sub {
-    my $entry = bh()->info;
+    my $entry = current_handle() ()->info;
     Beagle::Web::redirect '/admin/entry/' . $entry->id;
 };
 
 get '/favicon.ico' => sub {
-    if ( bh()->info->avatar && bh()->info->avatar ne '/favicon.ico' ) {
-        Beagle::Web::redirect bh()->info->avatar;
+    if (   current_handle() ()->info->avatar
+        && current_handle() ()->info->avatar ne '/favicon.ico' )
+    {
+        Beagle::Web::redirect current_handle() ()->info->avatar;
     }
     else {
         Beagle::Web::redirect '/system/beagle.png';
@@ -329,21 +333,23 @@ get '/favicon.ico' => sub {
 };
 
 get '/static/*' => sub {
-    my %vars  = @_;
+    my %vars = @_;
     my @parts = split '/', decode_utf8 $vars{splat}[0];
-    my $file  = encode( 'locale_fs', catfile( static_root( bh() ), @parts ) );
+    my $file =
+      encode( 'locale_fs',
+        catfile( static_root( current_handle() () ), @parts ) );
     return unless -e $file && -r $file;
 
-    my $res = req()->new_response('200');
+    my $res = request()->new_response('200');
     $res->content_type( mime_type($file) );
     $res->body( read_file $file);
     return $res;
 };
 
 post '/utility/markitup' => sub {
-    my $data = req()->param('data');
+    my $data = request()->param('data');
     return unless $data;
-    my $format = req()->param('format');
+    my $format = request()->param('format');
     return unless $format;
 
     my $content;

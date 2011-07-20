@@ -1,10 +1,10 @@
 package Beagle::Web::Router::Util;
 use Router::Simple;
 use base 'Exporter';
-our @EXPORT = qw/bh req render get post any router admin/;
-sub bh     { Beagle::Web->current_handle() }
-sub req    { Beagle::Web->current_request() }
-sub render { goto \&Beagle::Web::render }
+our @EXPORT = qw/current_handle request render get post any router admin/;
+sub current_handle { Beagle::Web->current_handle() }
+sub request        { Beagle::Web->current_request() }
+sub render         { goto \&Beagle::Web::render }
 
 sub router {
     my $class = shift || router_package();
