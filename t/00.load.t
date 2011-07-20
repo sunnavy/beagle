@@ -1,7 +1,5 @@
 use Test::More;
 use File::Find;
-use Beagle::Util;
-use Beagle::Handle;
 my @modules;
 find(
     sub {
