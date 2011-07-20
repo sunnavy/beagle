@@ -25,6 +25,8 @@ sub import {
 
 sub init {
     my $pkg = router_package();
+    return unless $pkg;
+
     no strict 'refs';
     ${"${pkg}::ROUTER"} ||= Router::Simple->new();
     ${"${pkg}::ADMIN"}  ||= ${"${pkg}::ROUTER"}->submapper(
@@ -46,7 +48,6 @@ sub router_package {
             $pkg = $p;
         }
     }
-    die "failed to find router package" unless $pkg;
     return $pkg;
 }
 

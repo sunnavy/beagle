@@ -336,13 +336,11 @@ sub init {
     $router = Beagle::Web::Router->router;
     for my $plugin ( plugins() ) {
         my $m = $plugin . '::Web::Router';
-        if ( Class::Load::try_load_class($m) ) {
-            if ( $m->can('router') ) {
-                my $r = $m->router;
-                if ($r) {
-                    unshift @{ $router->{routes} }, @{ $r->{routes} }
-                      if $r->{routes};
-                }
+        if ( load_optional_class($m) ) {
+            my $r = $m->router;
+            if ($r) {
+                unshift @{ $router->{routes} }, @{ $r->{routes} }
+                  if $r->{routes};
             }
         }
     }

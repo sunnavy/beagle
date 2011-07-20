@@ -1,7 +1,6 @@
 package Beagle::Web::Form;
-
+use Beagle::Util;
 use Any::Moose;
-use Class::Load;
 
 has fields => (
     isa     => 'ArrayRef',
@@ -37,7 +36,7 @@ sub BUILD {
         my $type = lc delete $opt->{type};
         $type ||= 'text';
         my $class = "Beagle::Web::Form::$type";
-        Class::Load::load_class($class);
+        load_class($class);
         push @fields, $class->new( name => $name, %$opt );
     }
     $self->fields( \@fields );

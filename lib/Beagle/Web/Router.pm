@@ -3,7 +3,6 @@ use Beagle::Web;
 use Beagle::Util;
 use Encode;
 use Lingua::EN::Inflect 'A';
-use Class::Load ':all';
 use Router::Simple;
 use Beagle::Web::Request;
 use Beagle::Web::Form;

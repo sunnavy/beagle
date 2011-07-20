@@ -11,6 +11,8 @@ my @subs = qw/
   term_size term_width term_height make_path remove_tree
   pretty_datetime parse_datetime confess cluck encode decode
   encode_entities decode_entities
+  load_class try_load_class is_class_loaded load_optional_class
+
   /;
 
 for (@subs) {

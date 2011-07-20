@@ -1,7 +1,6 @@
 package Beagle::Web::Form::base;
 
 use Any::Moose;
-use Class::Load;
 use Beagle::Util;
 
 has 'name' => (

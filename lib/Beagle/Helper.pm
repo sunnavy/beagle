@@ -13,6 +13,7 @@ use List::MoreUtils 'uniq';
 use Storable 'dclone', 'nstore', 'retrieve';
 use File::Path 'make_path', 'remove_tree';
 use HTML::Entities;
+use Class::Load ':all';
 
 our ( $NEWLINE, $IS_WINDOWS, $OUTSIDE_ENCODING, );
 
@@ -28,7 +29,8 @@ our @EXPORT = qw/
   user_home file_size parent_dir to_array from_array edit_text max_length
   term_size term_width term_height  mime_type make_path remove_tree
   pretty_datetime parse_datetime confess cluck encode decode 
-  encode_entities decode_entities
+  encode_entities decode_entities load_class try_load_class is_class_loaded
+  load_optional_class
   /;
 
 require IO::Handle;

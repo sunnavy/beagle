@@ -1,10 +1,8 @@
 package Beagle::Handle;
 use Any::Moose;
 use Lingua::EN::Inflect 'PL';
-
-use Beagle::Backend;
 use Beagle::Util;
-
+use Beagle::Backend;
 has 'name' => (
     isa     => 'Str',
     is      => 'rw',
@@ -40,7 +38,7 @@ has 'cache' => (
         my $name = $self->name;
         my $file =
           encode( locale_fs =>
-              catfile( cache_root, $name . ( $self->drafts ? '.drafts' : '' ) )
+              catfile( cache_root(), $name . ( $self->drafts ? '.drafts' : '' ) )
           );
         my $parent = parent_dir($file);
         make_path( $parent ) unless -e $parent;

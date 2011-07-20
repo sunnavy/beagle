@@ -8,7 +8,6 @@ use Config::INI::Reader;
 use Config::INI::Writer;
 use Any::Moose 'Util::TypeConstraints';
 use Lingua::EN::Inflect 'PL';
-use Class::Load qw/load_class try_load_class/;
 
 # to handle checkbox input.
 coerce 'Bool' => from 'Ref' => via { 1 };
@@ -530,18 +529,19 @@ my $entry_type_info;
 sub entry_type_info {
     return dclone($entry_type_info) if $entry_type_info;
 
-    require Class::Load;
     require Module::Pluggable::Object;
     my $models =
     Module::Pluggable::Object->new(
         search_path => [ 'Beagle::Model', map { $_ .'::Model' } plugins() ] );
     my @models = $models->plugins;
     for my $m (@models) {
-        Class::Load::load_class($m);
+        load_class($m);
         next if $m =~ /^Beagle::Model::(?:Info|Attachment|Entry)$/;
         next unless $m =~ /::Model::(\w+)$/;
         my $type = lc $1;
-        if ( $entry_type_info->{$type} ) {
+        if (   $entry_type_info->{$type}
+            && $entry_type_info->{$type}{class} ne $m )
+        {
             warn
 "conflict found for $type: $m will overrite $entry_type_info->{$type}{class}";
         }
@@ -581,12 +581,12 @@ sub system_alias {
 
     my $type_info = entry_type_info();
     for my $type ( keys %$type_info ) {
-        unless ( try_load_class("Beagle::Cmd::Command::$type") ) {
+        unless ( load_optional_class("Beagle::Cmd::Command::$type") ) {
             $system_alias->{$type} = "create --type $type";
         }
 
         my $pl = $type_info->{$type}{plural};
-        unless ( try_load_class("Beagle::Cmd::Command::$pl") ) {
+        unless ( load_optional_class("Beagle::Cmd::Command::$pl") ) {
             $system_alias->{$pl} = "ls --type $type";
         }
     }
@@ -1049,9 +1049,6 @@ sub plugins {
       grep { $_ } @PLUGINS;
 
     undef $entry_type_info;
-    if ( delete $INC{'Beagle/Handle.pm'} ) {
-        require Beagle::Handle;
-    }
     return @PLUGINS;
 }
 

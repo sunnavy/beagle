@@ -1,6 +1,5 @@
 package Beagle::Backend;
 
-use Class::Load 'load_class';
 use Beagle::Util;
 
 sub type {
