@@ -122,7 +122,7 @@ sub filter {
     for my $t ( keys %$type_info ) {
         my $attr = $type_info->{$t}{plural};
         if ( $type eq $t || $type eq 'all' ) {
-            for my $entry ( @{ $bh->$attr } ) {
+            for my $entry ( @{ $bh->$attr ||[]} ) {
                 next
                   if ( $self->draft && !$entry->draft )
                   || ( $self->final && $entry->draft );
