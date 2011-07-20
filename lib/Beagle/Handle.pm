@@ -173,7 +173,7 @@ sub update_relation {
           if $map->{$key} eq $self->name;
     }
     for my $entry ( @{ $self->comments }, @{ $self->entries } ) {
-        $map->{ $entry->id } = $self->name;
+        $map->{ $entry->id } = $self->name if $entry->can('id');
     }
     set_relation($map);
 }
