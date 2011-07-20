@@ -21,10 +21,11 @@
   <div class="extra">
 : for $entry.extra_meta_fields_in_web_view -> $field {
 : if $entry[$field] && not ( $entry.type == 'review' && $field == 'link' ) {
-    <span title="<: $field :>">
 :   if match( $entry[$field], '^https?://' ) {
+    <span title="<: $entry[$field] :>">
     <a href="<: $entry[$field] :>"><: $field :></a>
 :   } else {
+    <span title="<: $field :>">
     <: $entry[$field] :>
 :   }
     </span>
