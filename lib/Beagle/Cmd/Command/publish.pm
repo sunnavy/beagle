@@ -2,6 +2,7 @@ package Beagle::Cmd::Command::publish;
 use Any::Moose;
 use Beagle::Util;
 use File::Copy::Recursive 'dircopy';
+$ENV{BEAGLE_WEB_PAGE_LIMIT}= 1000_000;
 
 extends qw/Beagle::Cmd::Command/;
 
@@ -59,6 +60,7 @@ sub execute {
     }
 
     require Beagle::Web;
+
     Beagle::Web->init();
     $app = \&Beagle::Web::handle_request;
 
