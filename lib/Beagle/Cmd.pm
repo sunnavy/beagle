@@ -6,16 +6,19 @@ extends any_moose('X::App::Cmd');
 before 'run' => sub {
     @ARGV = map { defined $_ ? decode( locale => $_ ) : $_ } @ARGV;
 
-    if ( !@ARGV
-        && ( $ENV{BEAGLE_DEFAULT_COMMAND} || core_config->{default_command} ) )
-    {
-        require Text::ParseWords;
-        @ARGV =
-          Text::ParseWords::shellwords( $ENV{BEAGLE_DEFAULT_COMMAND}
-              || encode( locale => core_config->{default_command} ) );
-    }
-    else {
-        @ARGV = 'shell';
+    if ( !@ARGV ) {
+        my $command =
+          $ENV{BEAGLE_DEFAULT_COMMAND}
+          ? decode( locale => $ENV{BEAGLE_DEFAULT_COMMAND} )
+          : core_config->{default_command};
+
+        if ($command) {
+            require Text::ParseWords;
+            @ARGV = Text::ParseWords::shellwords($command);
+        }
+        else {
+            @ARGV = 'shell';
+        }
     }
 
     my $cmd = $ARGV[0];
