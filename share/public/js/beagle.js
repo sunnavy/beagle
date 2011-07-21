@@ -54,11 +54,7 @@ function beagleAjaxSearch () {
                 dataType: 'json',
                 success: function (json) {
                     if ( json.results.length == 1 ) {
-                        $('#content').load(
-                            '/fragment/entry/' + json.results[0].id, function() {
-                                beagleContrast('#content');
-                            }
-                        );
+                        window.location = '/entry/' + json.results[0].id;
                     }
                     else {
                         var html = '<div class="results"><ul>';
