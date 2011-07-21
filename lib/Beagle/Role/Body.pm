@@ -46,7 +46,7 @@ sub body_html {
     my $self = shift;
     if ( $self->format eq 'plain' && $self->body !~ /\[BeagleAttachmentPath\]/ )
     {
-        return '<pre>' . encode_entities( $self->body ) . '</pre>';
+        return '<pre class="entry body">' . encode_entities( $self->body ) . '</pre>';
     }
     else {
         return $self->_body_html;
