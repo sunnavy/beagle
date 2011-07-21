@@ -39,11 +39,12 @@ sub feed {
     $feed->image( $info->avatar, $info->title, $info->url, $info->body, 80,
         80 );
 
-    my $limit = scalar @{$entries};
-    my $max = $info->web_feed_limit() || 20;
-    $limit = $max if $limit > $max;
+    my $limit = $ENV{BEAGLE_WEB_FEED_LIMIT} || $info->web_feed_limit() || 20;
+    if ( scalar @$entries > $limit ) {
+        $entries = [ @{$entries}[ 0 .. $limit-1] ];
+    }
 
-    for my $entry ( @{$entries}[ 0 .. $limit-1 ] ) {
+    for my $entry ( @$entries ) {
         my $item = $feed->add_item();
         $item->link( $info->url . "/entry/" . $entry->id );
         if ( $entry->can('title') ) {
@@ -537,10 +538,10 @@ sub render {
     my $template = shift;
     my %vars = ( default_options(), @_ );
     if ( $vars{entries} ) {
-        $vars{limit} = $limit;
+        my $limit = $ENV{BEAGLE_WEB_PAGE_LIMIT} || $bh->info->web_page_limit;
         $vars{page} = request()->param('page') || 1;
         my $page = Data::Page->new( scalar @{ $vars{entries} },
-            $vars{limit}, $vars{page} );
+            $limit, $vars{page} );
         $vars{entries}   = [ $page->splice( $vars{entries} ) ];
 
         # page from user may exceed the range
