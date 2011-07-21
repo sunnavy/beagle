@@ -13,6 +13,13 @@ has 'parent' => (
     traits        => ['Getopt'],
 );
 
+has 'info' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'att for info',
+    traits        => ['Getopt'],
+);
+
 has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
@@ -65,7 +72,10 @@ sub execute {
     die 'you can only specify one of --add, --delete and --prune' if $sub > 1;
 
     die "beagle att --add --parent foo /path/to/a.txt [...]"
-      if $self->add && !$self->parent;
+      if $self->add && !$self->parent && !$self->info;
+
+    die "--parent and --info can't coexist" if $self->parent && $self->info;
+
     die "beagle att --delete 3 [...]" if $self->delete && !@$args;
 
     if ( $self->prune ) {
@@ -95,8 +105,13 @@ sub execute {
     require Beagle::Handle;
     my $bh;
 
-    my $pid = $self->parent;;
-    if ( $pid ) {
+    my $pid;
+
+    if ( $self->info ) {
+        $bh = current_handle();
+        $pid = $bh->info->id;
+    }
+    elsif ( $self->parent ) {
         my @ret = resolve_entry( $pid, handle => current_handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($pid) or die_entry_not_found($pid);
@@ -130,8 +145,10 @@ sub execute {
 
         if (@added) {
             my $msg = $self->message
-              || 'added attachment' . ( @added == 1 ? ' ' : 's ' ) . join( ',
-              ', @added ) . " to entry $pid";
+              || 'added attachment'
+              . ( @added == 1 ? ' ' : 's ' )
+              . join( ', ', @added )
+              . " to entry $pid";
             $bh->backend->commit( message => $msg );
             puts 'added ', join( ', ', @added ), '.';
         }
