@@ -157,5 +157,6 @@ div.utility div.delete{
 div.admin-links div.delete {
     float: right;
     margin-left: 1%;
+    white-space: nowrap;
 }
 
