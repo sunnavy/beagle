@@ -85,7 +85,7 @@ sub execute {
         dircopy( $system, 'system' );
 
         my $static = encode( locale_fs => static_root($bh) );
-        dircopy( $static, 'static' );
+        mkdir( 'static' ) unless -e 'static';
 
         Beagle::Web::change_handle( handle => $bh );
         Beagle::Web::set_static(1);
@@ -98,6 +98,13 @@ sub execute {
         my $entries = $bh->entries;
         for my $entry (@$entries) {
             $self->save_link( '/entry/' . $entry->id );
+
+            my @parts = split_id( $entry->id );
+            if ( -e catdir( $static, @parts ) ) {
+                dircopy( catdir( $static, @parts ),
+                    catdir( 'static', @parts ) );
+            }
+
         }
 
         for my $tag ( keys %{ Beagle::Web::tags($bh) } ) {
