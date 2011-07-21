@@ -3,12 +3,17 @@
 <ul>
 : for $entries -> $entry {
 <li class="contrast">
-<div class="id">
-    <a href="<: $prefix :>admin/entry/<: $entry.id :>"><: $entry.id :></a>
+
+<div class="type">
+    <span title="type"><: $entry.type :></span>
 </div>
+
+<div class="id">
+    <a title="id" href="<: $prefix :>admin/entry/<: $entry.id :>"><: $entry.id :></a>
+</div>
+
 <div class="summary">
-    <a title="<: $entry.summary :>"
-    href="<: $prefix :>admin/entry/<: $entry.id :>"><: $entry.summary :></a>
+    <a title="summary" href="<: $prefix :>admin/entry/<: $entry.id :>"><: $entry.summary :></a>
 </div>
 
 <div class="view">
