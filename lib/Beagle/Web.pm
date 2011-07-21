@@ -329,6 +329,7 @@ my $req;
 sub init {
     my $root = current_root('not die');
 
+    require Beagle::Web::Router;
     $router = Beagle::Web::Router->router;
     for my $plugin ( plugins() ) {
         my $m = $plugin . '::Web::Router';
@@ -429,8 +430,8 @@ sub i18n_handle {
 sub change_handle {
     my %vars = @_;
     if ( $vars{handle} ) {
-        $name = $bh->name;
         $bh = $vars{handle};
+        $name = $bh->name;
         $bh{$name} = $bh;
     }
     elsif ( $vars{name} ) {
