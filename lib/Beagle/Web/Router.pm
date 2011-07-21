@@ -135,10 +135,10 @@ get '/admin/entries' => sub {
 };
 
 get '/admin/entry/:type/new' => sub {
-    my %vars = @_;
-    my $type = lc $vars{'type'};
-    if ($type) {
-        my $class = entry_type_info->{ lc $type }{class};
+    my %vars  = @_;
+    my $type  = lc $vars{'type'};
+    my $class = entry_type_info->{ lc $type }{class};
+    if ($class) {
         my $entry = $class->new( id => 'new' );
 
         return render 'admin/entry',
@@ -168,66 +168,64 @@ get '/admin/entry/{id:\w{32}}' => sub {
 post '/admin/entry/:type/new' => sub {
     my %vars = @_;
     my $type = $vars{'type'};
-    if ($type) {
-        my $class = 'Beagle::Model::' . ucfirst lc $type;
-        if ( try_load_class($class) ) {
-            my $entry =
-              $class->new( timezone => handle()->info->timezone );
-            if ( $entry->can('author') && !$entry->author ) {
-                $entry->author( handle()->info->author );
-            }
+    my $class = entry_type_info->{ lc $type }{class};
+    if ($class) {
+        my $entry = $class->new( timezone => handle()->info->timezone );
+        if ( $entry->can('author') && !$entry->author ) {
+            $entry->author( handle()->info->author );
+        }
 
-            if ( $type eq 'comment' && !request()->param('format') ) {
+        if ( $type eq 'comment' && !request()->param('format') ) {
 
-                # make comment's format be plain by default if from web ui
-                $entry->format('plain');
-            }
+            # make comment's format be plain by default if from web ui
+            $entry->format('plain');
+        }
 
-            if ( process_fields( $entry, request()->parameters->mixed ) ) {
-                my ($created) = handle()->create_entry( $entry, message => $vars{message}, );
+        if ( process_fields( $entry, request()->parameters->mixed ) ) {
+            my ($created) =
+              handle()->create_entry( $entry, message => $vars{message}, );
 
-                if ($created) {
-                    add_attachments( $entry, request()->upload('attachments') );
-                    if ( request()->header('Accept') =~ /json/ ) {
-                        my $ret = {
-                            status    => 'created',
-                            parent_id => $entry->parent_id,
-                            content   => render( 'entry', entry => $entry ),
-                        };
-                        return to_json($ret);
-                    }
+            if ($created) {
+                add_attachments( $entry, request()->upload('attachments') );
+                if ( request()->header('Accept') =~ /json/ ) {
+                    my $ret = {
+                        status    => 'created',
+                        parent_id => $entry->parent_id,
+                        content   => render( 'entry', entry => $entry ),
+                    };
+                    return to_json($ret);
+                }
 
-                    if ( $type eq 'comment' ) {
-                        return
-                            Beagle::Web::redirect '/entry/'
-                          . $entry->parent_id
-                          . '?message=created' . '#'
-                          . $entry->id;
-                    }
-                    else {
-                        return
-                            Beagle::Web::redirect '/entry/'
-                          . $entry->id
-                          . '?message=created';
-                    }
+                if ( $type eq 'comment' ) {
+                    return
+                        Beagle::Web::redirect '/entry/'
+                      . $entry->parent_id
+                      . '?message=created' . '#'
+                      . $entry->id;
                 }
                 else {
-                    if ( request()->header('Accept') =~ /json/ ) {
-                        my $ret = {
-                            status  => 'error',
-                            message => 'failed to create',
-                        };
-                        return to_json($ret);
-                    }
+                    return
+                        Beagle::Web::redirect '/entry/'
+                      . $entry->id
+                      . '?message=created';
                 }
             }
             else {
-                return render "admin/entry/$type/new",
-                  entry => $entry,
-                  form  => Beagle::Web::Form->new(
-                    field_list => scalar Beagle::Web->field_list($entry) ),
-                  message => 'invalid';
+                if ( request()->header('Accept') =~ /json/ ) {
+                    my $ret = {
+                        status  => 'error',
+                        message => 'failed to create',
+                    };
+                    return to_json($ret);
+                }
             }
+        }
+        else {
+            return render "admin/entry/$type/new",
+              entry => $entry,
+              form  => Beagle::Web::Form->new(
+                field_list => scalar Beagle::Web->field_list($entry) ),
+              message => 'invalid';
         }
     }
 
