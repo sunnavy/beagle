@@ -67,7 +67,7 @@ sub cover {
     my $self     = shift;
     my @exts = qw/jpg png gif/;
     my @names = ( 'cover', $self->isbn );
-    my @ids = Beagle::Util::split_id( $self->id );
+    my @ids = split_id( $self->id );
     for my $name (@names) {
         next unless $name;
         for my $ext (@exts) {
