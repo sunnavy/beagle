@@ -6,8 +6,9 @@ use Beagle::Web::Form;
 use Beagle::Web::Router::Util;
 
 get '/' => sub {
-    my $limit = scalar @{ handle()->entries };
-    my $max = Beagle::Web->page_limit;
+    my $bh = handle;
+    my $limit = scalar @{ $bh->entries };
+    my $max = $bh->info->web_page_limit || 10;
     $limit = $max if $limit > $max;
     render 'index',
       entries => [ @{ handle()->entries }[ 0 .. $limit - 1 ] ];

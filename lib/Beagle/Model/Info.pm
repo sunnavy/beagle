@@ -106,6 +106,22 @@ has 'avatar' => (
     },
 );
 
+has 'web_page_limit' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => sub {
+        $ENV{BEAGLE_WEB_PAGE_LIMIT} || core_config->{web_page_limit} || 10;
+    },
+);
+
+has 'web_feed_limit' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => sub {
+        $ENV{BEAGLE_WEB_FEED_LIMIT} || core_config->{web_feed_limit} || 20;
+    },
+);
+
 has 'public_key' => (
     isa     => 'Str',
     is      => 'rw',

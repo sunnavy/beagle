@@ -38,7 +38,7 @@ sub feed {
         80 );
 
     my $limit = scalar @{$entries};
-    my $max = feed_limit();
+    my $max = $info->web_feed_limit() || 20;
     $limit = $max if $limit > $max;
 
     for my $entry ( @{$entries}[ 0 .. $limit-1 ] ) {
@@ -217,14 +217,6 @@ sub app {
 
         \&handle_request;
     }
-}
-
-sub page_limit {
-    return $ENV{BEAGLE_WEB_HOME_LIMIT} || core_config->{web_page_limit} || 10;
-}
-
-sub feed_limit {
-    return $ENV{BEAGLE_WEB_FEED_LIMIT} || core_config->{web_feed_limit} || 20;
 }
 
 sub template_exists {
