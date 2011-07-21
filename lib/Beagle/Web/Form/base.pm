@@ -12,7 +12,9 @@ has 'name' => (
 has 'label' => (
     isa     => 'Str',
     is      => 'rw',
-    default => sub { ucfirst $_[0]->name },
+    default => sub {
+        join ' ', map { ucfirst } split /_+/, $_[0]->name;
+    },
 );
 
 has 'default' => (
