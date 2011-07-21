@@ -290,19 +290,6 @@ div.comment p {
     margin-bottom: 3px;
 }
 
-div.create-comment textarea {
-    margin-left: 5%;
-    width: 90%;
-    height: 150px;
-}
-
-div.create-comment input[type=submit] {
-    margin-right: 5%;
-    float: right;
-    margin-top: 2%;
-    min-width: 10%;
-}
-
 div.nav-roots {
     text-align: right;
     margin-right: 2%;
