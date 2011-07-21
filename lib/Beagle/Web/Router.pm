@@ -138,18 +138,15 @@ get '/admin/entry/:type/new' => sub {
     my %vars = @_;
     my $type = lc $vars{'type'};
     if ($type) {
-        my $class = entry_type_info->{ lc $type };
-        if ( try_load_class($class) ) {
+        my $class = entry_type_info->{ lc $type }{class};
+        my $entry = $class->new( id => 'new' );
 
-            my $entry = $class->new( id => 'new' );
-
-            return render 'admin/entry',
-              entry => $entry,
-              form  => Beagle::Web::Form->new(
-                field_list => scalar Beagle::Web->field_list($entry) ),
-              title  => 'create ' . A($type),
-              prefix => prefix() || '../../../';
-        }
+        return render 'admin/entry',
+          entry => $entry,
+          form  => Beagle::Web::Form->new(
+            field_list => scalar Beagle::Web->field_list($entry) ),
+          title  => 'create ' . A($type),
+          prefix => prefix() || '../../../';
     }
 };
 
