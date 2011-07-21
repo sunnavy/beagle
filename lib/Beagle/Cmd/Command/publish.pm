@@ -2,7 +2,6 @@ package Beagle::Cmd::Command::publish;
 use Any::Moose;
 use Beagle::Util;
 use File::Copy::Recursive 'dircopy';
-$ENV{BEAGLE_WEB_PAGE_LIMIT}= 1000_000;
 
 extends qw/Beagle::Cmd::Command/;
 
@@ -44,6 +43,7 @@ my $handle;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die 'beagle publish --to /path/to/dir' unless defined $self->to;
+    $ENV{BEAGLE_WEB_PAGE_LIMIT}= 1000_000;
     my @bh;
     for my $name (@$args) {
         require Beagle::Handle;
