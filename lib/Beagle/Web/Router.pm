@@ -337,12 +337,11 @@ post '/utility/markitup' => sub {
     return unless $format;
 
     my $content;
-    if ( $format eq 'wiki' ) {
-        $content = parse_wiki($data);
+    my $parse_method = Beagle::Util->can( "parse_$format" );
+    if ( $parse_method ) {
+        $content = $parse_method->($data);
     }
-    elsif ( $format eq 'markdown' ) {
-        $content = parse_markdown($data);
-    }
+
     render 'markitup',
       content => $content,
       prefix  => prefix() || '../';
