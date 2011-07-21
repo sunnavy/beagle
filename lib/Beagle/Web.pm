@@ -539,7 +539,7 @@ sub render {
     my %vars = ( default_options(), @_ );
     if ( $vars{entries} ) {
         my $limit = $ENV{BEAGLE_WEB_PAGE_LIMIT} || $bh->info->web_page_limit;
-        $vars{page} = request()->param('page') || 1;
+        $vars{page} = request()->param('p') || 1;
         my $page = Data::Page->new( scalar @{ $vars{entries} },
             $limit, $vars{page} );
         $vars{entries}   = [ $page->splice( $vars{entries} ) ];
@@ -577,7 +577,7 @@ sub render {
                 map {
                     my $page = $_;
                     my $uri  = request()->uri;
-                    $uri->query_param( page => $page );
+                    $uri->query_param( p => $page );
                     [ $page, $uri->path_query ];
                   } @pages
             ];
@@ -585,7 +585,7 @@ sub render {
             for my $edge (qw/first_page last_page/) {
                 next unless $vars{$edge};
                 my $uri = request()->uri;
-                $uri->query_param( page => $vars{$edge} );
+                $uri->query_param( p => $vars{$edge} );
                 $vars{$edge} = [ $vars{$edge}, $uri->path_query ];
             }
         }
