@@ -25,7 +25,7 @@ a.toggle-hide {
     float: right;
     left: 0.5%;
     top: 0.5%;
-    width: 24%;
+    width: 16em;
 }
 
 #menu .head {
@@ -94,7 +94,7 @@ span.datetime, span.number {
 /*    color: #000; */
     margin-top: 0.5%;
     margin-left: 1%;
-    margin-right: 26%;
+    margin-right: 18em;
     margin-bottom: 1%;
 }
 
