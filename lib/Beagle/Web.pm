@@ -7,6 +7,7 @@ use Beagle::I18N;
 use I18N::LangTags;
 use I18N::LangTags::Detect;
 use Data::Page;
+use URI::QueryParam;
 
 sub enabled_admin {
 
@@ -569,7 +570,22 @@ sub render {
             else {
                 push @pages, @after;
             }
-            $vars{pages} = \@pages;
+
+            $vars{pages} = [
+                map {
+                    my $page = $_;
+                    my $uri  = request()->uri;
+                    $uri->query_param( page => $page );
+                    [ $page, $uri->path_query ];
+                  } @pages
+            ];
+
+            for my $edge (qw/first_page last_page/) {
+                next unless $vars{$edge};
+                my $uri = request()->uri;
+                $uri->query_param( page => $vars{$edge} );
+                $vars{$edge} = [ $vars{$edge}, $uri->path_query ];
+            }
         }
     }
     return xslate()->render( "$template.tx", \%vars );

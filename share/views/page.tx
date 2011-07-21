@@ -2,21 +2,21 @@
 : if $pages {
 
 : if $first_page {
-    <a class="first_page" href="?page=<: $first_page :>"><: $first_page :></a>
+    <a class="first_page" href="<: $first_page.1 :>"><: $first_page.0 :></a>
     <span>...</span>
 : }
 
 : for $pages -> $item {
-:   if ( $item == $page ) {
-    <span class="current_page"><: $item :></span>
+:   if ( $item.0 == $page ) {
+    <span class="current_page"><: $item.0 :></span>
 :    } else {
-    <a class="page" href="?page=<: $item :>"><: $item :></a>
+    <a class="page" href="<: $item.1 :>"><: $item.0 :></a>
 :   }
 : }
 
 : if $last_page {
     <span>...</span>
-    <a class="last_page" href="?page=<: $last_page :>"><: $last_page :></a>
+    <a class="last_page" href="<: $last_page.1 :>"><: $last_page.0 :></a>
 : }
 
 : }
