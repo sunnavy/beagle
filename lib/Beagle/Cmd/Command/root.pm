@@ -75,7 +75,7 @@ sub execute {
                 $type        = $all->{$name}{type} || 'git';
             }
             else {
-                die "no such root with name $name";
+                die qq{$name doesn't exist.};
             }
         }
 
