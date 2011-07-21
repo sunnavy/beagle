@@ -4,14 +4,11 @@ use Beagle::Util;
 use Lingua::EN::Inflect 'A';
 use Beagle::Web::Form;
 use Beagle::Web::Router::Util;
+use Data::Page;
+use Data::Page::Pageset;
 
 get '/' => sub {
-    my $bh = handle;
-    my $limit = scalar @{ $bh->entries };
-    my $max = $bh->info->web_page_limit || 10;
-    $limit = $max if $limit > $max;
-    render 'index',
-      entries => [ @{ handle()->entries }[ 0 .. $limit - 1 ] ];
+    render 'index', entries => handle()->entries;
 };
 
 get '/fragment/menu' => sub {

@@ -343,3 +343,8 @@ textarea {
 div.attachment {
     display: inline;
 }
+
+div.page {
+    margin-top: 3em;
+    text-align: center;
+}

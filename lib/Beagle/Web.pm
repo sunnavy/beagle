@@ -510,6 +510,8 @@ sub set_static {
 
 
 sub default_options {
+    my $bh = handle();
+
     return (
         $bh->list,
         name          => $name,
@@ -531,6 +533,44 @@ sub default_options {
 sub render {
     my $template = shift;
     my %vars = ( default_options(), @_ );
+    if ( $vars{entries} ) {
+        $vars{limit} = $limit;
+        $vars{page} = request()->param('page') || 1;
+        my $page = Data::Page->new( scalar @{ $vars{entries} },
+            $vars{limit}, $vars{page} );
+        $vars{entries}   = [ $page->splice( $vars{entries} ) ];
+
+        # page from user may exceed the range
+        $vars{page} = $page->current_page;
+
+        my $first = $page->first_page;
+        my $last = $page->last_page;
+
+        if ( $first != $last ) {
+            my @pages;
+
+            my @before = $first .. $vars{page} - 1;
+            if ( @before > 9 ) {
+                push @pages, @before[$#before-9 .. $#before ];
+                $vars{first_page} = $first;
+            }
+            else {
+                push @pages, @before;
+            }
+
+            push @pages, $vars{page};
+
+            my @after = $vars{page} + 1 .. $last;
+            if ( @after > 10 ) {
+                push @pages, @after[0 .. 9 ];
+                $vars{last_page} = $last;
+            }
+            else {
+                push @pages, @after;
+            }
+            $vars{pages} = \@pages;
+        }
+    }
     return xslate()->render( "$template.tx", \%vars );
 }
 
