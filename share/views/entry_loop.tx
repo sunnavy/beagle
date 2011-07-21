@@ -1,3 +1,4 @@
 : for $entries -> $entry {
 :   include "entry.tx" { entry => $entry };
 : }
+: include "page.tx";

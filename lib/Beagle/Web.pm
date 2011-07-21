@@ -219,8 +219,8 @@ sub app {
     }
 }
 
-sub home_limit {
-    return $ENV{BEAGLE_WEB_HOME_LIMIT} || core_config->{web_home_limit} || 10;
+sub page_limit {
+    return $ENV{BEAGLE_WEB_HOME_LIMIT} || core_config->{web_page_limit} || 10;
 }
 
 sub feed_limit {
