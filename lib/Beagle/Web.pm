@@ -6,6 +6,7 @@ use Beagle::Web::Request;
 use Beagle::I18N;
 use I18N::LangTags;
 use I18N::LangTags::Detect;
+use Data::Page;
 
 sub enabled_admin {
 

@@ -4,8 +4,6 @@ use Beagle::Util;
 use Lingua::EN::Inflect 'A';
 use Beagle::Web::Form;
 use Beagle::Web::Router::Util;
-use Data::Page;
-use Data::Page::Pageset;
 
 get '/' => sub {
     render 'index', entries => handle()->entries;
