@@ -26,7 +26,7 @@ get '/tag/:tag' => sub {
     my %vars = @_;
     my $tag  = decode_utf8 $vars{tag};
 
-    return Beagle::Web::redirect '/'
+    return redirect '/'
       unless $tag && Beagle::Web->tags( handle() )->{$tag};
 
     render 'index',
@@ -40,7 +40,7 @@ get '/tag/:tag' => sub {
 get '/date/{year:[0-9]+}' => sub {
     my %vars = @_;
     my $year = $vars{year};
-    return Beagle::Web::redirect '/'
+    return redirect '/'
       unless $year && Beagle::Web->years( handle() )->{$year};
     return render 'index',
       entries => [
@@ -56,7 +56,7 @@ get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my %vars  = @_;
     my $year  = $vars{year};
     my $month = $vars{month};
-    return Beagle::Web::redirect '/'
+    return redirect '/'
       unless Beagle::Web->years( handle() )->{$year}{$month};
     return render 'index',
       entries => [ map { handle()->map->{$_} }
@@ -69,15 +69,15 @@ get '/entry/:id' => sub {
     my %vars = @_;
     my $i    = $vars{id};
     my @ret  = resolve_id( $i, handle => handle() );
-    return Beagle::Web::redirect "/" unless @ret == 1;
+    return redirect "/" unless @ret == 1;
     my $id = $ret[0]->{id};
-    return Beagle::Web::redirect "/entry/$id" unless $i eq $id;
+    return redirect "/entry/$id" unless $i eq $id;
 
     my $entry = $ret[0]->{entry};
 
     if ( $entry->type eq 'comment' ) {
         return
-            Beagle::Web::redirect '/entry/'
+            redirect '/entry/'
           . $entry->parent_id . '#'
           . $entry->id;
     }
@@ -117,7 +117,7 @@ any '/search' => sub {
     }
     else {
         if ( @found == 1 ) {
-            return Beagle::Web::redirect '/entry/' . $found[0]->id;
+            return redirect '/entry/' . $found[0]->id;
         }
         else {
             render 'search',
@@ -154,7 +154,7 @@ get '/admin/entry/{id:\w{32}}' => sub {
     my %vars = @_;
     my ($id) = $vars{id};
 
-    return Beagle::Web::redirect '/admin/entries'
+    return redirect '/admin/entries'
       unless handle()->map->{$id};
     render 'admin/entry',
       message => $vars{'message'},
@@ -198,14 +198,14 @@ post '/admin/entry/:type/new' => sub {
 
                 if ( $type eq 'comment' ) {
                     return
-                        Beagle::Web::redirect '/entry/'
+                        redirect '/entry/'
                       . $entry->parent_id
                       . '?message=created' . '#'
                       . $entry->id;
                 }
                 else {
                     return
-                        Beagle::Web::redirect '/entry/'
+                        redirect '/entry/'
                       . $entry->id
                       . '?message=created';
                 }
@@ -237,7 +237,7 @@ post '/admin/entry/:type/new' => sub {
         return to_json($ret);
     }
     else {
-        Beagle::Web::redirect '/admin/entries';
+        redirect '/admin/entries';
     }
 };
 
@@ -273,7 +273,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
         }
     }
     else {
-        Beagle::Web::redirect '/admin/entries';
+        redirect '/admin/entries';
     }
 };
 
@@ -295,22 +295,22 @@ post '/admin/entry/delete' => sub {
         };
     }
 
-    Beagle::Web::redirect '/admin/entries';
+    redirect '/admin/entries';
 };
 
 any '/admin/info' => sub {
     my $entry = handle()->info;
-    Beagle::Web::redirect '/admin/entry/' . $entry->id;
+    redirect '/admin/entry/' . $entry->id;
 };
 
 get '/favicon.ico' => sub {
     if (   handle()->info->avatar
         && handle()->info->avatar ne '/favicon.ico' )
     {
-        Beagle::Web::redirect handle()->info->avatar;
+        redirect handle()->info->avatar;
     }
     else {
-        Beagle::Web::redirect '/system/beagle.png';
+        redirect '/system/beagle.png';
     }
 };
 

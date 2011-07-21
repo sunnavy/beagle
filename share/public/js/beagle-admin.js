@@ -28,7 +28,7 @@ function beagleAjaxDelete () {
         success: function( json, status, xhr, form ) {
             if ( json && json.status == 'deleted' ) {
                 var id = form.find('input[name=id]').val();
-                $('div#'+id).remove();
+                $('#'+id).remove();
                 if ( json.redraw_menu ) {
                     $('#menu').load('/fragment/menu', function () {
                         beagleContrast('#menu');
