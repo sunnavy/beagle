@@ -191,7 +191,7 @@ post '/admin/entry/:type/new' => sub {
                     my $ret = {
                         status    => 'created',
                         parent_id => $entry->parent_id,
-                        content   => render( 'entry', entry => $entry ),
+                        content   => render( 'comment', entry => $entry ),
                     };
                     return to_json($ret);
                 }
