@@ -34,10 +34,14 @@ beagle () {
             if [[ "$2" = "global" ]]; then
                 export BEAGLE_NAME=
                 export BEAGLE_ROOT=
+                echo 'switched to "global" in current session.'
             else
                 new_root=`beagle root $2`
                 if [[ $new_root != "" ]]; then
                     export BEAGLE_NAME="$2"
+                    echo "switched to \"$2\" in current session."
+                else
+                    echo "invalid name $2"
                 fi
             fi
             ;;
@@ -49,10 +53,12 @@ beagle () {
 
             if [[ "$2" = "global" ]]; then
                 __beagle_reinit ''
+                echo 'switched to "global".'
             else
                 new_root=`beagle root $2`
                 if [[ $new_root != "" ]]; then
                     __beagle_reinit "$2" 
+                    echo "switched to \"$2\"."
                 fi
             fi
             ;;
