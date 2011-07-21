@@ -14,7 +14,7 @@ has 'parent' => (
 );
 
 has 'info' => (
-    isa           => 'Str',
+    isa           => 'Bool',
     is            => 'rw',
     documentation => 'att for info',
     traits        => ['Getopt'],
