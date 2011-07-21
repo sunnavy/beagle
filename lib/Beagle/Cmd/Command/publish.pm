@@ -54,13 +54,13 @@ sub execute {
     }
 
     unless (@bh) {
-        @bh = handle( '', drafts => ( $self->drafts ? 1 : 0 ) )
+        @bh = current_handle( drafts => ( $self->drafts ? 1 : 0 ) )
           or die "please specify beagle by --name or --root";
     }
 
     require Beagle::Web;
-    require Beagle::Web::Router;
-    $app = \&Beagle::Web::Router::handle_request;
+    Beagle::Web->init();
+    $app = \&Beagle::Web::handle_request;
 
     for my $bh (@bh) {
         $handle = $bh;
@@ -85,9 +85,9 @@ sub execute {
         my $static = encode( locale_fs => static_root($bh) );
         dircopy( $static, 'static' );
 
-        Beagle::Web::Router::change_handle( handle => $bh );
-        Beagle::Web::Router::set_static(1);
-        Beagle::Web::Router::set_prefix('');
+        Beagle::Web::change_handle( handle => $bh );
+        Beagle::Web::set_static(1);
+        Beagle::Web::set_prefix('');
 
         $self->save_link( '/', 'index.html' );
         $self->save_link( '/about', );
