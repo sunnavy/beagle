@@ -652,6 +652,7 @@ sub handle_request {
     $res->finalize;
 }
 
+sub prefix { $prefix };
 
 1;
 

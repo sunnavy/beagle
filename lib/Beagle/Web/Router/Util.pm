@@ -1,15 +1,20 @@
 use strict;
 use warnings;
+
 package Beagle::Web::Router::Util;
 use Router::Simple;
 use JSON;
 use base 'Exporter';
 our @EXPORT =
-  qw/handle request render get post any router admin from_json to_json/;
+  qw/handle request render get post any router admin from_json to_json prefix
+  redirect/;
 
 sub handle  { Beagle::Web->handle() }
 sub request { Beagle::Web->request() }
-sub render  { goto \&Beagle::Web::render }
+sub prefix  { Beagle::Web->prefix }
+
+sub redirect { goto \&Beagle::Web::redirect }
+sub render   { goto \&Beagle::Web::render }
 
 sub router {
     my $class = shift || router_package();
@@ -25,7 +30,7 @@ sub admin {
 
 sub import {
     init();
-    __PACKAGE__->export_to_level(1, @_);
+    __PACKAGE__->export_to_level( 1, @_ );
 }
 
 sub init {
@@ -66,7 +71,7 @@ sub any {
     my $opt     = { $methods ? ( method => $methods ) : () };
 
     my $router = router_package()->router;
-    my $admin = router_package()->admin;
+    my $admin  = router_package()->admin;
 
     if ( $pattern =~ s{^/admin(?=/)}{} ) {
         $admin->connect( $pattern, $dest, $opt );
