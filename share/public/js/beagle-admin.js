@@ -85,12 +85,9 @@ function beagleAdminInit ( ) {
 
     $('select[name=format]').change( function() {
         var val = $('select[name=format]').val();
-        var e = $(this).closest('form').find('textarea')
+        var e = $(this).closest('form').find('textarea');
         var form = $(this).closest('form');
-        if ( val == 'plain' ) {
-            e.markItUpRemove();
-        }
-        else if ( val == 'wiki' ) {
+        if ( val == 'wiki' ) {
             if ( !form.find('div.markItUp').length ) {
                 e.markItUp( wikiSettings );
             }
@@ -99,6 +96,9 @@ function beagleAdminInit ( ) {
             if ( !form.find('div.markItUp').length ) {
                 e.markItUp( markdownSettings );
             }
+        }
+        else {
+            e.markItUpRemove();
         }
     });
 
