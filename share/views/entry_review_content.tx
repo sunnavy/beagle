@@ -9,7 +9,7 @@
 : if $entry.cover {
     <img title="<: $entry.title :>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $entry.cover :>" />
 : } else {
-    <img title="<: $entry.title :>" src="<: $prefix :>static/cover.jpg" />
+    <img title="<: $entry.title :>" src="<: $prefix :>system/images/review_cover.png" />
 : }
 
 : if $entry.link {
