@@ -14,6 +14,9 @@ before 'run' => sub {
           Text::ParseWords::shellwords( $ENV{BEAGLE_DEFAULT_COMMAND}
               || encode( locale => core_config->{default_command} ) );
     }
+    else {
+        @ARGV = 'shell';
+    }
 
     my $cmd = $ARGV[0];
 
