@@ -928,6 +928,7 @@ sub parse_pod {
     my $pod = Pod::Simple::XHTML->new;
     $pod->html_header('');
     $pod->html_footer('');
+    $pod->html_h_level(3);
     my $out;
 
     $pod->output_string(\$out);
