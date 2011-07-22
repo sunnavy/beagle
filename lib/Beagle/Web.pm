@@ -9,14 +9,6 @@ use I18N::LangTags::Detect;
 use Data::Page;
 use URI::QueryParam;
 
-sub enabled_admin {
-
-    return
-      defined $ENV{BEAGLE_WEB_ADMIN} && length $ENV{BEAGLE_WEB_ADMIN}
-      ? ( $ENV{BEAGLE_WEB_ADMIN} ? 1 : 0 )
-      : ( core_config()->{web_admin} ? 1 : 0 );
-}
-
 my %feed;
 
 sub feed {
@@ -359,7 +351,7 @@ sub init {
     if ( $names ) {
         if ( @$names == 1 ) {
             $bh = Beagle::Handle->new(
-                drafts => Beagle::Web->enabled_admin(),
+                drafts => web_admin(),
                 name   => $names->[0],
             );
             $bh{$names->[0]} = $bh;
@@ -368,7 +360,7 @@ sub init {
         else {
             for my $n (@$names) {
                 $bh{$n} = Beagle::Handle->new(
-                    drafts => Beagle::Web->enabled_admin(),
+                    drafts => web_admin(),
                     root   => $all->{$n}{local},
                 );
                 if ( $root && $root eq $all->{$n}{local} ) {
@@ -392,7 +384,7 @@ sub init {
     }
     else {
         $bh = Beagle::Handle->new(
-            drafts => Beagle::Web->enabled_admin(),
+            drafts => web_admin(),
             root   => $root,
         );
         $name = $bh->name;
@@ -529,16 +521,16 @@ sub default_options {
 
     return (
         $bh->list,
-        name          => $name,
-        enabled_admin => Beagle::Web->enabled_admin(),
-        feed          => Beagle::Web->feed($bh),
-        years         => Beagle::Web->years($bh),
-        tags          => Beagle::Web->tags($bh),
-        entry_types   => entry_types(),
-        prefix        => $prefix,
-        static        => $static,
-        css           => \@css,
-        js            => \@js,
+        name        => $name,
+        admin       => web_admin(),
+        feed        => Beagle::Web->feed($bh),
+        years       => Beagle::Web->years($bh),
+        tags        => Beagle::Web->tags($bh),
+        entry_types => entry_types(),
+        prefix      => $prefix,
+        static      => $static,
+        css         => \@css,
+        js          => \@js,
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( names => $names ),

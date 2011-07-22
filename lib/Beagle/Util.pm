@@ -22,7 +22,7 @@ our (
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
     @PLUGINS, $SEARCHED_PLUGINS, @PO_ROOTS, $HANDLES,
-    @WEB_NAMES, $SEARCHED_WEB_NAMES
+    @WEB_NAMES, $SEARCHED_WEB_NAMES, $WEB_ADMIN
 );
 
 BEGIN {
@@ -74,7 +74,7 @@ our @EXPORT = (
       entry_type_info entry_types
       relation_path marks_path
       web_options tweak_name plugins po_roots
-      web_all web_names
+      web_all web_names web_admin
       /
 );
 
@@ -1035,6 +1035,16 @@ sub web_all {
       :                                    0;
 
     return $WEB_ALL;
+}
+
+sub web_admin {
+    return $WEB_ADMIN if defined $WEB_ADMIN;
+    $WEB_ADMIN =
+        defined $ENV{BEAGLE_WEB_ADMIN}     ? $ENV{BEAGLE_WEB_ADMIN}
+      : defined core_config()->{web_admin} ? core_config()->{web_admin}
+      :                                      0;
+
+    return $WEB_ADMIN;
 }
 
 sub web_names {
