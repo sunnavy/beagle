@@ -45,13 +45,11 @@ version control your files and share them easily, though C<git> itself
 can't help you much of finding files' locations.
 
 Things are more bothersome if you use some markup language such as C<Wiki> or
-L<Markdown|http://daringfireball.net/projects/markdown/> in your entries.  It
+L<Markdown|http://daringfireball.net/projects/markdown/> in your posts.  It
 would be awesome if you can convert them to html automatically and check if
 something is wrong before publishing.
 
 C<Beagle> was born for this, and more.
-
-C<Beagle> can be your right arm.
 
 =head1 SEE ALSO
 
