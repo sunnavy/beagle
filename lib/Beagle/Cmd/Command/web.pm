@@ -54,7 +54,7 @@ sub execute {
     my $app = catfile( $share_root, 'app.psgi' );
     require Beagle::Web;
     local $ENV{BEAGLE_WEB_ADMIN} =
-      exists $self->{admin} ? $self->admin : Beagle::Web->enabled_admin();
+      exists $self->{admin} ? $self->admin : web_admin();
     local $ENV{BEAGLE_WEB_ALL} =
       exists $self->{all} ? $self->all : $ENV{BEAGLE_WEB_ALL};
 

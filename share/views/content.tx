@@ -11,7 +11,7 @@
 </div>
 : }
 
-: if $enabled_admin {
+: if $admin {
 <div class="admin-links">
   <a href="<: $prefix :>admin/info"><: _('info') :></a>
   <a href="<: $prefix :>admin/entries"><: _('all entries') :></a>

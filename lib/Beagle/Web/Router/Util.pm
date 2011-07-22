@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 package Beagle::Web::Router::Util;
+use Beagle::Util;
 use Router::Simple;
 use JSON;
 use base 'Exporter';
@@ -48,7 +49,7 @@ sub init {
         {},
         {
             on_match => sub {
-                return Beagle::Web->enabled_admin() ? 1 : 0;
+                return web_admin() ? 1 : 0;
             },
         }
     );

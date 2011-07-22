@@ -616,7 +616,7 @@ sub handle_request {
         $name = $n;
     }
 
-    if (   enabled_admin()
+    if (   web_admin()
         || !$updated{$name}
         || time - $updated{$name} >= 60 )
     {

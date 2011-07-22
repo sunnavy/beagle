@@ -4,7 +4,7 @@
   <a class="toggle hide" href=""><: _('hide') :></a>
 : }
 
-: if $enabled_admin {
+: if $admin {
   <a href="<: $prefix :>admin/entry/<: $entry.id :>"><: _('edit') :></a>
 <div class="delete">
 <form class="delete">
