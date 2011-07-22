@@ -94,7 +94,7 @@ sub execute {
     my $info;
     if ( $self->edit ) {
         require Beagle::Model::Info;
-        my $template = Beagle::Model::Info->new()->serialize;
+        my $template = encode_utf8 Beagle::Model::Info->new()->serialize;
         my $updated = edit_text($template);
         $info = Beagle::Model::Info->new_from_string( decode_utf8 $updated);
     }

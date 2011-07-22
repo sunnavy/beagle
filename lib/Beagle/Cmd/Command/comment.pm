@@ -73,16 +73,17 @@ sub execute {
             body      => $body,
         );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
-        my $template =
-          $self->verbose
-          ? $temp->serialize(
-            path      => 1,
-            created   => 1,
-            updated   => 1,
-            id        => 1,
-            parent_id => 1,
-          )
-          : $temp->serialize();
+        my $template = encode_utf8(
+            $self->verbose
+            ? $temp->serialize(
+                path      => 1,
+                created   => 1,
+                updated   => 1,
+                id        => 1,
+                parent_id => 1,
+              )
+            : $temp->serialize()
+        );
         my $updated = edit_text($template);
         if ( !$self->force && $template eq $updated ) {
             puts "aborted.";
