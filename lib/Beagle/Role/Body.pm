@@ -12,13 +12,14 @@ has 'format' => (
         my $self  = shift;
         my $value = shift;
 
-        $self->format( default_format() ) unless $value;
-
-        if ( $value eq 'plain' && $value !~ /\[BeagleAttachmentPath\]/ ) {
-            $self->_body_html('');
-        }
-        else {
-            $self->_body_html( $self->_parse_body( $self->body ) );
+        $self->format( default_format() || 'plain' ) unless $value;
+        if ( $self->body ) {
+            if ( $value eq 'plain' && $value !~ /\[BeagleAttachmentPath\]/ ) {
+                $self->_body_html('');
+            }
+            else {
+                $self->_body_html( $self->_parse_body( $self->body ) );
+            }
         }
     },
 );
@@ -30,9 +31,11 @@ has 'body' => (
     trigger => sub {
         my $self  = shift;
         my $value = shift;
-        $self->_body_html( $self->_parse_body($value) )
-          unless $self->format eq 'plain'
-              && $value !~ /\[BeagleAttachmentPath\]/;
+        if ( $self->format ) {
+            $self->_body_html( $self->_parse_body($value) )
+              unless $self->format eq 'plain'
+                  && $value !~ /\[BeagleAttachmentPath\]/;
+        }
     },
 );
 
