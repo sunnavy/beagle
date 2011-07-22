@@ -6,9 +6,8 @@ Beagle::Manual::Cookbook - Cookbook
 
 =head2 Add a new entry type
 
-to add a new type "Foo" with an extra meta key "category", you just need to
+To add a new type "Foo" with an extra meta key "category", you just need to
 create a module Beagle::Model::Foo which inherits from Beagle::Model::Entry.
-that's it.
 
     package Beagle::Model::Foo;
     use Any::Moose;
@@ -23,7 +22,11 @@ that's it.
     1;
 
 
-now you have foo and foos commands automatically.
+That's it, now you have foo and foos commands automatically.
+
+You can also add the new type to a plugin like C<Beagle::Plugin::Bar> and
+change its name to C<Beagle::Plugin::Bar::Model::Foo>. if so, the new type
+is loaded only if you load the plugin.
 
 =head1 SEE ALSO
 
