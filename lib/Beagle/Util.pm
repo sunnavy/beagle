@@ -924,13 +924,14 @@ sub parse_pod {
     my $value = $_[-1];
     return '' unless defined $value;
 
-    require Pod::PseudoPod::HTML;
-    my $pod = Pod::PseudoPod::HTML->new;
+    require Pod::Simple::XHTML;
+    my $pod = Pod::Simple::XHTML->new;
+    $pod->html_header('');
+    $pod->html_footer('');
     my $out;
+
     $pod->output_string(\$out);
     $pod->parse_string_document($value);
-    $out =~ s!^<pre><code>!<pre class="pod">\n!mg;
-    $out =~ s!</code>(?=</pre>$)!!mg;
 
     return defang( $out );
 }
