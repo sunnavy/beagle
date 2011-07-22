@@ -9,12 +9,6 @@ has 'title' => (
     default => '',
 );
 
-override 'serialize_meta' => sub {
-    my $self = shift;
-    my $str = $self->_serialize_meta( 'title' ) . super;
-    return $str;
-};
-
 sub summary {
     my $self = shift;
 

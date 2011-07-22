@@ -52,17 +52,6 @@ has 'location' => (
 );
 
 
-override 'serialize_meta' => sub {
-    my $self = shift;
-    my $str  = super;
-    for (
-        qw/isbn writer translator publisher published price link location/ )
-    {
-        $str .= $self->_serialize_meta( $_ );
-    }
-    return $str;
-};
-
 sub cover {
     my $self     = shift;
     my @exts = qw/jpg png gif/;
