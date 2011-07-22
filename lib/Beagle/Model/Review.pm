@@ -1,7 +1,13 @@
 package Beagle::Model::Review;
 use Any::Moose;
 use Beagle::Util;
-extends 'Beagle::Model::Article';
+extends 'Beagle::Model::Entry';
+
+has 'title' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+);
 
 has 'isbn' => (
     isa     => 'Str',
@@ -66,6 +72,13 @@ sub cover {
         }
     }
     return;
+}
+
+sub summary {
+    my $self = shift;
+
+    my $value = $self->title || $self->body;
+    $self->_summary( $value, @_ );
 }
 
 sub extra_meta_fields_in_web_view {
