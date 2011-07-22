@@ -328,8 +328,6 @@ $prefix = '/';
 my $req;
 
 sub init {
-    my $root = current_root('not die');
-
     require Beagle::Web::Router;
     $router = Beagle::Web::Router->router;
     for my $plugin ( plugins() ) {
@@ -344,40 +342,53 @@ sub init {
     }
 
     my $all = roots();
-    if ( $ENV{BEAGLE_WEB_NAMES} ) {
-        $names =
-          [ split /\s*,\s*/, decode( locale => $ENV{BEAGLE_WEB_NAMES} ) ];
+    if ( web_all() ) {
+        $names = [ sort keys %$all ];
     }
-    elsif ( $ENV{BEAGLE_WEB_ALL} || !$root ) {
+    elsif ( web_names() ) {
+        $names = [ web_names() ];
+    }
+
+    my $root = current_root('not die');
+    if ( !$root ) {
         $names = [ sort keys %$all ];
     }
 
     $names = [ grep { $all->{$_} } @$names ] if $names;
 
     if ( $names ) {
-        for my $n ( @$names ) {
-            $bh{$n} = Beagle::Handle->new(
+        if ( @$names == 1 ) {
+            $bh = Beagle::Handle->new(
                 drafts => Beagle::Web->enabled_admin(),
-                root   => $all->{$n}{local},
+                name   => $names->[0],
             );
-            if ( $root && $root eq $all->{$n}{local} ) {
-                $bh   = $bh{$n};
-                $name = $n;
-            }
-            $router->connect(
-                "/$n",
-                {
-                    code => sub {
-                        change_handle( name => $n );
-                        redirect('/');
-                    },
+            $bh{$names->[0]} = $bh;
+            undef $names;
+        }
+        else {
+            for my $n (@$names) {
+                $bh{$n} = Beagle::Handle->new(
+                    drafts => Beagle::Web->enabled_admin(),
+                    root   => $all->{$n}{local},
+                );
+                if ( $root && $root eq $all->{$n}{local} ) {
+                    $bh   = $bh{$n};
+                    $name = $n;
                 }
-            );
-
+                $router->connect(
+                    "/$n",
+                    {
+                        code => sub {
+                            change_handle( name => $n );
+                            redirect('/');
+                        },
+                    }
+                );
+            }
+            $bh = ( values %bh )[0];
         }
 
-        $bh ||= ( values %bh )[0];
-        $name ||= $bh->name if $bh;
+        $name = $bh->name;
     }
     else {
         $bh = Beagle::Handle->new(

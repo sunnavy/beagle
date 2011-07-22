@@ -17,6 +17,7 @@ my @subs = qw/
   entry_type_info entry_types
   relation_path marks_path web_options
   tweak_name plugins po_roots
+  web_all web_names
   /;
 
 for (@subs) {

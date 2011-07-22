@@ -22,6 +22,7 @@ our (
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
     @PLUGINS, $SEARCHED_PLUGINS, @PO_ROOTS, $HANDLES,
+    @WEB_NAMES, $SEARCHED_WEB_NAMES
 );
 
 BEGIN {
@@ -73,6 +74,7 @@ our @EXPORT = (
       entry_type_info entry_types
       relation_path marks_path
       web_options tweak_name plugins po_roots
+      web_all web_names
       /
 );
 
@@ -1028,12 +1030,25 @@ sub web_options {
 sub web_all {
     return $WEB_ALL if defined $WEB_ALL;
     $WEB_ALL =
-        defined $ENV{BEAGLE_WEB_ALL} ? $ENV{BEAGLE_WEB_ALL}
-      : defined core_config()->{web_all}    ? core_config()->{web_all}
-      :                                0;
+        defined $ENV{BEAGLE_WEB_ALL}     ? $ENV{BEAGLE_WEB_ALL}
+      : defined core_config()->{web_all} ? core_config()->{web_all}
+      :                                    0;
 
     return $WEB_ALL;
-    return @$WEB_OPTIONS;
+}
+
+sub web_names {
+    return @WEB_NAMES if $SEARCHED_WEB_NAMES;
+    if ( $ENV{BEAGLE_WEB_NAMES} ) {
+        @WEB_NAMES = split /\s*,\s*/,
+          decode( locale => $ENV{BEAGLE_WEB_NAMES} );
+    }
+    elsif ( core_config()->{web_names} ) {
+        @WEB_NAMES = split /\s*,\s*/, core_config->{web_names};
+    }
+
+    $SEARCHED_WEB_NAMES = 1;
+    return @WEB_NAMES;
 }
 
 sub plugins {
