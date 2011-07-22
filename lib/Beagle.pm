@@ -51,40 +51,6 @@ something is wrong before publishing.
 
 C<Beagle> was born for this, and more.
 
-
-=over
-
-=item BLOG
-
-C<Beagle> includes a blog system.
-
-Check out L<http://abeagle.com> for a quick look
-
-=item EASY TO USE
-
-C<Beagle> has a very handy CLI, and a web admin interface too.
-
-=item AGILE SEARCH
-
-C<Beagle> supports nearly full text search(not including contents of
-attachments), it's very fast too, and the search string can be regex!
-
-=item GIT
-
-Thanks to C<git>, your articles are in version control and backup is easy.
-
-=item LUCID DESIGN
-
-Technically, C<Beagle> is a thin and clean wrapper of git, so each beagle is a
-normal git repository.
-
-=item EXTENDABLE TYPES
-
-You can create other types of entry besides existing ones(
-info/articles/reviews/tasks/barks/comments ), and it's easy too.
-
-=back
-
 C<Beagle> can be your right arm.
 
 =head1 SEE ALSO
