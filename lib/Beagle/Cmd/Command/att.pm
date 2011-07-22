@@ -112,7 +112,7 @@ sub execute {
         $pid = $bh->info->id;
     }
     elsif ( $self->parent ) {
-        my @ret = resolve_entry( $pid, handle => current_handle() || undef );
+        my @ret = resolve_entry( $self->parent, handle => current_handle() || undef );
         unless (@ret) {
             @ret = resolve_entry($pid) or die_entry_not_found($pid);
         }
