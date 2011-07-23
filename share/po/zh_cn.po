@@ -67,3 +67,5 @@ msgstr "任务"
 msgid "newer version"
 msgstr "新版本"
 
+msgid "about"
+msgstr "关于"
