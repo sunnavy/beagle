@@ -136,11 +136,12 @@ sub serialize_meta {
         tags    => 1,
         path    => 0,
         update  => 1,
+        type    => 0,
         @_
     );
     my $str = '';
 
-    for my $type (qw/id format author tags draft path/) {
+    for my $type (qw/type id format author tags draft path/) {
         $str .= $self->_serialize_meta($type) if $args{$type};
     }
 

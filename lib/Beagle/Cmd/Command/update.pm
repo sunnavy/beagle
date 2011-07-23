@@ -69,6 +69,7 @@ sub execute {
             my $template = encode_utf8 $entry->serialize(
                 $self->verbose
                 ? (
+                    type      => 1,
                     path      => 1,
                     created   => 1,
                     updated   => 1,
@@ -76,6 +77,7 @@ sub execute {
                     parent_id => 1,
                   )
                 : (
+                    type      => 1,
                     path      => undef,
                     created   => undef,
                     updated   => undef,
