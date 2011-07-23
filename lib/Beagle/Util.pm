@@ -928,7 +928,9 @@ sub parse_pod {
     my $pod = Pod::Simple::XHTML->new;
     $pod->html_header('');
     $pod->html_footer('');
-    $pod->html_h_level(3);
+    $pod->html_h_level( $ENV{BEAGLE_POD_HTML_H_LEVEL}
+          || core_config->{pod_html_h_level}
+          || 3 );
     my $out;
 
     $pod->output_string(\$out);
