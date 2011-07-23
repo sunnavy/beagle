@@ -25,7 +25,7 @@ sub execute {
     if ( $self->all ) {
         my $all = roots();
         for my $name ( keys %$all ) {
-            next unless $all->{$name}{type} eq 'git';
+            next unless $all->{$name}{type} && $all->{$name}{type} eq 'git';
             if ( $all->{$name}{local} && $all->{$name}{remote} ) {
                 push @roots, $all->{$name}{local};
             }
