@@ -426,7 +426,7 @@ sub i18n_handle {
             $req->header('Accept-Language')
         )
     );
-    push @lang, $bh->info->language;
+    unshift @lang, $bh->info->language if $bh->info->language;
     return Beagle::I18N->get_handle(@lang);
 }
 

@@ -38,7 +38,7 @@ has 'sites' => (
 has 'language' => (
     isa     => 'Str',
     is      => 'rw',
-    default => 'en',
+    default => '',
 );
 
 has 'name' => (
