@@ -95,7 +95,7 @@ sub _run {
     if ($?) {
 
         # verbose already shows the err
-        warn "failed to run @args: exit code is "
+        warn qq{failed to run "@args": exit code is }
           . ( $? >> 8 )
           . ", err is $err\n"
           unless $self->verbose;
