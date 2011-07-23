@@ -1,6 +1,6 @@
 <html>
 <head>
-<title><: $info.title :><: $title ? ( ': ' ~ $title ) : '' :></title>
+<title><: _( $info.title ) :><: $title ? ( ': ' ~ _($title) ) : '' :></title>
 <link href="<: $prefix :><: $info.avatar || 'favicon.ico' :>" rel="apple-touch-icon" />
 <link href="<: $prefix :><: $info.avatar || 'favicon.ico' :>" rel="icon" />
 
