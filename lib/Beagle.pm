@@ -7,7 +7,7 @@ __END__
 
 =head1 NAME
 
-Beagle - an advanced way to manage/track/serve entries
+Beagle - an advanced way to manage/track/serve thoughts/articles/posts
 
 =head1 SYNOPSIS
 
