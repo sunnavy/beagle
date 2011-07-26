@@ -196,16 +196,12 @@ sub app {
     require Beagle::Web::Router;
 
     builder {
-        for my $root ( system_static_roots ) {
-                enable 'Static',
-                  path => sub                          { s!^/system/!! },
-                  root => catdir( share_root($plugin), 'public' ),
-                  pass_through => 1;
+        for my $root (system_roots()) {
+            enable 'Static',
+              path         => sub { s!^/system/!! },
+              root         => $root,
+              pass_through => 1;
         }
-
-        enable 'Static',
-          path => sub                   { s!^/system/!! },
-          root => catdir( share_root(), 'public' );
 
         \&handle_request;
     }
