@@ -63,12 +63,11 @@ div.admin input[type=submit] {
 
 div.admin-links {
     text-align: right;
-    margin-right: 2%;
+    margin-left: 2%;
 }
 
 div.admin-links a {
     padding-left: 1%;
-    padding-right: 1%;
 }
 
 div.odd, a.odd, li.odd {
