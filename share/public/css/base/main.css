@@ -161,13 +161,17 @@ hr.attachments {
     bottom: 0;
 }
 
-#footer .updated {
+#footer div.sites {
+    display: inline;
+}
+
+#footer div.updated {
     float: right;
     margin-right: 1%;
     margin-left: 1%;
 }
 
-#footer .magical-number {
+#footer div.magical-number {
     float: left;
     margin-left: 3%;
 }

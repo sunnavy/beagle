@@ -5,10 +5,12 @@
 <div class="magical-number">
 <span class="number"><: $total_size :></span>
 </div>
+<div class="sites">
 : for $info.sites -> $site {
 <a href="<: $site.url :>"><: $site.name :></a>
 &nbsp;
 : }
+</div>
 <div class="updated">
 <span class="datetime"><: $updated :></span>
 </div>
