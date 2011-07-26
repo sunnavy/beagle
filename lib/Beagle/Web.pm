@@ -227,12 +227,18 @@ sub template_exists {
     return;
 }
 
-use Text::Xslate;
+my ( $bh, %updated, %bh, $name, $names, $prefix, $static, $router, %xslate );
+$prefix = '/';
+my $req;
 
+use Text::Xslate;
 sub xslate {
-    return $xslate if $xslate;
-    return $xslate = Text::Xslate->new(
-        path        => [ web_template_roots() ],
+    my $n = shift   || $name;
+    my $b = $bh{$n} || $bh;
+    return $xslate{$n} if $xslate{$n};
+    return $xslate{$n} = Text::Xslate->new(
+        path =>
+          [ map { catdir( $_, $b->info->web_theme ) } web_template_roots() ],
         cache_dir   => catdir( File::Spec->tmpdir, 'beagle_web_cache' ),
         cache       => 1,
         input_layer => ':utf8',
@@ -314,10 +320,6 @@ sub xslate {
         },
     );
 }
-
-my ( $bh, %updated, %bh, $name, $names, $prefix, $static, $router );
-$prefix = '/';
-my $req;
 
 sub init {
     require Beagle::Web::Router;
