@@ -23,10 +23,16 @@ has 'copyright' => (
     default => '',
 );
 
-has 'style' => (
-    isa     => 'BeagleStyle',
+has 'web_theme' => (
+    isa     => 'BeagleWebTheme',
     is      => 'rw',
-    default => 'default',
+    default => 'blog',
+);
+
+has 'web_color' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => 'orange',
 );
 
 has 'sites' => (

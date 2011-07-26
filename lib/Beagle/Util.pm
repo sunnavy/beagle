@@ -13,7 +13,7 @@ use Lingua::EN::Inflect 'PL';
 coerce 'Bool' => from 'Ref' => via { 1 };
 
 enum 'BeagleBackendType' => [qw/git fs/];
-enum 'BeagleStyle'       => [qw/default blue dark/];
+enum 'BeagleWebTheme'    => [qw/blog/];
 enum 'BeagleFormat'      => [qw/plain markdown wiki pod/];
 
 our (

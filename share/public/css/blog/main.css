@@ -1,10 +1,5 @@
-html, body {
-    background-color: #fff3f0;
-}
-
 a {
     text-decoration: none;
-    color: #456789;
 }
 
 div.body a:hover, div.page a:hover {
@@ -58,7 +53,6 @@ a.toggle-hide {
 
 #menu ul li a {
     display: block;
-    color: #2b3856;
 }
 
 #menu ul li {
@@ -76,14 +70,9 @@ a.toggle-hide {
 }
 
 #menu div {
-    color: #222;
     margin-top: 1%;
     margin-right: 1%;
     margin-bottom: 2%;
-}
-
-span.datetime, span.number {
-    color: #bbb;
 }
 
 #container {
@@ -92,7 +81,6 @@ span.datetime, span.number {
 }
 
 #content {
-/*    color: #000; */
     margin-top: 0.5%;
     margin-left: 1%;
     margin-right: 20em;
@@ -101,15 +89,12 @@ span.datetime, span.number {
 
 h3.title { 
     margin-top: 2%;
-    background-color: #efd595;
-    color: navy;
     padding: 3px;
     padding-left: 10px;
 }
 
 h5 { 
     padding-left: 20px;
-    color: #234;
 }
 
 #content p, #content ul {
@@ -141,11 +126,6 @@ div.meta div.tags {
     display: inline;
     margin-right: 1%;
 }
-
-div.meta div.tags a {
-    color: #4e387e;
-}
-
 
 div.meta div.extra {
     display: inline;
@@ -199,8 +179,7 @@ div.message-wrapper {
 
 div.message {
     text-align: center;
-    color: green;
-    border: #080 1px solid;
+    border: 1px solid;
     float: right;
     width: 100%;
 }
@@ -216,11 +195,9 @@ h3.menu {
     margin-top: 25px;
     margin-bottom: 5px;
     padding-left: 30px;
-    background-color: #f0e0c0;
 }
 
 .annotation {
-    color: blue;
     margin-left: 3%;
 }
 
@@ -240,9 +217,7 @@ img {
 }
 
 hr.attachments {
-    color: #eee;
-    background-color: #eee;
-    width: 80%
+    width: 80%;
 }
 
 #footer {
@@ -273,8 +248,6 @@ pre.pod, pre.shell {
 }
 
 pre.shell {
-    background-color: #333;
-    color: #eee;
     -moz-opacity: 0.7;
 }
 
@@ -299,10 +272,6 @@ div.nav-roots {
 div.nav-roots a {
     padding-left: 1%;
     padding-right: 1%;
-}
-
-div.nav-roots a.current {
-    color: #2d4;
 }
 
 div.body {
