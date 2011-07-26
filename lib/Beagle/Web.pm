@@ -196,14 +196,11 @@ sub app {
     require Beagle::Web::Router;
 
     builder {
-        for my $plugin ( reverse plugins() ) {
-            my $root = catdir( share_root($plugin), 'public' );
-            if ( -e $root ) {
+        for my $root ( system_static_roots ) {
                 enable 'Static',
                   path => sub                          { s!^/system/!! },
                   root => catdir( share_root($plugin), 'public' ),
                   pass_through => 1;
-            }
         }
 
         enable 'Static',
@@ -225,7 +222,19 @@ sub template_exists {
     $name .= '.tx' unless $name =~ /\.tx$/;
     my @roots =
       map( { catdir( $_, $bh->info->web_layout ), } web_template_roots() ),
-      map( { catdir( $_, 'base' ), } web_template_roots();
+      map( { catdir( $_, 'base' ), } web_template_roots() );
+    my @parts = split /\//, $name;
+    for my $root (@roots) {
+        return 1 if -e encode( locale_fs => catfile( $root, @parts ) );
+    }
+    return;
+}
+
+sub system_file_exists {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
+    my $name = shift;
+    return unless defined $name;
+    my @roots = system_roots();
     my @parts = split /\//, $name;
     for my $root (@roots) {
         return 1 if -e encode( locale_fs => catfile( $root, @parts ) );
@@ -321,7 +330,8 @@ sub xslate {
                 my $handle = i18n_handle();
                 $handle->maketext(@_);
             },
-            template_exists => sub { Beagle::Web->template_exists(@_) },
+            template_exists => sub { template_exists(@_) },
+            system_file_exists => sub { system_file_exists(@_) },
         },
     );
 }

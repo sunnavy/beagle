@@ -6,9 +6,17 @@
 
 <link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="<: $prefix :>feed" />
 
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/blog/main.css" />
+: if system_file_exists( 'css/' ~ $info.web_layout ~ '/main.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/main.css" />
+: } else {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/main.css" />
+: }
 
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/blog/<: $info.web_theme || 'orange' :>.css" />
+: if system_file_exists( 'css/' ~ $info.web_layout ~ '/' ~ $info.web_theme ~ '.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/<: $info.web_theme :>.css" />
+: } else {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/<: $info.web_theme :>.css" />
+: }
 
 <script type="text/javascript" src="<: $prefix :>system/js/prettify.js"></script>
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/prettify.css" />
@@ -23,8 +31,14 @@
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_skin.css" />
 <script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.js"></script>
 <script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.set.js"></script>
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/blog/admin.css" />
 <script type="text/javascript" src="<: $prefix :>system/js/beagle-admin.js"></script>
+
+: if system_file_exists( 'css/' ~ $info.web_layout ~ '/admin.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/admin.css" />
+: } else {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/admin.css" />
+: }
+
 : }
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

@@ -21,7 +21,7 @@ our (
     @WEB_TEMPLATE_ROOTS, $RELATION_PATH, $MARKS_PATH,
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
     @PLUGINS, $SEARCHED_PLUGINS, @PO_ROOTS, $HANDLES,
-    @WEB_NAMES, $SEARCHED_WEB_NAMES, $WEB_ADMIN
+    @WEB_NAMES, $SEARCHED_WEB_NAMES, $WEB_ADMIN, @SYSTEM_ROOTS,
 );
 
 BEGIN {
@@ -74,6 +74,7 @@ our @EXPORT = (
       relation_path marks_path
       web_options tweak_name plugins po_roots
       web_all web_names web_admin
+      system_roots
       /
 );
 
@@ -1085,6 +1086,17 @@ sub plugins {
 
     undef $entry_type_info;
     return @PLUGINS;
+}
+
+sub system_roots {
+    return @SYSTEM_ROOTS if @SYSTEM_ROOTS;
+    for my $plugin ( reverse plugins() ) {
+        my $root = catdir( share_root($plugin), 'public' );
+        next unless -e $root;
+        push @SYSTEM_ROOTS, $root;
+    }
+    push @SYSTEM_ROOTS, catdir( share_root(), 'public' );
+    return @SYSTEM_ROOTS;
 }
 
 1;
