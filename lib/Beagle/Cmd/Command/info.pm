@@ -49,6 +49,13 @@ has 'all' => (
     traits        => ['Getopt'],
 );
 
+has 'names' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -58,6 +65,14 @@ sub execute {
     my @bh;
     if ( $self->all ) {
         @bh = values %{handles()};
+    }
+    elsif ( $self->names ) {
+        my $handles = handles();
+        my $names = to_array( $self->names );
+        for my $name ( @$names ) {
+            die "invalid name: $name" unless $handles->{$name};
+            push @bh, $handles->{$name};
+        }
     }
     else {
         @bh = current_handle or die "please specify beagle by --name or --root";
