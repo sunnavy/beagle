@@ -23,13 +23,13 @@ has 'copyright' => (
     default => '',
 );
 
-has 'web_theme' => (
-    isa     => 'BeagleWebTheme',
+has 'web_layout' => (
+    isa     => 'BeagleWebLayout',
     is      => 'rw',
     default => 'blog',
 );
 
-has 'web_color' => (
+has 'web_theme' => (
     isa     => 'Str',
     is      => 'rw',
     default => 'orange',

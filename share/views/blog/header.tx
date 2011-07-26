@@ -6,9 +6,9 @@
 
 <link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="<: $prefix :>feed" />
 
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_theme || 'blog' :>/main.css" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/blog/main.css" />
 
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_theme || 'blog' :>/<: $info.web_color || 'orange' :>.css" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/blog/<: $info.web_theme || 'orange' :>.css" />
 
 <script type="text/javascript" src="<: $prefix :>system/js/prettify.js"></script>
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/prettify.css" />
@@ -23,7 +23,7 @@
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_skin.css" />
 <script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.js"></script>
 <script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.set.js"></script>
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_theme || 'blog' :>/admin.css" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/blog/admin.css" />
 <script type="text/javascript" src="<: $prefix :>system/js/beagle-admin.js"></script>
 : }
 

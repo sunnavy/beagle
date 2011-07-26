@@ -238,7 +238,7 @@ sub xslate {
     return $xslate{$n} if $xslate{$n};
     return $xslate{$n} = Text::Xslate->new(
         path =>
-          [ map { catdir( $_, $b->info->web_theme ) } web_template_roots() ],
+          [ map { catdir( $_, $b->info->web_layout ) } web_template_roots() ],
         cache_dir   => catdir( File::Spec->tmpdir, 'beagle_web_cache' ),
         cache       => 1,
         input_layer => ':utf8',
