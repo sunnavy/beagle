@@ -104,13 +104,6 @@ div.bark div.body:first-child {
     font-size: 200%;
 }
 
-div.wrapper {
-    width: 100%;
-    float: left;
-    margin-top: 1%;
-    height: 2em;
-}
-
 div.message-wrapper {
     height: 2%;
 }
