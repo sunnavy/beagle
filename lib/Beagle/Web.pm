@@ -224,7 +224,8 @@ sub template_exists {
     return unless defined $name;
     $name .= '.tx' unless $name =~ /\.tx$/;
     my @roots =
-      map { catdir( $_, $bh->info->web_layout ) } web_template_roots();
+      map( { catdir( $_, $bh->info->web_layout ), } web_template_roots() ),
+      map( { catdir( $_, 'base' ), } web_template_roots();
     my @parts = split /\//, $name;
     for my $root (@roots) {
         return 1 if -e encode( locale_fs => catfile( $root, @parts ) );
@@ -239,8 +240,10 @@ sub xslate {
     my $b = $bh{$n} || $bh;
     return $xslate{$n} if $xslate{$n};
     return $xslate{$n} = Text::Xslate->new(
-        path =>
-          [ map { catdir( $_, $b->info->web_layout ) } web_template_roots() ],
+        path => [
+            map( { catdir( $_, $b->info->web_layout ) } web_template_roots() ),
+            map( { catdir( $_, 'base' ) } web_template_roots() ),
+        ],
         cache_dir   => catdir( File::Spec->tmpdir, 'beagle_web_cache' ),
         cache       => 1,
         input_layer => ':utf8',
