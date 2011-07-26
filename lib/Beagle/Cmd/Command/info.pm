@@ -65,8 +65,6 @@ sub execute {
 
     my $first = 1;
     for my $bh (@bh) {
-        puts '=' x term_width() unless $first;
-        undef $first if $first;
 
         my $info = $bh->info;
 
@@ -149,6 +147,8 @@ sub execute {
             }
         }
         else {
+            puts '=' x term_width() unless $first;
+            undef $first if $first;
             puts decode_utf8 $template;
         }
     }
