@@ -11,32 +11,42 @@ has 'all' => (
     traits        => ['Getopt'],
 );
 
+has 'names' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my @roots = current_root('not die');
-
-    my $name_length;
-
-    if ( $self->all || !@roots ) {
-        my $all = roots();
-        @roots = map { $all->{$_}{local} } keys %$all;
-        $name_length = max_length( keys %$all ) + 1;
+    my @bh;
+    if ( $self->all ) {
+        @bh = values %{handles()};
+    }
+    elsif ( $self->names ) {
+        my $handles = handles();
+        my $names = to_array( $self->names );
+        for my $name ( @$names ) {
+            die "invalid name: $name" unless $handles->{$name};
+            push @bh, $handles->{$name};
+        }
+    }
+    else {
+        @bh = current_handle or die "please specify beagle by --name or --root";
     }
 
-    $name_length ||= length( root_name $roots[0] ) + 1;
+    return unless @bh;
+    my $name_length = max_length( map { $_->name } @bh ) + 1;
 
-    return unless @roots;
-
-    require Beagle::Handle;
 
     require Text::Table;
     my $tb =
       Text::Table->new( 'name', 'type', 'size' );
-    for my $root (@roots) {
-        my $bh = Beagle::Handle->new( root => $root );
+    for my $bh (@bh) {
         my $type_info = entry_type_info();
         for my $attr ( sort map { $type_info->{$_}{plural} } keys %$type_info ) {
             $tb->add( $bh->name, $attr, size_info( $bh->$attr ) || 0 );

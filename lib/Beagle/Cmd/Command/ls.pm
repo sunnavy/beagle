@@ -100,6 +100,13 @@ has 'tags' => (
     traits        => ['Getopt'],
 );
 
+has 'names' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -208,18 +215,22 @@ sub _prepare {
     my $type = $self->type || 'all';
     $self->type($type);
 
-    my $root = current_root('not die');
-    require Beagle::Handle;
-
-    if ( !$self->all && $root ) {
-        return Beagle::Handle->new( root => $root );
+    my @bh;
+    if ( $self->all ) {
+        @bh = values %{handles()};
+    }
+    elsif ( $self->names ) {
+        my $handles = handles();
+        my $names = to_array( $self->names );
+        for my $name ( @$names ) {
+            die "invalid name: $name" unless $handles->{$name};
+            push @bh, $handles->{$name};
+        }
     }
     else {
-        my $all = roots();
-        $self->all(1);
-        return map { Beagle::Handle->new( root => $all->{$_}{local} ) }
-          keys %$all;
+        @bh = current_handle or die "please specify beagle by --name or --root";
     }
+    return @bh;
 }
 
 sub execute {
@@ -306,8 +317,6 @@ sub show_result {
       if $self->limit && $self->limit > 0 && $self->limit < @found;
 
     return unless @found;
-
-    my $all = roots();
 
     require Text::Table;
     my $tb;

@@ -13,9 +13,9 @@ has all => (
 );
 
 has 'names' => (
-    isa           => 'Bool',
+    isa           => 'Str',
     is            => 'rw',
-    documentation => 'show all names seperated by newlines',
+    documentation => 'names of beagles',
     traits        => ['Getopt'],
 );
 
@@ -24,100 +24,87 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    my $root = current_root('not die');
 
     my $all = roots();
+    my $root = current_root('not die');
+    my ($current_name) = grep { $all->{$_}{local} eq $root } keys %$all;
 
     die "beagle root [name]" unless @$args <= 1;
 
-    if ( $self->names ) {
-        puts $_ for sort keys %$all;
-        return;
-    }
+    my @names;
+    if ( $self->all || $self->names || !$root ) {
 
-    if ( $self->all || !( @$args || $root ) ) {
-        my $name_length = max_length( keys %$all ) + 1;
+        if ( $self->all ) {
+            @names = ( sort keys %$all );
+        }
+        elsif ( $self->names ) {
+            @names = @{ to_array( $self->names ) };
+        }
+        else {
+            @names = ( sort keys %$all );
+        }
+
+        my $name_length = max_length(@names) + 1;
         $name_length = 5 if $name_length < 5;
 
-        if ( keys %$all || $root ) {
+        if ( $self->verbose ) {
+            if (@names || $root ) {
+                require Text::Table;
+                my $tb = Text::Table->new();
+
+                if ( $self->all && $root && !$current_name ) {
+                    $tb->add( '@', 'external', root_type($root), $root, );
+                }
+
+                for my $name (@names) {
+                    next unless $all->{$name};
+                    my $flag = '';
+                    if ( $root && $all->{$name}{local} eq $root ) {
+                        $flag = '@';
+                    }
+
+                    $tb->add(
+                        $flag, $name,
+                        $all->{$name}{type} || 'git',
+                        $all->{$name}{remote},
+                    );
+                }
+
+                puts $tb;
+            }
+        }
+        else {
+            if ( $self->all && $root && !$current_name ) {
+                puts $root;
+            }
+
+            for my $name (@names) {
+                puts name_root($name);
+            }
+        }
+    }
+    else {
+        my $name = $current_name;
+        if ( $self->verbose ) {
             require Text::Table;
             my $tb = Text::Table->new();
 
-            my $included_current;
-
-            for my $name ( sort keys %$all ) {
-                my $flag = '';
-                if ( $root && $all->{$name}{local} eq $root ) {
-                    $flag = '@';
-                    $included_current = 1;
-                }
-
+            if ($name) {
                 $tb->add(
-                    $flag, $name,
+                    $name,
                     $all->{$name}{type} || 'git',
                     $all->{$name}{remote},
                 );
             }
-
-            if ( $root && !$included_current ) {
+            else {
                 $tb->add( '@', 'external', root_type($root), $root );
             }
-
-            puts $tb;
-        }
-    }
-    else {
-        my ( $local_root, $remote_root, $name, $type );
-        if ( $name = $args->[0] ) {
-            if ( $all->{$name} ) {
-                $local_root  = $all->{$name}{local};
-                $remote_root = $all->{$name}{remote};
-                $type        = $all->{$name}{type} || 'git';
-            }
-            else {
-                die qq{$name doesn't exist.};
-            }
-        }
-
-        if ($root) {
-            unless ( $name && $local_root ) {
-                for my $n ( keys %$all ) {
-                    if ( $all->{$n}{local} eq $root ) {
-                        $name        = $n;
-                        $local_root  = $all->{$n}{local};
-                        $remote_root = $all->{$n}{remote};
-                        $type        = $all->{$name}{type} || 'git';
-                        last;
-                    }
-                }
-            }
-
-            unless ($local_root) {
-                $local_root = $remote_root = $root;
-                if ( -e catdir( $root, '.git' ) ) {
-                    $type = 'git';
-                }
-                else {
-                    $type = 'fs';
-                }
-                $name = '_';
-            }
-        }
-
-        die "root not found" unless $local_root;
-
-        if ( $self->verbose ) {
-            my $name_length = length($name) + 1;
-            $name_length = 5 if $name_length < 5;
-
-            require Text::Table;
-            my $tb = Text::Table->new();
-            $tb->add( $name, $type, $remote_root );
             puts $tb;
         }
         else {
-            puts $local_root;
+            puts $root;
         }
+
     }
 }
 

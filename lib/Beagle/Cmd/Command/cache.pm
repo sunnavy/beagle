@@ -11,6 +11,13 @@ has 'all' => (
     traits        => ['Getopt'],
 );
 
+has 'names' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 has 'update' => (
     isa           => 'Bool',
     is            => 'rw',
@@ -35,53 +42,55 @@ sub execute {
     my @roots;
     my $root = current_root('not die');
 
-    my $all = roots();
-    if ( $self->all || !$root ) {
-        for my $name ( keys %$all ) {
-            push @roots, $all->{$name}{local};
+    my @bh;
+    if ( $self->all ) {
+        @bh = values %{handles()};
+    }
+    elsif ( $self->names ) {
+        my $handles = handles();
+        my $names = to_array( $self->names );
+        for my $name ( @$names ) {
+            die "invalid name: $name" unless $handles->{$name};
+            push @bh, $handles->{$name};
         }
     }
     else {
-        @roots = $root;
+        @bh = current_handle or die "please specify beagle by --name or --root";
     }
 
     if ( $self->update ) {
-        for my $root (@roots) {
-            require Beagle::Handle;
-
+        for my $bh (@bh) {
             if ( $self->force ) {
-                my $name = root_name($root);
+                my $name = root_name($bh->root);
                 unlink catfile( cache_root(), $name . '.drafts' );
                 unlink catfile( cache_root(), $name );
             }
 
-            Beagle::Handle->new( root => $root, drafts => 0 );
-            Beagle::Handle->new( root => $root, drafts => 1 );
+            Beagle::Handle->new( root => $bh->root, drafts => 0 );
+            Beagle::Handle->new( root => $bh->root, drafts => 1 );
         }
         puts 'updated cache.';
     }
     else {
-        return unless @roots;
+        return unless @bh;
 
-        my $name_length = max_length( keys %$all ) + 1;
-        $name_length = 5 if $name_length < 5;
+        my $name_length = max_length( map { $_->name } @bh ) + 1;
 
         require Text::Table;
         my $tb = Text::Table->new( qw/name with_drafts normal/ );
 
-        for my $root (@roots) {
+        for my $bh (@bh) {
 
             # Beagle::Handle->new will update cache for us
             require Storable;
-            require Beagle::Handle;
 
             my %info;
             require Beagle::Backend;
-            my $backend = Beagle::Backend->new( root => $root, );
+            my $backend = Beagle::Backend->new( root => $bh->root, );
             my $latest = $backend->updated;
 
             for my $p ( '', '.drafts' ) {
-                my $name = root_name($root);
+                my $name = $bh->name;
                 $name =~ s![/\\]!_!g;
                 my $file = catfile( kennel(), 'cache', "$name$p" );
                 my $type = $p ? 'drafts' : 'normal';
@@ -101,7 +110,7 @@ sub execute {
                 }
             }
 
-            $tb->add( root_name($root), $info{drafts}, $info{normal} );
+            $tb->add( $bh->name, $info{drafts}, $info{normal} );
         }
         puts $tb;
     }

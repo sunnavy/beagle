@@ -24,8 +24,17 @@ has 'all' => (
     isa           => 'Bool',
     is            => 'rw',
     documentation => 'all the beagles',
+    cmd_aliases   => 'a',
     traits        => ['Getopt'],
 );
+
+has 'names' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 
 has 'add' => (
     isa           => 'Bool',
@@ -78,8 +87,23 @@ sub execute {
 
     die "beagle att --delete 3 [...]" if $self->delete && !@$args;
 
+    my @bh;
+    if ( $self->all ) {
+        @bh = values %{handles()};
+    }
+    elsif ( $self->names ) {
+        my $handles = handles();
+        my $names = to_array( $self->names );
+        for my $name ( @$names ) {
+            die "invalid name: $name" unless $handles->{$name};
+            push @bh, $handles->{$name};
+        }
+    }
+    else {
+        @bh = current_handle or die "please specify beagle by --name or --root";
+    }
+
     if ( $self->prune ) {
-        my @bh = $self->all ? handles() : ( current_handle() || handles() );
         my $pruned;
         for my $bh (@bh) {
             for my $p ( keys %{ $bh->attachments_map } ) {
@@ -102,9 +126,7 @@ sub execute {
         return;
     }
 
-    require Beagle::Handle;
     my $bh;
-
     my $pid;
 
     if ( $self->info ) {
@@ -164,12 +186,10 @@ sub execute {
         @att = sort values %$map;
     }
     else {
-        my @bh = $self->all ? handles() : ( current_handle() || handles() );
-
         for my $bh (@bh) {
             $handle_map{ $bh->root } = $bh;
             for my $p ( keys %{ $bh->attachments_map } ) {
-                warn "article $p doesn't exist, use 'att prune' to clean"
+                warn "$p doesn't exist, use 'att prune' to clean"
                   unless $bh->map->{$p};
             }
 

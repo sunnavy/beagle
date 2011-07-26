@@ -11,6 +11,13 @@ has all => (
     traits        => ['Getopt'],
 );
 
+has 'names' => (
+    isa           => 'Str',
+    is            => 'rw',
+    documentation => 'names of beagles',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -31,6 +38,18 @@ sub execute {
             }
         }
     }
+    elsif ( $self->names ) {
+        my $all = roots();
+        for my $name ( @{to_array($self->names)} ) {
+            next
+              unless $all->{$name}
+                  && $all->{$name}{type}
+                  && $all->{$name}{type} eq 'git';
+            if ( $all->{$name}{local} && $all->{$name}{remote} ) {
+                push @roots, $all->{$name}{local};
+            }
+        }
+    }
     else {
         my $root = current_root();
         die "$root is not of type git" unless root_type($root) eq 'git';
@@ -45,7 +64,11 @@ sub execute {
     $cmd =~ s!-!_!g;
     require Beagle::Wrapper::git;
 
+    my $first = 1;
     for my $root (@roots) {
+        puts '=' x term_width() unless $first;
+        undef $first if $first;
+
         my $git = Beagle::Wrapper::git->new(
             root    => $root,
             verbose => $self->verbose,

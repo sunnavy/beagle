@@ -45,6 +45,7 @@ Available commands:
         ls: list/search entries
       mark: manage entry marks
         mv: move entries to another beagle
+      name: show name
    publish: generate static files
   relation: show beagle names of entries
     rename: rename a beagle
@@ -75,16 +76,16 @@ is( last_script_stdout(), $actual_help_output, 'commands output' );
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
   alias att cache cast cat cmds commands comment comments config create
-  follow fsck git help info init log look ls mark mv publish relation rename 
+  follow fsck git help info init log look ls mark mv name publish relation rename 
   rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
 is( last_script_stdout(), $root . newline(), 'root output' );
-
-run_ok( $beagle_cmd, ['roots'], 'roots' );
+run_ok( $beagle_cmd, ['roots', '-v'], 'roots' );
 is( last_script_stdout(), join( ' ', '@', 'external', 'fs', $root ) . newline(),
     'roots output' );
+
 
 run_ok( $beagle_cmd, ['status'], 'status' );
 my $name = $root;

@@ -29,7 +29,7 @@ my $bar = catdir( $tmpdir, 'bar' );
 run_ok( $beagle_cmd, [ 'follow', $bar ], "follow $bar" );
 is( last_script_stdout(), "followed $bar." . newline(), "follow $bar output" );
 
-run_ok( $beagle_cmd, ['roots'], "roots" );
+run_ok( $beagle_cmd, ['roots', '-v'], "roots" );
 like(
     last_script_stdout(),
     qr/^\s+baz\s+$type\s+\Q$foo\E\s*$/m,
@@ -42,7 +42,7 @@ like(
 );
 
 local $ENV{BEAGLE_NAME} = 'baz';
-run_ok( $beagle_cmd, ['roots'], "roots" );
+run_ok( $beagle_cmd, ['roots', '-v'], "roots" );
 like(
     last_script_stdout(),
     qr/^\@\s+baz\s+$type\s+\Q$foo\E\s*$/m,
@@ -65,7 +65,7 @@ run_ok( $beagle_cmd, [ 'unfollow', 'baz' ], 'unfollow baz' );
 is( last_script_stdout(), 'unfollowed baz.' . newline(),
     'unfollow baz output' );
 
-run_ok( $beagle_cmd, ['roots'], "roots" );
+run_ok( $beagle_cmd, ['roots', '-v'], "roots" );
 is( last_script_stdout(), '', 'empty roots' );
 
 done_testing();
