@@ -3,7 +3,7 @@
 <div class="nav-roots">
 : for $names -> $x {
 : if $x == $name {
-  <a class="current" href="<: $prefix :>/<: $x :>"><: $x :></a>
+  <span class="current"><: $x :></span>
 : } else {
   <a href="<: $prefix :><: $x :>"><: $x :></a>
 : }
