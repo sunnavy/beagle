@@ -151,8 +151,8 @@ sub serialize_meta {
 
     my $extra = $self->extra_meta_fields;
     for my $field ( @$extra ) {
-        $str .= $self->_serialize_meta($field)
-          if defined $self->$field && !$args{$field};
+        next if exists $args{$field} && !$args{$field};
+        $str .= $self->_serialize_meta($field);
     }
 
     if ( $args{created} ) {
