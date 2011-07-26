@@ -12,3 +12,12 @@
 #menu a {
     margin-left: 1ex;
 }
+
+#footer {
+    float: left;
+    width: 100%;
+    text-align: center;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    bottom: 0;
+}
