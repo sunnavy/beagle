@@ -214,12 +214,17 @@ sub app {
     }
 }
 
+my ( $bh, %updated, %bh, $name, $names, $prefix, $static, $router, %xslate );
+$prefix = '/';
+my $req;
+
 sub template_exists {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $name = shift;
     return unless defined $name;
     $name .= '.tx' unless $name =~ /\.tx$/;
-    my @roots = web_template_roots();
+    my @roots =
+      map { catdir( $_, $bh->info->web_layout ) } web_template_roots();
     my @parts = split /\//, $name;
     for my $root (@roots) {
         return 1 if -e encode( locale_fs => catfile( $root, @parts ) );
@@ -227,9 +232,6 @@ sub template_exists {
     return;
 }
 
-my ( $bh, %updated, %bh, $name, $names, $prefix, $static, $router, %xslate );
-$prefix = '/';
-my $req;
 
 use Text::Xslate;
 sub xslate {
