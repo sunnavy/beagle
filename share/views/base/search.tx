@@ -1,23 +1,18 @@
-: include "/header.tx";
-
+: include "header.tx";
 <div class="search">
 
-<form name="search" method="post">
+<form name="search" method="post" action="<: $prefix:>search" >
 <input type="text" name="query" value="<: $query :>" />
 </form>
 
 </div>
 
 <div class="results">
-<ul>
+<div class="result">
 : for $results -> $entry {
-<li>
     <a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a>
-</li>
 : }
-</ul>
-
 </div>
 
-: include "/footer.tx";
-
+</div>
+: include "footer.tx";
