@@ -230,11 +230,10 @@ div.search input[name=query] {
 }
 
 div.results {
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 5%;
     margin-top: 3%;
     font-size: large;
-    height: 100%;
+    height: auto;
 }
 
 div.results div.result a {
