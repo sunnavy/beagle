@@ -24,7 +24,7 @@ has 'copyright' => (
 );
 
 has 'web_layout' => (
-    isa     => 'BeagleWebLayout',
+    isa     => 'Str',
     is      => 'rw',
     default => 'blog',
 );
