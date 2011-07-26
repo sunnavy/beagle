@@ -7,6 +7,8 @@
 
 #menu div {
     display: inline;
-    margin-left: 1ex;
 }
 
+#menu a {
+    margin-left: 1ex;
+}
