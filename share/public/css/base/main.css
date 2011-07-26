@@ -173,7 +173,7 @@ hr.attachments {
 }
 
 pre.pod, pre.shell {
-    border: 1px solid #000;
+    border: 1px solid;
     padding: 1%;
     margin-right: 3%;
 }
