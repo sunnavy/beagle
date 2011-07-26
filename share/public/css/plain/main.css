@@ -1,0 +1,12 @@
+@import "../base/main.css";
+
+#menu {
+    text-align: right;
+    margin-right: 1%;
+}
+
+#menu div {
+    display: inline;
+    margin-left: 1ex;
+}
+
