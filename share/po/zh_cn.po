@@ -75,3 +75,10 @@ msgstr "主页"
 
 msgid "search"
 msgstr "搜索"
+
+msgid "created date"
+msgstr "创建日期"
+
+msgid "tags"
+msgstr "标签"
+

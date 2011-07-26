@@ -7,11 +7,11 @@
   </div>
 : }
 
-  <div class="date" title="created date <: $entry.created :>" >
+  <div class="date" title="<: _('created date') :> <: $entry.created :>" >
     <: $entry.created_string :>
   </div>
 
-  <div class="tags" title="tags">
+  <div class="tags" title="<: _('tags') :>">
     <a href="<: $prefix :>tag/<: $entry.type :>"><: _($entry.type) :></a>
 : for $entry.tags -> $tag {
     <a href="<: $prefix :>tag/<: $tag :>"><: $tag :></a>
@@ -22,10 +22,10 @@
 : for $entry.extra_meta_fields_in_web_view -> $field {
 : if $entry[$field] && not ( $entry.type == 'review' && $field == 'link' ) {
 :   if match( $entry[$field], '^https?://' ) {
-    <span title="<: $entry[$field] :>">
-    <a href="<: $entry[$field] :>"><: $field :></a>
+    <span title="<: _($entry[$field]) :>">
+    <a href="<: $entry[$field] :>"><: _($field) :></a>
 :   } else {
-    <span title="<: $field :>">
+    <span title="<: _($field) :>">
     <: $entry[$field] :>
 :   }
     </span>
