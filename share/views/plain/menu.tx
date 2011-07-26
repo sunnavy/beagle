@@ -1,0 +1,5 @@
+<div id="menu">
+: include 'menu_search.tx';
+: include 'menu_profile.tx';
+: include 'menu_head.tx';
+</div>

@@ -1,0 +1,4 @@
+<div id="head" class="head">
+<a href="<: $prefix :>"><: _('home') :></a>
+</div>
+

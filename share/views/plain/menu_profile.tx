@@ -1,0 +1,4 @@
+<div id="profile" class="profile">
+<a href="<: $prefix :>about"><: _('about') :></a>
+</div>
+

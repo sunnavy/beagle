@@ -1,0 +1,6 @@
+: if !$static {
+<div id="search" class="search">
+<a href="<: $prefix :>search"><: _('search') :></a>
+</div>
+: }
+
