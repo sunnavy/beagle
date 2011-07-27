@@ -262,8 +262,6 @@ div.page {
     margin: 3%;
 }
 
-#content div.tags a {
-    width: 10em;
-    float: left;
-    overflow: hidden;
+#content > div.tags a {
+    margin-right: 1%;
 }
