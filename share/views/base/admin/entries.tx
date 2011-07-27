@@ -34,4 +34,6 @@
 : }
 </ul>
 </div>
+
+: include "page.tx";
 : include "footer.tx";
