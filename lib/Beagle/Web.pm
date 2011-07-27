@@ -209,6 +209,7 @@ sub app {
 
 my ( $bh, %updated, %bh, $name, $names, $prefix, $static, $router, %xslate );
 $prefix = '/';
+my ( %css, %js );
 my $req;
 
 sub template_exists {
@@ -418,17 +419,33 @@ sub init {
 
         $name = lc $name;
 
-        if (
-            -e catfile( share_root($plugin), 'public', $name, 'css',
-                'main.css' ) )
+        for my $layout ( 'base',
+            uniq( grep { defined } map { $_->info->web_layout } values %bh ) )
         {
-            push @css, join '/', $name, 'css', 'main.css';
-        }
 
-        if ( -e catfile( share_root($plugin), 'public', $name, 'js', 'main.js' )
-          )
-        {
-            push @js, join '/', $name, 'js', 'main.js';
+            if (
+                -e catfile(
+                    share_root($plugin), 'public',
+                    $name,               'css',
+                    $layout,             'main.css'
+                )
+              )
+            {
+                push @{ $css{$layout} }, join '/', $name, 'css', $layout,
+                  'main.css';
+            }
+
+            if (
+                -e catfile(
+                    share_root($plugin), 'public',
+                    $name,               'js',
+                    $layout,             'main.js'
+                )
+              )
+            {
+                push @{ $js{$layout} }, join '/', $name, 'js', $layout,
+                  'main.js';
+            }
         }
     }
 }
@@ -542,8 +559,9 @@ sub default_options {
         entry_types => entry_types(),
         prefix      => $prefix,
         static      => $static,
-        css         => \@css,
-        js          => \@js,
+        css =>
+          [ @{ $css{base} || [] }, @{ $css{ $bh->info->web_layout } || [] } ],
+        js => [ @{ $js{base} || [] }, @{ $js{ $bh->info->web_layout } || [] } ],
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( names => $names ),
