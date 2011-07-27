@@ -84,3 +84,7 @@ msgstr "标签"
 
 msgid "archives"
 msgstr "存档"
+
+msgid "public key"
+msgstr "公钥"
+

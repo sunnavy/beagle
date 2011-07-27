@@ -7,7 +7,7 @@
 <li><: $info.location :></li>
 <li><: $info.career :></li>
 : if $info.public_key {
-<li><a href="<: $prefix :><: $info.public_key :>">public key</a></li>
+<li><a href="<: $prefix :><: $info.public_key :>"><: _('public key') :></a></li>
 : }
 </ul>
 </div>
