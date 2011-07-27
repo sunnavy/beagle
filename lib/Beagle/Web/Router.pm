@@ -175,8 +175,8 @@ get '/admin/entry/{id:\w{32}}' => sub {
     render 'admin/entry',
       message => $vars{'message'},
       entry   => handle()->map->{$id},
-      form    => Beagle::Web::Form->new( field_list =>
-          scalar Beagle::Web->field_list( handle()->map->{$id} ) ),
+      form    => Beagle::Web::Form->new(
+        field_list => scalar Beagle::Web->field_list( handle()->map->{$id} ) ),
       title  => "update $id",
       prefix => prefix() || '../../';
 };
