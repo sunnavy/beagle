@@ -21,3 +21,20 @@
     margin-bottom: 3%;
     bottom: 0;
 }
+
+div.profile div.meta {
+    float: right;
+    margin-top: 2%;
+    width: 20em;
+}
+
+div.profile div.meta ul {
+    list-style-type: none;
+}
+
+div.profile img {
+    float: left;
+    margin: 1%;
+    margin-right: 3%;
+}
+

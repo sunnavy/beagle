@@ -15,11 +15,10 @@
     min-height: 80px;
 }
 
-#menu img {
+#menu div.profile img {
     float: left;
     margin: 1%;
     margin-right: 3%;
-
 }
 
 #menu .toggle-expand {
