@@ -3,7 +3,7 @@
 <ul>
 : for $years.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
     <li>
-    <span class="toggle-expand year_<: $year :>">+</span> <a href="<: $prefix :>date/<: $year :>"><: $year :>(<: size($years[$year]) :>)</a>
+    <span class="toggle-expand year_<: $year :>">+</span> <a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($years[$year]) :>)</a>
         <ul class="hidden">
 : for $years[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
 : for $years[$year][$month] -> $id {
