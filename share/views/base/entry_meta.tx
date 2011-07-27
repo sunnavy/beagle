@@ -2,12 +2,12 @@
 : include '_wedge.tx' { template => $entry.type ~ '_meta_start.tx' };
 
 : if ( $entry.author ) {
-  <div class="author" title="<: $entry.author :>" >
+  <div class="author" title="<: _('author') ~ ' ' ~ $entry.author :>" >
     <: email_name($entry.author) :>
   </div>
 : }
 
-  <div class="date" title="<: _('created date') :> <: $entry.created :>" >
+  <div class="date" title="<: _('created date') ~ ' ' ~ $entry.created :>" >
     <: $entry.created_string :>
   </div>
 
@@ -23,9 +23,9 @@
 : if $entry[$field] && not ( $entry.type == 'review' && $field == 'link' ) {
 :   if match( $entry[$field], '^https?://' ) {
     <span title="<: _($entry[$field]) :>">
-    <a href="<: $entry[$field] :>"><: _($field) :></a>
+    <a href="<: $entry[$field] :>"><: _(canonicalize_name($field)) :></a>
 :   } else {
-    <span title="<: _($field) :>">
+    <span title="<: _(canonicalize_name($field)) :>">
     <: $entry[$field] :>
 :   }
     </span>

@@ -31,7 +31,8 @@ sub render {
 
 sub render_label {
     my $self  = shift;
-    my $label = $self->label;
+    my $label =
+        decode_utf8(Beagle::Web->i18n_handle()->maketext($self->label));
     return <<EOF;
 <label class="label">$label</label>
 EOF

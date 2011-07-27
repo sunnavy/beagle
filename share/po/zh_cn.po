@@ -9,15 +9,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "archives"
+msgstr "存档"
+
 msgid "Archives"
 msgstr "存档"
 
-msgid "Search"
+msgid "search"
 msgstr "搜索"
 
-msgid "Tags"
-msgstr "标签"
-
+msgid "Search"
+msgstr "搜索"
 
 msgid "Comments"
 msgstr "评论"
@@ -73,18 +75,33 @@ msgstr "关于"
 msgid "home"
 msgstr "主页"
 
-msgid "search"
-msgstr "搜索"
-
 msgid "created date"
 msgstr "创建日期"
+
+msgid "public key"
+msgstr "公钥"
+
+msgid "author"
+msgstr "作者"
+
+msgid "Author"
+msgstr "作者"
+
+msgid "draft"
+msgstr "草稿"
+
+msgid "Draft"
+msgstr "草稿"
+
+msgid "format"
+msgstr "格式"
+
+msgid "Format"
+msgstr "格式"
 
 msgid "tags"
 msgstr "标签"
 
-msgid "archives"
-msgstr "存档"
-
-msgid "public key"
-msgstr "公钥"
+msgid "Tags"
+msgstr "标签"
 

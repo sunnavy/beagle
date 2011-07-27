@@ -329,6 +329,12 @@ sub xslate {
             },
             template_exists => sub { template_exists(@_) },
             system_file_exists => sub { system_file_exists(@_) },
+            canonicalize_name => sub {
+                my $name = shift;
+                return unless defined $name;
+                $name =~ s!_! !;
+                return $name;
+            },
         },
     );
 }
