@@ -258,8 +258,16 @@ div.page {
     text-align: center;
 }
 
+#content > div.archives {
+    margin: 2%;
+}
+
 #content > div.archives a {
     margin-right: 1%;
+}
+
+#content > div.tags {
+    margin: 2%;
 }
 
 #content > div.tags a {
