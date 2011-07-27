@@ -152,10 +152,16 @@ div.admin a.image {
     width: 10%;
 }
 
-div.admin a.image img {
+div.admin a.attachment img {
+    height: 40px;
+    margin-top: -10px;
+}
+
+div.admin a.attachment {
     float: left;
-    width: 3%;
-    margin-left: 2%;
+    margin-right: 20px;
+    margin-left: 2px;
+    margin-top: 1%;
 }
 
 div.utility div.delete{

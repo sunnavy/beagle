@@ -30,16 +30,17 @@
 <label>attached:</label>
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 
+<input title="check to delete" type="checkbox" value="<: $name :>" name="delete-attachments" />
+
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
-<a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
+<a class="attachment" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
 <img title="<:$name:>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" />
 </a>
 
 : }
 : else {
-<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+<a class="attachment" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
 : }
-<input title="check to delete" type="checkbox" value="<: $name :>" name="delete-attachments" />
 
 : }
 </div>
