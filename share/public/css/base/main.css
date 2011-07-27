@@ -242,9 +242,6 @@ div.results {
 
 div.results div.result a {
     margin-top: 10px;
-}
-
-div.results div.result a {
     display: block;
 }
 
@@ -261,4 +258,12 @@ div.page {
     text-align: center;
 }
 
+#content div.archives a {
+    margin: 3%;
+}
 
+#content div.tags a {
+    width: 10em;
+    float: left;
+    overflow: hidden;
+}

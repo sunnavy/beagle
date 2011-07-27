@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Archive"
+msgid "Archives"
 msgstr "存档"
 
 msgid "Search"
@@ -82,3 +82,5 @@ msgstr "创建日期"
 msgid "tags"
 msgstr "标签"
 
+msgid "archives"
+msgstr "存档"

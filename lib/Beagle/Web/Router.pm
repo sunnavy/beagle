@@ -37,7 +37,23 @@ get '/tag/:tag' => sub {
       prefix => prefix() || '../';
 };
 
-get '/date/{year:[0-9]+}' => sub {
+get '/tags' => sub {
+    my %vars = @_;
+
+    render 'tags',
+      title => 'tags',
+      prefix => prefix() || '../';
+};
+
+get '/archives' => sub {
+    my %vars = @_;
+
+    render 'archives',
+      title => 'archives',
+      prefix => prefix() || '../';
+};
+
+get '/archive/{year:[0-9]+}' => sub {
     my %vars = @_;
     my $year = $vars{year};
     return redirect '/'
@@ -52,7 +68,7 @@ get '/date/{year:[0-9]+}' => sub {
       prefix => prefix() || '../';
 };
 
-get '/date/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
+get '/archive/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my %vars  = @_;
     my $year  = $vars{year};
     my $month = $vars{month};
