@@ -18,20 +18,20 @@
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/<: $info.web_theme :>.css" />
 : }
 
-<script type="text/javascript" src="<: $prefix :>system/js/prettify.js"></script>
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/prettify.css" />
+<script type="text/javascript" src="<: $prefix :>system/js/base/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/prettify.css" />
 
-<script type="text/javascript" src="<: $prefix :>system/js/jquery.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/base/jquery.js"></script>
 
-<script type="text/javascript" src="<: $prefix :>system/js/beagle.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/base/beagle.js"></script>
 
 : if $admin {
-<script type="text/javascript" src="<: $prefix :>system/js/jquery.form.js"></script>
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_set.css" />
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_skin.css" />
-<script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.js"></script>
-<script type="text/javascript" src="<: $prefix :>system/js/jquery.markitup.set.js"></script>
-<script type="text/javascript" src="<: $prefix :>system/js/beagle-admin.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/base/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/markitup_set.css" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/markitup_skin.css" />
+<script type="text/javascript" src="<: $prefix :>system/js/base/jquery.markitup.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/base/jquery.markitup.set.js"></script>
+<script type="text/javascript" src="<: $prefix :>system/js/base/beagle-admin.js"></script>
 
 : if system_file_exists( 'css/' ~ $info.web_layout ~ '/admin.css' ) {
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/admin.css" />
