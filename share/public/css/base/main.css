@@ -218,8 +218,8 @@ div.body {
 }
 
 div.search {
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 25%;
+    margin-right: 25%;
     margin-top: 3%; 
 }
 
@@ -230,7 +230,7 @@ div.search input[name=query] {
 }
 
 div.results {
-    margin-left: 5%;
+    margin-left: 10%;
     margin-top: 3%;
     font-size: large;
     height: auto;
