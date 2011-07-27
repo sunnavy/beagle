@@ -217,9 +217,10 @@ sub template_exists {
     my $name = shift;
     return unless defined $name;
     $name .= '.tx' unless $name =~ /\.tx$/;
-    my @roots =
-      map( { catdir( $_, $bh->info->web_layout ), } web_template_roots() ),
-      map( { catdir( $_, 'base' ), } web_template_roots() );
+    my @roots = (
+        map( { catdir( $_, $bh->info->web_layout ), } web_template_roots() ),
+        map( { catdir( $_, 'base' ), } web_template_roots() )
+    );
     my @parts = split /\//, $name;
     for my $root (@roots) {
         return 1 if -e encode( locale_fs => catfile( $root, @parts ) );
