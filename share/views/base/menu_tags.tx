@@ -1,5 +1,5 @@
 <div id="tags" class="tags">
-<h3 class="menu"><: _('Tags') :></h3>
+<h3 class="menu"><a href="<: $prefix :>tags"><: _('Tags') :></a></h3>
 <ul>
 : for $tags.keys().sort() -> $tag {
 : if $tag ~~ $entry_types {
