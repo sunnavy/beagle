@@ -26,6 +26,10 @@ a.toggle-hide {
     margin-bottom: 1%;
 }
 
+h3.title:first-child {
+    margin-top: 0;
+}
+
 h3.title { 
     margin-top: 2%;
     padding: 3px;
