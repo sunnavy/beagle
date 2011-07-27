@@ -558,6 +558,7 @@ sub default_options {
 
     return (
         $bh->list,
+        handle      => $bh,
         name        => $name,
         admin       => web_admin(),
         feed        => Beagle::Web->feed($bh),
