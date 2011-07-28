@@ -105,3 +105,5 @@ msgstr "标签"
 msgid "Tags"
 msgstr "标签"
 
+msgid "No results found."
+msgstr "没有找到结果"

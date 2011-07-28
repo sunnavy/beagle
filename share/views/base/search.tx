@@ -1,8 +1,8 @@
 : include "header.tx";
-: if $results.size() {
-<div class="search">
-: } else {
+: if $search_alone {
 <div class="search alone">
+: } else {
+<div class="search">
 : }
 
 <form name="search" method="post" action="<: $prefix:>search" >
@@ -12,11 +12,12 @@
 </div>
 
 <div class="results">
-<div class="result">
+: if $results.size() {
 : for $results -> $entry {
     <a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a>
 : }
-</div>
-
+: } elsif !$search_alone {
+    <div class="no-results"><: _('No results found.') :></div>
+: }
 </div>
 : include "footer.tx";

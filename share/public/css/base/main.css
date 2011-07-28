@@ -228,7 +228,7 @@ div.search {
 }
 
 div.search.alone {
-    padding-top: 18%; 
+    padding-top: 15%; 
 }
 
 div.search input[name=query] {
@@ -245,7 +245,11 @@ div.results {
     height: auto;
 }
 
-div.results div.result a {
+div.results div.no-results {
+    margin-left: 40%;
+}
+
+div.results a {
     margin-top: 10px;
     display: block;
 }

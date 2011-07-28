@@ -113,7 +113,7 @@ get '/feed' => sub { Beagle::Web->feed()->to_string };
 
 any '/search' => sub {
     my $query = request()->param('query');
-    return render 'search', title => 'search' unless $query;
+    return render 'search', title => 'search', search_alone => 1 unless $query;
 
     my @found;
     for my $entry ( @{ handle()->entries } ) {
