@@ -338,7 +338,7 @@ sub update_entry {
             my $attr = PL($type);
             $self->$attr(
                 [
-                    map { $_->id eq $entry->id ? $entry : $_ } @{ $self->$attr }
+                    map { $_->id eq $entry->id ? $entry : $_ } @{ $self->$attr || [] }
                 ]
             );
         }
@@ -397,7 +397,7 @@ sub _init_entries {
     my $self = shift;
     my @entries =
       sort { $b->created <=> $a->created }
-      map  { @{ $self->$_ } }
+      map  { @{ $self->$_ || [] } }
       grep { $_ ne 'comments' }
       map { $type_info->{$_}{plural} } keys %{$type_info};
 
