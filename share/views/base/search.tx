@@ -1,5 +1,9 @@
 : include "header.tx";
+: if $results.size() {
 <div class="search">
+: } else {
+<div class="search alone">
+: }
 
 <form name="search" method="post" action="<: $prefix:>search" >
 <input type="text" name="query" value="<: $query :>" />
