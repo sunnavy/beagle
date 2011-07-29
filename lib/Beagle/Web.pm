@@ -243,6 +243,7 @@ sub system_file_exists {
 
 use Text::Xslate;
 sub xslate {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $n = shift   || $name;
     my $b = $bh{$n} || $bh;
     return $xslate{$n} if $xslate{$n};
@@ -469,6 +470,7 @@ sub i18n_handle {
 
 
 sub change_handle {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my %vars = @_;
     if ( $vars{handle} ) {
         $bh = $vars{handle};
@@ -488,6 +490,7 @@ sub change_handle {
 }
 
 sub process_fields {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my ( $entry, $params ) = @_;
 
     my %fields = Beagle::Web->field_list($entry);
@@ -508,6 +511,7 @@ sub process_fields {
 }
 
 sub delete_attachments {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my ( $entry, @names ) = @_;
     for my $name (@names) {
         next unless defined $name;
@@ -520,6 +524,7 @@ sub delete_attachments {
 }
 
 sub add_attachments {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my ( $entry, @attachments ) = @_;
     for my $upload (@attachments) {
         next unless $upload;
@@ -545,10 +550,12 @@ sub handle { $bh }
 sub request { $req }
 
 sub set_prefix {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     $prefix = shift;
 }
 
 sub set_static {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     $static = shift;
 }
 
@@ -577,6 +584,7 @@ sub default_options {
 }
 
 sub render {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $template = shift;
     my %vars = ( default_options(), @_ );
     if ( $vars{entries} ) {
@@ -636,6 +644,7 @@ sub render {
 }
 
 sub redirect {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $location = shift;
     my $code     = shift;
     $location =~ s!^/?!$prefix! if $location;
@@ -643,6 +652,7 @@ sub redirect {
 }
 
 sub handle_request {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $env = shift;
     init() unless $bh;
 
