@@ -264,7 +264,7 @@ sub list {
     my %ret;
 
     return map { $_ => $self->$_ } qw/info total_size sites
-      entries map attachments_map comments_map updated
+      map attachments_map comments_map updated
       entry_types
       /, map { $type_info->{$_}{plural} } keys %$type_info;
 }
