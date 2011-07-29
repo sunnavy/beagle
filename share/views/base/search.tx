@@ -19,6 +19,10 @@
 : } elsif !$search_alone {
     <div class="no-results"><: _('No results found.') :></div>
 : }
+
 </div>
-: include "page.tx";
+
+: if $results.size() {
+:   include "page.tx";
+: }
 : include "footer.tx";
