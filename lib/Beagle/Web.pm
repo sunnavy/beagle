@@ -638,7 +638,8 @@ sub render {
 sub redirect {
     my $location = shift;
     my $code     = shift;
-    $req->new_response( $code || 302, [ Location => $location || '/' ] );
+    $location =~ s!^/?!$prefix! if $location;
+    $req->new_response( $code || 302, [ Location => $location || $prefix ] );
 }
 
 sub handle_request {
