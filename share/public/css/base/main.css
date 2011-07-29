@@ -294,3 +294,13 @@ pre {
 pre.body {
     font-size: large;
 }
+
+div.previous, div.next {
+    display: inline;
+    width: 50%;
+    overflow: hidden;
+}
+
+div.next a {
+    float: right;
+}

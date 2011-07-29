@@ -4,6 +4,7 @@ use Beagle::Util;
 use Lingua::EN::Inflect 'A';
 use Beagle::Web::Form;
 use Beagle::Web::Router::Util;
+use List::MoreUtils 'first_index';
 
 get '/' => sub {
     render 'index', entries => handle()->entries;
@@ -98,11 +99,20 @@ get '/entry/:id' => sub {
           . $entry->id;
     }
 
-    render 'index',
-      entries      => [$entry],
-      $entry->type => 1,
-      title        => $entry->summary(10),
-      prefix       => prefix() || '../';
+    my $index = first_index { $_->id eq $entry->id } @{handle()->entries};
+    my %opt;
+    if ( $index != 0 ) {
+       $opt{previous_entry} = handle()->entries->[$index-1];
+    }
+
+    if ( $index != @{ handle()->entries } - 1 ) {
+        $opt{next_entry} = handle()->entries->[ $index + 1 ];
+    }
+
+    render 'entry_single',
+      entry        => $entry,
+      prefix       => prefix() || '../',
+      %opt;
 };
 
 get '/about' => sub {

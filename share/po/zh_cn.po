@@ -107,3 +107,9 @@ msgstr "标签"
 
 msgid "No results found."
 msgstr "没有找到结果"
+
+msgid "Previous"
+msgstr "上一篇"
+
+msgid "Next"
+msgstr "下一篇"
