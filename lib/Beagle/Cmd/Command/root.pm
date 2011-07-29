@@ -27,7 +27,10 @@ sub execute {
 
     my $all = roots();
     my $root = current_root('not die');
-    my ($current_name) = grep { $all->{$_}{local} eq $root } keys %$all;
+    my $current_name;
+    if ($root) {
+        ($current_name) = grep { $all->{$_}{local} eq $root } keys %$all;
+    }
 
     die "beagle root [name]" unless @$args <= 1;
 
