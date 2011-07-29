@@ -272,7 +272,7 @@ div.page {
 }
 
 #content > div.archives a {
-    margin-right: 1%;
+    margin-right: 3%;
 }
 
 #content > div.tags {
@@ -280,7 +280,7 @@ div.page {
 }
 
 #content > div.tags a {
-    margin-right: 1%;
+    margin-right: 3%;
 }
 
 pre {
