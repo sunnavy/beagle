@@ -49,6 +49,7 @@ Available commands:
    publish: generate static files
   relation: show beagle names of entries
     rename: rename a beagle
+   rewrite: rewrite all the entries
         rm: delete entries
       root: show root
      shell: interactive shell
@@ -77,7 +78,7 @@ run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
   alias att cache cast cat cmds commands comment comments config create
   follow fsck git help info init log look ls mark mv name publish relation rename 
-  rm root shell spread status unfollow update version web/;
+  rewrite rm root shell spread status unfollow update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
