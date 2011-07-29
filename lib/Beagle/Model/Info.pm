@@ -112,11 +112,19 @@ has 'avatar' => (
     },
 );
 
-has 'web_page_limit' => (
+has 'web_entry_limit' => (
     isa     => 'Str',
     is      => 'rw',
     default => sub {
-        $ENV{BEAGLE_WEB_PAGE_LIMIT} || core_config->{web_page_limit} || 10;
+        $ENV{BEAGLE_WEB_ENTRY_LIMIT} || core_config->{web_entry_limit} || 10;
+    },
+);
+
+has 'web_search_limit' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => sub {
+        $ENV{BEAGLE_WEB_SEARCH_LIMIT} || core_config->{web_search_limit} || 20;
     },
 );
 

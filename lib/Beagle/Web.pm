@@ -583,47 +583,46 @@ sub default_options {
     );
 }
 
-sub render {
-    shift @_ if @_ && $_[0] eq 'Beagle::Web';
-    my $template = shift;
-    my %vars = ( default_options(), @_ );
-    if ( $vars{entries} ) {
-        my $limit = $ENV{BEAGLE_WEB_PAGE_LIMIT} || $bh->info->web_page_limit;
-        $vars{page} = request()->param('p') || 1;
-        my $page = Data::Page->new( scalar @{ $vars{entries} },
-            $limit, $vars{page} );
-        $vars{entries}   = [ $page->splice( $vars{entries} ) ];
+sub _fill_page_info {
+    my $vars  = shift;
+    my $field = shift;
+    my $limit = shift || 10;
+    if ( $vars->{$field} ) {
+        $vars->{page} = request()->param('p') || 1;
+        my $page =
+          Data::Page->new( scalar @{ $vars->{$field} }, $limit, $vars->{page} );
+        $vars->{$field} = [ $page->splice( $vars->{$field} ) ];
 
         # page from user may exceed the range
-        $vars{page} = $page->current_page;
+        $vars->{page} = $page->current_page;
 
         my $first = $page->first_page;
-        my $last = $page->last_page;
+        my $last  = $page->last_page;
 
         if ( $first != $last ) {
             my @pages;
 
-            my @before = $first .. $vars{page} - 1;
+            my @before = $first .. $vars->{page} - 1;
             if ( @before > 9 ) {
-                push @pages, @before[$#before-9 .. $#before ];
-                $vars{first_page} = $first;
+                push @pages, @before[ $#before - 9 .. $#before ];
+                $vars->{first_page} = $first;
             }
             else {
                 push @pages, @before;
             }
 
-            push @pages, $vars{page};
+            push @pages, $vars->{page};
 
-            my @after = $vars{page} + 1 .. $last;
+            my @after = $vars->{page} + 1 .. $last;
             if ( @after > 10 ) {
-                push @pages, @after[0 .. 9 ];
-                $vars{last_page} = $last;
+                push @pages, @after[ 0 .. 9 ];
+                $vars->{last_page} = $last;
             }
             else {
                 push @pages, @after;
             }
 
-            $vars{pages} = [
+            $vars->{pages} = [
                 map {
                     my $page = $_;
                     my $uri  = request()->uri;
@@ -633,13 +632,23 @@ sub render {
             ];
 
             for my $edge (qw/first_page last_page/) {
-                next unless $vars{$edge};
+                next unless $vars->{$edge};
                 my $uri = request()->uri;
-                $uri->query_param( p => $vars{$edge} );
-                $vars{$edge} = [ $vars{$edge}, $uri->path_query ];
+                $uri->query_param( p => $vars->{$edge} );
+                $vars->{$edge} = [ $vars->{$edge}, $uri->path_query ];
             }
         }
     }
+}
+
+sub render {
+    shift @_ if @_ && $_[0] eq 'Beagle::Web';
+    my $template = shift;
+    my %vars = ( default_options(), @_ );
+    _fill_page_info( \%vars, 'entries',
+        $ENV{BEAGLE_WEB_ENTRY_LIMIT} || $bh->info->web_entry_limit );
+    _fill_page_info( \%vars, 'results',
+        $ENV{BEAGLE_WEB_SEARCH_LIMIT} || $bh->info->web_search_limit );
     return xslate()->render( "$template.tx", \%vars );
 }
 

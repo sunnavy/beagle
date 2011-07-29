@@ -20,4 +20,5 @@
     <div class="no-results"><: _('No results found.') :></div>
 : }
 </div>
+: include "page.tx";
 : include "footer.tx";
