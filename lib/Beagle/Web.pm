@@ -644,12 +644,12 @@ sub _fill_page_info {
 sub render {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $template = shift;
-    my %vars = ( default_options(), @_ );
+    my %vars     = @_;
     _fill_page_info( \%vars, 'entries',
         $ENV{BEAGLE_WEB_ENTRY_LIMIT} || $bh->info->web_entry_limit );
     _fill_page_info( \%vars, 'results',
         $ENV{BEAGLE_WEB_SEARCH_LIMIT} || $bh->info->web_search_limit );
-    return xslate()->render( "$template.tx", \%vars );
+    return xslate()->render( "$template.tx", { default_options(), %vars } );
 }
 
 sub redirect {
