@@ -286,8 +286,7 @@ sub show_result {
 
     my $order = lc $self->order;
     ( my $sign, $order ) = $order =~ /^([\+\-])?(.+)/;
-    $sign ||= '+' if $order eq 'type';
-    $sign ||= '-';
+    $sign ||= '+';
 
     if ( $order ne 'name' ) {
         if ( $found[0]->can($order) ) {
