@@ -77,7 +77,7 @@ has 'final' => (
 has 'order' => (
     isa           => 'Str',
     is            => 'rw',
-    default       => '-updated',
+    default       => '-created',
     documentation => 'order of entries in each beagle',
     traits        => ['Getopt'],
 );
