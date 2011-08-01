@@ -337,6 +337,15 @@ sub xslate {
                 $name =~ s!_! !;
                 return $name;
             },
+            lc => sub {
+                return lc shift;
+            },
+            uc => sub {
+                return uc shift;
+            },
+            ucfirst => sub {
+                return ucfirst shift;
+            },
         },
     );
 }

@@ -1,6 +1,6 @@
 <div class="tags">
 <table class="tags">
-: for $tags.keys().sort() -> $tag {
+: for $tags.keys().sort(-> $a, $b { lc($a) cmp lc($b) } ) -> $tag {
 : if $~tag.index % 5 == 0 {
 <tr>
 : }
