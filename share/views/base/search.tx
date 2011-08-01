@@ -1,14 +1,8 @@
 : include "header.tx";
-: if $search_alone {
-<div class="search alone">
-: } else {
 <div class="search">
-: }
-
 <form name="search" action="<: $prefix:>search" >
 <input type="text" name="query" value="<: $query :>" />
 </form>
-
 </div>
 
 : if $search_alone {
