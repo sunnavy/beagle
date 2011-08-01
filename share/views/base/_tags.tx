@@ -1,0 +1,19 @@
+<div class="tags">
+<table class="tags">
+: for $tags.keys().sort() -> $tag {
+: if $~tag.index % 5 == 0 {
+<tr>
+: }
+<td>
+: if $tag ~~ $entry_types {
+    <a href="<: $prefix :>tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a>
+: } else {
+    <a href="<: $prefix :>tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a>
+: }
+</td>
+: if $~tag.index % 5 == 4 {
+</tr>
+: }
+: }
+</table>
+</div>

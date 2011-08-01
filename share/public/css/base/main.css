@@ -304,3 +304,12 @@ div.previous, div.next {
 div.next a {
     float: right;
 }
+
+table.tags {
+    margin: 0 5% 0% 5%;
+    width: 90%;
+}
+
+table.tags td {
+    width: 18%;
+}

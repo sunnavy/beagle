@@ -1,11 +1,3 @@
 : include "header.tx";
-<div class="tags">
-: for $tags.keys().sort() -> $tag {
-: if $tag ~~ $entry_types {
-    <a href="<: $prefix :>tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a>
-: } else {
-    <a href="<: $prefix :>tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a>
-: }
-: }
-</div>
+: include "_tags.tx";
 : include "footer.tx";
