@@ -60,6 +60,26 @@ function beagleArchive ( ) {
     $('.toggle-expand').toggle( beagleToggle, beagleToggle );
 }
 
+function beagleListHover ( ) {
+    $('div.list div.summary').hover( function () {
+        var parent = $(this);
+        var glance = parent.children( 'div.glance' );
+        if ( !glance.length ) {
+            var id = $(this).find('a').first().attr('id');
+            var body = $.get('/fragment/entry/' + id, function ( data ) {
+                parent.append( '<div class="glance">' + data + '</div>' );
+            } );
+        }
+        parent.children( 'div.glance' ).show();
+    },
+    function () {
+        var parent = $(this);
+        var glance = parent.children( 'div.glance' );
+        parent.children( 'div.glance' ).hide();
+    }
+    );
+}
+
 function beagleInit ( opts ) {
     prettyPrint();
 
@@ -96,6 +116,7 @@ function beagleInit ( opts ) {
 
     beagleArchive();
     beagleContrast();
+    beagleListHover();
 
     $('div.message').delay(3000).fadeOut('slow');
 

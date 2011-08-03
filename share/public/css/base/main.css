@@ -236,14 +236,9 @@ div.list {
 }
 
 div.list div.glance {
-    font-size: 75%;
-    height: 30ex;
-    overflow: hidden;
-}
-
-div.list div.glance pre {
-    border: 0;
-    background: transparent !important;
+    position: relative;
+    border: 1px solid;
+    padding: 5px;
 }
 
 div.list div.no-results {

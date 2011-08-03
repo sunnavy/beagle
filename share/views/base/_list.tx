@@ -2,10 +2,7 @@
 
 : for $entries -> $entry {
     <div class="summary">
-    <h3 class="title"><a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
-    <div class="glance">
-    <: $entry.body_html | raw :>
-    </div>
+    <h3><a id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
     </div>
 : }
 </div>
