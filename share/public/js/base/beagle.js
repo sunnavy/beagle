@@ -73,9 +73,7 @@ function beagleListHover ( ) {
         parent.children( 'div.glance' ).show();
     },
     function () {
-        var parent = $(this);
-        var glance = parent.children( 'div.glance' );
-        parent.children( 'div.glance' ).hide();
+        $(this).children( 'div.glance' ).hide();
     }
     );
 }
