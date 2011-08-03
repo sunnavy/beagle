@@ -235,10 +235,6 @@ div.list {
     height: auto;
 }
 
-div.list > div.summary > h3 a {
-    text-decoration: underline;
-}
-
 div.list div.glance {
     font-size: 75%;
     height: 30ex;
