@@ -67,15 +67,20 @@ function beagleListHover ( ) {
         over: function () {
             var parent = $(this).closest('div.summary');
             var glance = parent.children( 'div.glance' ).first();
-            if ( glance && glance.text() == '' ) {
-                var id = parent.find('a').first().attr('id');
-                if ( id ) {
-                    $.get('/fragment/entry/' + id, function ( data ) {
-                        glance.html(data);
-                    } );
+            if ( glance ) {
+                if ( glance.text() == '' ) {
+                    var id = parent.find('a').first().attr('id');
+                    if ( id ) {
+                        $.get('/fragment/entry/' + id, function ( data ) {
+                            glance.html(data).show();
+                            return;
+                        } );
+                    }
+                }
+                else {
+                    glance.show();
                 }
             }
-            glance.show();
         },
         out: function () {}
     }
