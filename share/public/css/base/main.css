@@ -26,10 +26,6 @@ a.toggle-hide {
     margin-bottom: 1%;
 }
 
-h3.title:first-child {
-    margin-top: 0;
-}
-
 h3.title { 
     margin-top: 2%;
     padding: 3px;
@@ -236,14 +232,24 @@ div.search input[name=query] {
 
 div.list {
     margin-left: 10%;
+    margin-right: 10%;
     margin-top: 3%;
     height: auto;
 }
 
+div.list > div.summary > h3 a {
+    text-decoration: underline;
+}
+
 div.list div.glance {
-    font-size: smaller;
+    font-size: 75%;
     height: 30ex;
     overflow: hidden;
+}
+
+div.list div.glance pre {
+    border: 0;
+    background: transparent !important;
 }
 
 div.list div.no-results {

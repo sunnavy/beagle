@@ -1,7 +1,7 @@
 <div class="list">
 : for $entries -> $entry {
     <div class="summary">
-    <h3><a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
+    <h3 class="title"><a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
     <div class="glance">
     <: $entry.body_html | raw :>
     </div>
