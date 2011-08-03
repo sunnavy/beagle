@@ -1,12 +1,12 @@
 <div id="archive" class="archive">
 <h3 class="menu"><a href="<: $prefix :>archives"><: _('Archives') :></a></h3>
 <ul>
-: for $years.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
+: for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
     <li>
-    <span class="toggle-expand year_<: $year :>">+</span> <a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($years[$year]) :>)</a>
+    <span class="toggle-expand year_<: $year :>">+</span> <a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a>
         <ul class="hidden">
-: for $years[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
-: for $years[$year][$month] -> $e {
+: for $archives[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
+: for $archives[$year][$month] -> $e {
                 <li><a href="<: $prefix :>entry/<: $e.id :>"><: $map[$e.id].summary  || '' :></a></li>
 : }
 : }

@@ -59,11 +59,11 @@ get '/archive/{year:[0-9]+}' => sub {
     my %vars = @_;
     my $year = $vars{year};
     return redirect '/'
-      unless $year && Beagle::Web->years( handle() )->{$year};
+      unless $year && Beagle::Web->archives( handle() )->{$year};
     return render 'search',
       entries => [
-        map { @{ Beagle::Web->years( handle() )->{$year}{$_} } }
-          keys %{ Beagle::Web->years( handle() )->{$year} }
+        map { @{ Beagle::Web->archives( handle() )->{$year}{$_} } }
+          keys %{ Beagle::Web->archives( handle() )->{$year} }
       ],
       title        => "in $year",
       results_only => 1,
@@ -76,9 +76,9 @@ get '/archive/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my $year  = $vars{year};
     my $month = $vars{month};
     return redirect '/'
-      unless Beagle::Web->years( handle() )->{$year}{$month};
+      unless Beagle::Web->archives( handle() )->{$year}{$month};
     return render 'search',
-      entries => Beagle::Web->years( handle() )->{$year}{$month},
+      entries => Beagle::Web->archives( handle() )->{$year}{$month},
       title  => "in $year/$month",
       results_only => 1,
       search       => 1,

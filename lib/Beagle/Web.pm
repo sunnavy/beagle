@@ -33,10 +33,10 @@ sub feed {
 
     my $limit = $ENV{BEAGLE_WEB_FEED_LIMIT} || $info->web_feed_limit() || 20;
     if ( scalar @$entries > $limit ) {
-        $entries = [ @{$entries}[ 0 .. $limit-1] ];
+        $entries = [ @{$entries}[ 0 .. $limit - 1 ] ];
     }
 
-    for my $entry ( @$entries ) {
+    for my $entry (@$entries) {
         my $item = $feed->add_item();
         $item->link( $info->url . "/entry/" . $entry->id );
         if ( $entry->can('title') ) {
@@ -56,7 +56,8 @@ sub feed {
         );
 
         $item->pubDate( $entry->created );
-        $item->author( $entry->author || $info->name . ' (' . $info->email . ')' );
+        $item->author( $entry->author
+              || $info->name . ' (' . $info->email . ')' );
         my $category = $entry->type,;
         if ( $entry->can('tags') ) {
             $category = join ', ', $category, $entry->type,
@@ -76,32 +77,32 @@ sub update_feed {
     feed($bh);
 }
 
-my %years;
+my %archives;
 my %tags;
 
 use Storable 'dclone';
 
-sub years {
+sub archives {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $bh   = shift;
     my $name = $bh->name;
-    return dclone( $years{$name} ) if $years{$name};
+    return dclone( $archives{$name} ) if $archives{$name};
 
-    my $years = {};
+    my $archives = {};
     for my $entry ( @{ $bh->entries } ) {
-        push @{ $years->{ $entry->created_year }{ $entry->created_month } },
+        push @{ $archives->{ $entry->created_year }{ $entry->created_month } },
           $entry;
     }
 
-    $years{$name} = $years;
-    return dclone($years);
+    $archives{$name} = $archives;
+    return dclone($archives);
 }
 
-sub update_years {
+sub update_archives {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $bh = shift;
-    delete $years{ $bh->name };
-    years($bh);
+    delete $archives{ $bh->name };
+    archives($bh);
 }
 
 sub tags {
@@ -134,7 +135,7 @@ sub update_tags {
 sub field_list {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $entry = shift;
-    my @list = (
+    my @list  = (
         author => { type => 'text', },
         format => {
             type    => 'select',
@@ -147,14 +148,16 @@ sub field_list {
     );
 
     if ( $type ne 'info' && $type ne 'comment' ) {
-        push @list, tags  => { type => 'text', },
+        push @list,
+          tags => { type => 'text', },
+          ;
     }
 
     my $type = $entry->type;
     if ( $type ne 'entry' ) {
         my $names = $entry->extra_meta_fields;
         for my $name (@$names) {
-            my $attr = $entry->meta->get_attribute($name);
+            my $attr  = $entry->meta->get_attribute($name);
             my $const = $attr->type_constraint;
             if ($const) {
                 if ( $const->can('values') ) {
@@ -196,7 +199,7 @@ sub app {
     require Beagle::Web::Router;
 
     builder {
-        for my $root (system_roots()) {
+        for my $root ( system_roots() ) {
             enable 'Static',
               path         => sub { s!^/system/!! },
               root         => $root,
@@ -240,8 +243,8 @@ sub system_file_exists {
     return;
 }
 
-
 use Text::Xslate;
+
 sub xslate {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $n = shift   || $name;
@@ -329,9 +332,9 @@ sub xslate {
                 my $handle = i18n_handle();
                 $handle->maketext(@_);
             },
-            template_exists => sub { template_exists(@_) },
+            template_exists    => sub { template_exists(@_) },
             system_file_exists => sub { system_file_exists(@_) },
-            canonicalize_name => sub {
+            canonicalize_name  => sub {
                 my $name = shift;
                 return unless defined $name;
                 $name =~ s!_! !;
@@ -379,13 +382,13 @@ sub init {
 
     $names = [ grep { $all->{$_} } @$names ] if $names;
 
-    if ( $names ) {
+    if ($names) {
         if ( @$names == 1 ) {
             $bh = Beagle::Handle->new(
                 drafts => web_admin(),
                 name   => $names->[0],
             );
-            $bh{$names->[0]} = $bh;
+            $bh{ $names->[0] } = $bh;
             undef $names;
         }
         else {
@@ -477,19 +480,18 @@ sub i18n_handle {
     return Beagle::I18N->get_handle(@lang);
 }
 
-
 sub change_handle {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my %vars = @_;
     if ( $vars{handle} ) {
-        $bh = $vars{handle};
-        $name = $bh->name;
+        $bh        = $vars{handle};
+        $name      = $bh->name;
         $bh{$name} = $bh;
     }
     elsif ( $vars{name} ) {
         my $n = $vars{name};
-        $bh                 = $bh{$n};
-        $name               = $n;
+        $bh   = $bh{$n};
+        $name = $n;
     }
     else {
         return;
@@ -555,7 +557,7 @@ sub add_attachments {
     }
 }
 
-sub handle { $bh }
+sub handle  { $bh }
 sub request { $req }
 
 sub set_prefix {
@@ -568,7 +570,6 @@ sub set_static {
     $static = shift;
 }
 
-
 sub default_options {
     my $bh = handle();
 
@@ -578,7 +579,7 @@ sub default_options {
         name        => $name,
         admin       => web_admin(),
         feed        => Beagle::Web->feed($bh),
-        years       => Beagle::Web->years($bh),
+        archives    => Beagle::Web->archives($bh),
         tags        => Beagle::Web->tags($bh),
         entry_types => entry_types(),
         prefix      => $prefix,
@@ -693,7 +694,7 @@ sub handle_request {
         || time - $updated{$name} >= 60 )
     {
         $bh->update;
-        update_years($bh);
+        update_archives($bh);
         update_tags($bh);
         update_feed($bh);
         $updated{$name} = time;
@@ -727,7 +728,7 @@ sub handle_request {
     $res->finalize;
 }
 
-sub prefix { $prefix };
+sub prefix { $prefix }
 
 1;
 

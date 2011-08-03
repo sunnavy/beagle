@@ -111,7 +111,7 @@ sub execute {
             $self->save_link("/tag/$tag");
         }
 
-        for my $year ( keys %{ Beagle::Web::years($bh) } ) {
+        for my $year ( keys %{ Beagle::Web::archives($bh) } ) {
             $self->save_link("/date/$year");
         }
     }
