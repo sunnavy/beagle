@@ -42,37 +42,6 @@ function beagleToggle ( ) {
     }
 }
 
-function beagleAjaxSearch () {
-    $('#search form').submit( function () {
-        var form = $(this);
-        var query = form.find('input[name=query]');
-        if ( ! beagleIsEmpty( query ) ) {
-            $.ajax( {
-                type: 'post',
-                url: '/search',
-                data: { query: query.val() },
-                dataType: 'json',
-                success: function (json) {
-                    if ( json.results.length == 1 ) {
-                        window.location = '/entry/' + json.results[0].id;
-                    }
-                    else {
-                        var html = '<div class="results"><ul>';
-                        for ( i in json.results ) {
-                            var entry = json.results[i];
-                            html += '<li><a href="/entry/' + entry.id + '" >' + entry.summary + '</a></li>';
-                        }
-                        html += '</ul></div>';
-                        $('#content').html( html );
-                    }
-                    $('#search form').find('input[name=query]').val('');
-
-                } } );
-        }
-        return false;
-    } )
-}
-
 function beagleArchive ( ) {
     var result = window.location.pathname.match(/date\/(\d{4})/);
     var year;
@@ -125,7 +94,6 @@ function beagleInit ( opts ) {
         }
     );
 
-    beagleAjaxSearch();
     beagleArchive();
     beagleContrast();
 

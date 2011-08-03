@@ -1,11 +1,14 @@
 : include "header.tx";
+
+: if not $results_only {
 <div class="search">
 <form name="search" action="<: $prefix:>search" >
 <input type="text" name="query" value="<: $query :>" />
 </form>
 </div>
+: }
 
-: if $search_alone {
+: if $search_only {
 : include "_tags.tx";
 : } else {
 : if $entries.size() {

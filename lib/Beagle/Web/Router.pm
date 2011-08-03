@@ -123,7 +123,7 @@ get '/feed' => sub { Beagle::Web->feed()->to_string };
 
 any '/search' => sub {
     my $query = request()->param('query');
-    return render 'search', title => 'search', search_alone => 1 unless $query;
+    return render 'search', title => 'search', search_only => 1 unless $query;
 
     my @found;
     for my $entry ( @{ handle()->entries } ) {
@@ -132,27 +132,17 @@ any '/search' => sub {
 
     @found = sort { $b->updated <=> $a->updated } @found;
 
-    if ( request()->header('Accept') =~ /json/ ) {
-        return to_json(
-            {
-                results => [
-                    map { { id => $_->id, summary => $_->summary(80) } } @found
-                ],
-            }
-        );
-    }
-    else {
-        if ( @found == 1 ) {
-            return redirect '/entry/' . $found[0]->id;
-        }
-        else {
-            render 'search',
-              search  => 1,
-              title   => 'search',
-              entries => \@found,
-              query   => $query;
-        }
-    }
+#    if ( @found == 1 ) {
+#        return redirect '/entry/' . $found[0]->id;
+#    }
+#    else {
+    render 'search',
+      search  => 1,
+      title   => 'search',
+      entries => \@found,
+      query   => $query,
+      results_only => request()->param('results_only') ? 1 : 0;
+#    }
 };
 
 get '/admin/entries' => sub {
