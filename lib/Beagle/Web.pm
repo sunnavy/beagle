@@ -90,7 +90,7 @@ sub years {
     my $years = {};
     for my $entry ( @{ $bh->entries } ) {
         push @{ $years->{ $entry->created_year }{ $entry->created_month } },
-          $entry->id;
+          $entry;
     }
 
     $years{$name} = $years;
@@ -115,10 +115,10 @@ sub tags {
     for my $entry ( @{ $bh->entries } ) {
         if ( $entry->can('tags') ) {
             for my $tag ( @{ $entry->tags } ) {
-                push @{ $tags->{$tag} }, $entry->id;
+                push @{ $tags->{$tag} }, $entry;
             }
         }
-        push @{ $tags->{ $entry->type } }, $entry->id;
+        push @{ $tags->{ $entry->type } }, $entry;
     }
     $tags{$name} = $tags;
     return dclone($tags);

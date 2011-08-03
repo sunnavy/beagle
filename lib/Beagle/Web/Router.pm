@@ -30,12 +30,12 @@ get '/tag/:tag' => sub {
     return redirect '/'
       unless $tag && Beagle::Web->tags( handle() )->{$tag};
 
-    render 'index',
-      $tag  => 1,
-      title => "tag $tag",
-      entries => [ map { handle()->map->{$_} }
-          @{ Beagle::Web->tags( handle() )->{$tag} } ],
-      prefix => prefix() || '../';
+    render 'search',
+      "tag_$tag"   => 1,
+      title        => "tag $tag",
+      entries      => Beagle::Web->tags( handle() )->{$tag},
+      results_only => 1,
+      prefix       => prefix() || '../';
 };
 
 get '/tags' => sub {
@@ -59,14 +59,14 @@ get '/archive/{year:[0-9]+}' => sub {
     my $year = $vars{year};
     return redirect '/'
       unless $year && Beagle::Web->years( handle() )->{$year};
-    return render 'index',
+    return render 'search',
       entries => [
-        map { handle()->map->{$_} }
-          map { @{ Beagle::Web->years( handle() )->{$year}{$_} } }
+        map { @{ Beagle::Web->years( handle() )->{$year}{$_} } }
           keys %{ Beagle::Web->years( handle() )->{$year} }
       ],
-      title  => "in $year",
-      prefix => prefix() || '../';
+      title        => "in $year",
+      results_only => 1,
+      prefix       => prefix() || '../';
 };
 
 get '/archive/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
@@ -75,10 +75,10 @@ get '/archive/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
     my $month = $vars{month};
     return redirect '/'
       unless Beagle::Web->years( handle() )->{$year}{$month};
-    return render 'index',
-      entries => [ map { handle()->map->{$_} }
-          @{ Beagle::Web->years( handle() )->{$year}{$month} } ],
+    return render 'search',
+      entries => Beagle::Web->years( handle() )->{$year}{$month},
       title  => "in $year/$month",
+      results_only => 1,
       prefix => prefix() || '../../';
 };
 

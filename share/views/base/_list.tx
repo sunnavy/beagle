@@ -1,7 +1,10 @@
 <div class="list">
 : for $entries -> $entry {
     <div class="summary">
-    <a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a>
+    <h3><a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
+    <pre class="glance">
+    <: substr($entry.body, 200) :>
+    </pre>
     </div>
 : }
 </div>

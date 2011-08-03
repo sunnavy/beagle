@@ -244,9 +244,8 @@ div.list div.no-results {
     margin-left: 40%;
 }
 
-div.results a {
-    margin-top: 10px;
-    display: block;
+div.list pre {
+    margin: 0;
 }
 
 textarea {
