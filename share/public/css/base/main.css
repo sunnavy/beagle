@@ -240,6 +240,12 @@ div.list {
     height: auto;
 }
 
+div.list div.glance {
+    font-size: smaller;
+    height: 30ex;
+    overflow: hidden;
+}
+
 div.list div.no-results {
     margin-left: 40%;
 }
