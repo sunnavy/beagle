@@ -61,21 +61,31 @@ function beagleArchive ( ) {
 }
 
 function beagleListHover ( ) {
-    $('div.list div.summary').hover( function () {
-        var parent = $(this);
-        var glance = parent.children( 'div.glance' );
-        if ( !glance.length ) {
-            var id = $(this).find('a').first().attr('id');
-            var body = $.get('/fragment/entry/' + id, function ( data ) {
-                parent.append( '<div class="glance">' + data + '</div>' );
-            } );
-        }
-        parent.children( 'div.glance' ).show();
-    },
-    function () {
-        $(this).children( 'div.glance' ).hide();
+    $('div.list div.summary h3 a, div.list div.summary div.glance' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            var parent = $(this).closest('div.summary');
+            var glance = parent.children( 'div.glance' ).first();
+            if ( glance && glance.text() == '' ) {
+                var id = parent.find('a').first().attr('id');
+                if ( id ) {
+                    $.get('/fragment/entry/' + id, function ( data ) {
+                        glance.html(data);
+                    } );
+                }
+            }
+            glance.show();
+        },
+        out: function () {}
     }
     );
+
+    $('div.list div.summary').hoverIntent( {
+        timeout: 500,
+        over: function () {},
+        out: function () { $(this).children('div.glance').hide() }
+    } );
 }
 
 function beagleInit ( opts ) {

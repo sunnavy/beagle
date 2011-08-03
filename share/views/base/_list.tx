@@ -3,6 +3,7 @@
 : for $entries -> $entry {
     <div class="summary">
     <h3><a id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
+    <div class="glance"></div>
     </div>
 : }
 </div>

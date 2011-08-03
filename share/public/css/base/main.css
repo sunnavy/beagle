@@ -239,6 +239,7 @@ div.list div.glance {
     position: relative;
     border: 1px solid;
     padding: 5px;
+    display: none;
 }
 
 div.list div.no-results {

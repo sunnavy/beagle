@@ -22,7 +22,7 @@
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/prettify.css" />
 
 <script type="text/javascript" src="<: $prefix :>system/js/base/jquery.js"></script>
-
+<script type="text/javascript" src="<: $prefix :>system/js/base/jquery.hoverIntent.js"></script>
 <script type="text/javascript" src="<: $prefix :>system/js/base/beagle.js"></script>
 
 : if $admin {
