@@ -8,21 +8,11 @@
 : if $search_alone {
 : include "_tags.tx";
 : } else {
-<div class="results">
-: if $results.size() {
-: for $results -> $entry {
-    <a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a>
-: }
+: if $entries.size() {
+: include "_list.tx";
 : } else {
     <div class="no-results"><: _('No results found.') :></div>
 : }
-
-</div>
-
-: if $results.size() {
-:   include "page.tx";
-: }
-
 : }
 
 : include "footer.tx";

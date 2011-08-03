@@ -654,10 +654,14 @@ sub render {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $template = shift;
     my %vars     = @_;
-    _fill_page_info( \%vars, 'entries',
-        $ENV{BEAGLE_WEB_ENTRY_LIMIT} || $bh->info->web_entry_limit );
-    _fill_page_info( \%vars, 'results',
-        $ENV{BEAGLE_WEB_SEARCH_LIMIT} || $bh->info->web_search_limit );
+    if ( $vars{search} ) {
+        _fill_page_info( \%vars, 'entries',
+            $ENV{BEAGLE_WEB_SEARCH_LIMIT} || $bh->info->web_search_limit );
+    }
+    else {
+        _fill_page_info( \%vars, 'entries',
+            $ENV{BEAGLE_WEB_ENTRY_LIMIT} || $bh->info->web_entry_limit );
+    }
     return xslate()->render( "$template.tx", { default_options(), %vars } );
 }
 

@@ -147,8 +147,9 @@ any '/search' => sub {
         }
         else {
             render 'search',
+              search  => 1,
               title   => 'search',
-              results => \@found,
+              entries => \@found,
               query   => $query;
         }
     }

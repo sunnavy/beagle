@@ -1,0 +1,9 @@
+<div class="list">
+: for $entries -> $entry {
+    <div class="summary">
+    <a href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a>
+    </div>
+: }
+</div>
+
+: include "page.tx";

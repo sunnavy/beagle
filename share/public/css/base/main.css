@@ -234,14 +234,13 @@ div.search input[name=query] {
     margin-top: 1ex;
 }
 
-div.results {
+div.list {
     margin-left: 10%;
     margin-top: 3%;
-    font-size: large;
     height: auto;
 }
 
-div.results div.no-results {
+div.list div.no-results {
     margin-left: 40%;
 }
 
