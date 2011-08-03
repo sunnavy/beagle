@@ -35,6 +35,7 @@ get '/tag/:tag' => sub {
       title        => "tag $tag",
       entries      => Beagle::Web->tags( handle() )->{$tag},
       results_only => 1,
+      search       => 1,
       prefix       => prefix() || '../';
 };
 
@@ -66,6 +67,7 @@ get '/archive/{year:[0-9]+}' => sub {
       ],
       title        => "in $year",
       results_only => 1,
+      search       => 1,
       prefix       => prefix() || '../';
 };
 
@@ -79,6 +81,7 @@ get '/archive/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
       entries => Beagle::Web->years( handle() )->{$year}{$month},
       title  => "in $year/$month",
       results_only => 1,
+      search       => 1,
       prefix => prefix() || '../../';
 };
 
