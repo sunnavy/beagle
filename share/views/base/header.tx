@@ -63,10 +63,6 @@ beagleInit( { admin: 1 } );
 
 </head>
 <body>
-<div class="beagle hidden">
-<span name="prefix"><: $prefix :></span>
-<span name="name"><: $name :></span>
-</div>
 
 : include 'menu.tx';
 : include 'container.tx';

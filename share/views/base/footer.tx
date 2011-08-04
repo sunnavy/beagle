@@ -16,6 +16,12 @@
 </div>
 </div>
 
+<div class="beagle hidden">
+<span name="prefix"><: $prefix :></span>
+<span name="name"><: $name :></span>
+<span name="name"><: $name :></span>
+</div>
+
 </body>
 </html>
 
