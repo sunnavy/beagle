@@ -45,7 +45,7 @@ function beagleToggle ( ) {
 }
 
 function beagleArchive ( ) {
-    var result = window.location.pathname.match(/date\/(\d{4})/);
+    var result = window.location.pathname.match(/archive\/(\d{4})/);
     var year;
     if ( result ) {
         year = result[1];
