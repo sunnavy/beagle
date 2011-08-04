@@ -97,11 +97,11 @@ get '/entry/:id' => sub {
     my $index = first_index { $_->id eq $entry->id } @{handle()->entries};
     my %opt;
     if ( $index != 0 ) {
-       $opt{previous_entry} = handle()->entries->[$index-1];
+       $opt{next_entry} = handle()->entries->[$index-1];
     }
 
     if ( $index != @{ handle()->entries } - 1 ) {
-        $opt{next_entry} = handle()->entries->[ $index + 1 ];
+        $opt{previous_entry} = handle()->entries->[ $index + 1 ];
     }
 
     render 'entry_single',
