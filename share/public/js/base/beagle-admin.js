@@ -15,7 +15,7 @@ function beagleBindKeys () {
 
 function beagleAjaxDelete () {
     $('form.delete').ajaxForm( {
-        url: '/admin/entry/delete',
+        url: beaglePrefix + 'admin/entry/delete',
         dataType: 'json',
         type: 'post',
         beforeSubmit: function (arr, form) {
@@ -30,7 +30,7 @@ function beagleAjaxDelete () {
                 var id = form.find('input[name=id]').val();
                 $('#'+id).remove();
                 if ( json.redraw_menu ) {
-                    $('#menu').load('/fragment/menu', function () {
+                    $('#menu').load(beaglePrefix + 'fragment/menu', function () {
                         beagleContrast('#menu');
                     } );
                 }

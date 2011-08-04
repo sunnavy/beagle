@@ -5,6 +5,8 @@
  * licensed under GPL Version 2.
  */
 
+beaglePrefix = "/";
+
 function beagleContrast (p) {
     if ( !p ) {
         p = 'body';
@@ -71,7 +73,7 @@ function beagleListHover ( ) {
                 if ( glance.text() == '' ) {
                     var id = parent.find('a').first().attr('id');
                     if ( id ) {
-                        $.get('/fragment/entry/' + id, function ( data ) {
+                        $.get(beaglePrefix + 'fragment/entry/' + id, function ( data ) {
                             glance.html(data).show();
                             return;
                         } );
@@ -95,6 +97,7 @@ function beagleListHover ( ) {
 
 function beagleInit ( opts ) {
     prettyPrint();
+    beaglePrefix = $('div.beagle').children('span[name=prefix]').text() || '/';
 
     $('a.toggle.hide').click(
         function() {
