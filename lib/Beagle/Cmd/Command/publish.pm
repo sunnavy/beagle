@@ -94,6 +94,17 @@ sub execute {
         $self->save_link( '/', 'index.html' );
         $self->save_link( '/about', );
         $self->save_link('/feed');
+        $self->save_link('/tags');
+        $self->save_link('/archives');
+
+        {
+            my $info  = $bh->info;
+            my @parts = split_id( $info->id );
+            if ( -e catdir( $static, @parts ) ) {
+                dircopy( catdir( $static, @parts ),
+                    catdir( 'static', @parts ) );
+            }
+        }
 
         my $entries = $bh->entries;
         for my $entry (@$entries) {
@@ -112,7 +123,7 @@ sub execute {
         }
 
         for my $year ( keys %{ Beagle::Web::archives($bh) } ) {
-            $self->save_link("/date/$year");
+            $self->save_link("/archive/$year");
         }
     }
 }
