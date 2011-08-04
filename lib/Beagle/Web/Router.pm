@@ -40,19 +40,11 @@ get '/tag/:tag' => sub {
 };
 
 get '/tags' => sub {
-    my %vars = @_;
-
-    render 'tags',
-      title => 'tags',
-      prefix => prefix() || '../';
+    render 'tags', title => 'tags';
 };
 
 get '/archives' => sub {
-    my %vars = @_;
-
-    render 'archives',
-      title => 'archives',
-      prefix => prefix() || '../';
+    render 'archives', title => 'archives';
 };
 
 get '/archive/{year:[0-9]+}' => sub {
