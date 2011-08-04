@@ -8,4 +8,6 @@
 : }
 </div>
 
+: if ( !$static ) {
 : include "page.tx";
+: }
