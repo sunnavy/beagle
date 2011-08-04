@@ -45,10 +45,13 @@ function beagleToggle ( ) {
 }
 
 function beagleArchive ( ) {
-    var result = window.location.pathname.match(/archive\/(\d{4})/);
-    var year;
-    if ( result ) {
-        year = result[1];
+    var year = $('div.beagle').children('span[name=year]').text();
+
+    if ( ! year ) {
+        var result =  window.location.pathname.match(/archive\/(\d{4})/);
+        if ( result ) {
+            year = result[1];
+        }
     }
 
     if ( year ) {

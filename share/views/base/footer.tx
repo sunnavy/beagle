@@ -19,7 +19,9 @@
 <div class="beagle hidden">
 <span name="prefix"><: $prefix :></span>
 <span name="name"><: $name :></span>
-<span name="name"><: $name :></span>
+: if $entry {
+<span name="year"><: $entry.created_year :></span>
+: }
 </div>
 
 </body>
