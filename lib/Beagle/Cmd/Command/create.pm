@@ -174,7 +174,7 @@ sub handle_attachments {
     my $parent = shift;
     return unless $self->attachments;
     for my $file ( @{ $self->attachments } ) {
-        $file = decode( locale_fs => $file );
+        $file = encode( locale_fs => $file );
         if ( -f $file ) {
 
             require File::Basename;
@@ -185,7 +185,7 @@ sub handle_attachments {
                 parent_id    => $parent->id,
             );
 
-            handle->create_attachment( $att, commit => 0 );
+            current_handle()->create_attachment( $att, commit => 0 );
         }
         else {
             die "$file is not a file or doesn't exist.";
