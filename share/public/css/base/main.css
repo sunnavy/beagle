@@ -87,6 +87,11 @@ div.body div.cover {
     width: 8em;
 }
 
+div.body div.image img {
+    max-width: 98%;
+    margin-top: 1em;
+}
+
 div.body {
     display: block;
 }

@@ -1,0 +1,28 @@
+<div class="content">
+<div class="body">
+
+: include 'entry_body.tx';
+
+<div class="image">
+: for $attachments_map[$entry.id].keys().sort() -> $name {
+: if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
+<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
+<img src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" title="<: $name :>" />
+</a>
+: } }
+
+</div>
+
+</div>
+
+<div class="attachments">
+<hr class="attachments" />
+: for $attachments_map[$entry.id].keys().sort() -> $name {
+: if not match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
+<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><: $name :></a>
+: } }
+</div>
+
+: include "comments.tx";
+
+</div>
