@@ -41,6 +41,7 @@ sub command_names { qw/update edit/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
+    push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
     die "beagle update id [...]" unless @$args;
 
     for my $i (@$args) {

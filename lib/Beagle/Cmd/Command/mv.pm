@@ -16,12 +16,15 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die "beagle mv id [...] name" unless @$args > 1;
+    my $name = pop @$args;
+    die "beagle mv id [...] name" unless defined $name;
+
+    push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
+    die "beagle mv id [...] name" unless @$args;
 
     my @created;
     my $relation;
 
-    my $name = pop @{$args};
     my $to_root = name_root($name) or die "no such beagle with name: $name";
     require Beagle::Handle;
     my $to = Beagle::Handle->new( root => $to_root );

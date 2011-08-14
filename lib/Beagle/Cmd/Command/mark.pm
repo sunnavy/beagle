@@ -153,6 +153,7 @@ sub execute {
     else {
 
         my @ids;
+        push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
         for my $i (@$args) {
             if ( length $i == 32 ) {
                 push @ids, $i;
