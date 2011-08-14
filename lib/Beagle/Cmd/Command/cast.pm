@@ -39,7 +39,8 @@ sub execute {
             )
           )
         {
-            $bh->delete_entry($entry);
+
+            $bh->backend->delete( $entry );
         }
     }
     puts 'casted.';
