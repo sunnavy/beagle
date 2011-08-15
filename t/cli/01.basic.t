@@ -96,16 +96,6 @@ if ( is_windows ) {
     $name =~ s!:!_!g;
 }
 
-$expect = <<"EOF";
-name    type       size
-$name articles   0   
-$name tasks      0   
-$name barks      0   
-$name reviews    0   
-$name comments   0   
-$name total size
-EOF
-
 $out = last_script_stdout();
 like( $out, qr/^name\s+size\s+trust\s*$/m, 'status output' );
 like(
