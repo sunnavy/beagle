@@ -107,15 +107,10 @@ $name total size
 EOF
 
 $out = last_script_stdout();
-like( $out, qr/^name\s+type\s+size\s*trust\s*$/m, 'status output' );
-like( $out, qr/\Q$name\E\s+articles\s+0\s*-\s*$/m, 'status output articles part' );
-like( $out, qr/\Q$name\E\s+barks\s+0\s*-\s*$/m, 'status output barks part' );
-like( $out, qr/\Q$name\E\s+reviews\s+0\s*-\s*$/m, 'status output reviews part' );
-like( $out, qr/\Q$name\E\s+tasks\s+0\s*-\s*$/m, 'status output tasks part' );
-like( $out, qr/\Q$name\E\s+comments\s+0\s*-\s*$/m, 'status output comments part' );
+like( $out, qr/^name\s+size\s+trust\s*$/m, 'status output' );
 like(
     $out,
-    qr/\Q$name\E\s+total size\s+[\d.]+K\s*0\s*\Z/m,
+    qr/\Q$name\E\s+[\d.]+K\s+0\s*\Z/m,
     'status output total size part'
 );
 

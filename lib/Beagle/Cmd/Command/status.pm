@@ -45,14 +45,10 @@ sub execute {
 
     require Text::Table;
     my $tb =
-      Text::Table->new( 'name', 'type', 'size', 'trust' );
+      Text::Table->new( 'name', 'size', 'trust' );
     for my $bh (@bh) {
-        my $type_info = entry_type_info();
-        for my $attr ( sort map { $type_info->{$_}{plural} } keys %$type_info ) {
-            $tb->add( $bh->name, $attr, size_info( $bh->$attr ) || 0, '-' );
-        }
         $tb->add(
-            $bh->name, 'total size',
+            $bh->name,
             format_bytes( $bh->total_size ),
             roots()->{ $bh->name }{trust} ? 1 : 0,
         );
