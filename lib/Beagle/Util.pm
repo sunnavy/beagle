@@ -823,7 +823,8 @@ sub defang {
 }
 
 sub parse_wiki {
-    my $value = $_[-1];
+    my $value = shift;
+    my $trust = shift;
     return '' unless defined $value;
 
     if ( !$INC{'Text/WikiFormat.pm'} ) {
@@ -868,11 +869,13 @@ sub parse_wiki {
     }
 
     my $ret = _parse_wiki($value);
+    return $ret if $trust;
     return defang($ret);
 }
 
 sub parse_markdown {
-    my $value = $_[-1];
+    my $value = shift;
+    my $trust = shift;
     return '' unless defined $value;
 
     require Text::MultiMarkdown;
@@ -917,12 +920,14 @@ sub parse_markdown {
     if ($block_name) {
         push @new, qq{<pre class="$block_name">$code</pre>};
     }
-
-    return defang( Text::MultiMarkdown::markdown( join "\n", @new ) );
+    my $ret = Text::MultiMarkdown::markdown( join "\n", @new );
+    return $ret if $trust;
+    return defang( $ret );
 }
 
 sub parse_pod {
-    my $value = $_[-1];
+    my $value = shift;
+    my $trust = shift;
     return '' unless defined $value;
 
     require Pod::Simple::XHTML;
@@ -932,12 +937,13 @@ sub parse_pod {
     $pod->html_h_level( $ENV{BEAGLE_POD_HTML_H_LEVEL}
           || core_config->{pod_html_h_level}
           || 3 );
-    my $out;
+    my $ret;
 
-    $pod->output_string(\$out);
+    $pod->output_string(\$ret);
     $pod->parse_string_document($value);
 
-    return defang( $out );
+    return $ret if $trust;
+    return defang( $ret );
 }
 
 sub detect_roots {
@@ -960,12 +966,14 @@ sub detect_roots {
                     remote => $url,
                     local  => catdir( $base, $dir ),
                     type   => 'git',
+                    trust  => 0,
                 };
             }
             else {
                 $info->{ decode( locale_fs => $dir ) } = {
                     local => catdir( $base, $dir ),
                     type  => 'fs',
+                    trust => 0,
                 };
             }
         }

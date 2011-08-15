@@ -55,7 +55,9 @@ Available commands:
      shell: interactive shell
     spread: spread entries
     status: show status
+     trust: trust beagles
   unfollow: unfollow beagles
+   untrust: untrust beagles
     update: update entries
    version: show beagle version
        web: start web server
@@ -78,7 +80,7 @@ run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
   alias att cache cast cat cmds commands comment comments config create
   follow fsck git help info init log look ls mark mv name publish relation rename 
-  rewrite rm root shell spread status unfollow update version web/;
+  rewrite rm root shell spread status trust unfollow untrust update version web/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );
@@ -105,15 +107,15 @@ $name total size
 EOF
 
 $out = last_script_stdout();
-like( $out, qr/^name\s+type\s+size\s*$/m, 'status output' );
-like( $out, qr/\Q$name\E\s+articles\s+0\s*$/m, 'status output articles part' );
-like( $out, qr/\Q$name\E\s+barks\s+0\s*$/m, 'status output barks part' );
-like( $out, qr/\Q$name\E\s+reviews\s+0\s*$/m, 'status output reviews part' );
-like( $out, qr/\Q$name\E\s+tasks\s+0\s*$/m, 'status output tasks part' );
-like( $out, qr/\Q$name\E\s+comments\s+0\s*$/m, 'status output comments part' );
+like( $out, qr/^name\s+type\s+size\s*trust\s*$/m, 'status output' );
+like( $out, qr/\Q$name\E\s+articles\s+0\s*-\s*$/m, 'status output articles part' );
+like( $out, qr/\Q$name\E\s+barks\s+0\s*-\s*$/m, 'status output barks part' );
+like( $out, qr/\Q$name\E\s+reviews\s+0\s*-\s*$/m, 'status output reviews part' );
+like( $out, qr/\Q$name\E\s+tasks\s+0\s*-\s*$/m, 'status output tasks part' );
+like( $out, qr/\Q$name\E\s+comments\s+0\s*-\s*$/m, 'status output comments part' );
 like(
     $out,
-    qr/\Q$name\E\s+total size\s+[\d.]+K\s*\Z/m,
+    qr/\Q$name\E\s+total size\s+[\d.]+K\s*0\s*\Z/m,
     'status output total size part'
 );
 

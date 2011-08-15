@@ -90,13 +90,13 @@ sub _parse_body {
     else {
         if ( $self->format eq 'wiki' ) {
             $value =~ s/\[\[Image:(.*?)\]\]/$self->_parse_image( $1 )/egi;
-            return parse_wiki($value);
+            return parse_wiki($value, roots()->{root_name($self->root)}{trust} );
         }
         elsif ( $self->format eq 'markdown' ) {
-            return parse_markdown($value);
+            return parse_markdown($value, roots()->{root_name($self->root)}{trust});
         }
         elsif ( $self->format eq 'pod' ) {
-            return parse_pod($value);
+            return parse_pod($value, roots()->{root_name($self->root)}{trust});
         }
         else {
             warn 'invalid format: ' . $self->format;

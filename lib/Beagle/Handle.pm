@@ -17,6 +17,13 @@ has 'drafts' => (
     default => 1,
 );
 
+has 'trusted' => (
+    isa     => 'Bool',
+    is      => 'ro',
+    lazy    => 1,
+    default => 0,
+);
+
 has 'backend' => (
     isa     => 'Beagle::Backend::base',
     is      => 'rw',
