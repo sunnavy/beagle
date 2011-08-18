@@ -25,92 +25,81 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $all = roots();
+    my $all  = roots();
     my $root = current_root('not die');
     my $current_name;
     if ($root) {
         ($current_name) = grep { $all->{$_}{local} eq $root } keys %$all;
     }
 
-    die "beagle root [name]" unless @$args <= 1;
-
     my @names;
-    if ( $self->all || $self->names || !$root ) {
 
-        if ( $self->all ) {
-            @names = ( sort keys %$all );
-        }
-        elsif ( $self->names ) {
-            @names = @{ to_array( $self->names ) };
-        }
-        else {
-            @names = ( sort keys %$all );
-        }
-
-        my $name_length = max_length(@names) + 1;
-        $name_length = 5 if $name_length < 5;
-
-        if ( $self->verbose ) {
-            if (@names || $root ) {
-                require Text::Table;
-                my $tb = Text::Table->new();
-
-                if ( $self->all && $root && !$current_name ) {
-                    $tb->add( '@', 'external', root_type($root), $root, );
-                }
-
-                for my $name (@names) {
-                    next unless $all->{$name};
-                    my $flag = '';
-                    if ( $root && $all->{$name}{local} eq $root ) {
-                        $flag = '@';
-                    }
-
-                    $tb->add(
-                        $flag, $name,
-                        $all->{$name}{type} || 'git',
-                        $all->{$name}{remote},
-                    );
-                }
-
-                puts $tb;
-            }
-        }
-        else {
-            if ( $self->all && $root && !$current_name ) {
-                puts $root;
-            }
-
-            for my $name (@names) {
-                puts name_root($name);
-            }
-        }
+    if ( $self->all ) {
+        @names = ( sort keys %$all );
+    }
+    elsif ( $self->names ) {
+        @names = @{ to_array( $self->names ) };
+    }
+    elsif (@$args) {
+        push @names, @$args;
+    }
+    elsif ( !$root ) {
+        @names = ( sort keys %$all );
     }
     else {
-        my $name = $current_name;
-        if ( $self->verbose ) {
-            require Text::Table;
-            my $tb = Text::Table->new();
+        @names = root_name($root);
+    }
 
-            if ($name) {
-                $tb->add(
-                    $name,
-                    $all->{$name}{type} || 'git',
-                    $all->{$name}{remote},
-                );
+    my $name_length = max_length(@names) + 1;
+    $name_length = 5 if $name_length < 5;
+
+    my $printed_current_root;
+
+    if ( $self->verbose ) {
+        require Text::Table;
+        my $tb = Text::Table->new();
+
+        if ( $root && !$current_name ) {
+            if ( check_root($root) ) {
+                $printed_current_root = 1;
+                $tb->add( '@', 'external', root_type($root), $root, );
             }
-            else {
-                $tb->add( '@', 'external', root_type($root), $root );
-            }
-            puts $tb;
-        }
-        else {
-            puts $root;
         }
 
+        for my $name (@names) {
+            next unless $all->{$name};
+            next if $printed_current_root;
+
+            my $flag = '';
+            if ( $root && $all->{$name}{local} eq $root ) {
+                $flag = '@';
+            }
+
+            $tb->add(
+                $flag, $name,
+                $all->{$name}{type} || 'git',
+                $all->{$name}{remote},
+            );
+        }
+
+        puts $tb;
+    }
+    else {
+        if ( $root && !$current_name ) {
+            if ( check_root($root) ) {
+                $printed_current_root = 1;
+                puts $root;
+            }
+        }
+
+        for my $name (@names) {
+            next unless $all->{$name};
+            next if $printed_current_root;
+            my $root = name_root($name);
+            puts $root if $root;
+        }
     }
 }
-
 
 1;
 
