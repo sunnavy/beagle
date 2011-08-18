@@ -82,7 +82,7 @@ sub execute {
             );
         }
 
-        puts $tb;
+        puts $tb if $tb->height;
     }
     else {
         if ( $root && !$current_name ) {
