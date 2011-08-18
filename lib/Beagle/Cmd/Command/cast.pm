@@ -15,7 +15,7 @@ __PACKAGE__->meta->make_immutable;
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
+    $args = $self->resolve_ids( $args );
     die "beagle cast --type new_type id1 id2 [...]"
       unless @$args && $self->type;
 

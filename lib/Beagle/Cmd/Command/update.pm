@@ -3,7 +3,6 @@ use Beagle::Util;
 
 use Any::Moose;
 extends qw/Beagle::Cmd::Command/;
-
 has 'force' => (
     isa           => 'Bool',
     is            => 'rw',
@@ -41,7 +40,8 @@ sub command_names { qw/update edit/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
+    $args = $self->resolve_ids( $args );
+
     die "beagle update id [...]" unless @$args;
 
     for my $i (@$args) {

@@ -36,7 +36,7 @@ sub execute {
         my $map = relation;
         my @ids;
 
-        push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
+        $args = $self->resolve_ids( $args );
         if (@$args) {
             for my $id (@$args) {
                 push @ids, grep { /^$id/ } keys %$map;

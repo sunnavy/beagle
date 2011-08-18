@@ -54,6 +54,24 @@ has plugins => (
     },
 );
 
+sub resolve_ids {
+    my $self = shift;
+    my $args = shift;
+
+    my @newargs;
+
+    for my $id (@$args) {
+        if ( $id eq '-' ) {
+            push @newargs, map { /^(\w{32})/ ? $1 : () } <STDIN>;
+        }
+        else {
+            push @newargs, $id;
+        }
+    }
+
+    return \@newargs;
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 

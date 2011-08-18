@@ -19,7 +19,7 @@ sub execute {
     my $name = pop @$args;
     die "beagle mv id [...] name" unless defined $name;
 
-    push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
+    $args = $self->resolve_ids( $args );
     die "beagle mv id [...] name" unless @$args;
 
     my @created;

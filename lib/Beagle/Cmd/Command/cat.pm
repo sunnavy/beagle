@@ -25,7 +25,7 @@ sub command_names { qw/cat show read/ };
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    push @$args, map { /^(\w{32})/ ? $1 : () } <STDIN> unless @$args;
+    $args = $self->resolve_ids( $args );
     die "beagle cat id [...]" unless @$args;
 
     my $first = 1;
