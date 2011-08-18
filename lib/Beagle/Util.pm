@@ -507,10 +507,10 @@ sub name_root {
     if ($root) {
         $name_root{$name} = $root;
         $root_name{$root} ||= $name;
+        return $name_root{$name};
     }
 
-    $name_root{$name} ||= $name;
-    return $name_root{$name};
+    return;
 }
 
 my %root_type;
