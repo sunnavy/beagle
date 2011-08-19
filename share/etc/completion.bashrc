@@ -33,12 +33,12 @@ _beagle ()
             ;;
         (unfollow|--name|-n|use|switch|rename|root)
             local names
-            names=`beagle root --names | tr "\\n" ' '`
+            names=`beagle names | tr "\\n" ' '`
             COMPREPLY=( $( compgen -W "$names" -- "$cur" ) )
             ;;
         (--root|-r)
             local roots
-            roots=`beagle roots --only-roots | tr "\\n" ' '`
+            roots=`beagle roots | tr "\\n" ' '`
             COMPREPLY=( $( compgen -W "$roots" -- "$cur" ) )
             ;;
         (*)
