@@ -42,6 +42,13 @@ has 'edit' => (
     traits        => ['Getopt'],
 );
 
+has 'inplace' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'save comment to the beagle parent lives',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -58,7 +65,8 @@ sub execute {
     }
     die_entry_ambiguous( $pid, @ret ) unless @ret == 1;
     $pid = $ret[0]->{id};
-    my $bh = $ret[0]->{handle};
+    my $bh = $self->inplace ? $ret[0]->{handle} : current_handle();
+    $bh ||= $ret[0]->{handle};
 
     my $author = $self->author || $bh->info->author || '';
 
