@@ -2,7 +2,6 @@ package Beagle::Model::Entry;
 use Any::Moose;
 use Data::UUID;
 use Beagle::Util;
-use Date::Format;
 use Storable 'dclone';
 
 has 'tags' => (
