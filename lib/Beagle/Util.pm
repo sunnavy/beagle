@@ -582,7 +582,6 @@ sub system_alias {
         lastyear  => q{ls --updated-after 'last year'},
         finals    => q{ls --final},
         drafts    => q{ls --draft},
-        roots     => q{root --all},
         push      => q{git push},
         pull      => q{git pull},
     };

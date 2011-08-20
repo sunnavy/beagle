@@ -35,6 +35,7 @@ Available commands:
   comments: list comments
     config: configure beagle
     create: create an entry
+    exists: show if the beagle exists
     follow: follow beagles
       fsck: check integrity of kennel
        git: bridge to git
@@ -51,7 +52,6 @@ Available commands:
     rename: rename a beagle
    rewrite: rewrite all the entries
         rm: delete entries
-      root: show root
      shell: interactive shell
     spread: spread entries
     status: show status
@@ -79,18 +79,11 @@ is( last_script_stdout(), $actual_help_output, 'commands output' );
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
-  alias att cache cast cat cmds commands comment comments config create
+  alias att cache cast cat cmds commands comment comments config create exists
   follow fsck git help info init log look ls mark mv names publish relation rename 
-  rewrite rm root shell spread status trust unfollow untrust update version
+  rewrite rm shell spread status trust unfollow untrust update version
   web which/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
-
-run_ok( $beagle_cmd, ['root'], 'root' );
-is( last_script_stdout(), $root . newline(), 'root output' );
-run_ok( $beagle_cmd, ['roots', '-v'], 'roots' );
-is( last_script_stdout(), join( ' ', '@', 'external', 'fs', $root ) . newline(),
-    'roots output' );
-
 
 run_ok( $beagle_cmd, ['status'], 'status' );
 my $name = $root;

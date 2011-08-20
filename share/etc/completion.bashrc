@@ -31,15 +31,10 @@ _beagle ()
         (help)
             COMPREPLY=( $( compgen -W "$BEAGLE_CMDS" -- "$cur" ) )
             ;;
-        (unfollow|--name|-n|use|switch|rename|root)
+        (unfollow|--name|-n|use|switch|rename)
             local names
             names=`beagle names | tr "\\n" ' '`
             COMPREPLY=( $( compgen -W "$names" -- "$cur" ) )
-            ;;
-        (--root|-r)
-            local roots
-            roots=`beagle roots | tr "\\n" ' '`
-            COMPREPLY=( $( compgen -W "$roots" -- "$cur" ) )
             ;;
         (*)
             _filedir

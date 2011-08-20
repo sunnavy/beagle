@@ -63,24 +63,6 @@ has 'name' => (
     },
 );
 
-has 'root' => (
-    isa           => 'Str',
-    is            => 'rw',
-    documentation => 'specify beagle root',
-    cmd_aliases   => 'r',
-    traits        => ['Getopt'],
-    trigger       => sub {
-        my $self = shift;
-        my $root = shift;
-        if ( defined $root && length $root ) {
-            set_current_root($root);
-        }
-        else {
-            $Beagle::Util::ROOT = '';
-        }
-    },
-);
-
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 

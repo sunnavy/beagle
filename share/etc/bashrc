@@ -36,8 +36,8 @@ beagle () {
                 export BEAGLE_ROOT=
                 echo 'switched to "global" in current session.'
             else
-                new_root=`beagle root $2`
-                if [[ $new_root != "" ]]; then
+                exists=`beagle exists $2`
+                if [[ $exists == "true" ]]; then
                     export BEAGLE_NAME="$2"
                     echo "switched to \"$2\" in current session."
                 else
@@ -55,8 +55,8 @@ beagle () {
                 __beagle_reinit ''
                 echo 'switched to "global".'
             else
-                new_root=`beagle root $2`
-                if [[ $new_root != "" ]]; then
+                exists=`beagle exists $2`
+                if [[ $exists == "true" ]]; then
                     __beagle_reinit "$2" 
                     echo "switched to \"$2\"."
                 else

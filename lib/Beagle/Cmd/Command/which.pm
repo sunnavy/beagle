@@ -23,8 +23,7 @@ Beagle::Cmd::Command::which - show current beagle's name
 
 =head1 SYNOPSIS
 
-    $ beagle name
-    $ beagle name --all
+    $ beagle which
 
 =head1 AUTHOR
 
