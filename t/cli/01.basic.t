@@ -45,7 +45,7 @@ Available commands:
         ls: list/search entries
       mark: manage entry marks
         mv: move entries to another beagle
-      name: show name
+     names: show names
    publish: generate static files
   relation: show beagle names of entries
     rename: rename a beagle
@@ -61,6 +61,7 @@ Available commands:
     update: update entries
    version: show beagle version
        web: start web server
+     which: show current beagle's name
 
 EOF
 
@@ -79,8 +80,9 @@ is( last_script_stdout(), $actual_help_output, 'commands output' );
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
 $expect = join newline(), qw/
   alias att cache cast cat cmds commands comment comments config create
-  follow fsck git help info init log look ls mark mv name publish relation rename 
-  rewrite rm root shell spread status trust unfollow untrust update version web/;
+  follow fsck git help info init log look ls mark mv names publish relation rename 
+  rewrite rm root shell spread status trust unfollow untrust update version
+  web which/;
 is( last_script_stdout(), $expect . newline(), 'cmds output' );
 
 run_ok( $beagle_cmd, ['root'], 'root' );

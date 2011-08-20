@@ -1,15 +1,15 @@
-package Beagle::Cmd::Command::name;
+package Beagle::Cmd::Command::names;
 use Beagle::Util;
 use Any::Moose;
 
 extends qw/Beagle::Cmd::Command/;
 
-has all => (
-    isa           => 'Bool',
+has 'seprator' => (
+    isa           => 'Str',
     is            => 'rw',
-    cmd_aliases   => 'a',
-    documentation => 'all',
     traits        => ['Getopt'],
+    documentation => 'seprator',
+    default       => Beagle::Util::newline(),
 );
 
 no Any::Moose;
@@ -18,13 +18,13 @@ __PACKAGE__->meta->make_immutable;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     my $all = roots();
-    if ( $self->all ) {
-        puts $_ for sort keys %$all;
-        return;
-    }
-    else {
-        puts current_handle() ? current_handle()->name : 'global';
-    }
+    my $seprator = $self->seprator;
+    $seprator =~ s{\\\\}{weird string which should never exist!!!}g;
+    $seprator =~ s{\\r}{\r}g;
+    $seprator =~ s{\\n}{\n}g;
+    $seprator =~ s{\\t}{\t}g;
+    $seprator =~ s{weird string which should never exist!!!}{\\}g;
+    puts join $seprator, sort keys %$all;
 }
 
 
@@ -34,12 +34,11 @@ __END__
 
 =head1 NAME
 
-Beagle::Cmd::Command::name - show name
+Beagle::Cmd::Command::names - show names
 
 =head1 SYNOPSIS
 
-    $ beagle name
-    $ beagle name --all
+    $ beagle names
 
 =head1 AUTHOR
 

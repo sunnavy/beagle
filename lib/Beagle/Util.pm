@@ -583,7 +583,6 @@ sub system_alias {
         finals    => q{ls --final},
         drafts    => q{ls --draft},
         roots     => q{root --all},
-        names     => q{name --all},
         push      => q{git push},
         pull      => q{git pull},
     };
