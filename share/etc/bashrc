@@ -40,6 +40,8 @@ beagle () {
                 if [[ $new_root != "" ]]; then
                     export BEAGLE_NAME="$2"
                     echo "switched to \"$2\" in current session."
+                else
+                    echo "no such name \"$2\"."
                 fi
             fi
             ;;
@@ -57,6 +59,8 @@ beagle () {
                 if [[ $new_root != "" ]]; then
                     __beagle_reinit "$2" 
                     echo "switched to \"$2\"."
+                else
+                    echo "no such name \"$2\"."
                 fi
             fi
             ;;
