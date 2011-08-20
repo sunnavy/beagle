@@ -24,7 +24,7 @@ sub execute {
     $seprator =~ s{\\n}{\n}g;
     $seprator =~ s{\\t}{\t}g;
     $seprator =~ s{weird string which should never exist!!!}{\\}g;
-    puts join $seprator, sort keys %$all;
+    puts join $seprator, sort keys %$all if keys %$all;
 }
 
 
