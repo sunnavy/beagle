@@ -25,38 +25,22 @@ my $foo = catdir( $tmpdir, 'foo' );
 run_ok( $beagle_cmd, [ 'follow', $foo, qw/--name baz/ ], "follow $foo as baz" );
 is( last_script_stdout(), "followed $foo." . newline(), "follow $foo output" );
 
+run_ok( $beagle_cmd, ['exists', 'baz'], 'baz' );
+is( last_script_stdout(), 'true' . newline(), 'exists output' );
+
 my $bar = catdir( $tmpdir, 'bar' );
 run_ok( $beagle_cmd, [ 'follow', $bar ], "follow $bar" );
 is( last_script_stdout(), "followed $bar." . newline(), "follow $bar output" );
 
-run_ok( $beagle_cmd, ['roots', '-v'], "roots" );
-like(
-    last_script_stdout(),
-    qr/^\s+baz\s+$type\s+\Q$foo\E\s*$/m,
-    "$foo is indeed followed"
-);
-like(
-    last_script_stdout(),
-    qr/^\s+bar\s+$type\s+\Q$bar\E\s*$/m,
-    "$bar is indeed followed"
-);
+run_ok( $beagle_cmd, ['exists', 'bar'], 'bar' );
+is( last_script_stdout(), 'true' . newline(), 'exists output' );
+
+run_ok( $beagle_cmd, ['which'], "which" );
+is( last_script_stdout(), "global" . newline(), "no default beagle" );
 
 local $ENV{BEAGLE_NAME} = 'baz';
-run_ok( $beagle_cmd, ['roots', '-v'], "roots" );
-like(
-    last_script_stdout(),
-    qr/^\@\s+baz\s+$type\s+\Q$foo\E\s*$/m,
-    "$foo is current beagle"
-);
-like(
-    last_script_stdout(),
-    qr/^\s+bar\s+$type\s+\Q$bar\E\s*$/m,
-    "$bar is not current"
-);
-
-run_ok( $beagle_cmd, ['root'], 'root' );
-is( last_script_stdout(), catdir( $kennel, 'roots', 'baz' ) . newline(),
-    'root output' );
+run_ok( $beagle_cmd, ['which'], "which" );
+is( last_script_stdout(), "baz" . newline(), "follow $bar output" );
 
 run_ok( $beagle_cmd, [ 'unfollow', 'bar' ], 'unfollow bar' );
 is( last_script_stdout(), 'unfollowed bar.' . newline(),
@@ -65,8 +49,8 @@ run_ok( $beagle_cmd, [ 'unfollow', 'baz' ], 'unfollow baz' );
 is( last_script_stdout(), 'unfollowed baz.' . newline(),
     'unfollow baz output' );
 
-run_ok( $beagle_cmd, ['roots', '-v'], "roots" );
-is( last_script_stdout(), '', 'empty roots' );
+run_ok( $beagle_cmd, ['names'], "names" );
+is( last_script_stdout(), '', 'no names' );
 
 done_testing();
 

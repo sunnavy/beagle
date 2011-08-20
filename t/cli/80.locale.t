@@ -31,8 +31,9 @@ is(
     'rename output'
 );
 
-run_ok( $beagle_cmd, [qw/root/], 'root cmd' );
-like( last_script_stdout(), qr/丙丁/, 'current root' );
+$ENV{BEAGLE_NAME} = '丙丁';
+run_ok( $beagle_cmd, [qw/which/], 'which cmd' );
+is( last_script_stdout(), '丙丁' . newline(), 'current beagle' );
 
 run_ok( $beagle_cmd, [qw/bark test -n 丙丁/], 'create bark' );
 ok( last_script_stdout() =~ /^created (\w{32}).\s+$/, 'create bark output' );
