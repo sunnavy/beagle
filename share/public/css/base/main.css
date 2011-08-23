@@ -27,7 +27,6 @@ a.toggle-hide {
 }
 
 h3.title { 
-    margin-top: 2%;
     padding: 3px;
     padding-left: 10px;
 }
@@ -143,7 +142,6 @@ a.image img {
 
 div.attachments {
     display: block;
-    margin-bottom: 3%;
     margin-left: 5%;
 }
 
