@@ -1,5 +1,9 @@
 @import "../base/main.css";
 
+div.meta {
+    margin-top: -1%;
+}
+
 #menu {
     float: right;
     left: 0.5%;
