@@ -19,6 +19,7 @@
     float: left;
     margin: 1%;
     margin-right: 3%;
+    border: 0;
 }
 
 #menu .toggle-expand {
