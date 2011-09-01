@@ -12,6 +12,12 @@
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/main.css" />
 : }
 
+: if system_file_exists( 'css/' ~ $info.web_layout ~ '/print.css' ) {
+<link rel="stylesheet" type="text/css" media="print" href="<: $prefix :>system/css/<: $info.web_layout :>/print.css" />
+: } else {
+<link rel="stylesheet" type="text/css" media="print" href="<: $prefix :>system/css/base/print.css" />
+: }
+
 : if system_file_exists( 'css/' ~ $info.web_layout ~ '/' ~ $info.web_theme ~ '.css' ) {
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/<: $info.web_theme :>.css" />
 : } else {
