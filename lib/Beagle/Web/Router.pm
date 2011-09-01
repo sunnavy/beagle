@@ -107,6 +107,7 @@ get '/entry/:id' => sub {
     render 'entry_single',
       entry        => $entry,
       prefix       => prefix() || '../',
+      title        => $entry->summary(20),
       %opt;
 };
 
