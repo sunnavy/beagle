@@ -143,25 +143,33 @@ sub execute {
                 )
             )
         );
-        my $updated = edit_text($template);
+        my $message = $self->message || 'create ' . $temp->id;
+        $message =~ s!^!# !mg;
+
+        $template = $message . newline() . $template;
+        my $updated = edit_text( $template );
 
         if ( !$self->force && $template eq $updated ) {
             puts "aborted.";
             return;
         }
 
-        $entry = $self->class->new_from_string( decode_utf8 $updated );
+        $entry = $temp->new_from_string( decode_utf8($updated) );
     }
+
+    $entry->commit_message( $self->message || 'create ' . $entry->id )
+      unless $entry->commit_message;
 
     $entry->timezone( $bh->info->timezone )
       if $bh->info->timezone
           && !$entry->timezone;
     $entry->author( $self->author || $bh->info->author ) unless $entry->author;
 
+    $entry->commit_message( $self->message )
+      if $self->message && !$entry->commit_message;
     if ( $bh->create_entry( $entry, commit => 0, ) ) {
         $self->handle_attachments($entry);
-        $bh->backend->commit( message => $self->message
-              || 'created ' . $entry->id );
+        $bh->backend->commit( message => $entry->commit_message );
         puts "created " . $entry->id . ".";
     }
     else {

@@ -87,7 +87,11 @@ sub execute {
                 )
             );
 
-            my $updated = edit_text($template);
+            my $message = $self->message || 'update ' . $entry->id;
+            $message =~ s!^!# !mg;
+
+            $template = $message . newline() . $template;
+            my $updated = edit_text( $template );
 
             if ( !$self->force && $template eq $updated ) {
                 puts "aborted.";
@@ -112,12 +116,9 @@ sub execute {
             $entry = $updated_entry;
         }
 
-        if (
-            $bh->update_entry(
-                $entry, message => $self->message || "updated $id"
-            )
-          )
-        {
+        $entry->commit_message( $self->message || 'update ' . $entry->id )
+          unless $entry->commit_message;
+        if ( $bh->update_entry( $entry ) ) {
             puts 'updated ', $entry->id, ".";
         }
         else {

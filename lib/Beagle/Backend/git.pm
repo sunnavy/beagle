@@ -33,7 +33,7 @@ sub create {
     $ENV{GIT_AUTHOR_EMAIL} ||= $self->git->config( '--get', 'user.email' );
 
     my %args = (@_);
-    $args{'message'} ||= "create " . $object->path;
+    $args{'message'} ||= $object->commit_message;
     $self->_save( $object, %args );
 }
 
@@ -60,7 +60,7 @@ sub update {
     }
 
     my %args = ( commit => 1, @_ );
-    $args{'message'} ||= "update " . $object->path;
+    $args{'message'} ||= $object->commit_message;
 
     return unless $ret;
     return $self->_save( $object, %args );

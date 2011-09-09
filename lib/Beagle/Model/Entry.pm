@@ -56,10 +56,17 @@ has 'author' => (
     is  => 'rw',
 );
 
+has 'commit_message' => (
+    isa     => 'Maybe[Str]',
+    is      => 'rw',
+    default => '',
+    lazy    => 1,
+);
+
 sub new_from_string {
     my $class  = shift;
-    my $string = shift;
-    die "missing string" unless defined $string;
+    my $input = shift;
+    die "missing string" unless defined $input;
     my %args = @_;
     my $self;
     if ( ref $class ) {
@@ -79,6 +86,8 @@ sub new_from_string {
     else {
         $self = $class->new( %args);
     }
+
+    my ( $message, $string ) = $class->split_message( $input );
 
     if ( $string =~ /\r?\n\r?\n/m ) {
         my @wiki = split /\n/, $string;
@@ -113,6 +122,8 @@ sub new_from_string {
     else {
         $self->body($string);
     }
+
+    $self->commit_message( $message ) if $message;
 
     for my $type (qw/id created/) {
         if ( !$self->$type ) {
@@ -303,6 +314,23 @@ sub extra_meta_fields {
 sub extra_meta_fields_in_web_view {
     my $self = shift;
     return $self->extra_meta_fields;
+}
+
+sub split_message {
+    my $self    = shift;
+    my $input   = shift;
+    my @str     = split /\r?\n/, $input;
+    my $message = '';
+    while (@str) {
+        my $line = shift @str;
+        if ( $line =~ s/^# ?// ) {
+            $message .= $line . newline;
+        }
+        else {
+            last;
+        }
+    }
+    return ( $message, join newline, @str );
 }
 
 no Any::Moose;
