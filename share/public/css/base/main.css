@@ -27,12 +27,12 @@ a.toggle-hide {
 }
 
 h3.title { 
-    padding: 3px;
-    padding-left: 10px;
+    padding: 0.25em;
+    padding-left: 1em;
 }
 
 h5 { 
-    padding-left: 20px;
+    padding-left: 2em;
 }
 
 #content p, #content ul {
@@ -121,14 +121,14 @@ div.message {
 div.warnings {
     margin-top: 2%;
     text-align: center;
-    border: #a00 3px solid;
+    border: #a00 0.25em solid;
     font-size: 200%;
 }
 
 h3.menu {
-    margin-top: 25px;
-    margin-bottom: 5px;
-    padding-left: 30px;
+    margin-top: 2.5em;
+    margin-bottom: 0.25em;
+    padding-left: 0.3em;
 }
 
 .annotation {
@@ -197,8 +197,8 @@ div.comment {
 
 div.comment p {
     padding-left: 3%;
-    margin-top: 2px;
-    margin-bottom: 3px;
+    margin-top: 0.25em;
+    margin-bottom: 0.3em;
 }
 
 div.nav-roots {
@@ -240,7 +240,7 @@ div.list {
 div.list div.glance {
     position: relative;
     border: 1px solid;
-    padding: 5px;
+    padding: 0.25em;
     display: none;
 }
 
