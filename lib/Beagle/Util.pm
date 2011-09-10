@@ -752,7 +752,7 @@ sub die_entry_not_found {
 sub die_entry_ambiguous {
     my $i     = shift;
     my @items = @_;
-    my @out   = "ambiguous entries found matching $i:";
+    my @out   = "ambiguous '$i':";
     for my $item (@items) {
         push @out, join( ' ', $item->{id}, $item->{entry}->summary(10) );
     }
