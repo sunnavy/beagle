@@ -74,7 +74,9 @@ sub _save {
 
     if ( $object->can('content_file') && $object->content_file ) {
         require File::Copy;
-        File::Copy::copy( $object->content_file, $full_path ) or die $!;
+        File::Copy::copy( encode( locale_fs => $object->content_file ),
+            $full_path )
+          or die $!;
     }
     else {
         my $string = $object->serialize;

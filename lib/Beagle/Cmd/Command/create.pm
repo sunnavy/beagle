@@ -182,8 +182,7 @@ sub handle_attachments {
     my $parent = shift;
     return unless $self->attachments;
     for my $file ( @{ $self->attachments } ) {
-        $file = encode( locale_fs => $file );
-        if ( -f $file ) {
+        if ( -f encode( locale_fs => $file ) ) {
 
             require File::Basename;
             my $basename = File::Basename::basename($file);
