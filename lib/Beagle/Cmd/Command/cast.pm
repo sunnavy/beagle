@@ -21,6 +21,7 @@ sub execute {
 
     my $type      = lc $self->type;
     my $new_class = entry_type_info->{$type}{class};
+    die "invalid type: $type" unless $new_class;
 
     for my $i (@$args) {
         my @ret = resolve_entry( $i, handle => current_handle() || undef );
