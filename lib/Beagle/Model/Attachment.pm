@@ -49,6 +49,13 @@ has 'mime_type' => (
     },
 );
 
+has 'commit_message' => (
+    isa     => 'Maybe[Str]',
+    is      => 'rw',
+    default => '',
+    lazy    => 1,
+);
+
 sub serialize {
     my $self = shift;
     return $self->content;
