@@ -87,41 +87,34 @@ sub new_from_string {
         $self = $class->new( %args);
     }
 
-    my ( $message, $string ) = $class->split_message( $input );
+    my ( $message, $string ) = $class->split_message($input);
 
-    if ( $string =~ /\r?\n\r?\n/m ) {
-        my @wiki = split /\n/, $string;
-        while ( my $line = shift @wiki ) {
-            chomp $line;
-            last if $line =~ /^\r?\n$/m;
-            if ( $line =~ /^(\w+):\s*(.*?)\s*$/ ) {
-                my $key   = lc $1;
-                my $value = $2;
-                if ( $key eq 'created' || $key eq 'updated' ) {
-                    if ( $value =~ /^(\d{10})/ ) {
-                        $value = $1;
-                    }
-                    else {
-                        warn "couldn't find epoch.";
-                    }
-                }
-
-                if ( $self->can($key) ) {
-                    eval { $self->$key( $self->parse_field( $key, $value ) ) };
-                    if ($@) {
-                        warn "failed to set $key to $args{$key}: $@";
-                    }
-                }
-                else {
-                    warn "unknown key: $key";
-                }
+    my @wiki = split /\n/, $string;
+    while ( my $line = shift @wiki ) {
+        chomp $line;
+        last unless $line =~ /^(\w+):\s*(.*?)\s*$/;
+        my $key   = lc $1;
+        my $value = $2;
+        if ( $key eq 'created' || $key eq 'updated' ) {
+            if ( $value =~ /^(\d{10})/ ) {
+                $value = $1;
+            }
+            else {
+                warn "couldn't find epoch.";
             }
         }
-        $self->body( join "\n", @wiki );
+
+        if ( $self->can($key) ) {
+            eval { $self->$key( $self->parse_field( $key, $value ) ) };
+            if ($@) {
+                warn "failed to set $key to $args{$key}: $@";
+            }
+        }
+        else {
+            warn "unknown key: $key";
+        }
     }
-    else {
-        $self->body($string);
-    }
+    $self->body( join "\n", @wiki );
 
     $self->commit_message( $message ) if $message;
 
