@@ -10,16 +10,8 @@ has 'format' => (
     lazy    => 1,
     trigger => sub {
         my $self  = shift;
-        my $value = shift;
-
-        $self->format( default_format() || 'plain' ) unless $value;
         if ( $self->body ) {
-            if ( $value eq 'plain' && $value !~ /\[BeagleAttachmentPath\]/ ) {
-                $self->_body_html('');
-            }
-            else {
-                $self->_body_html( $self->_parse_body( $self->body ) );
-            }
+            $self->_body_html( $self->_parse_body( $self->body ) );
         }
     },
 );
@@ -32,9 +24,7 @@ has 'body' => (
         my $self  = shift;
         my $value = shift;
         if ( $self->format ) {
-            $self->_body_html( $self->_parse_body($value) )
-              unless $self->format eq 'plain'
-                  && $value !~ /\[BeagleAttachmentPath\]/;
+            $self->_body_html( $self->_parse_body($value) );
         }
     },
 );
@@ -73,7 +63,12 @@ sub _parse_image {
 sub _parse_body {
     my $self  = shift;
     my $value = shift;
-    return '' unless defined $value;
+    return '' unless defined $value && $self->format;
+
+    return '<pre class="entry body">' . encode_entities($value) . '</pre>'
+      if $self->format eq 'plain';
+
+    return $value if $self->format eq 'html';
 
     my $id =
       $self->can('id')
@@ -84,24 +79,22 @@ sub _parse_body {
 
     $value =~ s!\[BeagleAttachmentPath\]!$path!gi;
 
-    if ( $self->format eq 'plain' ) {
-        return '<pre>' . $value . '</pre>';
+    if ( $self->format eq 'wiki' ) {
+        $value =~ s/\[\[Image:(.*?)\]\]/$self->_parse_image( $1 )/egi;
+        return parse_wiki( $value,
+            roots()->{ root_name( $self->root ) }{trust} );
+    }
+    elsif ( $self->format eq 'markdown' ) {
+        return parse_markdown( $value,
+            roots()->{ root_name( $self->root ) }{trust} );
+    }
+    elsif ( $self->format eq 'pod' ) {
+        return parse_pod( $value,
+            roots()->{ root_name( $self->root ) }{trust} );
     }
     else {
-        if ( $self->format eq 'wiki' ) {
-            $value =~ s/\[\[Image:(.*?)\]\]/$self->_parse_image( $1 )/egi;
-            return parse_wiki($value, roots()->{root_name($self->root)}{trust} );
-        }
-        elsif ( $self->format eq 'markdown' ) {
-            return parse_markdown($value, roots()->{root_name($self->root)}{trust});
-        }
-        elsif ( $self->format eq 'pod' ) {
-            return parse_pod($value, roots()->{root_name($self->root)}{trust});
-        }
-        else {
-            warn 'invalid format: ' . $self->format;
-            return $value;
-        }
+        warn 'invalid format: ' . $self->format;
+        return $value;
     }
 }
 
