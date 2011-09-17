@@ -1,6 +1,7 @@
 : include "header.tx";
 : include "entry.tx";
 
+<div class="page">
 : if $previous_entry {
     <div class="previous" title="<: $previous_entry.summary :>">
         <a href="<: $prefix :>entry/<: $previous_entry.id :>"><: _('Previous') ~ ': ' ~ $previous_entry.summary :></a>
@@ -12,6 +13,6 @@
         <a href="<: $prefix :>entry/<: $next_entry.id :>"><: _('Next') ~ ': ' ~ $next_entry.summary :></a>
     </div>
 : }
-
+</div>
 : include "footer.tx";
 
