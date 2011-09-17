@@ -315,9 +315,10 @@ sub split_message {
     my @str     = split /\r?\n/, $input;
     my $message = '';
     while (@str) {
-        my $line = shift @str;
+        my $line = $str[0];
         if ( $line =~ s/^# ?// ) {
             $message .= $line . newline;
+            shift @str;
         }
         else {
             last;
