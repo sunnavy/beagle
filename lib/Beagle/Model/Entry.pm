@@ -89,7 +89,7 @@ sub new_from_string {
 
     my ( $message, $string ) = $class->split_message($input);
 
-    my @wiki = split /\n/, $string;
+    my @wiki = split /\r?\n/, $string;
     while ( my $line = shift @wiki ) {
         chomp $line;
         last unless $line =~ /^(\w+):\s*(.*?)\s*$/;
