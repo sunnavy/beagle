@@ -92,11 +92,15 @@ if ( is_windows ) {
 }
 
 $out = last_script_stdout();
-like( $out, qr/^name\s+size\s+trust\s*$/m, 'status output' );
 like(
     $out,
-    qr/\Q$name\E\s+[\d.]+K\s+0\s*\Z/m,
-    'status output total size part'
+    qr/^name\s+size\s+trust\s*entries\s*attachments\s*comments\s*$/m,
+    'status output header'
+);
+like(
+    $out,
+    qr/\Q$name\E\s+[\d.]+K\s+no\s*0\s*0\s*0\s*\Z/m,
+    'status output body'
 );
 
 run_ok( $beagle_cmd, ['fsck'], 'fsck' );
