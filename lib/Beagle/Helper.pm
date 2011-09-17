@@ -188,7 +188,7 @@ sub from_array {
 
 sub edit_text {
     my $text = $_[-1];
-
+    die "can't call editor in web term" if $ENV{BEAGLE_WEB_TERM};
     require Proc::InvokeEditor;
     return scalar Proc::InvokeEditor->edit($text);
 }

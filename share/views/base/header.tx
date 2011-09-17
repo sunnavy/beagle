@@ -32,6 +32,8 @@
 <script type="text/javascript" src="<: $prefix :>system/js/base/beagle.js"></script>
 
 : if $admin {
+<script type="text/javascript" src="<: $prefix :>system/js/base/jquery.terminal.js"></script>
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/jquery.terminal.css" />
 <script type="text/javascript" src="<: $prefix :>system/js/base/jquery.form.js"></script>
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/markitup_set.css" />
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/markitup_skin.css" />
@@ -70,5 +72,7 @@ beagleInit( { admin: 1 } );
 </head>
 <body>
 
+: if template_exists( 'menu.tx' ) {
 : include 'menu.tx';
+: }
 : include 'container.tx';

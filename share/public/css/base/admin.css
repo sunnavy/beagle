@@ -198,3 +198,14 @@ div.wrapper {
 div.textarea {
     margin-top: 1%;
 }
+
+#term {
+    border-radius: 0.5em !important;
+    border: 1px solid black;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+#term * {
+    font-size: 120%;
+}

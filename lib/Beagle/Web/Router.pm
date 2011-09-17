@@ -366,6 +366,32 @@ get '/extra/*' => sub {
     render("extra/$name");
 };
 
+get '/admin/term' => sub {
+    render('admin/term');
+};
+
+post '/admin/term' => sub {
+    my $data = from_json( request()->content );
+    my $params = $data->{params} || [];
+
+    local $ENV{BEAGLE_WEB_TERM} = 1;
+    local @ARGV = ( $data->{method}, @$params );
+    my $out;
+    open my $out_fh, '>', \$out or die $!;
+    local *STDOUT = $out_fh;
+    local *STDERR = $out_fh;
+
+    eval { Beagle::Cmd->run };
+    my $ret = { id => $data->{id} };
+    if ( $@ ) {
+        $ret->{error}{message} = decode_utf8 $@;
+    }
+    else {
+        $ret->{result} = decode_utf8 $out;
+    }
+    return to_json( $ret );
+};
+
 1;
 
 __END__
