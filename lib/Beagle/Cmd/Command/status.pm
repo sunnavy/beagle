@@ -45,12 +45,21 @@ sub execute {
 
     require Text::Table;
     my $tb =
-      Text::Table->new( 'name', 'size', 'trust' );
+      Text::Table->new( 'name', 'size', 'trust', 'entries', 'attachments',
+              'comments' );
     for my $bh (@bh) {
+        my $att_map = $bh->attachments_map;
+        my $att_size = 0;
+        for my $id ( keys %$att_map ) {
+            $att_size += scalar values %{$att_map->{$id}};
+        }
         $tb->add(
             $bh->name,
             format_bytes( $bh->total_size ),
-            roots()->{ $bh->name }{trust} ? 1 : 0,
+            ( roots()->{ $bh->name }{trust} ? 'yes' : 'no' ),
+            format_number( scalar @{$bh->entries} ),
+            format_number( $att_size ),
+            format_number( scalar @{$bh->comments} ),
         );
     }
     puts $tb;
