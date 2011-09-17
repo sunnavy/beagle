@@ -39,6 +39,7 @@ sub feed {
     for my $entry (@$entries) {
         my $item = $feed->add_item();
         $item->link( $info->url . "/entry/" . $entry->id );
+        $item->guid( $item->link );
         if ( $entry->can('title') ) {
             $item->title( $entry->title );
         }
