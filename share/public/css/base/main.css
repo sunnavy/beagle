@@ -319,3 +319,11 @@ table.tags {
 table.tags td {
     width: 18%;
 }
+
+div.attachments div.presentation {
+    margin: 2em;
+}
+
+div.attachments div.presentation a {
+    margin: 1em;
+}

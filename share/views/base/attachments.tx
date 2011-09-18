@@ -2,7 +2,12 @@
 :   include $entry.type ~ '_attachments.tx';
 : } else {
 <div class="attachments">
-<div>
+
+: if $attachments_map[$entry.id] {
+<hr class="attachments" />
+: }
+
+<div class="presentation">
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
 <a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
@@ -24,10 +29,6 @@
 
 : }
 </div>
-
-: if $attachments_map[$entry.id] {
-<hr class="attachments" />
-: }
 
 : include '_wedge.tx' { template => 'attachments_start.tx' };
 : for $attachments_map[$entry.id].keys().sort() -> $name {
