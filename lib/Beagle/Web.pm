@@ -710,8 +710,9 @@ sub handle_request {
     if ( my $match = $router->match($env) ) {
         if ( my $method = delete $match->{code} ) {
             my $ret = $method->(%$match);
-            if ( ref $ret && ref $ret eq 'Plack::Response' ) {
+            if ( ref $ret && $ret->isa('Plack::Response') ) {
                 $res = $ret;
+                $res->status( 200 ) unless $res->status;
             }
             else {
                 if ( $ret ) {
@@ -727,6 +728,7 @@ sub handle_request {
     }
 
     $res->status( 404 ) unless $res->status;
+    $res->content_type( 'text/html' ) unless $res->content_type;
 
     $res->finalize;
 }
