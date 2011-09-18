@@ -400,7 +400,6 @@ sub init {
                 );
                 if ( $root && $root eq $all->{$n}{local} ) {
                     $bh   = $bh{$n};
-                    $name = $n;
                 }
                 $router->connect(
                     "/$n",
@@ -412,7 +411,7 @@ sub init {
                     }
                 );
             }
-            $bh = ( values %bh )[0];
+            $bh ||= ( values %bh )[0];
         }
 
         $name = $bh->name;
