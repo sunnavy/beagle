@@ -189,7 +189,7 @@ sub execute {
         for my $bh (@bh) {
             $handle_map{ $bh->root } = $bh;
             for my $p ( keys %{ $bh->attachments_map } ) {
-                warn "$p doesn't exist, use 'att prune' to clean"
+                warn "$p doesn't exist, use 'att --prune' to clean"
                   unless $bh->map->{$p};
             }
 
