@@ -1,7 +1,7 @@
 : include "header.tx";
 : include "entry.tx";
 
-<div class="page">
+<div class="direction">
 : if $previous_entry {
     <div class="previous" title="<: $previous_entry.summary :>">
         <a href="<: $prefix :>entry/<: $previous_entry.id :>"><: _('Previous') ~ ': ' ~ $previous_entry.summary :></a>

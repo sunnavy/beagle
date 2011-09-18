@@ -273,6 +273,10 @@ div.page {
     text-align: center;
 }
 
+div.direction {
+    margin-top: 3em;
+}
+
 #content > div.archives {
     margin: 2%;
 }
