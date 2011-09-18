@@ -113,3 +113,6 @@ msgstr "上一篇"
 
 msgid "Next"
 msgstr "下一篇"
+
+msgid "terminal"
+msgstr "终端"
