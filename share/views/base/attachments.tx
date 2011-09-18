@@ -15,7 +15,7 @@
 </a>
 : } elsif $attachments_map[$entry.id][$name].mime_type == 'video/x-flv' || $attachments_map[$entry.id][$name].mime_type == 'video/x-flv' == 'application/x-shockwave-flash' {
 <object>
-<embed autostart="false" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" title="<: $name :>" />
+<embed width="600" height="400" autostart="false" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" title="<: $name :>" />
 </object>
 : } elsif match($attachments_map[$entry.id][$name].mime_type, '^video/' ) {
 <video controls="controls" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" title="<: $name :>">

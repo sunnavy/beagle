@@ -328,6 +328,10 @@ div.attachments div.presentation {
     margin: 2em;
 }
 
-div.attachments div.presentation a {
+div.attachments div.presentation > * {
     margin: 1em;
+}
+
+div.attachments div.presentation img {
+    min-width: 40%;
 }
