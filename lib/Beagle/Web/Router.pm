@@ -329,7 +329,7 @@ get '/favicon.ico' => sub {
         redirect handle()->info->avatar;
     }
     else {
-        redirect '/system/beagle.png';
+        redirect '/system/images/beagle.png';
     }
 };
 
