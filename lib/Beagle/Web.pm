@@ -715,7 +715,11 @@ sub handle_request {
             }
             else {
                 if ( $ret ) {
-                    $res->body( encode_utf8 $ret );
+                    $res->body(
+                        Encode::is_utf8($ret)
+                        ? encode_utf8 $ret
+                        : $ret
+                    );
                     $res->status( 200 ) unless $res->status;
                 }
             }
