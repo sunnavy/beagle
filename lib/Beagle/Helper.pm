@@ -79,6 +79,8 @@ sub puts {
 sub term_size {
     my ( $width, $height );
 
+    return 80, 24 if $ENV{BEAGLE_WEB_TERM};
+
     if (is_windows) {
         require Term::Size::Win32;
         ( $width, $height ) = Term::Size::Win32::chars(*STDOUT);
