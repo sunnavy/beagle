@@ -986,7 +986,7 @@ sub share_root {
     my $module = shift || 'Beagle';
     return $SHARE_ROOT{$module} if $SHARE_ROOT{$module};
 
-    try_load_class($module) or die;
+    load_class($module);
     if ( $module eq 'Beagle' ) {
         if ( $ENV{BEAGLE_SHARE_ROOT} ) {
             $SHARE_ROOT{$module} =
