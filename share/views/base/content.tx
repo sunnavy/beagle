@@ -13,6 +13,7 @@
 
 : if $admin {
 <div class="admin-links">
+  <a href="<: $prefix :>admin/term"><: _('terminal') :></a>
   <a href="<: $prefix :>admin/info"><: _('info') :></a>
   <a href="<: $prefix :>admin/entries"><: _('all entries') :></a>
 : for $entry_types.sort() -> $x {
