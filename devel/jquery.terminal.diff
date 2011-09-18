@@ -1,0 +1,21 @@
+--- js/jquery.terminal-0.3.7.js	2011-09-18 11:34:41.013567556 +0800
++++ /home/sunnavy/git/beagle/share/public/js/base/jquery.terminal.js	2011-09-18 11:07:30.043567941 +0800
+@@ -1842,17 +1842,7 @@
+                     method = command[0];
+                     params = command.slice(1);
+                 }
+-                if (!settings.login || method == 'help') {
+-                    service(method, params);
+-                } else {
+-                    var token = terminal.token();
+-                    if (token) {
+-                        service(method, [token].concat(params));
+-                    } else {
+-                        //should never happen
+-                        terminal.error('&#91;AUTH&#93; Access denied (no token)');
+-                    }
+-                }
++                service(method, params);
+             };
+         }
+ 
