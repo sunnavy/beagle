@@ -24,7 +24,7 @@ sub prompt {
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
-    die "can't call shell in web term" if $ENV{BEAGLE_WEB_TERM};
+    die "can't call shell command in web term" if $ENV{BEAGLE_WEB_TERM};
 
     local $| = 1;
     my $term = Term::ReadLine->new('Beagle');
