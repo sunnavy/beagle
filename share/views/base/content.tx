@@ -1,16 +1,4 @@
 <div id="content">
-: if $names {
-<div class="nav-roots">
-: for $names -> $x {
-: if $x == $name {
-  <span class="current"><: $x :></span>
-: } else {
-  <a href="<: $prefix :><: $x :>"><: $x :></a>
-: }
-: }
-</div>
-: }
-
 : if $admin {
 <div class="admin-links">
   <a href="<: $prefix :>admin/term"><: _('terminal') :></a>

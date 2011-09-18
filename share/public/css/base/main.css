@@ -209,14 +209,14 @@ div.comment p {
     margin-bottom: 0.3em;
 }
 
-div.nav-roots {
+body > div.names  {
     text-align: right;
-    margin-right: 2%;
+    font-size: small;
 }
 
-div.nav-roots a {
-    padding-left: 1%;
-    padding-right: 1%;
+body > div.names a {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 div.body {
