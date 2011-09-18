@@ -384,10 +384,10 @@ post '/admin/term' => sub {
     eval { Beagle::Cmd->run };
     my $ret = { id => $data->{id} };
     if ( $@ ) {
-        $ret->{error}{message} = decode_utf8 $@;
+        $ret->{error}{message} = decode( locale =>  $@ );
     }
     else {
-        $ret->{result} = decode_utf8 $out;
+        $ret->{result} = decode( locale =>  $out );
     }
     return to_json( $ret );
 };
