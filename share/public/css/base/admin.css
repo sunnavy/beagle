@@ -200,7 +200,7 @@ div.textarea {
 }
 
 #term {
-    border-radius: 0.5em !important;
+    border-radius: 1em !important;
     border: 1px solid black;
     height: 80%;
     overflow-y: scroll;
