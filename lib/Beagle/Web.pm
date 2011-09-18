@@ -675,6 +675,9 @@ sub redirect {
     $req->new_response( $code || 302, [ Location => $location || $prefix ] );
 }
 
+my $res;
+sub response { $res }
+
 sub handle_request {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $env = shift;
@@ -701,30 +704,25 @@ sub handle_request {
         $updated{$name} = time;
     }
 
-    my $res;
+    require Plack::Response;
+    $res = Plack::Response->new;
 
     if ( my $match = $router->match($env) ) {
         if ( my $method = delete $match->{code} ) {
-            $ret = $method->(%$match);
+            my $ret = $method->(%$match);
             if ( ref $ret && ref $ret eq 'Plack::Response' ) {
                 $res = $ret;
             }
             else {
-                if ( defined $ret ) {
-                    $res = $req->new_response(
-                        200,
-                        [ 'Content-Type' => 'text/html' ],
-                        [ encode_utf8 $ret]
-                    );
-                }
-                else {
-                    $res = $req->new_response( 404, [], [] );
+                if ( $ret ) {
+                    $res->body( encode_utf8 $ret );
+                    $res->status( 200 ) unless $res->status;
                 }
             }
         }
     }
 
-    $res ||= $req->new_response(405);
+    $res->status( 404 ) unless $res->status;
 
     $res->finalize;
 }

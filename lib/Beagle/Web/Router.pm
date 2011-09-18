@@ -206,6 +206,8 @@ post '/admin/entry/:type/new' => sub {
                         parent_id => $entry->parent_id,
                         content   => render( 'comment', entry => $entry ),
                     };
+                    status(201);
+                    content_type('application/json');
                     return to_json($ret);
                 }
 
@@ -229,6 +231,7 @@ post '/admin/entry/:type/new' => sub {
                         status  => 'error',
                         message => 'failed to create',
                     };
+                    content_type('application/json');
                     return to_json($ret);
                 }
             }
@@ -247,6 +250,7 @@ post '/admin/entry/:type/new' => sub {
             status  => 'error',
             content => "invalid type: $type",
         };
+        content_type('application/json');
         return to_json($ret);
     }
     else {
@@ -293,13 +297,15 @@ post '/admin/entry/{id:\w{32}}' => sub {
 post '/admin/entry/delete' => sub {
     my $id = request()->param('id');
 
+    if ( request()->header('Accept') =~ /json/ ) {
+        content_type('application/json');
+    }
+
     if ( my $entry = handle()->map->{$id} ) {
         handle()->delete_entry($entry);
-        if ( request()->header('Accept') =~ /json/ ) {
-            my $ret = { status => 'deleted' };
-            $ret->{redraw_menu} = 1 unless $entry->type eq 'comment';
-            return to_json($ret);
-        }
+        my $ret = { status => 'deleted' };
+        $ret->{redraw_menu} = 1 unless $entry->type eq 'comment';
+        return to_json($ret);
     }
     else {
         return to_json {
@@ -335,10 +341,8 @@ get '/static/*' => sub {
         catfile( static_root( handle() ), @parts ) );
     return unless -e $file && -r $file;
 
-    my $res = request()->new_response('200');
-    $res->content_type( mime_type($file) );
-    $res->body( read_file $file);
-    return $res;
+    content_type( mime_type($file) );
+    return scalar read_file $file;
 };
 
 post '/utility/markitup' => sub {
@@ -389,6 +393,7 @@ post '/admin/term' => sub {
     else {
         $ret->{result} = decode( locale =>  $out );
     }
+    content_type('application/json');
     return to_json( $ret );
 };
 

@@ -8,10 +8,21 @@ use JSON;
 use base 'Exporter';
 our @EXPORT =
   qw/handle request render get post any router admin from_json to_json prefix
-  redirect process_fields add_attachments delete_attachments/;
+  redirect process_fields add_attachments delete_attachments
+  response status header headers content_type body
+  /;
 
 sub handle  { Beagle::Web->handle() }
 sub request { Beagle::Web->request() }
+
+sub response { Beagle::Web->response() }
+sub status { response()->status( @_ ) }
+sub header { response()->header( @_ ) }
+sub headers { response()->headers( @_ ) }
+sub content_type { response()->content_type( @_ ) }
+sub content_encoding { response()->content_encoding( @_ ) }
+sub body { response()->body( @_ ) }
+
 sub prefix  { Beagle::Web->prefix }
 
 sub process_fields { goto &Beagle::Web::process_fields };
