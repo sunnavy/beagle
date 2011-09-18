@@ -32,12 +32,14 @@ BEGIN {
     *CORE::GLOBAL::die = sub {
 #        goto &die unless ( caller() )[0] =~ /^Beagle::/;
         return die @_ unless ( caller() )[0] =~ /^Beagle::/;
-        goto &confess if enabled_devel();
-        @_ = grep { defined } @_;
+
+        @_ = map { encode( locale => $_ ) } @_;
+        return confess @_ if enabled_devel();
 
         # we want to show user the line info if there is nothing to print
         push @_, newline() if @_;
-        @_ = map { encode( locale => $_ ) } @_;
+
+        @_ = grep { defined } @_;
         die @_;
     };
 
