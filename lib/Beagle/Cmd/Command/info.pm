@@ -83,20 +83,6 @@ sub execute {
 
         my $info = $bh->info;
 
-        my $template = encode_utf8 $info->serialize(
-            $self->verbose
-            ? (
-                created => 1,
-                updated => 1,
-                id      => 1,
-              )
-            : (
-                created => undef,
-                updated => undef,
-                id      => undef,
-            )
-        );
-
         if ( $self->edit || $self->set || $self->unset ) {
 
             if ( $self->unset ) {
@@ -123,21 +109,24 @@ sub execute {
                 }
             }
 
-            $template = encode_utf8 $info->serialize(
-                $self->verbose
-                ? (
-                    created => 1,
-                    updated => 1,
-                    id      => 1,
-                  )
-                : (
-                    created => undef,
-                    updated => undef,
-                    id      => undef,
-                )
-            );
 
             if ( $self->edit ) {
+                my $template = $info->serialize(
+                    $self->verbose
+                    ? (
+                        created => 1,
+                        updated => 1,
+                        id      => 1,
+                      )
+                    : (
+                        created => undef,
+                        updated => undef,
+                        id      => undef,
+                    )
+                );
+                my $message = $self->message || 'update info ';
+                $message =~ s!^!# !mg;
+                $template = encode_utf8( $message . newline() . $template );
 
                 my $updated = edit_text($template);
 
@@ -151,7 +140,7 @@ sub execute {
 
             if (
                 $bh->update_info(
-                    $info, message => $self->message || "updated info"
+                    $info, message => $self->message || "update info"
                 )
               )
             {
@@ -164,6 +153,21 @@ sub execute {
         else {
             puts '=' x term_width() unless $first;
             undef $first if $first;
+
+            my $template = encode_utf8 $info->serialize(
+                $self->verbose
+                ? (
+                    created => 1,
+                    updated => 1,
+                    id      => 1,
+                  )
+                : (
+                    created => undef,
+                    updated => undef,
+                    id      => undef,
+                )
+            );
+
             puts decode_utf8 $template;
         }
     }

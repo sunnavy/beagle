@@ -671,7 +671,7 @@ sub _create_backend_git {
     _create_backend_fs( %opt, root => $git->root );
 
     $git->add('.');
-    $git->commit( '-m' => 'init beagle' );
+    $git->commit( '-m' => "init beagle $name" );
 
     if ( $opt{bare} ) {
         $git->push( 'origin', 'master' );

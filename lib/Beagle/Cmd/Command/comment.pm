@@ -81,7 +81,7 @@ sub execute {
             body      => $body,
         );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
-        my $template = encode_utf8(
+        my $template = (
             $self->verbose
             ? $temp->serialize(
                 path      => 1,
@@ -92,6 +92,11 @@ sub execute {
               )
             : $temp->serialize()
         );
+        my $message = 'create comment ' . $temp->id . " for $pid: " . $temp->summary(30);
+        $message .= "\n\n" . $self->message if $self->message;
+        $message =~ s!^!# !mg;
+        $template = encode_utf8( $message . newline() . $template );
+
         my $updated = edit_text($template);
         if ( !$self->force && $template eq $updated ) {
             puts "aborted.";

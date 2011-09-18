@@ -126,27 +126,26 @@ sub execute {
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
         $temp->author( $bh->info->author );
 
-        my $template = encode_utf8(
-            $temp->serialize(
-                $self->verbose
-                ? (
-                    path    => 1,
-                    created => 1,
-                    updated => 1,
-                    id      => 1,
-                  )
-                : (
-                    path    => 0,
-                    created => 0,
-                    updated => 0,
-                    id      => 0,
-                )
+        my $template = $temp->serialize(
+            $self->verbose
+            ? (
+                path    => 1,
+                created => 1,
+                updated => 1,
+                id      => 1,
+              )
+            : (
+                path    => 0,
+                created => 0,
+                updated => 0,
+                id      => 0,
             )
         );
-        my $message = $self->message || 'create ' . $temp->id;
+        my $message = 'create ' . $temp->id . ': ' . $temp->summary(30);
+        $message .= "\n\n" . $self->message if $self->message;
         $message =~ s!^!# !mg;
 
-        $template = $message . newline() . $template;
+        $template = encode_utf8( $message . newline() . $template );
         my $updated = edit_text( $template );
 
         if ( !$self->force && $template eq $updated ) {

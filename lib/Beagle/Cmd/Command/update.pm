@@ -67,7 +67,7 @@ sub execute {
         }
 
         if ( $self->edit || !$self->set ) {
-            my $template = encode_utf8 $entry->serialize(
+            my $template = $entry->serialize(
                 $self->verbose
                 ? (
                     type      => 1,
@@ -87,10 +87,11 @@ sub execute {
                 )
             );
 
-            my $message = $self->message || 'update ' . $entry->id;
+            my $message = 'update ' . $entry->id . ': ' . $entry->summary(30);
+            $message .= "\n\n" . $self->message if $self->message;
             $message =~ s!^!# !mg;
 
-            $template = $message . newline() . $template;
+            $template = encode_utf8( $message . newline() . $template );
             my $updated = edit_text( $template );
 
             if ( !$self->force && $template eq $updated ) {
