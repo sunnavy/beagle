@@ -375,26 +375,34 @@ get '/admin/term' => sub {
 };
 
 post '/admin/term' => sub {
-    my $data = from_json( request()->content );
-    my $params = $data->{params} || [];
+    my $data;
+    content_type('application/json');
 
-    local $ENV{BEAGLE_WEB_TERM} = 1;
-    local @ARGV = ( $data->{method}, @$params );
-    my $out;
-    open my $out_fh, '>', \$out or die $!;
-    local *STDOUT = $out_fh;
-    local *STDERR = $out_fh;
-
-    eval { Beagle::Cmd->run };
-    my $ret = { id => $data->{id} };
+    eval { $data = from_json( request()->content, { utf8 => 1 } ) };
     if ( $@ ) {
-        $ret->{error}{message} = decode( locale =>  $@ );
+        return to_json( { error => { message => decode( locale => $@ ) } } );
     }
     else {
-        $ret->{result} = decode( locale =>  $out );
+
+        my $params = $data->{params} || [];
+
+        local $ENV{BEAGLE_WEB_TERM} = 1;
+        local @ARGV = ( $data->{method}, @$params );
+        my $out;
+        open my $out_fh, '>', \$out or die $!;
+        local *STDOUT = $out_fh;
+        local *STDERR = $out_fh;
+
+        eval { Beagle::Cmd->run };
+        my $ret = { id => $data->{id} };
+        if ($@) {
+            $ret->{error}{message} = decode( locale => $@ );
+        }
+        else {
+            $ret->{result} = decode( locale => $out );
+        }
+        return to_json($ret);
     }
-    content_type('application/json');
-    return to_json( $ret );
 };
 
 1;
