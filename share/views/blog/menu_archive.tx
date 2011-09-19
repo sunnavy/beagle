@@ -4,7 +4,12 @@
 : for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
     <li class="hover archive">
     <a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a>
-        <ul class="hidden">
+: if $~year.is_first {
+    <ul>
+: } else {
+    <ul class="hidden">
+: }
+
 : for $archives[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
 : for $archives[$year][$month] -> $e {
                 <li><a href="<: $prefix :>entry/<: $e.id :>"><: $map[$e.id].summary  || '' :></a></li>
