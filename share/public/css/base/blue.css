@@ -11,3 +11,7 @@ h3.title {
 h3.menu {
     background-color: #e2dff1;
 }
+
+.hover > div.glance {
+    background-color: #ddf;
+}

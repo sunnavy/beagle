@@ -2,7 +2,7 @@
 
 : for $entries -> $entry {
 <div>
-    <a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(20) :></a>
+    <a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(40) :></a>
 </div>
 : }
 </div>
