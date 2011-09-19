@@ -198,7 +198,7 @@ post '/admin/entry/:type/new' => sub {
 
         if ( process_fields( $entry, request()->parameters->mixed ) ) {
             my ($created) =
-              handle()->create_entry( $entry, message => $vars{message}, );
+              handle()->create_entry( $entry, message => request()->param('message') );
 
             if ($created) {
                 add_attachments( $entry, request()->upload('attachments') );
@@ -268,7 +268,7 @@ post '/admin/entry/{id:\w{32}}' => sub {
 
         if ( process_fields( $entry, request()->parameters->mixed ) ) {
 
-            handle()->update_entry( $entry, message => $vars{message} );
+            handle()->update_entry( $entry, message => request()->param('message') );
 
             my $del = $vars{'delete-attachments'};
             delete_attachments( $entry, ref $del ? @$del : $del );

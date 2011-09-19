@@ -8,15 +8,10 @@ has fields => (
     default => sub { [] },
 );
 
-sub sorted_fields {
-    my $self = shift;
-    return [ sort { $a->name cmp $b->name } @{ $self->fields } ];
-}
-
 sub render {
     my $self = shift;
     my $str  = '';
-    for my $field ( $self->sorted_fields ) {
+    for my $field ( $self->fields ) {
         $str .= $field->render();
     }
     return $str;

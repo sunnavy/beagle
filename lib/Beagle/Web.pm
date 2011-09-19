@@ -138,20 +138,11 @@ sub field_list {
     my $entry = shift;
     my @list  = (
         author => { type => 'text', },
-        format => {
-            type    => 'select',
-            options => [
-                map { { label => $_, value => $_ } } qw/plain wiki markdown pod/
-            ],
-        },
-        draft => { type => 'boolean', },
         body  => { type => 'textarea', },
     );
 
     if ( $type ne 'info' && $type ne 'comment' ) {
-        push @list,
-          tags => { type => 'text', },
-          ;
+        push @list, tags => { type => 'text', };
     }
 
     my $type = $entry->type;
@@ -176,6 +167,14 @@ sub field_list {
             push @list, $name => { type => 'text', };
         }
     }
+
+    push @list,
+      format => {
+        type => 'select',
+        options =>
+          [ map { { label => $_, value => $_ } } qw/plain wiki markdown pod html/ ],
+      },
+      draft  => { type => 'boolean', };
 
     @list = _fill_values( $entry, @list );
     return wantarray ? @list : \@list;
