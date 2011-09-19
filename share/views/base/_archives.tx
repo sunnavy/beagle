@@ -1,7 +1,7 @@
 <div class="archives">
 : for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
 <div class="hover archive">
-<h4><a target="_blank" class="hover" name="<: $year :>" href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a></h4>
+<a target="_blank" class="hover" name="<: $year :>" href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a>
 <div class="glance"></div>
 </div>
 
