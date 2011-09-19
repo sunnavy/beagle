@@ -279,7 +279,10 @@ sub list {
 sub update_info {
     my $self = shift;
     my $info = shift;
-    return unless $self->backend->update( $info, @_ );
+    my %args = @_;
+    my $message = 'update info';
+    $message .= "\n\n" . $args{message} if defined $args{message};
+    return unless $self->backend->update( $info, @_, message => $message );
     $self->info($info);
     return 1;
 }
@@ -308,7 +311,15 @@ sub create_entry {
         return $self->$method( $entry, @_ );
     }
     else {
-        return unless $self->backend->create( $entry, @_ );
+        my %args = @_;
+        my $message =
+            'create '
+          . $entry->type . ' '
+          . $entry->id . ': '
+          . $entry->summary(20);
+        $message .= "\n\n" . $args{message} if defined $args{message};
+
+        return unless $self->backend->create( $entry, @_, message => $message );
         $self->map->{ $entry->id } = $entry;
         if ( $type eq 'comment' ) {
             $self->comments( [ $entry, @{ $self->comments } ] );
@@ -331,7 +342,15 @@ sub update_entry {
         return $self->$method( $entry, @_ );
     }
     else {
-        return unless $self->backend->update( $entry, @_ );
+        my %args = @_;
+        my $message =
+            'update '
+          . $entry->type . ' '
+          . $entry->id . ': '
+          . $entry->summary(20);
+        $message .= "\n\n" . $args{message} if defined $args{message};
+
+        return unless $self->backend->update( $entry, @_, message => $message );
         if ( $type eq 'comment' ) {
             $self->comments(
                 [
@@ -362,7 +381,14 @@ sub delete_entry {
         return $self->$method( $entry, @_ );
     }
     else {
-        return unless $self->backend->delete( $entry, @_ );
+        my %args = @_;
+        my $message =
+            'delete '
+          . $entry->type . ' '
+          . $entry->id . ': '
+          . $entry->summary(20);
+        $message .= "\n\n" . $args{message} if defined $args{message};
+        return unless $self->backend->delete( $entry, @_, message => $message );
         delete $self->map->{ $entry->id };
         if ( my $att = $self->attachments_map->{ $entry->id } ) {
             $self->delete_attachment($_)
@@ -385,7 +411,10 @@ sub delete_entry {
 sub create_attachment {
     my $self       = shift;
     my $attachment = shift;
-    return unless $self->backend->create( $attachment, @_ );
+    my %args = @_;
+    my $message = 'create attachment ' . $attachment->name;
+    $message .= "\n\n" . $args{message} if defined $args{message};
+    return unless $self->backend->create( $attachment, @_, message => $message );
     $self->attachments_map->{ $attachment->parent_id }{ $attachment->name } =
       $attachment;
     return 1;
@@ -394,6 +423,9 @@ sub create_attachment {
 sub delete_attachment {
     my $self       = shift;
     my $attachment = shift;
+    my %args = @_;
+    my $message = 'delete attachment ' . $attachment->name;
+    $message .= "\n\n" . $args{message} if defined $args{message};
     return unless $self->backend->delete( $attachment, @_ );
     delete $self->attachments_map->{ $attachment->parent_id }
       { $attachment->name };
