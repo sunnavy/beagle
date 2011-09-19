@@ -206,3 +206,6 @@ div.textarea {
     overflow-y: auto;
 }
 
+#term * {
+    font-size: 120% !important;
+}
