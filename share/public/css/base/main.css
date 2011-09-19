@@ -334,6 +334,7 @@ div.attachments div.presentation img {
     display: none;
     z-index: 9999;
     font-size: small;
+    border-radius: 0.5em !important;
 }
 
 li.hover > ul li {
