@@ -116,3 +116,15 @@ msgstr "下一篇"
 
 msgid "terminal"
 msgstr "终端"
+
+msgid "Attached"
+msgstr "已加附件"
+
+msgid "Attach"
+msgstr "添加附件"
+
+msgid "Attach More"
+msgstr "更多附件"
+
+msgid "Title"
+msgstr "标题"
