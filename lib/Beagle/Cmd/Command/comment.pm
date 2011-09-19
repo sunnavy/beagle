@@ -92,10 +92,13 @@ sub execute {
               )
             : $temp->serialize()
         );
-        my $message = 'create comment ' . $temp->id . " for $pid: " . $temp->summary(30);
-        $message .= "\n\n" . $self->message if $self->message;
-        $message =~ s!^!# !mg;
-        $template = encode_utf8( $message . newline() . $template );
+        my $message = '';
+        if ( $self->message ) {
+            $message = $self->message;
+            $message =~ s!^!# !mg;
+            $message .= newline();
+        }
+        $template = encode_utf8( $message . $template );
 
         my $updated = edit_text($template);
         if ( !$self->force && $template eq $updated ) {
@@ -122,12 +125,9 @@ sub execute {
     $comment->parent_id($pid);
     $comment->author($author) if $author && !$comment->author;
     $comment->timezone( $bh->info->timezone ) if $bh->info->timezone;
-    if (
-        $bh->create_entry(
-            $comment, message => $self->message || 'created ' . $comment->id
-        )
-      )
-    {
+    $comment->commit_message( $self->message )
+      if $self->message && !$comment->commit_message;
+    if ( $bh->create_entry($comment) ) {
         puts "created " . $comment->id . ".";
     }
     else {

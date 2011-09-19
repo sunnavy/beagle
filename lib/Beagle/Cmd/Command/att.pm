@@ -110,8 +110,11 @@ sub execute {
                 unless ( $bh->map->{$p} ) {
                     my $dir = catdir( 'attachments', split_id($p) );
                     if ( -e catdir( $bh->root, $dir ) ) {
-                        $bh->backend->delete( undef, path => $dir )
-                          or die "failed to delete $dir: $!";
+                        $bh->backend->delete(
+                            undef,
+                            path    => $dir,
+                            message => "prune $dir"
+                        ) or die "failed to delete $dir: $!";
                         $pruned = 1;
                     }
                 }
@@ -153,7 +156,7 @@ sub execute {
                     content_file => $file,
                     parent_id    => $pid,
                 );
-                if ( $bh->create_attachment( $att, commit => 0, ) ) {
+                if ( $bh->create_attachment( $att, message => $self->message ) ) {
                     push @added, $basename;
                 }
                 else {
@@ -166,12 +169,6 @@ sub execute {
         }
 
         if (@added) {
-            my $msg = $self->message
-              || 'added attachment'
-              . ( @added == 1 ? ' ' : 's ' )
-              . join( ', ', @added )
-              . " to entry $pid";
-            $bh->backend->commit( message => $msg );
             puts 'added ', join( ', ', @added ), '.';
         }
         return;
@@ -221,7 +218,8 @@ sub execute {
         for my $i (@$args) {
             my $att = $att[ $i - 1 ];
             my $handle = $bh || $handle_map{ $att->root };
-            if ( $handle->delete_attachment( $att, commit => 0 ) ) {
+            if ( $handle->delete_attachment( $att, message => $self->message ) )
+            {
                 push @deleted, { handle => $handle, name => $att->name };
             }
             else {
@@ -230,14 +228,6 @@ sub execute {
         }
 
         if (@deleted) {
-            my @handles = uniq map { $_->{handle} } @deleted;
-            for my $bh (@handles) {
-                my $msg = 'deleted '
-                  . join( ', ',
-                    map { $_->{name} }
-                    grep { $_->{handle}->root eq $bh->root } @deleted );
-                $bh->backend->commit( message => $self->message || $msg );
-            }
             my $msg = 'deleted ' . join( ', ', map { $_->{name} } @deleted );
             puts $msg . '.';
         }

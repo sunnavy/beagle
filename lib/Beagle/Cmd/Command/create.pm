@@ -141,11 +141,14 @@ sub execute {
                 id      => 0,
             )
         );
-        my $message = 'create ' . $temp->id . ': ' . $temp->summary(30);
-        $message .= "\n\n" . $self->message if $self->message;
-        $message =~ s!^!# !mg;
+        my $message = '';
+        if ( $self->message ) {
+            $message = $self->message;
+            $message =~ s!^!# !mg;
+            $message .= newline();
+        }
 
-        $template = encode_utf8( $message . newline() . $template );
+        $template = encode_utf8( $message . $template );
         my $updated = edit_text( $template );
 
         if ( !$self->force && $template eq $updated ) {
@@ -156,8 +159,8 @@ sub execute {
         $entry = $temp->new_from_string( decode_utf8($updated) );
     }
 
-    $entry->commit_message( $self->message || 'create ' . $entry->id )
-      unless $entry->commit_message;
+    $entry->commit_message( $self->message )
+      if $self->message && !$entry->commit_message;
 
     $entry->timezone( $bh->info->timezone )
       if $bh->info->timezone
@@ -166,7 +169,7 @@ sub execute {
 
     $entry->commit_message( $self->message )
       if $self->message && !$entry->commit_message;
-    if ( $bh->create_entry( $entry, commit => 0, ) ) {
+    if ( $bh->create_entry( $entry ) ) {
         $self->handle_attachments($entry);
         $bh->backend->commit( message => $entry->commit_message );
         puts "created " . $entry->id . ".";
@@ -191,7 +194,7 @@ sub handle_attachments {
                 parent_id    => $parent->id,
             );
 
-            current_handle()->create_attachment( $att, commit => 0 );
+            current_handle()->create_attachment( $att, );
         }
         else {
             die "$file is not a file or doesn't exist.";

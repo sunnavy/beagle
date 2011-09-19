@@ -87,11 +87,14 @@ sub execute {
                 )
             );
 
-            my $message = 'update ' . $entry->id . ': ' . $entry->summary(30);
-            $message .= "\n\n" . $self->message if $self->message;
-            $message =~ s!^!# !mg;
+            my $message = '';
+            if ( $self->message ) {
+                $message = $self->message;
+                $message =~ s!^!# !mg;
+                $message .= newline();
+            }
 
-            $template = encode_utf8( $message . newline() . $template );
+            $template = encode_utf8( $message . $template );
             my $updated = edit_text( $template );
 
             if ( !$self->force && $template eq $updated ) {
@@ -117,8 +120,9 @@ sub execute {
             $entry = $updated_entry;
         }
 
-        $entry->commit_message( $self->message || 'update ' . $entry->id )
-          unless $entry->commit_message;
+        $entry->commit_message( $self->message )
+          if $self->message && !$entry->commit_message;
+
         if ( $bh->update_entry( $entry ) ) {
             puts 'updated ', $entry->id, ".";
         }

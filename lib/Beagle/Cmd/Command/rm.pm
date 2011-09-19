@@ -45,7 +45,7 @@ sub execute {
             my $bh    = $ret->{handle};
             my $entry = $ret->{entry};
 
-            if ( $bh->delete_entry( $entry, commit => 0 ) ) {
+            if ( $bh->delete_entry( $entry, message => $self->message ) ) {
                 push @deleted, { handle => $bh, id => $entry->id };
             }
             else {
@@ -55,15 +55,6 @@ sub execute {
     }
 
     if (@deleted) {
-        my @handles = uniq map { $_->{handle} } @deleted;
-        for my $bh (@handles) {
-            my $msg = 'deleted '
-              . join( ', ',
-                map { $_->{id} }
-                grep { $_->{handle}->root eq $bh->root } @deleted );
-            $bh->backend->commit( message => $self->message || $msg );
-        }
-
         my $msg = 'deleted ' . join( ', ', map { $_->{id} } @deleted );
         puts $msg . '.';
     }

@@ -124,9 +124,13 @@ sub execute {
                         id      => undef,
                     )
                 );
-                my $message = $self->message || 'update info ';
-                $message =~ s!^!# !mg;
-                $template = encode_utf8( $message . newline() . $template );
+                my $message = '';
+                if ( $self->message ) {
+                    $message = $self->message;
+                    $message =~ s!^!# !mg;
+                    $message .= newline();
+                }
+                $template = encode_utf8( $message . $template );
 
                 my $updated = edit_text($template);
 
@@ -138,12 +142,9 @@ sub execute {
                 $info = $info->new_from_string( decode_utf8 $updated);
             }
 
-            if (
-                $bh->update_info(
-                    $info, message => $self->message || "update info"
-                )
-              )
-            {
+            $info->commit_message( $self->message )
+              if $self->message && !$info->commit_message;
+            if ( $bh->update_info( $info ) ) {
                 puts "updated info.";
             }
             else {

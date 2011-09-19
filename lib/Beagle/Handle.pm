@@ -282,6 +282,7 @@ sub update_info {
     my %args = @_;
     my $message = 'update info';
     $message .= "\n\n" . $args{message} if defined $args{message};
+    $message .= "\n\n" . $info->commit_message if $info->commit_message;
     return unless $self->backend->update( $info, @_, message => $message );
     $self->info($info);
     return 1;
@@ -318,6 +319,7 @@ sub create_entry {
           . $entry->id . ': '
           . $entry->summary(20);
         $message .= "\n\n" . $args{message} if defined $args{message};
+        $message .= "\n\n" . $entry->commit_message if $entry->commit_message;
 
         return unless $self->backend->create( $entry, @_, message => $message );
         $self->map->{ $entry->id } = $entry;
@@ -349,6 +351,7 @@ sub update_entry {
           . $entry->id . ': '
           . $entry->summary(20);
         $message .= "\n\n" . $args{message} if defined $args{message};
+        $message .= "\n\n" . $entry->commit_message if $entry->commit_message;
 
         return unless $self->backend->update( $entry, @_, message => $message );
         if ( $type eq 'comment' ) {
@@ -388,6 +391,7 @@ sub delete_entry {
           . $entry->id . ': '
           . $entry->summary(20);
         $message .= "\n\n" . $args{message} if defined $args{message};
+        $message .= "\n\n" . $entry->commit_message if $entry->commit_message;
         return unless $self->backend->delete( $entry, @_, message => $message );
         delete $self->map->{ $entry->id };
         if ( my $att = $self->attachments_map->{ $entry->id } ) {
@@ -414,6 +418,8 @@ sub create_attachment {
     my %args = @_;
     my $message = 'create attachment ' . $attachment->name;
     $message .= "\n\n" . $args{message} if defined $args{message};
+    $message .= "\n\n" . $attachment->commit_message
+      if $attachment->commit_message;
     return unless $self->backend->create( $attachment, @_, message => $message );
     $self->attachments_map->{ $attachment->parent_id }{ $attachment->name } =
       $attachment;
@@ -426,6 +432,8 @@ sub delete_attachment {
     my %args = @_;
     my $message = 'delete attachment ' . $attachment->name;
     $message .= "\n\n" . $args{message} if defined $args{message};
+    $message .= "\n\n" . $attachment->commit_message
+      if $attachment->commit_message;
     return unless $self->backend->delete( $attachment, @_ );
     delete $self->attachments_map->{ $attachment->parent_id }
       { $attachment->name };
