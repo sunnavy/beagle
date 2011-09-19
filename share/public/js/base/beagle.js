@@ -65,6 +65,72 @@ function beagleArchive ( ) {
     $('.toggle-expand').toggle( beagleToggle, beagleToggle );
 }
 
+function beagleHoverTag ( ) {
+    $('.hover.tag a.hover, .hover.tag > div.glance' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            var parent = $(this).closest('.hover.archive');
+            var glance = parent.children( 'div.glance' ).first();
+            if ( glance ) {
+                if ( glance.text() == '' ) {
+                    var name = parent.find('a').first().attr('name');
+                    if ( name ) {
+                        $.get(beaglePrefix + 'fragment/tag/' + name, function ( data ) {
+                            glance.html(data).show();
+                            return;
+                        } );
+                    }
+                }
+                else {
+                    glance.show();
+                }
+            }
+        },
+        out: function () {}
+    }
+    );
+
+    $('.hover.tag').hoverIntent( {
+        timeout: 500,
+        over: function () {},
+        out: function () { $(this).children('div.glance').hide() }
+    } );
+}
+
+function beagleHoverArchive ( ) {
+    $('.hover.archive a.hover, .hover.archive > div.glance' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            var parent = $(this).closest('.hover.archive');
+            var glance = parent.children( 'div.glance' ).first();
+            if ( glance ) {
+                if ( glance.text() == '' ) {
+                    var name = parent.find('a').first().attr('name');
+                    if ( name ) {
+                        $.get(beaglePrefix + 'fragment/archive/' + name, function ( data ) {
+                            glance.html(data).show();
+                            return;
+                        } );
+                    }
+                }
+                else {
+                    glance.show();
+                }
+            }
+        },
+        out: function () {}
+    }
+    );
+
+    $('.hover.archive').hoverIntent( {
+        timeout: 500,
+        over: function () {},
+        out: function () { $(this).children('div.glance').hide() }
+    } );
+}
+
 function beagleInit ( opts ) {
     prettyPrint();
     beaglePrefix = $('div.beagle').children('span[name=prefix]').text() || '/';
@@ -102,6 +168,8 @@ function beagleInit ( opts ) {
 
     beagleArchive();
     beagleContrast();
+    beagleHoverTag();
+    beagleHoverArchive();
 
     $('div.message').delay(3000).fadeOut('slow');
 

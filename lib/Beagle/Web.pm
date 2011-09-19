@@ -663,7 +663,7 @@ sub render {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $template = shift;
     my %vars     = @_;
-    _fill_page_info( \%vars, 'entries' );
+    _fill_page_info( \%vars, 'entries' ) unless $vars{disable_page};
     return xslate()->render( "$template.tx", { default_options(), %vars } );
 }
 

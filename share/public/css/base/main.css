@@ -2,7 +2,7 @@ a {
     text-decoration: none;
 }
 
-div.body a:hover, div.page a:hover {
+a:hover {
     text-decoration: underline;
 }
 
@@ -324,3 +324,11 @@ div.attachments div.presentation > * {
 div.attachments div.presentation img {
     max-width: 80%;
 }
+
+td.hover.tag > div.glance {
+    position: fixed;
+    background-color: #ccc;
+    padding: 1%;
+    display: none;
+}
+

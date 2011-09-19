@@ -26,3 +26,6 @@ select, input, textarea {
     color: #fff;
 }
 
+td.hover.tag > div.glance {
+    background-color: #222;
+}

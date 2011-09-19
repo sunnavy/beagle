@@ -12,11 +12,7 @@
 : if $search_only {
 : include "_tags.tx";
 : } else {
-: if $entries.size() {
-: include "_list.tx";
-: } else {
-    <div class="no-results"><: _('No results found.') :></div>
-: }
+: include "_search_result.tx";
 : }
 </div>
 

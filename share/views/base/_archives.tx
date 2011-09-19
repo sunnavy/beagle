@@ -1,8 +1,15 @@
 <div class="archives">
 : for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
-<h4><a target="_blank" href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a></h4>
+<div class="hover archive">
+<h4><a target="_blank" class="hover" name="<: $year :>" href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a></h4>
+<div class="glance"></div>
+</div>
+
 : for $archives[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
-<a target="_blank" href="<: $prefix :>archive/<: $year ~ '/' ~ $month :>"><: $year ~ '/' ~ $month :>(<: size($archives[$year][$month]) :>)</a>
+<div class="hover archive">
+<a target="_blank" class="hover" name="<: $year ~ '/' ~ $month :>" href="<: $prefix :>archive/<: $year ~ '/' ~ $month :>"><: $year ~ '/' ~ $month :>(<: size($archives[$year][$month]) :>)</a>
+<div class="glance"></div>
+</div>
 : }
 : }
 </div>

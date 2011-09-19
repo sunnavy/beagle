@@ -1,12 +1,12 @@
 <div class="list">
 
 : for $entries -> $entry {
-    <div class="summary">
-    <h4><a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h4>
-    </div>
+<div>
+    <a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(20) :></a>
+</div>
 : }
 </div>
 
-: if ( !$static ) {
+: if ( !$static && !$disable_page) {
 : include "page.tx";
 : }

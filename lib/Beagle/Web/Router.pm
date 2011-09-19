@@ -16,11 +16,37 @@ get '/fragment/menu' => sub {
 
 get '/fragment/entry/:id' => sub {
     my %vars = @_;
-    my $i    = $vars{id} or return;
+    my $i    = $vars{id};
     my @ret  = resolve_id( $i, handle => handle() );
     return unless @ret == 1;
 
     render 'entry', entry => $ret[0]->{entry};
+};
+
+get '/fragment/tag/:tag' => sub {
+    my %vars = @_;
+    my $tag = decode_utf8 $vars{tag};
+    my $entries = Beagle::Web->tags( handle() )->{$tag} || [];
+    render '_list', entries => $entries, disable_page => 1;
+};
+
+get '/fragment/archive/{year:[0-9]+}' => sub {
+    my %vars = @_;
+    my $year = $vars{year};
+    render '_list',
+      entries => [
+        map { @{ Beagle::Web->archives( handle() )->{$year}{$_} } }
+          keys %{ Beagle::Web->archives( handle() )->{$year} || {} }
+      ],
+      disable_page => 1;
+};
+
+get '/fragment/archive/{year:[0-9]+}/{month:[0-9]{2}}' => sub {
+    my %vars = @_;
+    my $year = $vars{year};
+    my $month = $vars{month};
+    my $entries = Beagle::Web->archives( handle() )->{$year}{$month} || [];
+    render '_list', entries => $entries, disable_page => 1;
 };
 
 get '/tag/:tag' => sub {
@@ -53,7 +79,7 @@ get '/archive/{year:[0-9]+}' => sub {
     render 'index',
       entries => [
         map { @{ Beagle::Web->archives( handle() )->{$year}{$_} } }
-          keys %{ Beagle::Web->archives( handle() )->{$year} }
+          keys %{ Beagle::Web->archives( handle() )->{$year} || {} }
       ],
       title        => "in $year",
       prefix       => prefix() || '../';
