@@ -335,3 +335,7 @@ div.attachments div.presentation img {
     font-size: small;
 }
 
+li.hover > ul li {
+    font-size: small;
+    padding-left: 2%;
+}

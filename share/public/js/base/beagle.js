@@ -66,11 +66,11 @@ function beagleArchive ( ) {
 }
 
 function beagleHoverTag ( ) {
-    $('.hover.tag a.hover, .hover.tag > div.glance' ).hoverIntent(
+    $('td.hover.tag a.hover, td.hover.tag > div.glance' ).hoverIntent(
     {
         timeout: 500,
         over: function () {
-            var parent = $(this).closest('.hover.tag');
+            var parent = $(this).closest('td.hover.tag');
             var glance = parent.children( 'div.glance' ).first();
             if ( glance ) {
                 if ( glance.text() == '' ) {
@@ -91,11 +91,20 @@ function beagleHoverTag ( ) {
     }
     );
 
-    $('.hover.tag').hoverIntent( {
+    $('li.hover.tag a.hover, li.hover.tag > ul' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            $(this).closest('li.hover.tag').children('ul').show();
+        },
+        out: function () {}
+    }
+    );
+
+    $('li.hover.tag').hoverIntent( {
         timeout: 500,
         over: function () {},
-        out: function () { $(this).children('div.glance').hide() }
-    } );
+        out: function () { $(this).children('ul').hide(); } } );
 }
 
 function beagleHoverArchive ( ) {

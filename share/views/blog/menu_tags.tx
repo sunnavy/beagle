@@ -2,10 +2,22 @@
 <h3 class="menu"><a href="<: $prefix :>tags"><: _('Tags') :></a></h3>
 <ul>
 : for $tags.keys().sort() -> $tag {
+<li class="hover tag">
+<a class="hover" name="<: $tag :>" class="tag" target="_blank" href="<: $prefix :>tag/<: $tag :>">
 : if $tag ~~ $entry_types {
-    <li><a href="<: $prefix :>tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a></li>
+    <: _($tag) :>
 : } else {
-    <li><a href="<: $prefix :>tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a></li>
-: } }
+    <: $tag :>
+: }
+(<: size($tags[$tag]) :>)</a>
+<ul class="hidden">
+: for $tags[$tag] -> $entry {
+<li>
+    <a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(40) :></a>
+</li>
+: }
+</ul>
+</li>
+: }
 </ul>
 </div>
