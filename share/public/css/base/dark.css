@@ -29,3 +29,7 @@ select, input, textarea {
 td.hover.tag > div.glance {
     background-color: #222;
 }
+
+span.datetime, span.number {
+    color: #222;
+}
