@@ -70,7 +70,7 @@ function beagleHoverTag ( ) {
     {
         timeout: 500,
         over: function () {
-            var parent = $(this).closest('.hover.archive');
+            var parent = $(this).closest('.hover.tag');
             var glance = parent.children( 'div.glance' ).first();
             if ( glance ) {
                 if ( glance.text() == '' ) {
