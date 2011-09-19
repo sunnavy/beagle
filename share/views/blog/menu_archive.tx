@@ -2,8 +2,8 @@
 <h3 class="menu"><a href="<: $prefix :>archives"><: _('Archives') :></a></h3>
 <ul>
 : for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
-    <li>
-    <span class="toggle-expand year_<: $year :>">+</span> <a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a>
+    <li class="hover archive">
+    <a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a>
         <ul class="hidden">
 : for $archives[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
 : for $archives[$year][$month] -> $e {

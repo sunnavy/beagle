@@ -44,27 +44,6 @@ function beagleToggle ( ) {
     }
 }
 
-function beagleArchive ( ) {
-    var year = $('div.beagle').children('span[name=year]').text();
-
-    if ( ! year ) {
-        var result =  window.location.pathname.match(/archive\/(\d{4})/);
-        if ( result ) {
-            year = result[1];
-        }
-    }
-
-    if ( year ) {
-        $('.toggle-expand.year_' + year).parent().children('ul').show();
-        $('.toggle-expand.year_' + year).html('-');
-    }
-    else {
-        $('.toggle-expand:first').parent().children('ul').show();
-        $('.toggle-expand:first').html('-');
-    }
-    $('.toggle-expand').toggle( beagleToggle, beagleToggle );
-}
-
 function beagleHoverTag ( ) {
     $('td.hover.tag a.hover, td.hover.tag > div.glance' ).hoverIntent(
     {
@@ -108,11 +87,11 @@ function beagleHoverTag ( ) {
 }
 
 function beagleHoverArchive ( ) {
-    $('.hover.archive a.hover, .hover.archive > div.glance' ).hoverIntent(
+    $('td.hover.archive a.hover, td.hover.archive > div.glance' ).hoverIntent(
     {
         timeout: 500,
         over: function () {
-            var parent = $(this).closest('.hover.archive');
+            var parent = $(this).closest('td.hover.archive');
             var glance = parent.children( 'div.glance' ).first();
             if ( glance ) {
                 if ( glance.text() == '' ) {
@@ -133,11 +112,21 @@ function beagleHoverArchive ( ) {
     }
     );
 
-    $('.hover.archive').hoverIntent( {
+    $('td.hover.archive').hoverIntent( {
         timeout: 500,
         over: function () {},
         out: function () { $(this).children('div.glance').hide() }
     } );
+
+    $('li.hover.archive' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            $(this).children('ul').show();
+        },
+        out: function () { $(this).children('ul').hide(); }
+    }
+    );
 }
 
 function beagleInit ( opts ) {
@@ -175,7 +164,6 @@ function beagleInit ( opts ) {
         }
     );
 
-    beagleArchive();
     beagleContrast();
     beagleHoverTag();
     beagleHoverArchive();
