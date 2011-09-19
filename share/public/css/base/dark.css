@@ -31,3 +31,8 @@ td.hover.tag > div.glance {
 span.datetime, span.number {
     color: #222;
 }
+
+hr {
+    background-color: #111;
+    color: #111;
+}
