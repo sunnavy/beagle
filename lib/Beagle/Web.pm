@@ -596,7 +596,11 @@ sub default_options {
 sub _fill_page_info {
     my $vars  = shift;
     my $field = shift;
-    my $limit = shift || 10;
+    my $limit =
+         $vars->{page_limit}
+      || $ENV{BEAGLE_WEB_PAGE_LIMIT}
+      || $bh->info->web_page_limit
+      || 10;
     if ( $vars->{$field} ) {
         $vars->{page} = request()->param('p') || 1;
         my $page =
@@ -655,14 +659,7 @@ sub render {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $template = shift;
     my %vars     = @_;
-    if ( $vars{search} ) {
-        _fill_page_info( \%vars, 'entries',
-            $ENV{BEAGLE_WEB_SEARCH_LIMIT} || $bh->info->web_search_limit );
-    }
-    else {
-        _fill_page_info( \%vars, 'entries',
-            $ENV{BEAGLE_WEB_ENTRY_LIMIT} || $bh->info->web_entry_limit );
-    }
+    _fill_page_info( \%vars, 'entries' );
     return xslate()->render( "$template.tx", { default_options(), %vars } );
 }
 

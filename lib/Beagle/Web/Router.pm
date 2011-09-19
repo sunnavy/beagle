@@ -143,8 +143,10 @@ any '/search' => sub {
 
 get '/admin/entries' => sub {
     render 'admin/entries',
-      title  => 'admin',
-      prefix => prefix() || '../';
+      entries => handle()->entries,
+      title   => 'admin',
+      page_limit => 20,
+      prefix  => prefix() || '../';
 };
 
 get '/admin/entry/:type/new' => sub {
