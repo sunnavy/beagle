@@ -55,7 +55,9 @@ function beagleHoverTag ( ) {
                     var name = $(this).find('a').first().attr('name');
                     if ( name ) {
                         $.get(beaglePrefix + 'fragment/tag/' + name, function ( data ) {
-                            glance.html(data).show();
+                            glance.html(data);
+                            glance.find('div.list > div').css('margin-top', '0.25em');
+                            glance.show();
                             return;
                         } );
                     }
@@ -96,7 +98,9 @@ function beagleHoverArchive ( ) {
                     var name = $(this).find('a').first().attr('name');
                     if ( name ) {
                         $.get(beaglePrefix + 'fragment/archive/' + name, function ( data ) {
-                            glance.html(data).show();
+                            glance.html(data);
+                            glance.find('div.list > div').css('margin-top', '0.25em');
+                            glance.show();
                             return;
                         } );
                     }
