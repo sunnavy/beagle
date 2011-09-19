@@ -43,7 +43,7 @@ msgid "view"
 msgstr "查看"
 
 msgid "info"
-msgstr "关于"
+msgstr "信息"
 
 msgid "new "
 msgstr "新"
