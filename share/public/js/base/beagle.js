@@ -45,15 +45,14 @@ function beagleToggle ( ) {
 }
 
 function beagleHoverTag ( ) {
-    $('td.hover.tag a.hover, td.hover.tag > div.glance' ).hoverIntent(
+    $('td.hover.tag' ).hoverIntent(
     {
         timeout: 500,
         over: function () {
-            var parent = $(this).closest('td.hover.tag');
-            var glance = parent.children( 'div.glance' ).first();
+            var glance = $(this).children( 'div.glance' ).first();
             if ( glance ) {
                 if ( glance.text() == '' ) {
-                    var name = parent.find('a').first().attr('name');
+                    var name = $(this).find('a').first().attr('name');
                     if ( name ) {
                         $.get(beaglePrefix + 'fragment/tag/' + name, function ( data ) {
                             glance.html(data).show();
@@ -66,7 +65,7 @@ function beagleHoverTag ( ) {
                 }
             }
         },
-        out: function () {}
+        out: function () { $(this).children( 'div.glance' ).hide(); }
     }
     );
 
@@ -87,15 +86,14 @@ function beagleHoverTag ( ) {
 }
 
 function beagleHoverArchive ( ) {
-    $('td.hover.archive a.hover, td.hover.archive > div.glance' ).hoverIntent(
+    $('td.hover.archive' ).hoverIntent(
     {
         timeout: 500,
         over: function () {
-            var parent = $(this).closest('td.hover.archive');
-            var glance = parent.children( 'div.glance' ).first();
+            var glance = $(this).children( 'div.glance' ).first();
             if ( glance ) {
                 if ( glance.text() == '' ) {
-                    var name = parent.find('a').first().attr('name');
+                    var name = $(this).find('a').first().attr('name');
                     if ( name ) {
                         $.get(beaglePrefix + 'fragment/archive/' + name, function ( data ) {
                             glance.html(data).show();
@@ -108,15 +106,9 @@ function beagleHoverArchive ( ) {
                 }
             }
         },
-        out: function () {}
+        out: function () { $(this).children( 'div.glance' ).hide(); }
     }
     );
-
-    $('td.hover.archive').hoverIntent( {
-        timeout: 500,
-        over: function () {},
-        out: function () { $(this).children('div.glance').hide() }
-    } );
 
     $('li.hover.archive' ).hoverIntent(
     {
