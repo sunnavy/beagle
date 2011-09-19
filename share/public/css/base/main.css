@@ -251,6 +251,8 @@ div.list div.glance {
     border: 1px solid;
     padding: 0.25em;
     display: none;
+    max-height: 20em;
+    overflow: auto;
 }
 
 div.list div.no-results {
