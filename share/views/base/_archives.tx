@@ -5,11 +5,20 @@
 <div class="glance"></div>
 </div>
 
+<table class="archives">
 : for $archives[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
-<div class="hover archive">
+: if $~month.index % 6 == 0 {
+<tr>
+: }
+<td class="hover archive">
 <a target="_blank" class="hover" name="<: $year ~ '/' ~ $month :>" href="<: $prefix :>archive/<: $year ~ '/' ~ $month :>"><: $year ~ '/' ~ $month :>(<: size($archives[$year][$month]) :>)</a>
 <div class="glance"></div>
-</div>
+</td>
+: if $~month.index % 6 == 5 || $~month.is_last {
+</tr>
 : }
+: }
+
+</table>
 : }
 </div>

@@ -304,12 +304,12 @@ div.next a {
     float: right;
 }
 
-table.tags {
+table.tags, table.archives {
     margin: 0 5% 0% 5%;
     width: 90%;
 }
 
-table.tags td {
+table.tags td, table.archives td {
     width: 18%;
 }
 
@@ -325,10 +325,12 @@ div.attachments div.presentation img {
     max-width: 80%;
 }
 
-td.hover.tag > div.glance {
+.hover > div.glance {
     position: fixed;
     background-color: #ccc;
     padding: 1%;
+    padding-top: 0;
     display: none;
+    z-index: 9999;
 }
 
