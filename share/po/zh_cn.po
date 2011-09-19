@@ -134,3 +134,12 @@ msgstr "消息"
 
 msgid "Save"
 msgstr "保存"
+
+msgid "created"
+msgstr "已创建"
+
+msgid "updated"
+msgstr "已更新"
+
+msgid "deleted"
+msgstr "已删除"

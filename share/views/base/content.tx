@@ -13,7 +13,7 @@
 <div class="message-wrapper">
 : if $message {
 <div class="message">
-<: $message :>
+<: _($message) :>
 </div>
 : }
 </div>
