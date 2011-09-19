@@ -118,7 +118,7 @@ msgid "terminal"
 msgstr "终端"
 
 msgid "Attached"
-msgstr "已加附件"
+msgstr "已有附件"
 
 msgid "Attach"
 msgstr "添加附件"
@@ -128,3 +128,9 @@ msgstr "更多附件"
 
 msgid "Title"
 msgstr "标题"
+
+msgid "Message"
+msgstr "消息"
+
+msgid "Save"
+msgstr "保存"

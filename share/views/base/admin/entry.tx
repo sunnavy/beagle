@@ -18,7 +18,7 @@
 <form method="post" enctype="multipart/form-data">
 <input type="hidden" value="<: $entry.id :>" name="id" />
 
-: for $form.sorted_fields -> $field {
+: for $form.fields -> $field {
 : if $field.name != 'body' {
 <div class="wrapper">
 <: $field.render |raw :>
@@ -58,7 +58,7 @@
 </div>
 
 <div class="wrapper">
-<label>message:</label>
+<label><: _('Message'):>:</label>
 <input type="text" name="message" />
 <input type="submit" value="<: _('Save') :>" />
 </div>
