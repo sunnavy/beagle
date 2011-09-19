@@ -1,4 +1,4 @@
-html, body {
+html, body, div.create-entry > ul {
     background-color: #fff3f0;
 }
 
@@ -59,7 +59,7 @@ pre.pod, pre.shell {
     border-color: #000;
 }
 
-.hover > div.glance, .hover > ul {
+.hover > div.glance {
     background-color: #feb;
 }
 

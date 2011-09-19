@@ -1,6 +1,6 @@
 @import "orange.css";
 
-html, body {
+html, body, div.create-entry > ul {
     background-color: #f0f3ff;
 }
 
@@ -12,7 +12,7 @@ h3.menu {
     background-color: #e2dff1;
 }
 
-.hover > div.glance, .hover > ul {
+.hover > div.glance {
     background-color: #ddf;
 }
 

@@ -1,4 +1,4 @@
-html, body, h4, h5, h6 {
+html, body, h4, h5, h6 { 
     background-color: #111;
     color: white !important;
 }
@@ -24,7 +24,7 @@ select, input, textarea {
     color: #fff;
 }
 
-.hover > div.glance, .hover > ul {
+.hover > div.glance {
     background-color: #222;
 }
 
@@ -35,4 +35,8 @@ span.datetime, span.number {
 hr {
     background-color: #111;
     color: #111;
+}
+
+div.create-entry > ul {
+    background-color: #111;
 }
