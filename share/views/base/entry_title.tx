@@ -1,1 +1,1 @@
-<h3 class="title"><a id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
+<h3 class="title"><a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>

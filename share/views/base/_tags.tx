@@ -5,11 +5,13 @@
 <tr>
 : }
 <td>
+<a target="_blank" href="<: $prefix :>tag/<: $tag :>">
 : if $tag ~~ $entry_types {
-    <a href="<: $prefix :>tag/<: $tag :>"><: _($tag) :>(<: size($tags[$tag]) :>)</a>
+    <: _($tag) :>
 : } else {
-    <a href="<: $prefix :>tag/<: $tag :>"><: $tag :>(<: size($tags[$tag]) :>)</a>
+    <: $tag :>
 : }
+(<: size($tags[$tag]) :>)</a>
 </td>
 : if $~tag.index % 5 == 4 || $~tag.is_last {
 </tr>

@@ -1,8 +1,8 @@
 <div class="archives">
 : for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {
-<h4><a href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a></h4>
+<h4><a target="_blank" href="<: $prefix :>archive/<: $year :>"><: $year :>(<: size($archives[$year]) :>)</a></h4>
 : for $archives[$year].keys().sort(-> $x, $y { $y <=> $x }) -> $month {
-<a href="<: $prefix :>archive/<: $year ~ '/' ~ $month :>"><: $year ~ '/' ~ $month :>(<: size($archives[$year][$month]) :>)</a>
+<a target="_blank" href="<: $prefix :>archive/<: $year ~ '/' ~ $month :>"><: $year ~ '/' ~ $month :>(<: size($archives[$year][$month]) :>)</a>
 : }
 : }
 </div>
