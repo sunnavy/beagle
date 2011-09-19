@@ -334,5 +334,5 @@ div.attachments div.presentation > * {
 }
 
 div.attachments div.presentation img {
-    min-width: 40%;
+    max-width: 80%;
 }
