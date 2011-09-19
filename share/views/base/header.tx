@@ -6,22 +6,22 @@
 
 <link rel="alternate" type="application/rss+xml" title="<: $name :> - RSS" href="<: $prefix :>feed" />
 
-: if system_file_exists( 'css/' ~ $info.web_layout ~ '/main.css' ) {
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/main.css" />
+: if system_file_exists( 'css/' ~ $info.layout ~ '/main.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.layout :>/main.css" />
 : } else {
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/main.css" />
 : }
 
-: if system_file_exists( 'css/' ~ $info.web_layout ~ '/print.css' ) {
-<link rel="stylesheet" type="text/css" media="print" href="<: $prefix :>system/css/<: $info.web_layout :>/print.css" />
+: if system_file_exists( 'css/' ~ $info.layout ~ '/print.css' ) {
+<link rel="stylesheet" type="text/css" media="print" href="<: $prefix :>system/css/<: $info.layout :>/print.css" />
 : } else {
 <link rel="stylesheet" type="text/css" media="print" href="<: $prefix :>system/css/base/print.css" />
 : }
 
-: if system_file_exists( 'css/' ~ $info.web_layout ~ '/' ~ $info.web_theme ~ '.css' ) {
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/<: $info.web_theme :>.css" />
+: if system_file_exists( 'css/' ~ $info.layout ~ '/' ~ $info.theme ~ '.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.layout :>/<: $info.theme :>.css" />
 : } else {
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/<: $info.web_theme :>.css" />
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/<: $info.theme :>.css" />
 : }
 
 <script type="text/javascript" src="<: $prefix :>system/js/base/prettify.js"></script>
@@ -41,8 +41,8 @@
 <script type="text/javascript" src="<: $prefix :>system/js/base/jquery.markitup.set.js"></script>
 <script type="text/javascript" src="<: $prefix :>system/js/base/beagle-admin.js"></script>
 
-: if system_file_exists( 'css/' ~ $info.web_layout ~ '/admin.css' ) {
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/admin.css" />
+: if system_file_exists( 'css/' ~ $info.layout ~ '/admin.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.layout :>/admin.css" />
 : } else {
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/admin.css" />
 : }

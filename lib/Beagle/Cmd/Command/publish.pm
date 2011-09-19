@@ -43,7 +43,7 @@ my $handle;
 sub execute {
     my ( $self, $opt, $args ) = @_;
     die 'beagle publish --to /path/to/dir' unless defined $self->to;
-    $ENV{BEAGLE_WEB_PAGE_LIMIT}= 1000_000;
+    $ENV{BEAGLE_PAGE_LIMIT}= 1000_000;
     my @bh;
     for my $name (@$args) {
         require Beagle::Handle;

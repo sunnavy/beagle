@@ -23,13 +23,13 @@ has 'copyright' => (
     default => '',
 );
 
-has 'web_layout' => (
+has 'layout' => (
     isa     => 'Str',
     is      => 'rw',
     default => 'blog',
 );
 
-has 'web_theme' => (
+has 'theme' => (
     isa     => 'Str',
     is      => 'rw',
     default => 'orange',
@@ -112,19 +112,19 @@ has 'avatar' => (
     },
 );
 
-has 'web_page_limit' => (
+has 'page_limit' => (
     isa     => 'Str',
     is      => 'rw',
     default => sub {
-        $ENV{BEAGLE_WEB_PAGE_LIMIT} || core_config->{web_page_limit} || 10;
+        $ENV{BEAGLE_PAGE_LIMIT} || core_config->{page_limit} || 10;
     },
 );
 
-has 'web_feed_limit' => (
+has 'feed_limit' => (
     isa     => 'Str',
     is      => 'rw',
     default => sub {
-        $ENV{BEAGLE_WEB_FEED_LIMIT} || core_config->{web_feed_limit} || 20;
+        $ENV{BEAGLE_FEED_LIMIT} || core_config->{feed_limit} || 20;
     },
 );
 

@@ -32,7 +32,7 @@ sub feed {
         80 );
     $feed->set( 'category' => from_array( $info->tags ) );
 
-    my $limit = $ENV{BEAGLE_WEB_FEED_LIMIT} || $info->web_feed_limit() || 20;
+    my $limit = $ENV{BEAGLE_FEED_LIMIT} || $info->feed_limit() || 20;
     if ( scalar @$entries > $limit ) {
         $entries = [ @{$entries}[ 0 .. $limit - 1 ] ];
     }
@@ -226,7 +226,7 @@ sub template_exists {
     return unless defined $name;
     $name .= '.tx' unless $name =~ /\.tx$/;
     my @roots = (
-        map( { catdir( $_, $bh->info->web_layout ), } web_template_roots() ),
+        map( { catdir( $_, $bh->info->layout ), } web_template_roots() ),
         map( { catdir( $_, 'base' ), } web_template_roots() )
     );
     my @parts = split /\//, $name;
@@ -257,7 +257,7 @@ sub xslate {
     return $xslate{$n} if $xslate{$n};
     return $xslate{$n} = Text::Xslate->new(
         path => [
-            map( { catdir( $_, $b->info->web_layout ) } web_template_roots() ),
+            map( { catdir( $_, $b->info->layout ) } web_template_roots() ),
             map( { catdir( $_, 'base' ) } web_template_roots() ),
         ],
         cache_dir   => catdir( File::Spec->tmpdir, 'beagle_web_cache' ),
@@ -444,7 +444,7 @@ sub init {
         $name = lc $name;
 
         for my $layout ( 'base',
-            uniq( grep { defined } map { $_->info->web_layout } values %bh ) )
+            uniq( grep { defined } map { $_->info->layout } values %bh ) )
         {
 
             if (
@@ -589,8 +589,8 @@ sub default_options {
         prefix      => $prefix,
         static      => $static,
         css =>
-          [ @{ $css{base} || [] }, @{ $css{ $bh->info->web_layout } || [] } ],
-        js => [ @{ $js{base} || [] }, @{ $js{ $bh->info->web_layout } || [] } ],
+          [ @{ $css{base} || [] }, @{ $css{ $bh->info->layout } || [] } ],
+        js => [ @{ $js{base} || [] }, @{ $js{ $bh->info->layout } || [] } ],
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( names => $names ),
@@ -602,8 +602,8 @@ sub _fill_page_info {
     my $field = shift;
     my $limit =
          $vars->{page_limit}
-      || $ENV{BEAGLE_WEB_PAGE_LIMIT}
-      || $bh->info->web_page_limit
+      || $ENV{BEAGLE_PAGE_LIMIT}
+      || $bh->info->page_limit
       || 10;
     if ( $vars->{$field} ) {
         $vars->{page} = request()->param('p') || 1;
