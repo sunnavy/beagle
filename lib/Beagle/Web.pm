@@ -30,6 +30,7 @@ sub feed {
     $feed->pubDate( $entries->[0]->created ) if @$entries;
     $feed->image( $info->avatar, $info->title, $info->url, $info->body, 80,
         80 );
+    $feed->set( 'category' => from_array( $info->tags ) );
 
     my $limit = $ENV{BEAGLE_WEB_FEED_LIMIT} || $info->web_feed_limit() || 20;
     if ( scalar @$entries > $limit ) {
@@ -137,15 +138,18 @@ sub field_list {
     shift @_ if @_ && $_[0] eq 'Beagle::Web';
     my $entry = shift;
     my @list  = (
-        author => { type => 'text', },
         body  => { type => 'textarea', },
     );
 
-    if ( $type ne 'info' && $type ne 'comment' ) {
+    my $type = $entry->type;
+    if ( $type ne 'info' ) {
+        push @list, author => { type => 'text', };
+    }
+
+    if ( $type ne 'comment' ) {
         push @list, tags => { type => 'text', };
     }
 
-    my $type = $entry->type;
     if ( $type ne 'entry' ) {
         my $names = $entry->extra_meta_fields;
         for my $name (@$names) {
@@ -168,13 +172,14 @@ sub field_list {
         }
     }
 
-    push @list,
-      format => {
-        type => 'select',
-        options =>
-          [ map { { label => $_, value => $_ } } qw/plain wiki markdown pod html/ ],
-      },
-      draft  => { type => 'boolean', };
+    push @list, format => {
+        type    => 'select',
+        options => [
+            map { { label => $_, value => $_ } }
+              qw/plain wiki markdown pod html/
+        ],
+    };
+    push @list, draft => { type => 'boolean', } unless $type eq 'info';
 
     @list = _fill_values( $entry, @list );
     return wantarray ? @list : \@list;

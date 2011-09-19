@@ -165,7 +165,7 @@ sub parse_sites {
 around 'serialize_meta' => sub {
     my $orig = shift;
     my $self = shift;
-    my %opt  = ( @_, tags => 0, author => 0, draft => 0 );
+    my %opt  = ( @_, author => 0, draft => 0 );
     my $str = $self->_serialize_meta('id') . $self->$orig(%opt);
 
     return $str;
