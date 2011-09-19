@@ -128,9 +128,8 @@ div.warnings {
 }
 
 h3.menu {
-    margin-top: 2.5em;
-    margin-bottom: 0.25em;
-    padding-left: 0.3em;
+    margin-top: 1.5em;
+    padding-left: 0.25em;
     border-radius: 0.25em;
 }
 
@@ -226,6 +225,7 @@ div.body {
 
 #menu div.search {
     margin: 0;
+    padding-top: 0; 
 }
 
 div.search {
