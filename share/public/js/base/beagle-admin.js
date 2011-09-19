@@ -125,5 +125,15 @@ function beagleAdminInit ( ) {
         p.before(att);
         return false;
     } );
+
+    $('div.hover.create-entry' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            $(this).children('ul').show();
+        },
+        out: function () { $(this).children('ul').hide(); }
+    }
+    );
 }
 

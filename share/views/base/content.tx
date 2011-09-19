@@ -1,13 +1,19 @@
 <div id="content">
 : if $admin {
 <div class="admin-links">
+
+  <div class="hover create-entry">
+  <a href="#"><: _( 'create' ) :>
+  <ul class="hidden">
+  : for $entry_types.sort() -> $x {
+  : next if $x == 'comment';
+    <li><a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( $x ) :></a><li>
+  : }
+  </ul>
+  </div>
   <a href="<: $prefix :>admin/term"><: _('terminal') :></a>
   <a href="<: $prefix :>admin/info"><: _('info') :></a>
   <a href="<: $prefix :>admin/entries"><: _('all entries') :></a>
-: for $entry_types.sort() -> $x {
-: next if $x == 'comment';
-  <a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( 'new ' ) ~ _( $x ) :></a>
-: }
 </div>
 
 <div class="message-wrapper">

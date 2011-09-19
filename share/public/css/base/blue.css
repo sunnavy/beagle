@@ -12,6 +12,7 @@ h3.menu {
     background-color: #e2dff1;
 }
 
-.hover > div.glance {
+.hover > div.glance, .hover > ul {
     background-color: #ddf;
 }
+

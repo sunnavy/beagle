@@ -59,7 +59,7 @@ pre.pod, pre.shell {
     border-color: #000;
 }
 
-.hover > div.glance {
+.hover > div.glance, .hover > ul {
     background-color: #feb;
 }
 
