@@ -65,39 +65,6 @@ function beagleArchive ( ) {
     $('.toggle-expand').toggle( beagleToggle, beagleToggle );
 }
 
-function beagleListHover ( ) {
-    $('div.list div.summary h3 a, div.list div.summary div.glance' ).hoverIntent(
-    {
-        timeout: 500,
-        over: function () {
-            var parent = $(this).closest('div.summary');
-            var glance = parent.children( 'div.glance' ).first();
-            if ( glance ) {
-                if ( glance.text() == '' ) {
-                    var id = parent.find('a').first().attr('id');
-                    if ( id ) {
-                        $.get(beaglePrefix + 'fragment/entry/' + id, function ( data ) {
-                            glance.html(data).show();
-                            return;
-                        } );
-                    }
-                }
-                else {
-                    glance.show();
-                }
-            }
-        },
-        out: function () {}
-    }
-    );
-
-    $('div.list div.summary').hoverIntent( {
-        timeout: 500,
-        over: function () {},
-        out: function () { $(this).children('div.glance').hide() }
-    } );
-}
-
 function beagleInit ( opts ) {
     prettyPrint();
     beaglePrefix = $('div.beagle').children('span[name=prefix]').text() || '/';
@@ -135,7 +102,6 @@ function beagleInit ( opts ) {
 
     beagleArchive();
     beagleContrast();
-    beagleListHover();
 
     $('div.message').delay(3000).fadeOut('slow');
 

@@ -241,26 +241,8 @@ div.search input[name=query] {
     margin-top: 1ex;
 }
 
-div.list {
-    margin-top: 3%;
-    height: auto;
-}
-
-div.list div.glance {
-    position: relative;
-    border: 1px solid;
-    padding: 0.25em;
-    display: none;
-    max-height: 20em;
-    overflow: auto;
-}
-
 div.list div.no-results {
     margin-left: 40%;
-}
-
-div.list pre {
-    margin: 0;
 }
 
 textarea {
