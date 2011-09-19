@@ -8,6 +8,7 @@
 </div>
 : }
 
+<div class="results">
 : if $search_only {
 : include "_tags.tx";
 : } else {
@@ -17,5 +18,6 @@
     <div class="no-results"><: _('No results found.') :></div>
 : }
 : }
+</div>
 
 : include "footer.tx";

@@ -271,7 +271,11 @@ div.direction {
 }
 
 #content > div.tags {
-    margin: 2%;
+    padding-top: 5%;
+}
+
+div.tags {
+    padding: 2%;
 }
 
 #content > div.tags a {
