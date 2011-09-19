@@ -143,3 +143,42 @@ msgstr "已更新"
 
 msgid "deleted"
 msgstr "已删除"
+
+msgid "Sites"
+msgstr "站点"
+
+msgid "Web Feed Limit"
+msgstr "Web Feed限制"
+
+msgid "Location"
+msgstr "位置"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Career"
+msgstr "职业"
+
+msgid "Avatar"
+msgstr "头像"
+
+msgid "Copyright"
+msgstr "版权"
+
+msgid "Email"
+msgstr "邮箱"
+
+msgid "Web Theme"
+msgstr "Web主题"
+
+msgid "Url"
+msgstr "网址"
+
+msgid "Public Key"
+msgstr "公钥"
+
+msgid "Web Layout"
+msgstr "Web布局"
+
+msgid "Web Page Limit"
+msgstr "Web页面限制"
