@@ -206,3 +206,7 @@ div.textarea {
     overflow-y: auto;
 }
 
+div.attach a.more {
+    float: left;
+    margin: 2%;
+}

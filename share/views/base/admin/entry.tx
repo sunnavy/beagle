@@ -47,12 +47,11 @@
 : }
 
 
-: for [ 1,2,3 ] -> $item {
-<div class="wrapper">
+<div class="wrapper attach">
 <label>Attach:</label>
 <input type="file" name="attachments" />
+<a href="#" class="more"><: _( 'more' ) :></a>
 </div>
-: }
 
 <div class="textarea">
 <textarea class="markitup <: $entry.format :>" name="body"><: $entry.body :></textarea>
