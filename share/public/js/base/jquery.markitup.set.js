@@ -14,7 +14,7 @@ wikiSettings = {
     onShiftEnter:      {keepDefault:false, replaceWith:'<br />\n'},
     onCtrlEnter:      {keepDefault:false, openWith:'\n<p>', closeWith:'</p>'},
     onTab:            {keepDefault:false, replaceWith:'    '},
-    previewTemplatePath:    '/system/markitup_preview.html',
+    previewTemplatePath:    '/utility/markitup_preview',
     previewParserPath: '/utility/markitup?format=wiki',
     previewPosition: 'after',
     markupSet:  [
@@ -35,7 +35,7 @@ markdownSettings = {
     onShiftEnter:      {keepDefault:false, replaceWith:'<br />\n'},
     onCtrlEnter:      {keepDefault:false, openWith:'\n<p>', closeWith:'</p>'},
     onTab:            {keepDefault:false, replaceWith:'    '},
-    previewTemplatePath:    '/system/markitup_preview.html',
+    previewTemplatePath:    '/utility/markitup_preview',
     previewParserPath: '/utility/markitup?format=markdown',
     previewPosition: 'after',
     markupSet:  [

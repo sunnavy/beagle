@@ -364,6 +364,10 @@ post '/utility/markitup' => sub {
       prefix  => prefix() || '../';
 };
 
+any '/utility/markitup_preview' => sub {
+    render 'markitup_preview', prefix  => prefix() || '../';
+};
+
 get '/extra/*' => sub {
     my %vars = @_;
     my $name = decode_utf8 $vars{splat}[0];

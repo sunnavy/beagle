@@ -2,12 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/markitup_preview.css" />
-
-: if $info.style == 'it' {
-    <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/style_it.css" />
+: if system_file_exists( 'css/' ~ $info.web_layout ~ '/markitup_preview.css' ) {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.web_layout :>/markitup_preview.css" />
+: } else {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/markitup_preview.css" />
 : }
-
 </head>
 <body>
 
