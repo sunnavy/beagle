@@ -27,7 +27,7 @@
 
 : if $entry.id != 'new' and $attachments_map[$entry.id] {
 <div class="wrapper">
-<label>attached:</label>
+<label><: _('Attached') :>:</label>
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 
 <input title="check to delete" type="checkbox" value="<: $name :>" name="delete-attachments" />
