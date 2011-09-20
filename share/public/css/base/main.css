@@ -331,10 +331,13 @@ div.attachments div.presentation img {
     background-color: #ccc;
     padding: 1%;
     padding-top: 0.5%;
+    margin-left: -1em;
     display: none;
     z-index: 9999;
     font-size: small;
     border-radius: 0.5em !important;
+    max-height: 60%;
+    overflow: auto;
 }
 
 li.hover > ul li {
