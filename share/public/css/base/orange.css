@@ -1,4 +1,4 @@
-html, body, div.create-entry > ul {
+html, body {
     background-color: #fff3f0;
 }
 
@@ -63,3 +63,6 @@ pre.pod, pre.shell {
     background-color: #feb;
 }
 
+div.create-entry > ul {
+    background-color: #eee3e0;
+}

@@ -327,11 +327,11 @@ div.attachments div.presentation img {
 }
 
 .hover > div.glance {
-    position: fixed;
+    position: absolute;
     background-color: #ccc;
     padding: 1%;
     padding-top: 0.5%;
-    margin-left: -1em;
+    margin-left: -0.5em;
     display: none;
     z-index: 9999;
     font-size: small;

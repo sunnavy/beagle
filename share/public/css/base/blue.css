@@ -1,6 +1,6 @@
 @import "orange.css";
 
-html, body, div.create-entry > ul {
+html, body {
     background-color: #f0f3ff;
 }
 
@@ -16,3 +16,6 @@ h3.menu {
     background-color: #ddf;
 }
 
+div.create-entry > ul {
+    background-color: #e0e3ee;
+}

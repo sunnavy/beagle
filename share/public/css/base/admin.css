@@ -216,7 +216,7 @@ div.create-entry {
 
 div.create-entry > ul {
     list-style-type: none;
-    position: fixed;
+    position: absolute;
     padding: 0.25em;
     margin: 0 !important;
     margin-left: -0.25em !important;
