@@ -88,7 +88,7 @@ function beagleHoverTag ( ) {
 }
 
 function beagleHoverArchive ( ) {
-    $('td.hover.archive' ).hoverIntent(
+    $('td.hover.archive, div.hover.archive' ).hoverIntent(
     {
         timeout: 500,
         over: function () {
