@@ -159,6 +159,11 @@ function beagleInit ( opts ) {
             return false;
         }
     );
+    $('div.attachments div.presentation img').hoverIntent ( {
+        timeout: 500,
+        over: function () { $(this).css('min-width', '80%');},
+        out: function () { $(this).css('min-width', 0); }
+    } );
 
     beagleContrast();
     beagleHoverTag();
