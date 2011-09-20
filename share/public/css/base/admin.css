@@ -203,6 +203,7 @@ div.textarea {
     border: 1px solid black;
     height: 80%;
     overflow-y: auto;
+    margin-top: 2%;
 }
 
 div.attach a.more {
