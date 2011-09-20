@@ -14,6 +14,8 @@ coerce 'Bool' => from 'Ref' => via { 1 };
 
 enum 'BeagleBackendType' => [qw/git fs/];
 enum 'BeagleFormat'      => [qw/plain markdown wiki pod html/];
+enum 'BeagleLayout'      => [qw/blog plain/];
+enum 'BeagleTheme'       => [qw/orange blue dark/];
 
 our (
     $ROOT,               $KENNEL,         $CACHE,

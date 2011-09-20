@@ -159,12 +159,33 @@ sub field_list {
                 if ( $const->can('values') ) {
                     push @list, $name => {
                         type    => 'select',
-                        options => $const->values,
+                        options => [
+                            map { { label => $_, value => $_ } } $const->values,
+                        ],
                     };
                     next;
                 }
                 elsif ( "$const" eq 'Bool' ) {
                     push @list, $name => { type => 'boolean', };
+                    next;
+                }
+                elsif ( "$const" eq 'BeagleLayout' ) {
+                    push @list, $name => {
+                        type    => 'select',
+                        options => [
+                            map { { label => $_, value => $_ } } qw/blog plain/,
+                        ],
+                    };
+                    next;
+                }
+                elsif ( "$const" eq 'BeagleTheme' ) {
+                    push @list, $name => {
+                        type    => 'select',
+                        options => [
+                            map { { label => $_, value => $_ } }
+                              qw/orange blue dark/,
+                        ],
+                    };
                     next;
                 }
             }

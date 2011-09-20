@@ -24,13 +24,13 @@ has 'copyright' => (
 );
 
 has 'layout' => (
-    isa     => 'Str',
+    isa     => 'BeagleLayout',
     is      => 'rw',
     default => 'blog',
 );
 
 has 'theme' => (
-    isa     => 'Str',
+    isa     => 'BeagleTheme',
     is      => 'rw',
     default => 'orange',
 );
