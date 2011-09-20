@@ -10,7 +10,7 @@
 <div class="presentation">
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
-<a href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
+<a target="_blank" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">
 <img src="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>" title="<: $name :>" />
 </a>
 : } elsif $attachments_map[$entry.id][$name].mime_type == 'video/x-flv' || $attachments_map[$entry.id][$name].mime_type == 'video/x-flv' == 'application/x-shockwave-flash' {
