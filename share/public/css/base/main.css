@@ -348,3 +348,7 @@ li.hover > ul li {
 li.hover ul {
     border-radius: 0.5em !important;
 }
+
+div.archives > div.hover.archive {
+    width: 0;
+}
