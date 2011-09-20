@@ -20,8 +20,10 @@
 
 : if system_file_exists( 'css/' ~ $info.layout ~ '/' ~ $info.theme ~ '.css' ) {
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/<: $info.layout :>/<: $info.theme :>.css" />
-: } else {
+: } elsif system_file_exists( 'css/base/' ~ $info.theme ~ '.css' ) {
 <link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/<: $info.theme :>.css" />
+: } else {
+<link rel="stylesheet" type="text/css" href="<: $prefix :>system/css/base/orange.css" />
 : }
 
 <script type="text/javascript" src="<: $prefix :>system/js/base/prettify.js"></script>
