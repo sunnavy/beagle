@@ -186,27 +186,53 @@ msgstr "页面限制"
 msgid "Work Link"
 msgstr "作品链接"
 
+msgid "work link"
+msgstr "作品链接"
+
 msgid "Work Published"
+msgstr "作品发表时间"
+
+msgid "work published"
 msgstr "作品发表时间"
 
 msgid "Work Publisher"
 msgstr "作品出版商"
 
+msgid "work publisher"
+msgstr "作品出版商"
+
 msgid "Work Author"
+msgstr "作品作者"
+
+msgid "work author"
 msgstr "作品作者"
 
 msgid "Work Title"
 msgstr "作品标题"
 
+msgid "work title"
+msgstr "作品标题"
+
 msgid "Work Translator"
+msgstr "作品译者"
+
+msgid "work translator"
 msgstr "作品译者"
 
 msgid "Work Price"
 msgstr "作品价格"
 
+msgid "work price"
+msgstr "作品价格"
+
 msgid "Work Location"
+msgstr "作品位置"
+
+msgid "work location"
 msgstr "作品位置"
 
 msgid "Work ISBN"
 msgstr "作品ISBN"
 
+msgid "work isbn"
+msgstr "作品isbn"
