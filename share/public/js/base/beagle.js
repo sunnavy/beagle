@@ -132,9 +132,14 @@ function beagleSetWidth ( width, e ) {
         e = $('div.hover.set-width').find('a[name=' + width + ']');
     }
 
+    var show = $('div.hover.set-width').children('a').first();
+
     if ( e ) {
-        $(e).closest('ul').find('a').css('opacity', 0.3).removeClass('selected');
+        $(e).closest('ul').find('a').css('opacity', 0.4).removeClass('selected');
         $(e).css('opacity', 1).addClass('selected');
+        if ( show ) {
+            show.text(width+'%');
+        }
     }
     $.cookie('width', width);
 }

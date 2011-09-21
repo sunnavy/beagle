@@ -236,3 +236,7 @@ msgstr "作品ISBN"
 
 msgid "work isbn"
 msgstr "作品isbn"
+
+msgid "width"
+msgstr "宽度"
+

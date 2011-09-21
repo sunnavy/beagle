@@ -356,14 +356,14 @@ div.hover > ul {
     list-style-type: none;
     position: absolute;
     margin: 0 !important;
-    padding: 0;
+    padding: 0.25em;
     margin-left: -0.25em !important;
     border-radius: 0.25em !important;
     z-index: 9999;
 }
 
 div.set-width > ul {
-    margin-left: 0.5em !important;
+    margin-left: -0.1em !important;
 }
 
 div.hover.set-width {
@@ -371,11 +371,11 @@ div.hover.set-width {
 }
 
 div.hover.set-width a {
-    opacity: 0.3;
+    opacity: 0.4;
 }
 
 div.hover.set-width a:hover {
-    opacity: 1;
+    opacity: 0.8 !important;
 }
 
 div.hover.set-width ul a.selected {

@@ -1,5 +1,5 @@
 <div class="hover set-width">
-  <a class="menu" href="#"><: _( 'width' ) :></a>
+  <a class="menu" title="<: _('width') :>" href="#"></a>
   <ul class="hidden">
     <li><a name="100" href="#">100%</a><li>
     <li><a name="90" href="#">90%</a><li>
