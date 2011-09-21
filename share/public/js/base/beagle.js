@@ -128,6 +128,10 @@ function beagleHoverArchive ( ) {
 
 function beagleSetWidth ( width, e ) {
     $('body').css('width', width+'%');
+    if ( ! e ) {
+        e = $('div.hover.set-width').find('a[name=' + width + ']');
+    }
+
     if ( e ) {
         $(e).closest('ul').find('a').css('opacity', 0.3).removeClass('selected');
         $(e).css('opacity', 1).addClass('selected');
