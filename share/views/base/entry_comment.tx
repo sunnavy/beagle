@@ -4,8 +4,8 @@
 <div id="<: $entry.id :>" class="comment contrast">
 : include '_wedge.tx' { template => 'entry_comment_start.tx' };
 
-: include 'comment_meta.tx';
-: include 'comment_body.tx';
+: include 'entry_comment_meta.tx';
+: include 'entry_comment_body.tx';
 
 : include '_wedge.tx' { template => 'entry_comment_end.tx' };
 

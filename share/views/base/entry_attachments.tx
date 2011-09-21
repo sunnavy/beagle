@@ -32,7 +32,7 @@
 
 : include '_wedge.tx' { template => 'entry_attachments_start.tx' };
 : for $attachments_map[$entry.id].keys().sort() -> $name {
-:   include 'attachment.tx' { name => $name };
+:   include 'entry_attachment.tx' { name => $name };
 : }
 : include '_wedge.tx' { template => 'entry_attachments_end.tx' };
 </div>

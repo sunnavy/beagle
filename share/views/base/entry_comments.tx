@@ -12,7 +12,7 @@
 
 : my $comments = $comments_map[$entry.id];
 : for $comments.keys().sort( -> $x, $y { $comments[$x].created <=> $comments[$y].created } ) -> $id {
-: include 'comment.tx' { entry => $comments[$id], parent => $entry };
+: include 'entry_comment.tx' { entry => $comments[$id], parent => $entry };
 : }
 
 : }

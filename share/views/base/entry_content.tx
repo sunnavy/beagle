@@ -9,7 +9,7 @@
 : }
 
 : include 'entry_body.tx';
-: include 'attachments.tx';
+: include 'entry_attachments.tx';
 : include "comments.tx";
 
 : include '_wedge.tx' { template => 'entry_content_end.tx' };
