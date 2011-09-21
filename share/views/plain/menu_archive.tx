@@ -1,4 +1,0 @@
-<div id="archive" class="archive">
-<a href="<: $prefix :>archives"><: _('archives') :></a>
-</div>
-

@@ -1,4 +1,0 @@
-<div id="tags" class="tags">
-<a href="<: $prefix :>tags"><: _('tags') :></a>
-</div>
-
