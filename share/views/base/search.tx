@@ -1,7 +1,7 @@
 : include "header.tx";
 
 : if not $results_only {
-<div class="search">
+<div id="search" class="search">
 <form name="search" action="<: $prefix:>search" >
 <input type="text" name="query" value="<: $query :>" />
 </form>
