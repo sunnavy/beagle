@@ -63,6 +63,6 @@ pre.pod, pre.shell {
     background-color: #feb;
 }
 
-div.create-entry > ul {
+div.hover > ul {
     background-color: #eee3e0;
 }
