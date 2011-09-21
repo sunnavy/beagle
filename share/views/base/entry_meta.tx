@@ -1,3 +1,6 @@
+: if template_exists( $entry.type ~ '_entry_meta.tx' ) {
+:   include $entry.type ~ '_entry_meta.tx';
+: } else {
 <div class="meta">
 : include '_wedge.tx' { template => 'entry_meta_start.tx' };
 
@@ -37,3 +40,4 @@
 : include '_wedge.tx' { template => 'entry_meta_end.tx' };
 </div>
 
+: }
