@@ -1,5 +1,5 @@
 <div id="menu">
-: include '_wedge.tx' { template => 'menu_start.tx', general => 1 };
+: include '_wedge.tx' { template => 'menu_start.tx' };
 
 <div class="menu archives">
 <a href="<: $prefix :>archives"><: _('archives') :></a>
@@ -23,5 +23,8 @@
 <a href="<: $prefix :>"><: _('home') :></a>
 </div>
 
-: include '_wedge.tx' { template => 'menu_end.tx', general => 1 };
+: include "admin/head.tx";
+
+: include '_wedge.tx' { template => 'menu_end.tx' };
+
 </div>

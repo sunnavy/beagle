@@ -1,28 +1,3 @@
 <div id="content">
-: if $admin {
-<div class="admin-links">
 
-  <div class="hover create-entry">
-  <a href="#"><: _( 'create' ) :>
-  <ul class="hidden">
-  : for $entry_types.sort() -> $x {
-  : next if $x == 'comment';
-    <li><a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( $x ) :></a><li>
-  : }
-  </ul>
-  </div>
-  <a href="<: $prefix :>admin/term"><: _('terminal') :></a>
-  <a href="<: $prefix :>admin/info"><: _('info') :></a>
-  <a href="<: $prefix :>admin/entries"><: _('all entries') :></a>
-</div>
-
-<div class="message-wrapper">
-: if $message {
-<div class="message">
-<: _($message) :>
-</div>
-: }
-</div>
-: }
-
-: include '_wedge.tx' { template => 'content_start.tx', general => 1 };
+: include '_wedge.tx' { template => 'content_start.tx' };
