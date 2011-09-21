@@ -212,7 +212,7 @@ div.comment p {
 
 body > div.names  {
     text-align: right;
-    font-size: small;
+    font-size: smaller;
 }
 
 body > div.names a {
@@ -329,14 +329,14 @@ div.attachments div.presentation img {
     margin-left: -0.5em;
     display: none;
     z-index: 9999;
-    font-size: small;
+    font-size: smaller;
     border-radius: 0.5em !important;
     max-height: 60%;
     overflow: auto;
 }
 
 li.hover > ul li {
-    font-size: small;
+    font-size: smaller;
     padding-left: 2%;
 }
 
