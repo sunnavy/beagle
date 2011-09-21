@@ -110,7 +110,7 @@ div.bark div.body:first-child {
 }
 
 div.message-wrapper {
-    height: 2%;
+    height: 1em;
 }
 
 div.message {
