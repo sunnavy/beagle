@@ -158,12 +158,17 @@ function beagleWidth ( ) {
     }
     );
 
-    $('div.hover.set-width a' ).click( function () {
-        var width = parseInt($(this).attr('name'));
-        if ( width ) {
-            beagleSetWidth(width, this);
+    $('div.hover.set-width ul a' ).click( function () { return false; } );
+
+    $('div.hover.set-width a').hoverIntent ( {
+        timeout: 500,
+        over: function () {
+            var width = parseInt($(this).attr('name'));
+            if ( width ) {
+                beagleSetWidth(width, this);
+            }
+            return false;
         }
-        return false;
     } );
 }
 
