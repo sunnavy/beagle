@@ -6,8 +6,8 @@
     <a href="<: $entry.link :>">
 : }
 
-: if $entry.cover {
-    <img title="<: $entry.title :>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $entry.cover :>" />
+: if $entry.work_cover {
+    <img title="<: $entry.title :>" src="<: $prefix :>static/<: split_id($entry.id) :>/<: $entry.work_cover :>" />
 : } else {
     <img title="<: $entry.title :>" src="<: $prefix :>system/images/review_cover.png" />
 : }
@@ -23,11 +23,11 @@
 </div>
 
 : if $attachments_map[$entry.id] &&
-: !( size($attachments_map[$entry.id]) == 1 && $entry.cover == $attachments_map[$entry.id].keys().0 ) {
+: !( size($attachments_map[$entry.id]) == 1 && $entry.work_cover == $attachments_map[$entry.id].keys().0 ) {
 <div class="attachments">
 <hr class="attachments" />
 : for $attachments_map[$entry.id].keys().sort() -> $name {
-: if $entry.cover != $name && match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
+: if $entry.work_cover != $name && match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
 <a class="image" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>"><img title="<:$name:>" src="<: $prefix :>static/<: $entry.id :>/<: $name :>" /></a>
 : }
 : else {

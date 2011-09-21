@@ -182,3 +182,28 @@ msgstr "布局"
 
 msgid "Page Limit"
 msgstr "页面限制"
+
+msgid "Work Link"
+msgstr "作品链接"
+
+msgid "Work Published"
+msgstr "作品发表时间"
+
+msgid "Publisher"
+msgstr "作品出版商"
+
+msgid "Work Author"
+msgstr "作品作者"
+
+msgid "Work Translator"
+msgstr "作品译者"
+
+msgid "Work Price"
+msgstr "作品价格"
+
+msgid "Work Location"
+msgstr "作品位置"
+
+msgid "Work ISBN"
+msgstr "作品ISBN"
+

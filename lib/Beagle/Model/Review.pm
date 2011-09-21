@@ -6,62 +6,69 @@ extends 'Beagle::Model::Entry';
 has 'title' => (
     isa     => 'Str',
     is      => 'rw',
-    default => '',
+    default => sub { $_[0]->work_title || '' },
+    lazy    => 1,
 );
 
-has 'isbn' => (
+has 'work_title' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'published' => (
+has 'work_isbn' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'link' => (
+has 'work_published' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'price' => (
+has 'work_link' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'publisher' => (
+has 'work_price' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'writer' => (
+has 'work_publisher' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'translator' => (
+has 'work_writer' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
-has 'location' => (
+has 'work_translator' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+);
+
+has 'work_location' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
 );
 
 
-sub cover {
+sub work_cover {
     my $self     = shift;
     my @exts = qw/jpg png gif/;
-    my @names = ( 'cover', $self->isbn );
+    my @names = ( 'cover', $self->work_isbn );
     my @ids = split_id( $self->id );
     for my $name (@names) {
         next unless $name;
