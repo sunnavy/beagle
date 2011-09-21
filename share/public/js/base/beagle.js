@@ -183,10 +183,8 @@ function beagleInit ( opts ) {
         var width = parseInt($(this).attr('name'));
         if ( width ) {
             $('body').css('width', width+'%');
-//            $(this).closest('ul').find('a').css('opacity', 0.6).removeClass('selected');
-//            $(this).css('opacity', 1).addClass('selected');
-            $(this).closest('ul').find('a').removeClass('selected');
-            $(this).addClass('selected');
+            $(this).closest('ul').find('a').css('opacity', 0.3).removeClass('selected');
+            $(this).css('opacity', 1).addClass('selected');
         }
         return false;
     } );

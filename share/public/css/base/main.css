@@ -369,6 +369,14 @@ div.hover.set-width {
     float: left;
 }
 
+div.hover.set-width a {
+    opacity: 0.3;
+}
+
+div.hover.set-width a:hover {
+    opacity: 1;
+}
+
 div.hover.set-width ul a.selected {
     font-weight: bold;
 }
