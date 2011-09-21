@@ -11,23 +11,28 @@ div.meta {
     width: 24%;
 }
 
-#menu .head {
+#menu div.menu.head {
     text-align: center;
 }
 
-#menu div.profile {
+#menu div.menu.profile {
     min-height: 120px;
 }
 
-#menu div.profile img {
+#menu div.menu.profile img {
     float: left;
     margin: 1%;
     margin-right: 3%;
     border: 0;
 }
 
-#menu div.profile ul {
+#menu div.menu.profile ul {
     float: left;
+}
+
+#menu div.menu.search {
+    margin: 0;
+    padding-top: 0; 
 }
 
 #menu .toggle-expand {

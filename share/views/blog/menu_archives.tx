@@ -1,4 +1,4 @@
-<div id="archive" class="archive">
+<div class="menu archives">
 <h3 class="menu"><a href="<: $prefix :>archives"><: _('Archives') :></a></h3>
 <ul>
 : for $archives.keys().sort(-> $x, $y { $y <=> $x }) -> $year {

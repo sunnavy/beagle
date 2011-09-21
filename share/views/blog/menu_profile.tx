@@ -1,4 +1,4 @@
-<div id="profile" class="profile">
+<div class="menu profile">
 : if $info.avatar {
 <a href="<: $prefix :>about"> <img alt="avatar" height="80" src="<: $prefix :><: $info.avatar :>" /></a>
 : }

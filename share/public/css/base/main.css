@@ -224,11 +224,6 @@ div.body {
     word-wrap: break-word;
 }
 
-#menu div.search {
-    margin: 0;
-    padding-top: 0; 
-}
-
 div.search {
     margin-left: 25%;
     margin-right: 25%;

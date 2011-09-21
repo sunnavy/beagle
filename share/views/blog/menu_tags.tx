@@ -1,4 +1,4 @@
-<div id="tags" class="tags">
+<div class="menu tags">
 <h3 class="menu"><a href="<: $prefix :>tags"><: _('Tags') :></a></h3>
 <ul>
 : for $tags.keys().sort() -> $tag {
@@ -13,7 +13,7 @@
 <ul class="hidden">
 : for $tags[$tag] -> $entry {
 <li>
-    <a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(40) :></a>
+    <a target="_blank" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(40) :></a>
 </li>
 : }
 </ul>

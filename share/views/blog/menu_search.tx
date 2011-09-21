@@ -1,5 +1,5 @@
 : if !$static {
-<div id="search" class="search">
+<div class="menu search">
 <h3 class="menu"><a href="<: $prefix :>search"><: _('Search') :></a></h3>
 <form class="search" action="/search">
 <input type="text" name="query" value="<: $query :>" />
