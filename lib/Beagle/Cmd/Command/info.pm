@@ -155,21 +155,33 @@ sub execute {
             puts '=' x term_width() unless $first;
             undef $first if $first;
 
-            my $template = encode_utf8 $info->serialize(
-                $self->verbose
-                ? (
-                    created => 1,
-                    updated => 1,
-                    id      => 1,
-                  )
-                : (
-                    created => undef,
-                    updated => undef,
-                    id      => undef,
-                )
-            );
+            if ( @$args ) {
+                for my $field ( @$args ) {
+                    if ( $info->can($field) ) {
+                        puts( $field, ': ', $info->$field );
+                    }
+                    else {
+                        warn 'invalid field: ' . $field;
+                    }
+                }
+            }
+            else {
+                my $template = encode_utf8 $info->serialize(
+                    $self->verbose
+                    ? (
+                        created => 1,
+                        updated => 1,
+                        id      => 1,
+                      )
+                    : (
+                        created => undef,
+                        updated => undef,
+                        id      => undef,
+                    )
+                );
 
-            puts decode_utf8 $template;
+                puts decode_utf8 $template;
+            }
         }
     }
 }
