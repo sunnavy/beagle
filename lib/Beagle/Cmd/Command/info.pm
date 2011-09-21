@@ -166,7 +166,7 @@ sub execute {
                 }
             }
             else {
-                my $template = encode_utf8 $info->serialize(
+                puts $info->serialize(
                     $self->verbose
                     ? (
                         created => 1,
@@ -179,8 +179,6 @@ sub execute {
                         id      => undef,
                     )
                 );
-
-                puts decode_utf8 $template;
             }
         }
     }
