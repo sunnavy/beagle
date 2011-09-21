@@ -359,6 +359,7 @@ div.hover > ul {
     padding: 0;
     margin-left: -0.25em !important;
     border-radius: 0.25em !important;
+    z-index: 9999;
 }
 
 div.set-width > ul {
