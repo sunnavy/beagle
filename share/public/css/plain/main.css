@@ -10,8 +10,9 @@
     display: inline;
 }
 
-#menu a {
-    margin-left: 1ex;
+#menu a.menu {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
 #footer {

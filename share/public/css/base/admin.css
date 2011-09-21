@@ -220,3 +220,8 @@ div.create-entry > ul {
     border-radius: 0.25em !important;
 }
 
+div.admin-links a {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
