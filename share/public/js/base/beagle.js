@@ -125,6 +125,40 @@ function beagleHoverArchive ( ) {
     );
 }
 
+
+function beagleSetWidth ( width, e ) {
+    $('body').css('width', width+'%');
+    if ( e ) {
+        $(e).closest('ul').find('a').css('opacity', 0.3).removeClass('selected');
+        $(e).css('opacity', 1).addClass('selected');
+    }
+    $.cookie('width', width);
+}
+
+function beagleWidth ( ) {
+    var width = $.cookie('width') || 100;
+    beagleSetWidth( width );
+
+    $('div.hover.set-width' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            $(this).children('ul').show();
+        },
+        out: function () { $(this).children('ul').hide(); }
+    }
+    );
+
+    $('div.hover.set-width a' ).click( function () {
+        var width = parseInt($(this).attr('name'));
+        if ( width ) {
+            beagleSetWidth(width, this);
+        }
+        return false;
+    } );
+}
+
+
 function beagleInit ( opts ) {
     prettyPrint();
     beaglePrefix = $('div.beagle').children('span[name=prefix]').text() || '/';
@@ -169,25 +203,7 @@ function beagleInit ( opts ) {
     beagleHoverTag();
     beagleHoverArchive();
 
-    $('div.hover.set-width' ).hoverIntent(
-    {
-        timeout: 500,
-        over: function () {
-            $(this).children('ul').show();
-        },
-        out: function () { $(this).children('ul').hide(); }
-    }
-    );
-
-    $('div.hover.set-width a' ).click( function () {
-        var width = parseInt($(this).attr('name'));
-        if ( width ) {
-            $('body').css('width', width+'%');
-            $(this).closest('ul').find('a').css('opacity', 0.3).removeClass('selected');
-            $(this).css('opacity', 1).addClass('selected');
-        }
-        return false;
-    } );
+    beagleWidth();
 
     $('div.message').delay(3000).fadeOut('slow');
 
