@@ -148,17 +148,17 @@ any '/search' => sub {
 
     @found = sort { $b->updated <=> $a->updated } @found;
 
-#    if ( @found == 1 ) {
-#        return redirect '/entry/' . $found[0]->id;
-#    }
-#    else {
-    render 'search',
-      search  => 1,
-      title   => 'search',
-      entries => \@found,
-      query   => $query,
-      results_only => request()->param('results_only') ? 1 : 0;
-#    }
+    if ( @found == 1 ) {
+        return redirect '/entry/' . $found[0]->id;
+    }
+    else {
+        render 'search',
+          search       => 1,
+          title        => 'search',
+          entries      => \@found,
+          query        => $query,
+          results_only => request()->param('results_only') ? 1 : 0;
+    }
 };
 
 get '/admin/entries' => sub {
