@@ -22,10 +22,10 @@ msgid "Search"
 msgstr "搜索"
 
 msgid "Comments"
-msgstr "评论"
+msgstr "注疏"
 
 msgid "Comment"
-msgstr "评论"
+msgstr "注疏"
 
 msgid "delete"
 msgstr "删除"
@@ -55,10 +55,10 @@ msgid "bark"
 msgstr "微言"
 
 msgid "comment"
-msgstr "评论"
+msgstr "注疏"
 
 msgid "review"
-msgstr "书评"
+msgstr "品评"
 
 msgid "task"
 msgstr "任务"
