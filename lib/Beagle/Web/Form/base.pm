@@ -13,7 +13,9 @@ has 'label' => (
     isa     => 'Str',
     is      => 'rw',
     default => sub {
-        join ' ', map { ucfirst } split /_+/, $_[0]->name;
+        join ' ',
+          map { exists $Beagle::Util::ABBREV{ lc $_ } ? uc : ucfirst }
+          split /_+/, $_[0]->name;
     },
 );
 

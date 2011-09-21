@@ -46,7 +46,7 @@ has 'work_publisher' => (
     default => '',
 );
 
-has 'work_writer' => (
+has 'work_author' => (
     isa     => 'Str',
     is      => 'rw',
     default => '',
@@ -88,9 +88,15 @@ sub summary {
     $self->_summary( $value, @_ );
 }
 
+sub extra_meta_fields {
+    [
+        qw/title work_title work_author work_translator work_publisher work_published work_isbn/
+    ];
+}
+
 sub extra_meta_fields_in_web_view {
     [
-        qw/work_title work_writer work_translator work_publisher work_published work_isbn/
+        qw/work_title work_author work_translator work_publisher work_published work_isbn/
     ];
 }
 

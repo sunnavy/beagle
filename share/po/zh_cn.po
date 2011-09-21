@@ -189,11 +189,14 @@ msgstr "作品链接"
 msgid "Work Published"
 msgstr "作品发表时间"
 
-msgid "Publisher"
+msgid "Work Publisher"
 msgstr "作品出版商"
 
 msgid "Work Author"
 msgstr "作品作者"
+
+msgid "Work Title"
+msgstr "作品标题"
 
 msgid "Work Translator"
 msgstr "作品译者"

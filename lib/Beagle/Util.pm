@@ -17,6 +17,8 @@ enum 'BeagleFormat'      => [qw/plain markdown wiki pod html/];
 enum 'BeagleLayout'      => [qw/blog plain/];
 enum 'BeagleTheme'       => [qw/orange blue dark/];
 
+our %ABBREV = map { $_ => 1 } qw/isbn/;
+
 our (
     $ROOT,               $KENNEL,         $CACHE,
     $DEVEL,              %SHARE_ROOT,     @SPREAD_TEMPLATE_ROOTS,
