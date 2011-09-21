@@ -5,7 +5,7 @@
   <a class="menu" href="#"><: _( 'create' ) :></a>
   <ul class="hidden">
   : for $entry_types.sort() -> $x {
-  : next if $x == 'entry_comment';
+  : next if $x == 'comment';
     <li><a href="<: $prefix :>admin/entry/<: $x :>/new"><: _( $x ) :></a><li>
   : }
   </ul>
