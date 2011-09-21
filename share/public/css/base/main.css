@@ -362,8 +362,10 @@ div.hover > ul {
     z-index: 9999;
 }
 
-div.set-width > ul {
-    margin-left: -0.1em !important;
+div.set-width {
+    position: fixed;
+    left: 0.5em;
+    top: 0.5em;
 }
 
 div.hover.set-width {
