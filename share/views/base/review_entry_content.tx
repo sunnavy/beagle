@@ -2,8 +2,8 @@
 <div class="body">
 
 <div class="cover">
-: if $entry.link {
-    <a href="<: $entry.link :>">
+: if $entry.work_link {
+    <a href="<: $entry.work_link :>">
 : }
 
 : if $entry.work_cover {
@@ -12,7 +12,7 @@
     <img title="<: $entry.title :>" src="<: $prefix :>system/images/review_cover.png" />
 : }
 
-: if $entry.link {
+: if $entry.work_link {
     </a>
 : }
 
@@ -38,6 +38,6 @@
 </div>
 : }
 
-: include "comments.tx";
+: include 'entry_comments.tx';
 
 </div>
