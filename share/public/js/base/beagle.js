@@ -169,6 +169,28 @@ function beagleInit ( opts ) {
     beagleHoverTag();
     beagleHoverArchive();
 
+    $('div.hover.set-width' ).hoverIntent(
+    {
+        timeout: 500,
+        over: function () {
+            $(this).children('ul').show();
+        },
+        out: function () { $(this).children('ul').hide(); }
+    }
+    );
+
+    $('div.hover.set-width a' ).click( function () {
+        var width = parseInt($(this).attr('name'));
+        if ( width ) {
+            $('body').css('width', width+'%');
+//            $(this).closest('ul').find('a').css('opacity', 0.6).removeClass('selected');
+//            $(this).css('opacity', 1).addClass('selected');
+            $(this).closest('ul').find('a').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        return false;
+    } );
+
     $('div.message').delay(3000).fadeOut('slow');
 
 }

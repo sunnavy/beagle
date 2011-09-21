@@ -14,12 +14,4 @@
   <a class="menu" href="<: $prefix :>admin/info"><: _('info') :></a>
   <a class="menu" href="<: $prefix :>admin/entries"><: _('all entries') :></a>
 </div>
-
-<div class="message-wrapper">
-: if $message {
-<div class="message">
-<: _($message) :>
-</div>
-: }
-</div>
 : }

@@ -212,12 +212,7 @@ div.create-entry {
 }
 
 div.create-entry > ul {
-    list-style-type: none;
-    position: absolute;
     padding: 0.25em;
-    margin: 0 !important;
-    margin-left: -0.25em !important;
-    border-radius: 0.25em !important;
 }
 
 div.admin-links a {
