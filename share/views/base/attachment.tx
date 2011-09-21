@@ -1,5 +1,5 @@
-: if template_exists( $entry.type ~ '_attachment.tx' ) {
-:   include $entry.type ~ '_attachment.tx';
+: if template_exists( $entry.type ~ '_entry_attachment.tx' ) {
+:   include $entry.type ~ '_entry_attachment.tx';
 : } else {
 <div class="attachment">
 : include '_wedge.tx' { template => 'entry_attachment_start.tx' };

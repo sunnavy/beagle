@@ -1,13 +1,13 @@
-: if template_exists( $parent.type ~ '_comment.tx' ) {
-:   include $parent.type ~ '_comment.tx';
+: if template_exists( $parent.type ~ '_entry_comment.tx' ) {
+:   include $parent.type ~ '_entry_comment.tx';
 : } else {
 <div id="<: $entry.id :>" class="comment contrast">
-: include '_wedge.tx' { template => 'comment_start.tx' };
+: include '_wedge.tx' { template => 'entry_comment_start.tx' };
 
 : include 'comment_meta.tx';
 : include 'comment_body.tx';
 
-: include '_wedge.tx' { template => 'comment_end.tx' };
+: include '_wedge.tx' { template => 'entry_comment_end.tx' };
 
 </div>
 : }
