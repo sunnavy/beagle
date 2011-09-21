@@ -23,7 +23,7 @@
 
   <div class="extra">
 : for $entry.extra_meta_fields_in_web_view -> $field {
-: if $entry[$field] && not ( $entry.type == 'review' && $field == 'link' ) {
+: if $entry[$field] && not ( $entry.type == 'review' && $field == 'work_link' ) {
 :   if match( $entry[$field], '^https?://' ) {
     <span title="<: _($entry[$field]) :>">
     <a href="<: $entry[$field] :>"><: _(canonicalize_name($field)) :></a>

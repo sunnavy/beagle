@@ -90,7 +90,7 @@ sub summary {
 
 sub extra_meta_fields_in_web_view {
     [
-        qw/writer translator publisher published isbn/
+        qw/work_title work_writer work_translator work_publisher work_published work_isbn/
     ];
 }
 
