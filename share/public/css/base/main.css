@@ -318,7 +318,7 @@ div.attachments div.presentation > * {
 }
 
 div.attachments div.presentation img {
-    max-width: 80%;
+    width: 10%;
 }
 
 .hover > div.glance {

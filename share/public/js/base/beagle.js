@@ -209,8 +209,8 @@ function beagleInit ( opts ) {
     );
     $('div.attachments div.presentation img').hoverIntent ( {
         timeout: 500,
-        over: function () { $(this).css('min-width', '80%');},
-        out: function () { $(this).css('min-width', 0); }
+        over: function () { $(this).css('width', '50%');},
+        out: function () { $(this).css('width', '10%'); }
     } );
 
     beagleContrast();
