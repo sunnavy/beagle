@@ -1,2 +1,3 @@
 : include 'width.tx';
 : include 'admin/head.tx';
+: include 'names.tx';

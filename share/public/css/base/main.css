@@ -362,25 +362,28 @@ div.hover > ul {
     z-index: 9999;
 }
 
-div.set-width {
+div.hover.names, div.hover.set-width {
     position: fixed;
-    left: 0.5em;
     top: 0.5em;
 }
 
-div.hover.set-width {
-    float: left;
+div.hover.names {
+    left: 4em;
 }
 
-div.hover.set-width a {
+div.hover.set-width {
+    left: 0.5em;
+}
+
+div.hover.set-width a, div.hover.names a {
     opacity: 0.4;
 }
 
-div.hover.set-width a:hover {
+div.hover.set-width a:hover, div.hover.names a:hover {
     opacity: 0.8 !important;
 }
 
-div.hover.set-width ul a.selected {
+div.hover ul a.selected {
     font-weight: bold;
 }
 

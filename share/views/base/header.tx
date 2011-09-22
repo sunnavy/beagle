@@ -75,17 +75,7 @@ beagleInit( { admin: 1 } );
 </head>
 <body>
 
-: if $names {
-<div class="names">
-: for $names -> $x {
-: if $x == $name {
-  <span class="current"><: $x :></span>
-: } else {
-  <a href="<: $prefix :><: $x :>"><: $x :></a>
-: }
-: }
-</div>
-: }
+<div class="hidden name"><: $name :></div>
 
 : if template_exists( 'menu.tx' ) {
 : include 'menu.tx';
