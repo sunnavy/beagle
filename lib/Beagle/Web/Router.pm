@@ -226,7 +226,7 @@ post '/admin/entry/:type/new' => sub {
                     my $ret = {
                         status    => 'created',
                         parent_id => $entry->parent_id,
-                        content   => render( 'comment', entry => $entry ),
+                        content   => render( 'entry_comment', entry => $entry ),
                     };
                     status(201);
                     content_type('application/json');
