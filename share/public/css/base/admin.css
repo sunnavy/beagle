@@ -202,9 +202,8 @@ div.textarea {
     margin-top: 3%;
 }
 
-div.attach a.more {
-    float: left;
-    margin: 2%;
+input.attach-more {
+    min-width: 2em !important;
 }
 
 div.create-entry {

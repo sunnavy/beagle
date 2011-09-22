@@ -50,7 +50,11 @@
 <div class="wrapper attach">
 <label><: _('Attach') :>:</label>
 <input type="file" name="attachments" />
-<a href="#" class="more"><: _( 'Attach More' ) :></a>
+</div>
+
+<div class="wrapper">
+<label>&nbsp;</label>
+<input type="button" class="attach-more" value="<: _( 'Attach More' ) :>"</input>
 </div>
 
 <div class="textarea">

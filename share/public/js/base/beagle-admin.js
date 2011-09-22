@@ -118,9 +118,8 @@ function beagleAdminInit ( ) {
     $('textarea.markitup.wiki').markItUp( wikiSettings );
     $('textarea.markitup.markdown').markItUp( markdownSettings );
 
-    $('div.attach a.more').click( function() {
+    $('input.attach-more').click( function() {
         var att = $(this).closest('form').find('div.attach').first().clone();
-        att.find('a.more').remove();
         var p = $(this).closest('div.wrapper');
         p.before(att);
         return false;
