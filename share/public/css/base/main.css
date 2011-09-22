@@ -387,3 +387,7 @@ div.hover.set-width ul a.selected {
 body {
     margin: auto;
 }
+
+div.even, a.even, li.even {
+    background-color: #eee;
+}

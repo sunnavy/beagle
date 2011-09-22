@@ -68,14 +68,6 @@ div.admin-links {
     float: right;
 }
 
-div.odd, a.odd, li.odd {
-/*    background-color: #fff; */
-}
-
-div.even, a.even, li.even {
-    background-color: #eee;
-}
-
 div.admin-list ul {
     list-style-type: none;
     margin-top: 1%;
