@@ -173,17 +173,20 @@ div.admin-links div.delete {
     white-space: nowrap;
 }
 
+div.create-comment {
+    width: 60em;
+    margin-left: 5em;
+    height: 15em;
+}
+
 div.create-comment textarea {
-    margin-left: 5%;
-    width: 90%;
-    height: 150px;
+    width: 100%;
+    height: 13em;
 }
 
 div.create-comment input[type=submit] {
-    margin-left: 80%;
-    margin-right: 5%;
     margin-top: 1%;
-    min-width: 10%;
+    float: right;
 }
 
 div.wrapper {
