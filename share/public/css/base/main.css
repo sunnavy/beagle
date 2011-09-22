@@ -380,7 +380,11 @@ div.hover.set-width a, div.hover.names a {
 }
 
 div.hover.set-width a:hover, div.hover.names a:hover {
-    opacity: 0.8 !important;
+    opacity: 1 !important;
+}
+
+div.hover ul {
+    text-align: center;
 }
 
 div.hover ul a.selected {
