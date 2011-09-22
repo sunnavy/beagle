@@ -20,7 +20,10 @@ div.admin input, div.admin select {
     margin-left: 1%;
     margin-top: 1%;
     float: left;
-    min-width: 30%;
+}
+
+div.admin input {
+    min-width: 20em;
 }
 
 div.admin div.textarea {
