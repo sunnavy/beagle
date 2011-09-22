@@ -2,5 +2,5 @@
 : if template_exists( $entry.type ~ '_entry_title.tx' ) {
 :   include $entry.type ~ '_entry_title.tx';
 : } else {
-<h3 class="title"><a target="_blank" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary :></a></h3>
+<h3 class="title"><a target="_blank" title="<: $entry.summary :>" id="<: $entry.id :>" href="<: $prefix :>entry/<: $entry.id :>"><: $entry.summary(60) :></a></h3>
 : }
