@@ -190,7 +190,13 @@ function beagleWidth ( ) {
     }
     );
 
-    $('div.hover.set-width ul a' ).click( function () { return false; } );
+    $('div.hover.set-width ul a' ).click( function () {
+        var width = parseInt($(this).attr('name'));
+        if ( width ) {
+            beagleSetWidth(width, this);
+        }
+        return false;
+    } );
 
     $('div.hover.set-width a').hoverIntent ( {
         timeout: 500,
@@ -200,7 +206,8 @@ function beagleWidth ( ) {
                 beagleSetWidth(width, this);
             }
             return false;
-        }
+        },
+        out: function() {}
     } );
 }
 
