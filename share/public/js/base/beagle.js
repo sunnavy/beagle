@@ -207,7 +207,7 @@ function beagleInit ( opts ) {
             return false;
         }
     );
-    $('div.attachments div.presentation img').hoverIntent ( {
+    $('div.attachments div.preview img').hoverIntent ( {
         timeout: 500,
         over: function () { $(this).css('width', '50%');},
         out: function () { $(this).css('width', '10%'); }

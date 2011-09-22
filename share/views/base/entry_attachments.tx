@@ -7,7 +7,7 @@
 <hr class="attachments" />
 : }
 
-<div class="presentation">
+<div class="preview">
 : for $attachments_map[$entry.id].keys().sort() -> $name {
 : if match($attachments_map[$entry.id][$name].mime_type, '^image/' ) {
 <a target="_blank" href="<: $prefix :>static/<: split_id($entry.id) :>/<: $name :>">

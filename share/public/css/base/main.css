@@ -309,15 +309,15 @@ table.tags td, table.archives td {
     width: 18%;
 }
 
-div.attachments div.presentation {
+div.attachments div.preview {
     margin: 2em;
 }
 
-div.attachments div.presentation > * {
+div.attachments div.preview > * {
     margin: 1em;
 }
 
-div.attachments div.presentation img {
+div.attachments div.preview img {
     width: 10%;
 }
 
