@@ -1,11 +1,8 @@
 <div class="hover set-width">
   <a class="menu" title="<: _('width') :>" href="#"></a>
   <ul class="hidden">
-    <li><a name="100" href="#">100%</a><li>
-    <li><a name="90" href="#">90%</a><li>
-    <li><a name="80" href="#">80%</a><li>
-    <li><a name="70" href="#">70%</a><li>
-    <li><a name="60" href="#">60%</a><li>
-    <li><a name="50" href="#">50%</a><li>
+: for [ 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40 ] -> $width {
+    <li><a name="<: $width :>" href="#"><: $width :>%</a><li>
+: }
   </ul>
 </div>
