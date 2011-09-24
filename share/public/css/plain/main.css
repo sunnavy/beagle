@@ -44,3 +44,6 @@ div.meta {
     margin-top: -0.5%;
 }
 
+a.menu {
+    text-decoration: none;
+}

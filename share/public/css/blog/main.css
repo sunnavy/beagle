@@ -81,3 +81,7 @@ div.meta {
     margin-bottom: 1%;
 }
 
+h3.menu a, h4.head a {
+    text-decoration: none;
+}
+
