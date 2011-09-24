@@ -337,7 +337,7 @@ sub show_result {
     }
     else {
         $tb = Text::Table->new();
-        $tb->load( map { [ $_->id, $_->summary(20) ] } @found );
+        $tb->load( map { [ $_->id, $_->summary(30) ] } @found );
     }
     puts $tb;
 }
