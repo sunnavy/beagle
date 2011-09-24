@@ -380,7 +380,11 @@ div.hover.set-width {
 }
 
 div.hover.set-width a, div.hover.names a {
-    opacity: 0.4;
+    opacity: 0.7;
+}
+
+div.hover.set-width > a, div.hover.names > a {
+    opacity: 0.3;
 }
 
 div.hover.set-width a:hover, div.hover.names a:hover {
