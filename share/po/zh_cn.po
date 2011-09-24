@@ -63,8 +63,11 @@ msgstr "评价"
 msgid "task"
 msgstr "任务"
 
-msgid "newer version"
-msgstr "新版本"
+msgid "newer version is "
+msgstr "新版本在"
+
+msgid "here"
+msgstr "这里"
 
 msgid "about"
 msgstr "关于"

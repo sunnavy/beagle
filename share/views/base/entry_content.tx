@@ -7,7 +7,7 @@
 : my $update = $entry.update;
 : if $update {
 <div class="warnings">
-<a href="<: $prefix :>entry/<: $update :>"><: _('newer version') :></a>
+<: _('newer version is ') :><a href="<: $prefix :>entry/<: $update :>"><: _('here') :></a>
 </div>
 : }
 
