@@ -376,7 +376,7 @@ div.hover.names {
 }
 
 div.hover.set-width {
-    left: 0;
+    left: 0.25em;
 }
 
 div.hover.set-width a, div.hover.names a {
