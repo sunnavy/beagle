@@ -200,6 +200,10 @@ div.textarea {
     margin-top: 3%;
 }
 
+#term * {
+    font-size: 18px !important;
+}
+
 input.attach-more {
     min-width: 2em !important;
 }
