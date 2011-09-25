@@ -218,7 +218,7 @@ sub init_entry_type {
             );
             next if $entry->draft && !$self->drafts;
 
-            $entry->author( $self->info->author ) unless $entry->author;
+            $entry->author( current_user() ) unless $entry->author;
 
             push @entries, $entry;
             $self->map->{ $entry->id } = $entry;

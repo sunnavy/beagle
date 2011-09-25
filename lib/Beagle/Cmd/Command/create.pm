@@ -124,7 +124,7 @@ sub execute {
             grep { defined $opt->{$_} } keys %$opt
         );
         $temp->timezone( $bh->info->timezone ) if $bh->info->timezone;
-        $temp->author( $bh->info->author );
+        $temp->author( $self->author || current_user() );
 
         my $template = $temp->serialize(
             $self->verbose
@@ -165,7 +165,7 @@ sub execute {
     $entry->timezone( $bh->info->timezone )
       if $bh->info->timezone
           && !$entry->timezone;
-    $entry->author( $self->author || $bh->info->author ) unless $entry->author;
+    $entry->author( $self->author || current_user() ) unless $entry->author;
 
     $entry->commit_message( $self->message )
       if $self->message && !$entry->commit_message;

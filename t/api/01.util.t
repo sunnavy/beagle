@@ -18,7 +18,7 @@ my @subs = qw/
   relation_path marks_path web_options
   tweak_name plugins po_roots
   web_all web_names web_admin
-  system_roots
+  system_roots current_user
   /;
 
 for (@subs) {

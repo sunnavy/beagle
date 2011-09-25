@@ -68,7 +68,7 @@ sub execute {
     my $bh = $self->inplace ? $ret[0]->{handle} : current_handle();
     $bh ||= $ret[0]->{handle};
 
-    my $author = $self->author || $bh->info->author || '';
+    my $author = $self->author || current_user() || '';
 
     my $body = join ' ', @$args;
 

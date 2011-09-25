@@ -115,7 +115,7 @@ sub execute {
         }
 
         my $to = $self->to;
-        my $from = $self->from || $bh->info->author;
+        my $from = $self->from || current_user();
         my $subject = $self->subject || $entry->summary(80);
 
         if ( defined $template ) {

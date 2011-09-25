@@ -216,7 +216,7 @@ sub _fill_values {
         $opt->{default} = $entry->serialize_field($name);
 
         if ( $name eq 'author' && !$opt->{default} ) {
-            $opt->{default} = handle()->info->author;
+            $opt->{default} = current_user();
         }
         push @filled, $name, $opt;
     }
@@ -619,6 +619,7 @@ sub default_options {
         ( $req->env->{'BEAGLE_NAME'} || $req->header('X-Beagle-Name') )
         ? ()
         : ( names => $names ),
+        current_user => current_user(),
     );
 }
 

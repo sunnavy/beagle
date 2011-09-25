@@ -26,6 +26,7 @@ our (
     $CACHE_ROOT, $BACKENDS_ROOT, $WEB_OPTIONS, $WEB_ALL,
     @PLUGINS, $SEARCHED_PLUGINS, @PO_ROOTS, $HANDLES,
     @WEB_NAMES, $SEARCHED_WEB_NAMES, $WEB_ADMIN, @SYSTEM_ROOTS,
+    $CURRENT_USER,
 );
 
 BEGIN {
@@ -80,7 +81,7 @@ our @EXPORT = (
       relation_path marks_path
       web_options tweak_name plugins po_roots
       web_all web_names web_admin
-      system_roots
+      system_roots current_user
       /
 );
 
@@ -1109,6 +1110,13 @@ sub system_roots {
     }
     push @SYSTEM_ROOTS, catdir( share_root(), 'public' );
     return @SYSTEM_ROOTS;
+}
+
+sub current_user {
+    return $CURRENT_USER if $CURRENT_USER;
+    return $CURRENT_USER =
+      Email::Address->new( core_config->{user_name},
+        core_config->{user_email} )->format;
 }
 
 1;

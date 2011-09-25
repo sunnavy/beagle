@@ -4,7 +4,7 @@
 <input type="hidden" value="<: $parent.id :>" name="parent_id" />
 <div class="wrapper">
 <label><: _('Author') :>:</label>
-<input type="text" name="author" value="<: $info.author :>" />
+<input type="text" name="author" value="<: $current_user :>" />
 </div>
 <textarea class="comment_markitup" name="body"></textarea>
 <input type="submit" value="<: _('Comment') :>" />

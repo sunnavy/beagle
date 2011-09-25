@@ -207,7 +207,7 @@ post '/admin/entry/:type/new' => sub {
     if ($class) {
         my $entry = $class->new( timezone => handle()->info->timezone );
         if ( $entry->can('author') && !$entry->author ) {
-            $entry->author( handle()->info->author );
+            $entry->author( current_user() );
         }
 
         if ( $type eq 'comment' && !request()->param('format') ) {
