@@ -1116,7 +1116,7 @@ sub current_user {
     return $CURRENT_USER if $CURRENT_USER;
     return $CURRENT_USER =
       Email::Address->new( core_config->{user_name},
-        core_config->{user_email} )->format;
+        core_config->{user_email} )->format || '';
 }
 
 1;
