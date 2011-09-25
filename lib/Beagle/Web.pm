@@ -214,6 +214,10 @@ sub _fill_values {
         my $name = shift @fields;
         my $opt  = shift @fields;
         $opt->{default} = $entry->serialize_field($name);
+
+        if ( $name eq 'author' && !$opt->{default} ) {
+            $opt->{default} = handle()->info->author;
+        }
         push @filled, $name, $opt;
     }
     return @filled;

@@ -170,12 +170,28 @@ div.create-comment {
     max-width: 70em;
     margin-left: 3em;
     margin-right: 2em;
-    height: 15em;
+    height: 18em;
+}
+
+div.create-comment label {
+    float: left;
+    width: 32%;
+    margin-left: 1%;
+    margin-top: 1%;
+    text-align: right;
+}
+
+div.create-comment input[type=text] {
+    margin-left: 1%;
+    margin-top: 1%;
+    float: left;
+    min-width: 20em;
 }
 
 div.create-comment textarea {
     width: 100%;
     height: 13em;
+    margin-top: 2%;
 }
 
 div.create-comment input[type=submit] {
