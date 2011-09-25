@@ -166,8 +166,10 @@ div.admin-links div.delete {
 }
 
 div.create-comment {
-    width: 60em;
-    margin-left: 5em;
+    min-width: 40em;
+    max-width: 70em;
+    margin-left: 3em;
+    margin-right: 2em;
     height: 15em;
 }
 
