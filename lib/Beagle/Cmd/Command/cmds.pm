@@ -46,11 +46,8 @@ sub execute {
         );
     }
     my $seprator = $self->seprator;
-    $seprator =~ s{\\\\}{weird string which should never exist!!!}g;
-    $seprator =~ s{\\r}{\r}g;
-    $seprator =~ s{\\n}{\n}g;
-    $seprator =~ s{\\t}{\t}g;
-    $seprator =~ s{weird string which should never exist!!!}{\\}g;
+    $seprator =~
+      s{\\(.)}{$1 eq 'r' ? "\r" : $1 eq 'n' ? "\n" : $1 eq 't' ?  "\t" : $1 }g;
     Beagle::Util::puts( join $seprator, sort Beagle::Util::uniq @out );
 }
 
