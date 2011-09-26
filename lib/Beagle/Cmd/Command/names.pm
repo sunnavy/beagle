@@ -9,7 +9,7 @@ has 'seprator' => (
     is            => 'rw',
     traits        => ['Getopt'],
     documentation => 'seprator',
-    default       => Beagle::Util::newline(),
+    default       => ' ',
 );
 
 no Any::Moose;
