@@ -11,6 +11,6 @@
 
 : include '_wedge.tx' { template => 'entry_comment_meta_end.tx' };
 
-: include 'utility.tx' { no_hide => 1 };
+: include 'utility.tx' { no_hide => 1, type => 'comment' };
 </div>
 : }

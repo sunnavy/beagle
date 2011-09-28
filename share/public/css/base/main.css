@@ -74,12 +74,12 @@ div.meta div.extra {
     display: inline;
 }
 
-div.entry div.utility {
+div.utility {
     display: inline;
     text-align: right;
 }
 
-div.entry div.utility a {
+div.utility a {
     float: right;
     margin-left: 1%;
 }

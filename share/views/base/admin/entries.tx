@@ -24,11 +24,10 @@
     <a href="<: $prefix :>admin/entry/<: $entry.id :>">edit</a>
 </div>
 
-<div class="delete">
-<form class="delete" method="post" action="/admin/entry/<: $entry.id :>/delete" >
+<form class="entry delete">
+<input type="hidden" name="id" value="<: $entry.id :>" />
 <a href="" class="delete">delete</a>
 </form>
-</div>
 
 </li>
 : }

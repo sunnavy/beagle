@@ -3,14 +3,13 @@
 <div class="admin <: $entry.type :>">
 
 : if $entry.id != 'new' {
-<div class="admin-links">
+<div class="utility">
 : if $entry.type != 'info' {
 <a href="<: $prefix :>entry/<: $entry.id :>"><: _('view') :></a>
-<div class="delete">
-<form class="delete" method="post" action="/admin/entry/<: $entry.id :>/delete" >
+<form class="entry delete">
+<input type="hidden" name="id" value="<: $entry.id :>" />
 <a href="" class="delete"><: _('delete') :></a>
 </form>
-</div>
 : }
 </div>
 : }

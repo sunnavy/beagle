@@ -1,6 +1,5 @@
-<div class="create-comment">
-
-<form>
+<div>
+<form class="create-comment">
 <input type="hidden" value="<: $parent.id :>" name="parent_id" />
 <div class="wrapper">
 <label><: _('Author') :>:</label>

@@ -13,8 +13,8 @@ function beagleBindKeys () {
     } );
 }
 
-function beagleAjaxDelete () {
-    $('form.delete').ajaxForm( {
+function beagleAjaxDeleteEntry () {
+    $('form.delete.entry').ajaxForm( {
         url: beaglePrefix + 'admin/entry/delete',
         dataType: 'json',
         type: 'post',
@@ -27,21 +27,30 @@ function beagleAjaxDelete () {
         },
         success: function( json, status, xhr, form ) {
             if ( json && json.status == 'deleted' ) {
-                var id = form.find('input[name=id]').val();
-                $('#'+id).remove();
-                if ( json.redraw_menu ) {
-                    $('#menu').load(beaglePrefix + 'fragment/menu', function () {
-                        beagleContrast('#menu');
-                    } );
+                if ( window.location.pathname.match(/admin\/entries/ ) ) {
+                    $(form).closest('li').remove();
+                    beagleContrast($(form).closest('ul'));
                 }
-                beagleContrast('#content');
+                else if ( window.location.pathname.match(/admin\/entry/ ) ) {
+                    window.location = beaglePrefix+'admin/entries';
+                }
+                else {
+                    var id = form.find('input[name=id]').val();
+                    $('#'+id).remove();
+                    if ( json.redraw_menu ) {
+                        $('#menu').load(beaglePrefix + 'fragment/menu', function () {
+                            beagleContrast('#menu');
+                        } );
+                    }
+                    beagleContrast($(form).closest('comments'));
+                }
             }
         },
     } );
 }
 
-function beagleAjaxComment ( ) {
-    $('div.create-comment form').ajaxForm(
+function beagleAjaxCreateComment ( ) {
+    $('form.create-comment').ajaxForm(
             {
                 beforeSubmit: function (arr,form) {
                     var e = form.find('textarea');
@@ -111,8 +120,8 @@ function beagleAdminInit ( ) {
         return false;
     } );
 
-    beagleAjaxComment();
-    beagleAjaxDelete();
+    beagleAjaxCreateComment();
+    beagleAjaxDeleteEntry();
     beagleBindKeys();
 
     $('textarea.markitup.wiki').markItUp( wikiSettings );

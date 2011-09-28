@@ -3,11 +3,6 @@ div.admin, div.admin-list {
     font-family: monospace;
 }
 
-div.admin-list li {
-    height: 1em;
-    padding: 0.5%;
-}
-
 div.admin label {
     float: left;
     width: 32%;
@@ -80,6 +75,8 @@ div.admin-list ul {
 div.admin-list li {
     margin-top: 0.5%;
     margin-right: 1%;
+    height: 1em;
+    padding: 0.5%;
 }
 
 div.admin-list div.type {
@@ -124,14 +121,10 @@ div.admin-list div.edit {
     margin-bottom: 1%;
 }
 
-div.admin-list div.delete {
+div.admin-list form.delete {
     float: left;
     margin-left: 1%;
     margin-bottom: 1%;
-}
-
-div.admin-list div.delete * {
-    display: inline;
 }
 
 div.admin form {
@@ -154,18 +147,12 @@ div.admin a.attachment {
     margin-top: 1%;
 }
 
-div.utility div.delete{
+div.utility form {
     float: right;
     margin-left: .5%;
 }
 
-div.admin-links div.delete {
-    float: right;
-    margin-left: 1%;
-    white-space: nowrap;
-}
-
-div.create-comment {
+form.create-comment {
     min-width: 40em;
     max-width: 70em;
     margin-left: 3em;
@@ -173,7 +160,7 @@ div.create-comment {
     height: 18em;
 }
 
-div.create-comment label {
+form.create-comment label {
     float: left;
     width: 32%;
     margin-left: 1%;
@@ -181,20 +168,20 @@ div.create-comment label {
     text-align: right;
 }
 
-div.create-comment input[type=text] {
+form.create-comment input[type=text] {
     margin-left: 1%;
     margin-top: 1%;
     float: left;
     min-width: 20em;
 }
 
-div.create-comment textarea {
+form.create-comment textarea {
     width: 100%;
     height: 13em;
     margin-top: 2%;
 }
 
-div.create-comment input[type=submit] {
+form.create-comment input[type=submit] {
     margin-top: 1%;
     float: right;
 }
