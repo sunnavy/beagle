@@ -13,7 +13,7 @@ function beagleBindKeys () {
     } );
 }
 
-function beagleAjaxDeleteEntry () {
+function beagleInitAjaxDeleteEntry () {
     $('a.delete-entry').click(
         function () {
             var e = $(this);
@@ -49,7 +49,7 @@ function beagleAjaxDeleteEntry () {
     );
 }
 
-function beagleAjaxCreateComment ( ) {
+function beagleInitAjaxCreateComment ( ) {
     $('form.create-comment').ajaxForm(
             {
                 beforeSubmit: function (arr,form) {
@@ -112,8 +112,8 @@ function beagleAdminInit ( ) {
     });
 
 
-    beagleAjaxCreateComment();
-    beagleAjaxDeleteEntry();
+    beagleInitAjaxCreateComment();
+    beagleInitAjaxDeleteEntry();
     beagleBindKeys();
 
     $('textarea.markitup.wiki').markItUp( wikiSettings );
