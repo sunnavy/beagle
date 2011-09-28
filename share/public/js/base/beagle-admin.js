@@ -14,39 +14,39 @@ function beagleBindKeys () {
 }
 
 function beagleAjaxDeleteEntry () {
-    $('form.delete.entry').ajaxForm( {
-        url: beaglePrefix + 'admin/entry/delete',
-        dataType: 'json',
-        type: 'post',
-        beforeSubmit: function (arr, form) {
-            var id = form.find('input[name=id]').val();
-            if ( !id ) {
-                return false;
-            }
-            return true;
-        },
-        success: function( json, status, xhr, form ) {
-            if ( json && json.status == 'deleted' ) {
-                if ( window.location.pathname.match(/admin\/entries/ ) ) {
-                    $(form).closest('li').remove();
-                    beagleContrast($(form).closest('ul'));
-                }
-                else if ( window.location.pathname.match(/admin\/entry/ ) ) {
-                    window.location = beaglePrefix+'admin/entries';
-                }
-                else {
-                    var id = form.find('input[name=id]').val();
-                    $('#'+id).remove();
-                    if ( json.redraw_menu ) {
-                        $('#menu').load(beaglePrefix + 'fragment/menu', function () {
-                            beagleContrast('#menu');
-                        } );
+    $('a.delete-entry').click(
+        function () {
+            var e = $(this);
+            var id = e.attr('name');
+            $.ajax( {
+            url: beaglePrefix + 'admin/entry/delete',
+            dataType: 'json',
+            type: 'post',
+            data: { id: id },
+            success: function( json, status, xhr ) {
+                if ( json && json.status == 'deleted' ) {
+                    if ( window.location.pathname.match(/admin\/entries/ ) ) {
+                        e.closest('li').remove();
+                        beagleContrast(e.closest('ul'));
                     }
-                    beagleContrast($(form).closest('comments'));
+                    else if ( window.location.pathname.match(/admin\/entry/ ) ) {
+                        window.location = beaglePrefix+'admin/entries';
+                    }
+                    else {
+                        $('#'+id).remove();
+                        if ( json.redraw_menu ) {
+                            $('#menu').load(beaglePrefix + 'fragment/menu', function () {
+                                beagleContrast('#menu');
+                            } );
+                        }
+                        beagleContrast(e.closest('div.comments'));
+                    }
                 }
             }
-        },
-    } );
+            } );
+            return false;
+        }
+    );
 }
 
 function beagleAjaxCreateComment ( ) {
@@ -111,14 +111,6 @@ function beagleAdminInit ( ) {
         }
     });
 
-
-    $('a.delete').click( function() {
-        var form = $(this).closest('form');
-        if ( form ) {
-            form.submit();
-        }
-        return false;
-    } );
 
     beagleAjaxCreateComment();
     beagleAjaxDeleteEntry();

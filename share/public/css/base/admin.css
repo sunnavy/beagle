@@ -121,7 +121,7 @@ div.admin-list div.edit {
     margin-bottom: 1%;
 }
 
-div.admin-list form.delete {
+div.admin-list div.delete {
     float: left;
     margin-left: 1%;
     margin-bottom: 1%;
@@ -145,11 +145,6 @@ div.admin a.attachment {
     margin-right: 20px;
     margin-left: 2px;
     margin-top: 1%;
-}
-
-div.utility form {
-    float: right;
-    margin-left: .5%;
 }
 
 form.create-comment {

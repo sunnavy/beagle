@@ -24,9 +24,8 @@
     <a href="<: $prefix :>admin/entry/<: $entry.id :>">edit</a>
 </div>
 
-<form class="entry delete">
-<input type="hidden" name="id" value="<: $entry.id :>" />
-<a href="" class="delete">delete</a>
+<div class="delete">
+<a href="" name="<:$entry.id:>" class="delete-entry">delete</a>
 </form>
 
 </li>

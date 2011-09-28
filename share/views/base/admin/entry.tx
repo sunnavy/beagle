@@ -6,10 +6,7 @@
 <div class="utility">
 : if $entry.type != 'info' {
 <a href="<: $prefix :>entry/<: $entry.id :>"><: _('view') :></a>
-<form class="entry delete">
-<input type="hidden" name="id" value="<: $entry.id :>" />
-<a href="" class="delete"><: _('delete') :></a>
-</form>
+<a href="" name="<: $entry.id :>" class="delete-entry"><: _('delete') :></a>
 : }
 </div>
 : }

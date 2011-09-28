@@ -6,10 +6,6 @@
 
 : if $admin {
   <a href="<: $prefix :>admin/entry/<: $entry.id :>"><: _('edit') :></a>
-<form class="delete entry">
-<input type="hidden" name="id" value="<: $entry.id :>" />
-<a href="" class="delete"><: _('delete') :></a>
-<input class="hidden" type="submit" />
-</form>
+<a href="" name="<: $entry.id :>" class="delete-entry"><: _('delete') :></a>
 : }
   </div>
