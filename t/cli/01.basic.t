@@ -78,7 +78,7 @@ run_ok( $beagle_cmd, ['commands'], 'commands' );
 is( last_script_stdout(), $actual_help_output, 'commands output' );
 
 run_ok( $beagle_cmd, ['cmds'], 'cmds' );
-$expect = join newline(), qw/
+$expect = join ' ', qw/
   alias att cache cast cat cmds commands comment comments config create exists
   follow fsck git help info init log look ls mark mv names publish relation rename 
   rewrite rm shell spread status trust unfollow untrust update version
