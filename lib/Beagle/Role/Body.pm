@@ -10,9 +10,7 @@ has 'format' => (
     lazy    => 1,
     trigger => sub {
         my $self  = shift;
-        if ( $self->body ) {
-            $self->_body_html( $self->_parse_body( $self->body ) );
-        }
+        $self->_body_html( undef ) if defined $self->_body_html;
     },
 );
 
@@ -22,17 +20,15 @@ has 'body' => (
     default => '',
     trigger => sub {
         my $self  = shift;
-        my $value = shift;
-        if ( $self->format ) {
-            $self->_body_html( $self->_parse_body($value) );
-        }
+        $self->_body_html( undef ) if defined $self->_body_html;
     },
 );
 
 has '_body_html' => (
-    isa     => 'Str',
+    isa     => 'Maybe[Str]',
     is      => 'rw',
-    default => '',
+    default => undef,
+    lazy    => 1,
 );
 
 sub body_html {
@@ -42,6 +38,9 @@ sub body_html {
         return '<pre class="entry body">' . encode_entities( $self->body ) . '</pre>';
     }
     else {
+        unless ( defined $self->_body_html ) {
+            $self->_body_html( $self->_parse_body( $self->body ) );
+        }
         return $self->_body_html;
     }
 }
