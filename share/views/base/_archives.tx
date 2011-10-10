@@ -14,6 +14,12 @@
 <a target="_blank" class="hover" name="<: $year ~ '/' ~ $month :>" href="<: $prefix :>archive/<: $year ~ '/' ~ $month :>"><: $year ~ '/' ~ $month :>(<: size($archives[$year][$month]) :>)</a>
 <div class="glance"></div>
 </td>
+
+: if $~month.is_last && ( 5 - ( $~month.index % 6 ) ) > 0 {
+: for [ 1 .. ( 5 - $~month.index % 6 ) ] -> $i {
+<td class="archive"></td>
+: } }
+
 : if $~month.index % 6 == 5 || $~month.is_last {
 </tr>
 : }
