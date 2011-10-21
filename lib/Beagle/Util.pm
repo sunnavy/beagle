@@ -906,6 +906,7 @@ sub parse_markdown {
                 }
                 undef $block_name;
                 $code = '';
+                push @new, $_;
             }
         }
         else {
