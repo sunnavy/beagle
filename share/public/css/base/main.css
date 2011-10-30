@@ -408,3 +408,8 @@ body {
 div.even, a.even, li.even {
     background-color: #eee;
 }
+
+h1, h2, h3, h4 {
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+}
+
