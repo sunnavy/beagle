@@ -70,6 +70,10 @@ div.utility {
     text-align: right;
 }
 
+div.utility a.hide, div.utility a.show {
+    margin-right: 2%;
+}
+
 div.utility a {
     float: right;
     margin-left: 1%;
