@@ -129,8 +129,10 @@ div.warnings {
 h3.menu {
     margin-top: 0.25em;
     margin-bottom: 0.25em;
-    padding-left: 0.25em;
     border-radius: 0.25em;
+    padding: 0.25em;
+    padding-left: 2em;
+    text-align: center;
 }
 
 .annotation {

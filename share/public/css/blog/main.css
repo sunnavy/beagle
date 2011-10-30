@@ -6,9 +6,8 @@ div.meta {
 
 #menu {
     float: right;
-    left: 0.5%;
-    top: 0.5%;
     width: 24%;
+    margin: 0.5%;
 }
 
 #menu div.menu.head {
