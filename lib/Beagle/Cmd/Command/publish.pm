@@ -1,7 +1,6 @@
 package Beagle::Cmd::Command::publish;
 use Any::Moose;
 use Beagle::Util;
-use File::Copy::Recursive 'dircopy';
 
 extends qw/Beagle::Cmd::Command/;
 
@@ -64,6 +63,7 @@ sub execute {
     Beagle::Web->init();
     $app = \&Beagle::Web::handle_request;
 
+    require File::Copy::Recursive;
     for my $bh (@bh) {
         $handle = $bh;
         my $to = catdir( $self->to, $bh->name );
@@ -82,7 +82,7 @@ sub execute {
         chdir $encoded_to;
 
         my $system = encode( locale_fs => catdir( share_root(), 'public' ) );
-        dircopy( $system, 'system' );
+        File::Copy::Recursive::dircopy( $system, 'system' );
 
         my $static = encode( locale_fs => static_root($bh) );
         mkdir( 'static' ) unless -e 'static';
@@ -101,7 +101,7 @@ sub execute {
             my $info  = $bh->info;
             my @parts = split_id( $info->id );
             if ( -e catdir( $static, @parts ) ) {
-                dircopy( catdir( $static, @parts ),
+                File::Copy::Recursive::dircopy( catdir( $static, @parts ),
                     catdir( 'static', @parts ) );
             }
         }
@@ -112,7 +112,7 @@ sub execute {
 
             my @parts = split_id( $entry->id );
             if ( -e catdir( $static, @parts ) ) {
-                dircopy( catdir( $static, @parts ),
+                File::Copy::Recursive::dircopy( catdir( $static, @parts ),
                     catdir( 'static', @parts ) );
             }
 

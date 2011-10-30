@@ -1,6 +1,5 @@
 package Beagle::Cmd::Command::fsck;
 use Beagle::Util;
-use File::Copy 'move';
 
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;

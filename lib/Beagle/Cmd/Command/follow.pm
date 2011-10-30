@@ -1,6 +1,5 @@
 package Beagle::Cmd::Command::follow;
 use Beagle::Util;
-use File::Which 'which';
 
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
@@ -49,13 +48,14 @@ sub execute {
     my $name  = $self->name;
     my $depth = $self->depth;
     my $type  = $self->type;
+    require File::Which;
     if ($type) {
-        if ( $type eq 'git' && !which('git') ) {
+        if ( $type eq 'git' && !File::Which::which('git') ) {
             die "no git found";
         }
     }
     else {
-        if ( which('git') ) {
+        if ( File::Which::which('git') ) {
             $type = 'git';
         }
         else {

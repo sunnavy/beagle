@@ -1,7 +1,6 @@
 package Beagle::Cmd::Command::att;
 use Beagle::Util;
 use Any::Moose;
-use File::Basename;
 
 extends qw/Beagle::Cmd::Command/;
 
@@ -150,7 +149,8 @@ sub execute {
         my @added;
         for my $file (@$args) {
             if ( -f $file ) {
-                my $basename = decode_utf8 basename $file;
+                require File::Basename;
+                my $basename = decode_utf8 File::Basename::basename $file;
                 my $att      = Beagle::Model::Attachment->new(
                     name         => $basename,
                     content_file => $file,

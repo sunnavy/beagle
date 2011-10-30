@@ -15,18 +15,17 @@ no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 sub command_names { qw/shell sh/ };
 
-use Term::ReadLine;
-use Text::ParseWords 'shellwords';
-
 sub prompt {
     root_name() . '> ';
 }
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
+
     die "can't call shell command in web term" if $ENV{BEAGLE_WEB_TERM};
 
     local $| = 1;
+    require Term::ReadLine;
     my $term = Term::ReadLine->new('Beagle');
 
     my $attribs = $term->Attribs;
@@ -70,10 +69,11 @@ sub execute {
     $self->read_history($term);
 
     require Time::HiRes;
+    require Text::ParseWords;
     while ( defined( $_ = $term->readline(prompt) ) ) {
         select stdout();
 
-        @ARGV = shellwords($_);
+        @ARGV = Text::parseWords::shellwords($_);
         my $cmd = $ARGV[0];
         next unless defined $cmd && length $cmd;
 

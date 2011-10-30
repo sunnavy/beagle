@@ -3,7 +3,6 @@ use Beagle::Util;
 
 use Any::Moose;
 extends qw/Beagle::Cmd::GlobalCommand/;
-use File::Which 'which';
 
 has bare => (
     isa           => 'Bool',
@@ -56,14 +55,15 @@ sub execute {
     die "need root" unless @$args || $self->name;
 
     my $type = $self->type;
+    require File::Which;
     if ($type) {
 
-        if ( $type eq 'git' && !which('git') ) {
+        if ( $type eq 'git' && !File::Which::which('git') ) {
             die "no git found";
         }
     }
     else {
-        if ( which('git') ) {
+        if ( File::Which::which('git') ) {
             $type = 'git';
         }
         else {
