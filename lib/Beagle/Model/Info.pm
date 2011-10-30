@@ -35,6 +35,19 @@ has 'theme' => (
     default => 'orange',
 );
 
+has 'style' => (
+    isa     => 'Str',
+    is      => 'rw',
+    default => '',
+    trigger => sub {
+        my $self = shift;
+        my $value = shift;
+        return unless $value && $value !~ m{/};
+        $value = join '/', 'static', split_id($self->id), $value;
+        $self->{style} = $value;
+    },
+);
+
 has 'sites' => (
     isa     => 'ArrayRef',
     is      => 'rw',
