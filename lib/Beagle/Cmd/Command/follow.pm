@@ -123,6 +123,7 @@ sub execute {
         set_roots($all);
 
         puts "followed $root.";
+        undef $name;
     }
 }
 
