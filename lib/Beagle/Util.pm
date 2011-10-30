@@ -862,7 +862,7 @@ sub parse_wiki {
             blocks => {
                 code       => qr/^:(?=\s)/,
                 shell      => qr/^\$(?=\s)/,
-                annotation => qr{^\#(?=\s)},
+                annotation => qr{^\@(?=\s)},
             },
             paragraph  => [ '<p>', "</p>\n", '', '', 1 ],
             blockorder => [
@@ -893,7 +893,7 @@ sub parse_markdown {
             my $gard =
                 $block_name eq 'shell'       ? '$'
               : $block_name eq 'prettyprint' ? ':'
-              :                                '#';
+              :                                '@';
             if (/^\s+\Q$gard\E\s+(.*)/m) {
                 $code .= $1 ? ( $1 . "\n" ) : "\n";
             }
@@ -910,7 +910,7 @@ sub parse_markdown {
             }
         }
         else {
-            if (/^\s+([\$:#])\s+(.*)/m) {
+            if (/^\s+([\$:@])\s+(.*)/m) {
                 $block_name =
                     $1 eq '$' ? 'shell'
                   : $1 eq ':' ? 'prettyprint'
