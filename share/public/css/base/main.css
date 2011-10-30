@@ -55,22 +55,13 @@ div.meta {
     font-size: smaller;
 }
 
-div.meta div.date {
-    margin-right: 1%;
+div.meta > div {
+    margin-right: .5%;
     display: inline;
 }
 
-div.meta div.author {
-    margin-right: 1%;
-    display: inline;
-}
-
-div.meta div.tags {
-    display: inline;
-    margin-right: 1%;
-}
-
-div.meta div.extra {
+div.meta span {
+    margin-right: .5%;
     display: inline;
 }
 
@@ -276,6 +267,10 @@ div.direction {
 
 #content div.tags {
     padding: 2%;
+}
+
+#content div.meta div.tags {
+    padding: 0;
 }
 
 #content > div.tags a {
