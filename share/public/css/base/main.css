@@ -234,7 +234,7 @@ div.search {
 
 div.search input[name=query] {
     width: 100%;
-    height: 2ex;
+    height: 3ex;
     font-size: large;
     margin-top: 1ex;
 }
