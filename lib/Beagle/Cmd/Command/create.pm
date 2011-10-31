@@ -159,9 +159,6 @@ sub execute {
         $entry = $temp->new_from_string( decode_utf8($updated) );
     }
 
-    $entry->commit_message( $self->message )
-      if $self->message && !$entry->commit_message;
-
     $entry->timezone( $bh->info->timezone )
       if $bh->info->timezone
           && !$entry->timezone;
@@ -169,14 +166,15 @@ sub execute {
 
     $entry->commit_message( $self->message )
       if $self->message && !$entry->commit_message;
-    if ( $bh->create_entry( $entry ) ) {
+    if ( $bh->create_entry( $entry, commit => 0 ) ) {
         $self->handle_attachments($entry);
-        $bh->backend->commit( message => $entry->commit_message );
-        puts "created " . $entry->id . ".";
     }
     else {
         die "failed to create the entry.";
     }
+
+    $bh->backend->commit( message => $entry->commit_message || $self->message );
+    puts "created " . $entry->id . ".";
 }
 
 sub handle_attachments {
@@ -194,7 +192,7 @@ sub handle_attachments {
                 parent_id    => $parent->id,
             );
 
-            current_handle()->create_attachment( $att, );
+            current_handle()->create_attachment( $att, commit => 0 );
         }
         else {
             die "$file is not a file or doesn't exist.";
