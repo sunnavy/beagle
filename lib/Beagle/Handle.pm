@@ -138,8 +138,6 @@ sub BUILD {
         if ( ( $self->updated || 0 ) == ( $self->backend->updated || 0 ) ) {
             undef $need_update;
         }
-
-        return $self unless $need_update;
     }
 
     if ($need_update) {
