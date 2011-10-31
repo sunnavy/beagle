@@ -150,7 +150,7 @@ sub BUILD {
 
         my $updated = $self->backend->updated;
         $self->updated($updated) if $updated;
-        $self->update_cache if enabled_cache();
+        $self->update_cache;
         $self->update_relation;
     }
 
@@ -298,6 +298,9 @@ sub update {
 
         $self->init_attachments;
         $self->updated($updated);
+
+        $self->update_cache;
+        $self->update_relation;
     }
 }
 
