@@ -69,7 +69,7 @@ sub execute {
     }
 
     if (@created) {
-        my $msg = join ' ', 'moved ', join( ', ', map { $_->{id} } @created ),
+        my $msg = join ' ', 'moved', join( ', ', map { $_->{id} } @created ),
           'to', $to->name;
         $to->backend->commit( message => $self->message || $msg );
 
