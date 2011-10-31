@@ -131,7 +131,7 @@ sub _save {
 
 sub updated {
     my $self = shift;
-    my ( $ret, $updated ) = $self->git->log( '-n1', '--format=%ct', 'HEAD' );
+    my ( $ret, $updated ) = $self->git->log( '-n1', '--format=%H', 'HEAD' );
     return unless $ret;
     chomp $updated if $updated;
     return $updated;

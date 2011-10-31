@@ -106,9 +106,9 @@ has 'comments_map' => (
 );
 
 has 'updated' => (
-    isa     => 'Int',
+    isa     => 'Str',
     is      => 'rw',
-    default => 0,
+    default => '',
 );
 
 sub BUILD {
@@ -135,7 +135,7 @@ sub BUILD {
         $self->root( $args->{root} )
           if $args->{root} && ( $self->root || '' ) ne $args->{root};
 
-        if ( ( $self->updated || 0 ) == ( $self->backend->updated || 0 ) ) {
+        if ( $self->updated eq $self->backend->updated ) {
             undef $need_update;
         }
     }
@@ -288,7 +288,7 @@ sub update_info {
 
 sub update {
     my $self    = shift;
-    my $updated = $self->backend->updated || 0;
+    my $updated = $self->backend->updated;
     my $map     = $self->map;
 
     if ( $self->updated != $updated ) {
