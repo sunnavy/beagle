@@ -306,7 +306,7 @@ sub extra_meta_fields {
 
 sub extra_meta_fields_in_web_view {
     my $self = shift;
-    return $self->extra_meta_fields;
+    return [ grep { $_ ne 'title' } @{$self->extra_meta_fields} ];
 }
 
 sub split_message {

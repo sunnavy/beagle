@@ -88,18 +88,6 @@ sub summary {
     $self->_summary( $value, @_ );
 }
 
-sub extra_meta_fields {
-    [
-        qw/title work_title work_author work_translator work_publisher work_published work_isbn/
-    ];
-}
-
-sub extra_meta_fields_in_web_view {
-    [
-        qw/work_title work_author work_translator work_publisher work_published work_isbn/
-    ];
-}
-
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
