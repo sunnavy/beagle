@@ -5,8 +5,12 @@
 <label><: _('Author') :>:</label>
 <input type="text" name="author" value="<: $current_user :>" />
 </div>
+<div class="textarea">
 <textarea class="comment_markitup" name="body"></textarea>
+</div>
+<div class="submit">
 <input type="submit" value="<: _('Comment') :>" />
+</div>
 </form>
 
 </div>
