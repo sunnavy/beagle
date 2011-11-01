@@ -301,7 +301,7 @@ sub serialize_tags {
 
 sub extra_meta_fields {
     my $self = shift;
-    return [ $self->meta->get_attribute_list ];
+    return [ sort $self->meta->get_attribute_list ];
 }
 
 sub extra_meta_fields_in_web_view {
