@@ -96,14 +96,20 @@ sub execute {
                 my $type = $p ? 'drafts' : 'normal';
                 if ( -e $file ) {
                     my $bh = Storable::retrieve($file);
-                    if ( $bh->updated < $latest ) {
+                    if ( $bh->updated ne $latest ) {
                         $info{$type} = 'outdated';
                     }
                     else {
                         $info{$type} = 'latest';
                     }
 
-                    $info{$type} .= '(' . pretty_datetime( $bh->updated ) . ')';
+                    if ( $bh->updated =~ /\d{11}/ ) {
+                        $info{$type} .=
+                          '(' . pretty_datetime( $bh->updated ) . ')';
+                    }
+                    else {
+                        $info{$type} .= '(' . $bh->updated . ')';
+                    }
                 }
                 else {
                     $info{$type} = 'none';
