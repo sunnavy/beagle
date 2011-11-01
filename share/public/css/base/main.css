@@ -70,7 +70,7 @@ div.utility {
     text-align: right;
 }
 
-div.utility a.hide, div.utility a.show {
+div.utility a.right-most {
     margin-right: 2%;
 }
 

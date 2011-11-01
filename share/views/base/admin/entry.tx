@@ -5,7 +5,7 @@
 : if $entry.id != 'new' {
 <div class="utility">
 : if $entry.type != 'info' {
-<a href="<: $prefix :>entry/<: $entry.id :>"><: _('view') :></a>
+<a class="right-most" href="<: $prefix :>entry/<: $entry.id :>"><: _('view') :></a>
 <a href="" name="<: $entry.id :>" class="delete-entry"><: _('delete') :></a>
 : }
 </div>
