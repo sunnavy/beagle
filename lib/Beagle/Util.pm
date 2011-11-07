@@ -895,7 +895,7 @@ sub parse_markdown {
               : $block_name eq 'prettyprint' ? ':'
               :                                '@';
             if (/^\s+\Q$gard\E\s+(.*)/m) {
-                $code .= $1 ? ( $1 . "\n" ) : "\n";
+                $code .= $1 ? ( encode_entities($1 . "\n") ) : "\n";
             }
             else {
                 if ( $block_name eq 'annotation' ) {
@@ -915,7 +915,7 @@ sub parse_markdown {
                     $1 eq '$' ? 'shell'
                   : $1 eq ':' ? 'prettyprint'
                   :             'annotation';
-                $code = $2 . "\n";
+                $code = encode_entities($2 . "\n");
             }
             else {
                 push @new, $_;
