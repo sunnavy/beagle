@@ -338,7 +338,7 @@ div.attachments div.preview img {
     font-size: smaller;
     border-radius: 0.5em !important;
     max-height: 60%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 li.hover > ul li {
