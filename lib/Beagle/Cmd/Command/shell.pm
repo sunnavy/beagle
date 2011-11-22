@@ -73,7 +73,7 @@ sub execute {
     while ( defined( $_ = $term->readline(prompt) ) ) {
         select stdout();
 
-        @ARGV = Text::parseWords::shellwords($_);
+        @ARGV = Text::ParseWords::shellwords($_);
         my $cmd = $ARGV[0];
         next unless defined $cmd && length $cmd;
 
