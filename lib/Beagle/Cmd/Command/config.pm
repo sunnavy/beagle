@@ -45,7 +45,7 @@ sub execute {
     if ( $self->init ) {
         if ( keys %$core && !$self->force ) {
             die
-              "default is initialized already, use --force|-f to overwrite.";
+              "config is initialized already, use --force|-f to overwrite.";
         }
 
         $core->{"default_command"} = 'shell';
