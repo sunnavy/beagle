@@ -335,7 +335,6 @@ sub set_config {
     my $value   = shift;
     my $section = shift;
 
-    my $config;
     if ($section) {
         $config = config();
         $config->{$section} = $value;
