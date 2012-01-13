@@ -712,7 +712,12 @@ sub resolve_entry {
     my @found;
     for my $bh (@bh) {
         for my $entry ( @{ $bh->entries } ) {
-            if ( $entry->serialize( id => 1 ) =~ qr/$str/im ) {
+
+            # there may exists some not loaded entry types created in plugins,
+            # so we need to make sure "serialize" is callable beforehead
+            if (   $entry->can('serialize')
+                && $entry->serialize( id => 1 ) =~ qr/$str/im )
+            {
                 push @found,
                   { id => $entry->id, entry => $entry, handle => $bh };
             }
