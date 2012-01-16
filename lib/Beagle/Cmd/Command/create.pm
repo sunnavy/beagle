@@ -256,7 +256,7 @@ Beagle::Cmd::Command::create - create an entry
 
 =head1 LICENCE AND COPYRIGHT
 
-    Copyright 2011 sunnavy@gmail.com
+    Copyright 2011-2012 sunnavy@gmail.com
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
