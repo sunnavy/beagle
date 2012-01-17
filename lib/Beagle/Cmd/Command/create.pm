@@ -164,8 +164,6 @@ sub execute {
           && !$entry->timezone;
     $entry->author( $self->author || current_user() ) unless $entry->author;
 
-    $entry->commit_message( $self->message )
-      if $self->message && !$entry->commit_message;
     if ( $bh->create_entry( $entry, commit => 0 ) ) {
         $self->handle_attachments($entry);
     }
