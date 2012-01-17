@@ -173,7 +173,11 @@ sub execute {
         die "failed to create the entry.";
     }
 
-    $bh->backend->commit( message => $entry->commit_message || $self->message );
+    my $message =
+      'create ' . $entry->type . ' ' . $entry->id . ': ' . $entry->summary;
+    $message .= "\n\n" . $self->message if $self->message;
+    $message .= "\n\n" . $entry->commit_message if $entry->commit_message;
+    $bh->backend->commit( message => $message );
     puts "created " . $entry->id . ".";
 }
 
