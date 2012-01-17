@@ -168,7 +168,7 @@ sub commit {
         my ($ret) =
           $self->git->commit( -m => $args{message}
               || $args{'-m'}
-              || 'commited' );
+              || 'committed' );
         return $ret;
     }
     else {
