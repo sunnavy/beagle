@@ -3,14 +3,6 @@ use Any::Moose;
 use Beagle::Util;
 extends 'Beagle::Model::Entry';
 
-has 'done' => (
-    isa     => 'Bool',
-    is      => 'rw',
-    default => 0,
-    lazy    => 1,
-    coerce  => 1,
-);
-
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
