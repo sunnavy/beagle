@@ -18,6 +18,14 @@ has 'real-raw' => (
     traits        => ['Getopt'],
 );
 
+has 'main-body-only' => (
+    isa           => 'Bool',
+    is            => 'rw',
+    documentation => 'main body only',
+    accessor      => 'main_body_only',
+    traits        => ['Getopt'],
+);
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
@@ -57,6 +65,9 @@ sub execute {
 
         if ( $self->raw ) {
             puts decode_utf8( $entry->content() );
+        }
+        elsif ( $self->main_body_only ) {
+            puts decode_utf8( $entry->body() );
         }
         elsif ( $self->real_raw ) {
             print $entry->content();
